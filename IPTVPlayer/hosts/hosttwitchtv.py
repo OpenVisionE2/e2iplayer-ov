@@ -13,8 +13,10 @@ from Plugins.Extensions.IPTVPlayer.libs.urlparser import urlparser
 # FOREIGN import
 ###################################################
 import urllib
-try: import json
-except Exception: import simplejson as json
+try:
+    import json
+except Exception:
+    import simplejson as json
 from datetime import timedelta
 ###################################################
 
@@ -24,9 +26,12 @@ def gettytul():
 
 def jstr(item, key, default=''):
     v = item.get(key, default)
-    if type(v) == type(u''): return v.encode('utf-8')
-    elif type(v) == type(''): return v
-    else: return default
+    if type(v) == type(u''):
+        return v.encode('utf-8')
+    elif type(v) == type(''):
+        return v
+    else:
+        return default
 
 class Twitch(CBaseHostClass):
 
@@ -95,8 +100,10 @@ class Twitch(CBaseHostClass):
                 defaultEn = item
                 continue
             self.langItems.append(item)
-        if defaultEn: self.langItems.insert(0, defaultEn)
-        if default: self.langItems.insert(0, default)
+        if defaultEn:
+            self.langItems.insert(0, defaultEn)
+        if default:
+            self.langItems.insert(0, default)
         self.langItems.insert(0, {'title':_('All')})
         
         
@@ -187,7 +194,8 @@ class Twitch(CBaseHostClass):
         post_data = '[{"operationName":"BrowsePage_Popular","variables":{"limit":30,"platformType":"%s","tags":[%s],"isTagsExperiment":false%s},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"4a3254b9537ad005b6fbc6e7a811a4045312d4a4b5c0541bea86df60383972fd"}}}]' % (type, lang, cursor)
         url = self.getFullUrl('/gql', self.API2_URL)
         sts, data = self.getPage(url, MergeDicts(self.defaultParams, {'raw_post_data':True}), post_data)
-        if not sts: return
+        if not sts:
+            return
         try:
             data = json.loads(data)
             self._listChannels(cItem, nextCategory, data[0]['data']['streams'])
@@ -201,7 +209,8 @@ class Twitch(CBaseHostClass):
         post_data = '[{"operationName":"BrowsePage_AllDirectories","variables":{"limit":30,"options":{"recommendationsContext":{"platform":"web"},"sort":"VIEWER_COUNT","tags":[]}%s},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"78957de9388098820e222c88ec14e85aaf6cf844adf44c8319c545c75fd63203"}}}]' % cursor
         url = self.getFullUrl('/gql', self.API2_URL)
         sts, data = self.getPage(url, MergeDicts(self.defaultParams, {'raw_post_data':True}), post_data)
-        if not sts: return
+        if not sts:
+            return
         try:
             cursor = ''
             data = json.loads(data)
@@ -229,7 +238,8 @@ class Twitch(CBaseHostClass):
         post_data = '[{"operationName":"DirectoryPage_Game","variables":{"name":"%s","options":{"sort":"VIEWER_COUNT","recommendationsContext":{"platform":"web"},"requestID":"a40436b85daf0810","tags":[%s]},"sortTypeIsRecency":false,"limit":30%s},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"c250a5fa4134a24c3d96abff9450391fd621b1c973c47f3d6adda3be6098c850"}}}]' % (cItem['game_name'], lang, cursor)
         url = self.getFullUrl('/gql', self.API2_URL)
         sts, data = self.getPage(url, MergeDicts(self.defaultParams, {'raw_post_data':True}), post_data)
-        if not sts: return
+        if not sts:
+            return
         printDBG("Twitch.listGameChannels data[%s]" % data)
         try:
             data = json.loads(data)
@@ -250,7 +260,8 @@ class Twitch(CBaseHostClass):
 
         url = self.getFullUrl('/gql', self.API2_URL)
         sts, data = self.getPage(url, MergeDicts(self.defaultParams, {'raw_post_data':True}), '[%s]' % ','.join(post_data))
-        if not sts: return
+        if not sts:
+            return
         printDBG("Twitch.listChannel %s" % data)
         icon = ''
         try:
@@ -322,7 +333,8 @@ class Twitch(CBaseHostClass):
         post_data = '[{"operationName":"FilterableVideoTower_Videos","variables":{"limit":30,"channelOwnerLogin":"%s","broadcastType":%s,"videoSort":"%s"%s},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"352ca6e327523f88b08390bf79d1b1d6e5f67b46981c900cf41eca56ef9d3cfc"}}}]' % (cItem['user_login'], broadcastType, cItem['sort'], cursor)
         url = self.getFullUrl('/gql', self.API2_URL)
         sts, data = self.getPage(url, MergeDicts(self.defaultParams, {'raw_post_data':True}), post_data)
-        if not sts: return
+        if not sts:
+            return
 
         try:
             data = json.loads(data)
@@ -337,7 +349,8 @@ class Twitch(CBaseHostClass):
         post_data = '[{"operationName":"DirectoryVideos_Game","variables":{"gameName":"%s","videoLimit":30,"tags":[%s],"videoSort":"%s"%s},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"643351f6cff5d248aa2b827f912c80bf387b918c01089526b05d628cf04a5706"}}}]' % (cItem['game_name'], broadcastType, cItem['sort'], cursor)
         url = self.getFullUrl('/gql', self.API2_URL)
         sts, data = self.getPage(url, MergeDicts(self.defaultParams, {'raw_post_data':True}), post_data)
-        if not sts: return
+        if not sts:
+            return
 
         try:
             data = json.loads(data)
@@ -383,7 +396,8 @@ class Twitch(CBaseHostClass):
         post_data = '[{"operationName":"ClipsCards__User","variables":{"login":"%s","limit":20,"criteria":{"filter":"%s"}%s},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"b661fa0b88f774135c200d64b7248ff21263c12db79e0f7d33aeedb0315cdcbb"}}}]' % (cItem['user_login'], cItem['clips_filter'], cursor)
         url = self.getFullUrl('/gql', self.API2_URL)
         sts, data = self.getPage(url, MergeDicts(self.defaultParams, {'raw_post_data':True}), post_data)
-        if not sts: return
+        if not sts:
+            return
 
         try:
             data = json.loads(data)
@@ -398,7 +412,8 @@ class Twitch(CBaseHostClass):
         post_data = '[{"operationName":"ClipsCards__Game","variables":{"gameName":"%s","limit":20,"criteria":{"tags":[%s],"filter":"%s"}%s},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"0d8d0eba9fc7ef77de54a7d933998e21ad7a1274c867ec565ac14ffdce77b1f9"}}}]' % (cItem['game_name'], lang, cItem['clips_filter'], cursor)
         url = self.getFullUrl('/gql', self.API2_URL)
         sts, data = self.getPage(url, MergeDicts(self.defaultParams, {'raw_post_data':True}), post_data)
-        if not sts: return
+        if not sts:
+            return
 
         try:
             data = json.loads(data)
@@ -415,7 +430,8 @@ class Twitch(CBaseHostClass):
         offset = cItem.get('offset', 0)
         url = cItem['url'] + str(offset)
         sts, data = self.getPage(url)
-        if not sts: return
+        if not sts:
+            return
         try:
             data = json.loads(data)
             for item in data['channels']:
@@ -435,7 +451,8 @@ class Twitch(CBaseHostClass):
         offset = cItem.get('offset', 0)
         url = cItem['url'] + str(offset)
         sts, data = self.getPage(url)
-        if not sts: return
+        if not sts:
+            return
         try:
             data = json.loads(data)
             for item in data['channels']:
@@ -456,7 +473,8 @@ class Twitch(CBaseHostClass):
         url = cItem['url'] + str(offset)
         sts, data = self.getPage(url)
         printDBG("Twitch.listV5Games data [%s]" % data)
-        if not sts: return
+        if not sts:
+            return
         try:
             data = json.loads(data)
             for item in data['games']:
@@ -473,7 +491,8 @@ class Twitch(CBaseHostClass):
         offset = cItem.get('offset', 0)
         url = cItem['url'] + str(offset)
         sts, data = self.getPage(url)
-        if not sts: return
+        if not sts:
+            return
         try:
             data = json.loads(data)
             for item in data['streams']:
@@ -513,7 +532,8 @@ class Twitch(CBaseHostClass):
             post_data = '[{"operationName":"VideoAccessToken_Clip","variables":{"slug":"%s"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"9bfcc0177bffc730bd5a5a89005869d2773480cf1738c592143b5173634b7d15"}}}]' % cItem['clip_slug']
             url = self.getFullUrl('/gql', self.API2_URL)
             sts, data = self.getPage(url, MergeDicts(self.defaultParams, {'raw_post_data':True}), post_data)
-            if not sts: return urlTab
+            if not sts:
+                return urlTab
             try:
                 data = byteify(json.loads(data))
                 printDBG("Twitch.getLinksForVideo data: %s" % data)
@@ -543,7 +563,8 @@ class Twitch(CBaseHostClass):
                     for item in data:
                         item['url'] = urlparser.decorateUrl(item['url'], {'iptv_proto':'m3u8', 'iptv_livestream':liveStream})
                         urlTab.append(item)
-                except Exception: printExc()
+                except Exception:
+                    printExc()
 
         return urlTab
 

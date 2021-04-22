@@ -63,8 +63,10 @@ def UsePyCurl():
 def GetIconsHash():
     iconsHashFile = resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/icons/PlayerSelector/hash.txt')
     sts, data = ReadTextFile(iconsHashFile)
-    if sts: return data.strip()
-    else: return ''
+    if sts:
+        return data.strip()
+    else:
+        return ''
 
 def SetIconsHash(value):
     iconsHashFile = resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/icons/PlayerSelector/hash.txt')
@@ -73,8 +75,10 @@ def SetIconsHash(value):
 def GetGraphicsHash():
     graphicsHashFile = resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/icons/hash.txt')
     sts, data = ReadTextFile(graphicsHashFile)
-    if sts: return data.strip()
-    else: return ''
+    if sts:
+        return data.strip()
+    else:
+        return ''
 
 def SetGraphicsHash(value):
     graphicsHashFile = resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/icons/hash.txt')
@@ -119,12 +123,14 @@ def E2PrioFix(cmd, factor=2):
     
 def GetDefaultLang(full=False):
     if full:
-        try: defaultLanguage = language.getActiveLanguage()
+        try:
+            defaultLanguage = language.getActiveLanguage()
         except Exception:
             printExc()
             defaultLanguage = 'en_EN' 
     else:
-        try: defaultLanguage = language.getActiveLanguage().split('_')[0]
+        try:
+            defaultLanguage = language.getActiveLanguage().split('_')[0]
         except Exception:
             printExc()
             defaultLanguage = 'en'
@@ -160,8 +166,10 @@ def GetPolishSubEncoding(filePath):
 def MapUcharEncoding(encoding):
     ENCODING_MAP = {'X-MAC-CYRILLIC':"MAC-CYRILLIC", "ASCII":"UTF-8"}
     printDBG("MapUcharEncoding in encoding[%s]" % encoding)
-    try: encoding = ENCODING_MAP.get(encoding.strip().upper(), encoding.strip())
-    except Exception: printExc()
+    try:
+        encoding = ENCODING_MAP.get(encoding.strip().upper(), encoding.strip())
+    except Exception:
+        printExc()
     printDBG("MapUcharEncoding out encoding[%s]" % encoding)
     return encoding
 
@@ -351,12 +359,15 @@ def TestTmpCookieDir():
 
 def GetCookieDir(file = '', forceFromConfig=False):
     global gE2iPlayerTempCookieDir
-    if gE2iPlayerTempCookieDir == None or forceFromConfig: cookieDir = config.plugins.iptvplayer.SciezkaCache.value + '/cookies/'
-    else: cookieDir = gE2iPlayerTempCookieDir
+    if gE2iPlayerTempCookieDir == None or forceFromConfig:
+        cookieDir = config.plugins.iptvplayer.SciezkaCache.value + '/cookies/'
+    else:
+        cookieDir = gE2iPlayerTempCookieDir
     try:
         if not os.path.isdir(cookieDir):
             mkdirs(cookieDir)
-    except Exception: printExc()
+    except Exception:
+        printExc()
     return cookieDir + file
 
 ###########################
@@ -385,12 +396,15 @@ def TestTmpJSCacheDir():
 
 def GetJSCacheDir(file = '', forceFromConfig=False):
     global gE2iPlayerTempJSCache
-    if gE2iPlayerTempJSCache == None or forceFromConfig: cookieDir = config.plugins.iptvplayer.SciezkaCache.value + '/JSCache/'
-    else: cookieDir = gE2iPlayerTempJSCache
+    if gE2iPlayerTempJSCache == None or forceFromConfig:
+        cookieDir = config.plugins.iptvplayer.SciezkaCache.value + '/JSCache/'
+    else:
+        cookieDir = gE2iPlayerTempJSCache
     try:
         if not os.path.isdir(cookieDir):
             mkdirs(cookieDir)
-    except Exception: printExc()
+    except Exception:
+        printExc()
     return cookieDir + file
 ##############################
 
@@ -440,7 +454,8 @@ def GetIPTVDMImgDir(file = ''):
 def GetIconDir(file = ''):
     return resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/icons/') + file
 def GetBinDir(file = '', platform=None):
-    if None == platform: platform = config.plugins.iptvplayer.plarform.value
+    if None == platform:
+        platform = config.plugins.iptvplayer.plarform.value
     return resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/bin/') + platform + '/' + file
 def GetPluginDir(file = ''):
     return resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/') + file
@@ -452,8 +467,10 @@ def GetConfigDir(path = ''):
     return resolveFilename(SCOPE_CONFIG, path)
 def IsExecutable(fpath):
     try:
-        if '' != Which(fpath): return True
-    except Exception: printExc()
+        if '' != Which(fpath):
+            return True
+    except Exception:
+        printExc()
     return False
     
 def Which(program):
@@ -472,7 +489,8 @@ def Which(program):
                 exe_file = os.path.join(path, program)
                 if is_exe(exe_file):
                     return exe_file
-    except Exception: printExc()
+    except Exception:
+        printExc()
     return ''
 #############################################################
 # class used to auto-select one link when video has several 
@@ -488,9 +506,12 @@ class CSelOneLink():
     def _cmpLinks(self, item1, item2):
         val1 = self.getQualiyFun(item1)
         val2 = self.getQualiyFun(item2)
-        if val1 < val2:   ret = -1
-        elif val1 > val2: ret = 1
-        else:             ret = 0
+        if val1 < val2:
+            ret = -1
+        elif val1 > val2:
+            ret = 1
+        else:
+            ret = 0
         return ret
         
     def _cmpLinksBest(self, item1, item2):
@@ -730,7 +751,8 @@ def GetHostsOrderList(fileName="iptvplayerhostsorder"):
                 content = f.readlines()
             for item in content:
                 item = item.strip()
-                if len(item): list.append(item)
+                if len(item):
+                    list.append(item)
         else:
             printDBG('GetHostsOrderList file[%s] not exists' % fname)
     except Exception:
@@ -742,7 +764,8 @@ def GetSkinsList():
     skins = []
     SKINS_PATH = resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/skins/')
     fileList = os.listdir( SKINS_PATH )
-    for filename in fileList: skins.append((filename, filename))
+    for filename in fileList:
+        skins.append((filename, filename))
     skins.sort()
     skins.insert(0,("Auto", "Auto"))
     skins.insert(0,("Default", "Default"))
@@ -852,7 +875,8 @@ def rm(fullname):
     try:
         os.remove(fullname)
         return True
-    except Exception: printExc()
+    except Exception:
+        printExc()
     return False
 
 def rmtree(path, ignore_errors=False, onerror=None):
@@ -1062,14 +1086,14 @@ def RemoveAllDirsIconsFromPath(path, old=False):
 def formatBytes(bytes, precision = 2):
     import math
     units = ['B', 'KB', 'MB', 'GB', 'TB'] 
-    bytes = max(bytes, 0); 
+    bytes = max(bytes, 0)
     if bytes:
         pow = math.log(bytes)
     else:
         pow = 0
     pow = math.floor(pow / math.log(1024)) 
     pow = min(pow, len(units) - 1) 
-    bytes /= math.pow(1024, pow);
+    bytes /= math.pow(1024, pow)
     return ("%s%s" % (str(round(bytes, precision)),units[int(pow)])) 
     
 def remove_html_markup(s, replacement=''):
@@ -1108,8 +1132,10 @@ class CSearchHistoryHelper():
             for line in file:
                 value = line.replace('\n', '').strip()
                 if len(value) > 0:
-                    try: historyList.insert(0, value.encode('utf-8', 'ignore'))
-                    except Exception: printExc()
+                    try:
+                        historyList.insert(0, value.encode('utf-8', 'ignore'))
+                    except Exception:
+                        printExc()
             file.close()
         except Exception:
             printExc()
@@ -1239,7 +1265,8 @@ class CMoviePlayerPerHost():
                 activePlayer['player'] = CFakeMoviePlayerOption(ret['player']['value'], ret['player']['text'])
                 self.activePlayer  = activePlayer
                 sts = True
-        except Exception: printExc()
+        except Exception:
+            printExc()
         return sts, ret
         
     def save(self):
@@ -1257,7 +1284,8 @@ class CMoviePlayerPerHost():
                 file.write(data)
                 file.close
                 sts = True
-        except Exception: printExc()
+        except Exception:
+            printExc()
         return sts
     
     def get(self, key, defval):
@@ -1290,13 +1318,17 @@ def printExc(msg=''):
     printDBG("===============================================")
 
 def GetIPTVPlayerVerstion():
-    try: from Plugins.Extensions.IPTVPlayer.version import IPTV_VERSION
-    except Exception: IPTV_VERSION="XX.YY.ZZ"
+    try:
+        from Plugins.Extensions.IPTVPlayer.version import IPTV_VERSION
+    except Exception:
+        IPTV_VERSION="XX.YY.ZZ"
     return IPTV_VERSION
     
 def GetIPTVPlayerComitStamp():
-    try: from Plugins.Extensions.IPTVPlayer.version import COMMIT_STAMP
-    except Exception: COMMIT_STAMP=""
+    try:
+        from Plugins.Extensions.IPTVPlayer.version import COMMIT_STAMP
+    except Exception:
+        COMMIT_STAMP=""
     return COMMIT_STAMP
 
 def GetShortPythonVersion():
@@ -1304,7 +1336,8 @@ def GetShortPythonVersion():
     
 def GetVersionNum(ver):
     try:
-        if None == re.match("[0-9]+\.[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9]", ver): raise Exception("Wrong version!")
+        if None == re.match("[0-9]+\.[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9]", ver):
+            raise Exception("Wrong version!")
         return int(ver.replace('.', ''))
     except Exception:
         printExc('Version[%r]' % ver)
@@ -1352,7 +1385,8 @@ def IsBrokenDriver(filePath):
         
 def GetE2OptionsFromFile(filePath):
     options = []
-    if IsBrokenDriver(filePath): return []
+    if IsBrokenDriver(filePath):
+        return []
     try:
         if fileExists(filePath):
             with open(filePath, 'r') as f:
@@ -1369,7 +1403,8 @@ def GetE2OptionsFromFile(filePath):
     return options
 
 def SetE2OptionByFile(filePath, value):
-    if IsBrokenDriver(filePath): return False
+    if IsBrokenDriver(filePath):
+        return False
     sts = False
     try:
         with open(filePath, 'w') as f:
@@ -1390,7 +1425,8 @@ def GetE2VideoAspectChoices():
 
 def GetE2VideoAspect():
     options = GetE2OptionsFromFile('/proc/stb/video/aspect')
-    if 1 == len(options): return options[0]
+    if 1 == len(options):
+        return options[0]
     return None
     
 def SetE2VideoAspect(value):
@@ -1401,7 +1437,8 @@ def GetE2VideoPolicyChoices(num=''):
     
 def GetE2VideoPolicy(num=''):
     options = GetE2OptionsFromFile('/proc/stb/video/policy'+num)
-    if 1 == len(options): return options[0]
+    if 1 == len(options):
+        return options[0]
     return None
     
 def SetE2VideoPolicy(value, num=''):
@@ -1412,7 +1449,8 @@ def GetE2AudioCodecMixChoices(codec):
     
 def GetE2AudioCodecMixOption(codec):
     options = GetE2OptionsFromFile('/proc/stb/audio/%s' % codec)
-    if 1 == len(options): return options[0]
+    if 1 == len(options):
+        return options[0]
     return None
     
 def SetE2AudioCodecMixOption(codec, value):
@@ -1426,19 +1464,24 @@ def GetE2VideoModeChoices():
 def GetE2VideoMode():
     # return '1080p50'
     options = GetE2OptionsFromFile('/proc/stb/video/videomode')
-    if 1 == len(options): return options[0]
+    if 1 == len(options):
+        return options[0]
     return None
     
 def SetE2VideoMode(value):
     return SetE2OptionByFile('/proc/stb/video/videomode', value)
 
 def ReadUint16(tmp, le=True):
-    if le: return ord(tmp[1]) << 8 | ord(tmp[0])
-    else: return ord(tmp[0]) << 8 | ord(tmp[1])
+    if le:
+        return ord(tmp[1]) << 8 | ord(tmp[0])
+    else:
+        return ord(tmp[0]) << 8 | ord(tmp[1])
 
 def ReadUint32(tmp, le=True):
-    if le: return ord(tmp[3]) << 24 | ord(tmp[2]) << 16 | ord(tmp[1]) << 8 | ord(tmp[0])
-    else: return ord(tmp[0]) << 24 | ord(tmp[1]) << 16 | ord(tmp[2]) << 8 | ord(tmp[3])
+    if le:
+        return ord(tmp[3]) << 24 | ord(tmp[2]) << 16 | ord(tmp[1]) << 8 | ord(tmp[0])
+    else:
+        return ord(tmp[0]) << 24 | ord(tmp[1]) << 16 | ord(tmp[2]) << 8 | ord(tmp[3])
 
 def ReadGnuMIPSABIFP(elfFileName):
     SHT_GNU_ATTRIBUTES=0x6ffffff5

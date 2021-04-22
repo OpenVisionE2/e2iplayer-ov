@@ -14,8 +14,10 @@ from Plugins.Extensions.IPTVPlayer.libs.pCommon import common, CParsingHelper
 ###################################################
 import re
 import urllib
-try: import json
-except Exception: import simplejson
+try:
+    import json
+except Exception:
+    import simplejson
 ###################################################
 
 ###################################################
@@ -62,7 +64,8 @@ class Ninateka(CBaseHostClass):
         if True == self.refresh or '' == self.menuHTML:
             self.menuHTML = ''
             sts, data = self.cm.getPage( self.MAIN_URL )
-            if sts: self.menuHTML = CParsingHelper.getDataBeetwenMarkers(data, '<div class="nav-collapse collapse">', '<!--/.nav-collapse -->', False)[1]
+            if sts:
+                self.menuHTML = CParsingHelper.getDataBeetwenMarkers(data, '<div class="nav-collapse collapse">', '<!--/.nav-collapse -->', False)[1]
         return self.menuHTML
         
     def getMainCategory(self):
@@ -146,14 +149,16 @@ class Ninateka(CBaseHostClass):
             if 'class="playIcon"' in videoItemData:
                 # get icon src
                 match = re.search('src="(http://[^"]+?)"', videoItemData)
-                if match: icon = match.group(1).replace('&amp;', '&')
+                if match:
+                    icon = match.group(1).replace('&amp;', '&')
                 # get duration
                 duration = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(videoItemData, '<span class="duration">', '</span>')[1])
                 # get gatunek
                 gatunek = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(videoItemData, '<a class="gatunek" ', '</a>')[1])
                 # get desc
                 match = re.search('class="text"[^>]*?>([^<]+?)<', videoItemData)
-                if match: desc = match.group(1)
+                if match:
+                    desc = match.group(1)
                 # get title and url
                 match = re.search('<a href="([^"]+?)" class="title"[^>]*?>([^<]+?)</a>', videoItemData)
                 if match:
@@ -187,7 +192,8 @@ class Ninateka(CBaseHostClass):
         try:
             cItem = byteify(json.loads(fav_data))
             links = self.getLinksForVideo(cItem)
-        except Exception: printExc()
+        except Exception:
+            printExc()
         return links
         
     def setInitListFromFavouriteItem(self, fav_data):

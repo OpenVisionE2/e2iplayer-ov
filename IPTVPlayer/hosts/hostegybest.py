@@ -14,8 +14,10 @@ from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Play
 ###################################################
 import urlparse
 import urllib
-try:    import json
-except Exception: import simplejson as json
+try:
+    import json
+except Exception:
+    import simplejson as json
 from Components.config import config, ConfigText, getConfigListEntry
 ###################################################
 
@@ -70,12 +72,15 @@ class EgyBest(CBaseHostClass):
         self.password = ''
         
     def getPage(self, baseUrl, addParams = {}, post_data = None):
-        if addParams == {}: addParams = dict(self.defaultParams)
+        if addParams == {}:
+            addParams = dict(self.defaultParams)
         origBaseUrl = baseUrl
         baseUrl = self.cm.iriToUri(baseUrl)
         def _getFullUrl(url):
-            if self.cm.isValidUrl(url): return url
-            else: return urlparse.urljoin(baseUrl, url)
+            if self.cm.isValidUrl(url):
+                return url
+            else:
+                return urlparse.urljoin(baseUrl, url)
         addParams['cloudflare_params'] = {'domain':self.up.getDomain(baseUrl), 'cookie_file':self.COOKIE_FILE, 'User-Agent':self.USER_AGENT, 'full_url_handle':_getFullUrl}
         return self.cm.getPageCFProtection(baseUrl, addParams, post_data)
         
@@ -85,7 +90,8 @@ class EgyBest(CBaseHostClass):
         self.cacheFiltersKeys = []
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         def addFilter(data, marker, baseKey, allTitle=None):
             key = 'f_' + baseKey
@@ -94,12 +100,14 @@ class EgyBest(CBaseHostClass):
                 value = self.cm.ph.getSearchGroups(item, marker + '''="([^"]+?)"''')[0].split('/')[-1]
                 title = self.cleanHtmlStr(item)
                 if value == '': 
-                    if allTitle == None: allTitle = title
+                    if allTitle == None:
+                        allTitle = title
                     continue
                 self.cacheFilters[key].append({'title':title.title(), key:value})
                 
             if len(self.cacheFilters[key]):
-                if allTitle != None: self.cacheFilters[key].insert(0, {'title':_('All')})
+                if allTitle != None:
+                    self.cacheFilters[key].insert(0, {'title':_('All')})
                 self.cacheFiltersKeys.append(key)
         
         if '' == cItem.get('f_sort', ''):
@@ -122,9 +130,11 @@ class EgyBest(CBaseHostClass):
         cItem = dict(cItem)
         
         f_idx = cItem.get('f_idx', 0)
-        if f_idx == 0: self.fillCacheFilters(cItem)
+        if f_idx == 0:
+            self.fillCacheFilters(cItem)
         
-        if f_idx >= len(self.cacheFiltersKeys): return
+        if f_idx >= len(self.cacheFiltersKeys):
+            return
         
         filter = self.cacheFiltersKeys[f_idx]
         f_idx += 1
@@ -143,21 +153,24 @@ class EgyBest(CBaseHostClass):
         page = cItem.get('page', 1)
         
         url = cItem['url']
-        if not url.endswith('/'): url += '/'
+        if not url.endswith('/'):
+            url += '/'
         
         if '' == cItem.get('f_search_query', ''):
             query = []
             filtersKeys = ['resolution', 'language', 'sort', 'category', 'genre', 'country', 'quality', 'year']
             for key in filtersKeys:
                 key = 'f_' + key
-                if key in cItem: query.append(cItem[key])
+                if key in cItem:
+                    query.append(cItem[key])
             
             url += '-'.join(query) + ('?page=%s&output_format=json&output_mode=movies_list' % page)
         else:
             url += ('?page=%s&q=%s&output_format=json' % (page, urllib.quote(cItem['f_search_query'])))
         
         sts, data = self.getPage(url)
-        if not sts: return
+        if not sts:
+            return
         
         nextPage = False
         try:
@@ -169,12 +182,14 @@ class EgyBest(CBaseHostClass):
                 url   = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0])
                 icon  = self.getFullIconUrl(self.cm.ph.getSearchGroups(item, '''src=['"]([^'^"]+?)['"]''')[0])
                 tmp = self.cm.ph.getAllItemsBeetwenMarkers(item, '<span', '</span>')
-                if tmp == []: continue
+                if tmp == []:
+                    continue
                 title = self.cleanHtmlStr(tmp[1])
                 desc  = ''
                 for d in tmp[1:]:
                     d = self.cleanHtmlStr(d)
-                    if d != '': desc = d + '[/br]'
+                    if d != '':
+                        desc = d + '[/br]'
                 params = dict(cItem)
                 params.update({'good_for_fav':True, 'category':nextCategory, 'title':title, 'url':url, 'icon':icon, 'desc':desc})
                 self.addDir(params)
@@ -190,16 +205,19 @@ class EgyBest(CBaseHostClass):
         printDBG("EgyBest.exploreItem")
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         num = 1
         tmp = self.cm.ph.getAllItemsBeetwenNodes(data, ('<div', '>', 'trailer'), ('</div', '>'))
         for item in tmp:
             url   = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''url=['"]([^'^"]+?)['"]''')[0])
-            if not self.cm.isValidUrl(url): continue
+            if not self.cm.isValidUrl(url):
+                continue
             icon  = self.getFullIconUrl(self.cm.ph.getSearchGroups(item, '''src=['"]([^'^"]+?)['"]''')[0])
             title = '%s - %s' % (cItem['title'], _('Trailer'))
-            if num > 1: title += ' %s' % num
+            if num > 1:
+                title += ' %s' % num
             params = dict(cItem)
             params.update({'good_for_fav':False, 'url':url, 'title':title, 'icon':icon})
             self.addVideo(params)
@@ -215,7 +233,8 @@ class EgyBest(CBaseHostClass):
         url = self.getFullUrl(self.cm.ph.getSearchGroups(data, '''href=['"]([^'^"]+?/episodes)['"]''')[0])
         if self.cm.isValidUrl(url):
             sts, data = self.getPage(url)
-            if not sts: return
+            if not sts:
+                return
         
         # list seasons
         seasonsItems = []
@@ -238,7 +257,8 @@ class EgyBest(CBaseHostClass):
         printDBG("EgyBest.listEpisodes")
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
             
         data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<a', '>', 'tvep'), ('</a', '>'), True)
         for item in data:
@@ -270,12 +290,14 @@ class EgyBest(CBaseHostClass):
         
         cacheKey = cItem['url']
         cacheTab = self.cacheLinks.get(cacheKey, [])
-        if len(cacheTab): return cacheTab
+        if len(cacheTab):
+            return cacheTab
         
         self.cacheLinks = {}
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         cUrl = data.meta['url']
         
         tmp = self.cm.ph.getDataBeetwenMarkers(data, '<video', '</video>', False, False)[1]
@@ -285,14 +307,16 @@ class EgyBest(CBaseHostClass):
             type = self.cm.ph.getSearchGroups(item, '''\stype=['"]([^'^"]+?)['"]''')[0].lower()
             printDBG(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ]]]]]]]]]]]]]]]]]]]]]]]] >>>>>>>>> " + url)
             printDBG(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ]]]]]]]]]]]]]]]]]]]]]]]] >>>>>>>>> " + type)
-            if url == '': continue
+            if url == '':
+                continue
             if 'application/x-mpegurl' == type:
                 name = '[HLS/m3u8]'
                 meta = {'iptv_proto':'m3u8'}
             elif 'video/mp4' == type:
                 name = '[mp4]'
                 meta = {'direct':True}
-            else: continue
+            else:
+                continue
             meta.update({'Referer':cUrl})
             playTab.append({'name':name, 'url':strwithmeta(self.getFullUrl(url, cUrl), meta), 'need_resolve':1})
         
@@ -301,20 +325,25 @@ class EgyBest(CBaseHostClass):
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<tr', '</tr>')
         for item in data:
             item = self.cm.ph.getAllItemsBeetwenMarkers(item,  '<td', '</td>')[::-1]
-            if len(item) < 2: continue
+            if len(item) < 2:
+                continue
             
             name = '|'.join([self.cleanHtmlStr(t) for t in item[1:]])
             item = self.cm.ph.getAllItemsBeetwenMarkers(item[0],  '<a', '</a>')
             for it in item:
                 url = self.cm.ph.getSearchGroups(it, '''href=['"]([^'^"]+?)['"]''')[0]
-                if url == '': url = self.cm.ph.getSearchGroups(it, '''url=['"]([^'^"]+?)['"]''')[0]
+                if url == '':
+                    url = self.cm.ph.getSearchGroups(it, '''url=['"]([^'^"]+?)['"]''')[0]
                 call = self.cm.ph.getSearchGroups(it, '''data\-call=['"]([^'^"]+?)['"]''')[0]
-                if url != '' and '&v=1' in url: retTab.append({'name':'%s: %s' % (self.cleanHtmlStr(it), name), 'url':strwithmeta(self.getFullUrl(url), {'Referer':cItem['url']}), 'need_resolve':1})
-                if call != '': dwnTab.append({'name':'%s: %s' % (self.cleanHtmlStr(it), name), 'url':strwithmeta(call, {'priv_api_call':True, 'Referer':cItem['url']}), 'need_resolve':1})
+                if url != '' and '&v=1' in url:
+                    retTab.append({'name':'%s: %s' % (self.cleanHtmlStr(it), name), 'url':strwithmeta(self.getFullUrl(url), {'Referer':cItem['url']}), 'need_resolve':1})
+                if call != '':
+                    dwnTab.append({'name':'%s: %s' % (self.cleanHtmlStr(it), name), 'url':strwithmeta(call, {'priv_api_call':True, 'Referer':cItem['url']}), 'need_resolve':1})
         
         retTab.extend(playTab)
         retTab.extend(dwnTab)
-        if len(retTab): self.cacheLinks[cacheKey] = retTab
+        if len(retTab):
+            self.cacheLinks[cacheKey] = retTab
         return retTab
         
     def getVideoLinks(self, videoUrl):
@@ -348,7 +377,8 @@ class EgyBest(CBaseHostClass):
         
         if 'api?call=' in url:
             sts, data = self.getPage(url, params)
-            if not sts: return []
+            if not sts:
+                return []
             videoUrl = strwithmeta(data.meta['url'], videoUrl.meta)
             if 1 != self.up.checkHostSupport(videoUrl): 
                 try:
@@ -358,7 +388,8 @@ class EgyBest(CBaseHostClass):
                         url = data.get('url', '')
                         if self.cm.isValidUrl(url) and self.cm.isValidUrl(authUrl): 
                             sts, tmp = self.getPage(authUrl)
-                            if sts: urlTab.append({'name':'direct', 'url':url})
+                            if sts:
+                                urlTab.append({'name':'direct', 'url':url})
                     elif data.get('action', '') == 'message':
                         SetIPTVPlayerLastHostError(self.cleanHtmlStr(data['message']))
                         printDBG(self.cleanHtmlStr(data['message']))
@@ -381,7 +412,8 @@ class EgyBest(CBaseHostClass):
         
         if data == None:
             sts, data = self.getPage(cItem['url'])
-            if not sts: return []
+            if not sts:
+                return []
         
         desc = self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(data, ('<strong', '</div>', 'القصة'), ('</div', '>'), False)[1])
         tmp  = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'full_movie'), ('</table', '>'), False)[1]
@@ -400,24 +432,31 @@ class EgyBest(CBaseHostClass):
         tmp = self.cm.ph.getAllItemsBeetwenMarkers(tmp, '<tr>', '</tr>')
         for item in tmp:
             item = item.split('</td>', 1)
-            if len(item) != 2: continue
+            if len(item) != 2:
+                continue
             keyMarker = self.cleanHtmlStr(item[0]).replace(':', '').strip()
             printDBG("+++ keyMarker[%s]" % keyMarker)
             value = self.cleanHtmlStr(item[1]).replace(' , ', ', ')
             key = keysMap.get(keyMarker, '')
-            if key != '' and value != '': otherInfo[key] = value
+            if key != '' and value != '':
+                otherInfo[key] = value
         
         # actors
         tTab = []
         tmp = self.cm.ph.getAllItemsBeetwenNodes(data, ('<div', '>', 'cast_item'), ('</span', '>'))
         for t in tmp:
             t = self.cleanHtmlStr(t)
-            if t != '': tTab.append(t)
-        if len(tTab): otherInfo['actors'] = ', '.join(tTab)
+            if t != '':
+                tTab.append(t)
+        if len(tTab):
+            otherInfo['actors'] = ', '.join(tTab)
         
-        if title == '': title = cItem['title']
-        if desc == '':  desc = cItem.get('desc', '')
-        if icon == '':  icon = cItem.get('icon', self.DEFAULT_ICON_URL)
+        if title == '':
+            title = cItem['title']
+        if desc == '':
+            desc = cItem.get('desc', '')
+        if icon == '':
+            icon = cItem.get('icon', self.DEFAULT_ICON_URL)
         
         return [{'title':self.cleanHtmlStr( title ), 'text': self.cleanHtmlStr( desc ), 'images':[{'title':'', 'url':self.getFullUrl(icon)}], 'other_info':otherInfo}]
     
@@ -438,15 +477,18 @@ class EgyBest(CBaseHostClass):
                 return False
             
             sts, data = self.getPage(self.getMainUrl())
-            if not sts: return False
+            if not sts:
+                return False
             
             url = self.getFullUrl(self.cm.ph.getSearchGroups(data, '''<a[^>]+?href=['"]([^'^"]+?)['"][^>]*?>[^<]*?تسجيل الدخول[^<]*?</a>''')[0])
             
             sts, data = self.getPage(url)
-            if not sts: return False
+            if not sts:
+                return False
             
             sts, data = self.cm.ph.getDataBeetwenNodes(data, ('<form', '>', 'login_form'), ('</form', '>'))
-            if not sts: return False
+            if not sts:
+                return False
             actionUrl = self.getFullUrl(self.cm.ph.getSearchGroups(data, '''action=['"]([^'^"]+?)['"]''')[0])
             data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<input', '>')
             post_data = {}

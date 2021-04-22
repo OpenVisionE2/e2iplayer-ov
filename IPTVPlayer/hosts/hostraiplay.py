@@ -61,7 +61,8 @@ class Raiplay(CBaseHostClass):
         return url
 
     def getFullUrl(self, url):
-        if url == "" : return
+        if url == "" :
+            return
         
         if url[:9] == "/raiplay/":
             url = url.replace ("/raiplay/",self.MAIN_URL)
@@ -101,12 +102,12 @@ class Raiplay(CBaseHostClass):
             sts, data = self.getPage(program_url)
             response =json_loads(data)
             video_url=response["video"]["contentUrl"]
-            printDBG(video_url);
+            printDBG(video_url)
             video_url=strwithmeta(video_url, {'User-Agent': self.RELINKER_USER_AGENT })
             linksTab.extend(getDirectM3U8Playlist(video_url, checkExt=False, variantCheck=True, checkContent=True, sortWithMaxBitrate=99999999))  
             
         else:
-            printDBG("Raiplay: video form category %s with url %s not handled" % (cItem["category"],cItem["url"]));
+            printDBG("Raiplay: video form category %s with url %s not handled" % (cItem["category"],cItem["url"]))
             linksTab.append({'url': cItem["url"], 'name': 'link1'})
         
         return linksTab
@@ -124,7 +125,8 @@ class Raiplay(CBaseHostClass):
     def listLiveTvChannels(self, cItem):
         printDBG("Raiplay - start live channel list")
         sts, data = self.getPage(self.CHANNELS_URL)
-        if not sts: return
+        if not sts:
+            return
  
         response = json_loads(data)
         tv_stations = response["dirette"]
@@ -142,7 +144,8 @@ class Raiplay(CBaseHostClass):
     def listLiveRadioChannels(self, cItem):
         printDBG("Raiplay - start live radio list")
         sts, data = self.getPage(self.CHANNELS_RADIO_URL)
-        if not sts: return
+        if not sts:
+            return
  
         response = json_loads(data)
         radio_stations = response["dati"]
@@ -182,7 +185,8 @@ class Raiplay(CBaseHostClass):
         printDBG("Raiplay - start replay/EPG section - channels list for %s " % day)
 
         sts, data = self.getPage(self.CHANNELS_URL)
-        if not sts: return
+        if not sts:
+            return
  
         response = json_loads(data)
         tv_stations = response["dirette"]
@@ -206,7 +210,8 @@ class Raiplay(CBaseHostClass):
         url = url.replace("[dd-mm-yyyy]", epgDate)
         
         sts, data = self.getPage(url)
-        if not sts: return
+        if not sts:
+            return
  
         response = json_loads(data)
         programmes = response [channelName][0]["palinsesto"][0]["programmi"]
@@ -258,7 +263,8 @@ class Raiplay(CBaseHostClass):
     def listOnDemandMain(self, cItem):
         printDBG("Raiplay - start on demand main list")
         sts, data = self.getPage(self.MENU_URL)
-        if not sts: return
+        if not sts:
+            return
  
         response = json_loads(data)
         items=response["menu"]
@@ -275,7 +281,8 @@ class Raiplay(CBaseHostClass):
         printDBG("Raiplay - processing item %s of sub-type %s with pathId %s" % (cItem["title"], cItem["sub-type"], pathId ))
         
         sts, data = self.getPage(pathId)
-        if not sts: return
+        if not sts:
+            return
  
         response = json_loads(data)
         blocks=response["blocchi"]
@@ -310,7 +317,8 @@ class Raiplay(CBaseHostClass):
         pathId=self.getFullUrl(pathId)
         
         sts, data = self.getPage(pathId)
-        if not sts: return
+        if not sts:
+            return
  
         response = json_loads(data)
         items=response[cItem["name"]]
@@ -324,7 +332,8 @@ class Raiplay(CBaseHostClass):
         pathId=self.getFullUrl(pathId)
 
         sts, data = self.getPage(pathId)
-        if not sts: return
+        if not sts:
+            return
         
         response = json_loads(data)
         blocks=response["Blocks"]
@@ -340,7 +349,8 @@ class Raiplay(CBaseHostClass):
         pathId=self.getFullUrl(pathId)
 
         sts, data = self.getPage(pathId)
-        if not sts: return
+        if not sts:
+            return
 
         response = json_loads(data)
         items = response["items"]
@@ -376,7 +386,8 @@ class Raiplay(CBaseHostClass):
             url =self.TG_URL
             
         sts, data = self.getPage(url)
-        if not sts: return
+        if not sts:
+            return
         
         # search for dirs
         items = ph.findall(data, '<item behaviour="region">', '</item>', flags=0)
@@ -427,7 +438,8 @@ class Raiplay(CBaseHostClass):
             return
                        
         items=self.getLastContentByTag(tag)
-        if items == None : return
+        if items == None :
+            return
         
         for item in items:
             title=item["name"]
@@ -449,7 +461,8 @@ class Raiplay(CBaseHostClass):
         
         url = "http://www.rai.it/StatisticheProxy/proxyPost.jsp?action=getLastContentByTag&numContents=%s&tags=%s&domain=%s&xsl=%s" % (str(numContents), tags, domain, xsl)
         sts, data = self.getPage (url) 
-        if not sts: return 
+        if not sts:
+            return 
         
         if data == "" : 
             return

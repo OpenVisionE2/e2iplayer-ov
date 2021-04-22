@@ -13,8 +13,10 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
 import re
 import urllib
-try:    import json
-except Exception: import simplejson as json
+try:
+    import json
+except Exception:
+    import simplejson as json
 from Components.config import config, ConfigText, getConfigListEntry
 ###################################################
 
@@ -75,7 +77,8 @@ class OrthoBullets(CBaseHostClass):
         printDBG("OrthoBullets.listMainMenu")
 
         sts, data = self.getPage(self.getFullUrl('/video/list.aspx'))
-        if not sts: return
+        if not sts:
+            return
         self.setMainUrl(self.cm.meta['url'])
         
         reObj = re.compile('''<ul[^>]+?subMenu[^>]*?>''')
@@ -83,7 +86,8 @@ class OrthoBullets(CBaseHostClass):
         printDBG(data)
         for sItem in data:
             sItem = reObj.split(sItem, 1)
-            if len(sItem) < 2: continue
+            if len(sItem) < 2:
+                continue
             sTitle = self.cleanHtmlStr(sItem[0])
             categories = []
             sItem = self.cm.ph.getAllItemsBeetwenMarkers(sItem[1], '<li', '</li>')
@@ -107,7 +111,8 @@ class OrthoBullets(CBaseHostClass):
         printDBG("OrthoBullets.listItems [%s]" % cItem)
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         self.setMainUrl(self.cm.meta['url'])
         
         data = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'tabNavigation'), ('</div', '>'), False)[1]
@@ -124,7 +129,8 @@ class OrthoBullets(CBaseHostClass):
         page = cItem.get('page', 1)
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         self.setMainUrl(self.cm.meta['url'])
         
         nextPage = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'dashboardPaging'), ('</div', '>'))[1]
@@ -133,25 +139,30 @@ class OrthoBullets(CBaseHostClass):
         data = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'videos'), ('<script', '>'), False)[1].split('data-video-id')
         for item in data:
             url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''\shref=['"]([^'^"]+?)['"]''')[0])
-            if url == '': continue
+            if url == '':
+                continue
             icon = self.getFullIconUrl(self.cm.ph.getSearchGroups(item, '''\ssrc=['"]([^'^"]+?)['"]''')[0])
             title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<h3', '</h3>')[1])
             
             desc = []
             tmp = self.cm.ph.getDataBeetwenNodes(item, ('<div', '>', 'dashboardItem-right'), ('</div', '>'), False)[1]
             t = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(tmp, '<time', '</time>')[1])
-            if t != '': desc.append(t)
+            if t != '':
+                desc.append(t)
             t = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(tmp, '<span', '</span>')[1])
-            if t != '': desc.append(t)
+            if t != '':
+                desc.append(t)
             stars = tmp.count('blank')
             desc.append('%s/%s' % (5-stars, 5))
             desc = [' | '.join(desc)]
             
             tmp = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<ul', '</ul>')[1])
-            if tmp != '': desc.append(tmp)
+            if tmp != '':
+                desc.append(tmp)
             
             tmp = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<p', '</p>')[1])
-            if tmp != '': desc.append(tmp)
+            if tmp != '':
+                desc.append(tmp)
             
             params = dict(cItem)
             params.update({'good_for_fav':True, 'title':title, 'url':url, 'icon':icon, 'desc':'[/br]'.join(desc)})
@@ -176,7 +187,8 @@ class OrthoBullets(CBaseHostClass):
         self.tryTologin()
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return []
+        if not sts:
+            return []
         self.setMainUrl(self.cm.meta['url'])
         
         url = self.getFullUrl(self.cm.ph.getSearchGroups(data, '''<iframe[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0])
@@ -199,13 +211,16 @@ class OrthoBullets(CBaseHostClass):
                 return False
             
             sts, data = self.getPage(self.getFullUrl('/login'))
-            if not sts: return False
+            if not sts:
+                return False
             cUrl = self.cm.meta['url']
             
             sts, data = self.cm.ph.getDataBeetwenNodes(data, ('<form', '>'), ('</form', '>'))
-            if not sts: return False
+            if not sts:
+                return False
             actionUrl = self.cm.getFullUrl(self.cm.ph.getSearchGroups(data, '''action=['"]([^'^"]+?)['"]''')[0], self.cm.getBaseUrl(cUrl))
-            if actionUrl == '': actionUrl = cUrl
+            if actionUrl == '':
+                actionUrl = cUrl
             
             post_data = {}
             inputData = self.cm.ph.getAllItemsBeetwenMarkers(data, '<input', '>')
@@ -224,9 +239,11 @@ class OrthoBullets(CBaseHostClass):
             if sts:
                 cUrl = self.cm.meta['url']
                 sts, data = self.cm.ph.getDataBeetwenNodes(data, ('<form', '>'), ('</form', '>'))
-                if not sts: return False
+                if not sts:
+                    return False
                 actionUrl = self.cm.getFullUrl(self.cm.ph.getSearchGroups(data, '''action=['"]([^'^"]+?)['"]''')[0], self.cm.getBaseUrl(cUrl))
-                if actionUrl == '': actionUrl = cUrl
+                if actionUrl == '':
+                    actionUrl = cUrl
                 
                 post_data = {}
                 inputData = self.cm.ph.getAllItemsBeetwenMarkers(data, '<input', '>')

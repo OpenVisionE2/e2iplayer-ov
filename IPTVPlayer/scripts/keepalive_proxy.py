@@ -50,8 +50,10 @@ class Proxy(SimpleHTTPServer.SimpleHTTPRequestHandler):
             global HTTP_HEADER
             url = self.path
             
-            if url.startswith('/https/'): url = 'https://' + url[7:]
-            elif url.startswith('/http/'): url = 'http://' + url[6:]
+            if url.startswith('/https/'):
+                url = 'https://' + url[7:]
+            elif url.startswith('/http/'):
+                url = 'http://' + url[6:]
             
             sts, resp = getPage(url, HTTP_HEADER)
             if sts:

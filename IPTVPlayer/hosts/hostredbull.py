@@ -77,7 +77,8 @@ class Redbull(CBaseHostClass):
                 if iframe in uniques:
                     continue
                 uniques.add(iframe)
-                if not title: title = sTitle
+                if not title:
+                    title = sTitle
                 subItems.append(MergeDicts(cItem, {'category':nextCategory, 'title':title, 'url':iframe}))
 
         iframes = ph.IFRAME_SRC_URI_RE.findall(section)
@@ -106,7 +107,8 @@ class Redbull(CBaseHostClass):
             self.addDir(params)
 
     def getPage(self, baseUrl, addParams={}, post_data=None):
-        if addParams == {}: addParams = dict(self.defaultParams)
+        if addParams == {}:
+            addParams = dict(self.defaultParams)
         return self.cm.getPage(baseUrl, addParams, post_data)
 
     def getFullUrl(self, url, currUrl=None):
@@ -120,14 +122,16 @@ class Redbull(CBaseHostClass):
         printDBG("Redbull.exploreItem")
 
         sts, data = self.getPage(cItem['url'])
-        if not sts: return []
+        if not sts:
+            return []
         printDBG("hostredbull.exploreItem.data2 |%s|" % data)
 
         if '<mediaURL>' in data: 
             icon = self.getFullIconUrl(ph.search(data, '''src720=['"]([^'^"]+?)['"]''')[0])
             url = self.getFullUrl(ph.search(data, '''onPlay="loadPage\(['"]([^'^"]+?)['"]''')[0])
             title = self.cleanHtmlStr(ph.search(data, '''<label2>([^>]+?)</label2>''')[0])
-            if not title: title = self.cleanHtmlStr(ph.search(data, '''<title>([^>]+?)</title>''')[0])
+            if not title:
+                title = self.cleanHtmlStr(ph.search(data, '''<title>([^>]+?)</title>''')[0])
             params = {'title':title, 'icon':icon, 'desc':'', 'url':cItem['url']}
             self.addVideo(params)
 
@@ -136,8 +140,10 @@ class Redbull(CBaseHostClass):
             icon = self.getFullIconUrl(ph.search(item, '''src720=['"]([^'^"]+?)['"]''')[0])
             url = self.getFullUrl(ph.search(item, '''onPlay="loadPage\(['"]([^'^"]+?)['"]''')[0])
             title = self.cleanHtmlStr(ph.search(item, '''<label2>([^>]+?)</label2>''')[0])
-            if not title: title = self.cleanHtmlStr(ph.search(item, '''<title>([^>]+?)</title>''')[0])
-            if not title: title = self.cleanHtmlStr(ph.search(item, '''accessibilityLabel=['"]([^'^"]+?)['"]''')[0])
+            if not title:
+                title = self.cleanHtmlStr(ph.search(item, '''<title>([^>]+?)</title>''')[0])
+            if not title:
+                title = self.cleanHtmlStr(ph.search(item, '''accessibilityLabel=['"]([^'^"]+?)['"]''')[0])
             time = self.cleanHtmlStr(ph.search(item, '''Duration: ([^'^"]+?)<''')[0])
             if 'page_stream' in url:
                 params = {'title':title, 'icon':icon, 'desc':'', 'url':url}
@@ -160,7 +166,8 @@ class Redbull(CBaseHostClass):
             icon = self.getFullIconUrl(ph.search(item, '''src720=['"]([^'^"]+?)['"]''')[0])
             url = self.getFullUrl(ph.search(item, '''onPlay="loadPage\(['"]([^'^"]+?)['"]''')[0])
             title = self.cleanHtmlStr(ph.search(item, '''<label2>([^>]+?)</label2>''')[0])
-            if not title: title = self.cleanHtmlStr(ph.search(item, '''<title>([^>]+?)</title>''')[0])
+            if not title:
+                title = self.cleanHtmlStr(ph.search(item, '''<title>([^>]+?)</title>''')[0])
             time = self.cleanHtmlStr(ph.search(item, '''Duration: ([^'^"]+?)<''')[0])
             params = {'title':title, 'icon':icon, 'desc':'['+time+']', 'url':url}
             self.addVideo(params)
@@ -170,7 +177,8 @@ class Redbull(CBaseHostClass):
             icon = self.getFullIconUrl(ph.search(item, '''src720=['"]([^'^"]+?)['"]''')[0])
             url = self.getFullUrl(ph.search(item, '''onPlay="loadPage\(['"]([^'^"]+?)['"]''')[0])
             title = self.cleanHtmlStr(ph.search(item, '''<label2>([^>]+?)</label2>''')[0])
-            if not title: title = self.cleanHtmlStr(ph.search(item, '''<title>([^>]+?)</title>''')[0])
+            if not title:
+                title = self.cleanHtmlStr(ph.search(item, '''<title>([^>]+?)</title>''')[0])
             time = self.cleanHtmlStr(ph.search(item, '''Duration: ([^'^"]+?)<''')[0])
             params = {'title':title, 'icon':icon, 'desc':'['+time+']', 'url':url}
             self.addVideo(params)
@@ -186,7 +194,8 @@ class Redbull(CBaseHostClass):
         page = cItem.get('page', 1)
 
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         self.setMainUrl(self.cm.meta['url'])
         printDBG("hostredbull.listSearchItems |%s|" % data)
 
@@ -195,9 +204,12 @@ class Redbull(CBaseHostClass):
             icon = self.getFullIconUrl(ph.search(item, '''src720=['"]([^'^"]+?)['"]''')[0])
             url = self.getFullUrl(ph.search(item, '''onPlay="loadPage\(['"]([^'^"]+?)['"]''')[0])
             title = self.cleanHtmlStr(ph.search(item, '''<label2>([^>]+?)</label2>''')[0])
-            if not title: title = self.cleanHtmlStr(ph.search(item, '''<title>([^>]+?)</title>''')[0])
-            if not title: title = self.cleanHtmlStr(ph.search(item, '''<label>([^>]+?)</label>''')[0])
-            if not title: title = self.cleanHtmlStr(ph.search(item, '''Label=['"]([^'^"]+?)['"]''')[0])
+            if not title:
+                title = self.cleanHtmlStr(ph.search(item, '''<title>([^>]+?)</title>''')[0])
+            if not title:
+                title = self.cleanHtmlStr(ph.search(item, '''<label>([^>]+?)</label>''')[0])
+            if not title:
+                title = self.cleanHtmlStr(ph.search(item, '''Label=['"]([^'^"]+?)['"]''')[0])
             time = self.cleanHtmlStr(ph.search(item, '''Duration: ([^'^"]+?)<''')[0])
             params = {'title':title, 'icon':icon, 'desc':'['+time+']', 'url':url}
             self.addVideo(params)
@@ -207,7 +219,8 @@ class Redbull(CBaseHostClass):
         urlsTab = []
 
         sts, data = self.getPage(cItem['url'])
-        if not sts: return []
+        if not sts:
+            return []
         printDBG("hostredbull.getLinksForVideo.data |%s|" % data)
         videoUrl = ph.search(data, '''<mediaURL>([^"]+?)<''')[0]
         if videoUrl:
@@ -220,7 +233,8 @@ class Redbull(CBaseHostClass):
         else: 
             url = self.getFullUrl(ph.search(data, '''onPlay="loadPage\(['"]([^'^"]+?)['"]''')[0])
             sts, data = self.getPage(url)
-            if not sts: return []
+            if not sts:
+                return []
             printDBG("hostredbull.getLinksForVideo.data |%s|" % data)
             videoUrl = ph.search(data, '''<mediaURL>([^"]+?)<''')[0]
             tmp = getDirectM3U8Playlist(videoUrl, checkExt=True, checkContent=True)

@@ -55,17 +55,21 @@ class Kkiste(CBaseHostClass):
         
         url  = cItem['url']
 
-        if '/publ/' in url: cats = self.MOVIES_GENRE_CAT
-        else: cats = self.SERIES_GENRE_CAT
+        if '/publ/' in url:
+            cats = self.MOVIES_GENRE_CAT
+        else:
+            cats = self.SERIES_GENRE_CAT
 
         if cats == []:
             sts, data = self.getPage(url)
-            if not sts: return
+            if not sts:
+                return
             data = ph.findall(data, '<a class="CatInf"', '</a>')
             for item in data:
                 url = self.getFullUrl(ph.search(item, ph.A_HREF_URI_RE)[1])
                 title = ph.search(item, '''class="CatNameInf">([^<]+)<''')[0]
-                if title.startswith('S-'): title = title.replace('S-','')
+                if title.startswith('S-'):
+                    title = title.replace('S-','')
                 cats.append({'category':'list_items', 'title':title, 'url':url})
 
         self.listsTab(cats, nextCat)
@@ -78,7 +82,8 @@ class Kkiste(CBaseHostClass):
         
         sts, data = self.getPage(url, {}, post_data)
 
-        if not sts: return
+        if not sts:
+            return
 
         nextPage, pagedata = ph.find(data, '<span class="pagesBlockuz1">', '<span class="numShown73">')
         
@@ -94,10 +99,12 @@ class Kkiste(CBaseHostClass):
 
         gdata = ph.findall(data, '<div class="MesWrapBlogDet"', '</a>')
         for item in gdata:
-            if '<script>' in item: continue
+            if '<script>' in item:
+                continue
             genre = self.cleanHtmlStr(ph.search(item, '''href=['"][^'^"]+['"]>([^<]+)</''')[0])
             genre = genre.replace('Genre: ','')
-            if genre.startswith('S-'): genre = genre.replace('S-','')
+            if genre.startswith('S-'):
+                genre = genre.replace('S-','')
             genres.append(genre)
 
         index = 0
@@ -137,7 +144,8 @@ class Kkiste(CBaseHostClass):
         printDBG("hostszenestreamz.exploreItem")
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
 
         if '<div class="noEntry"' in data:
             return
@@ -149,7 +157,8 @@ class Kkiste(CBaseHostClass):
         for item in trailerdata:
             if 'youtube' in item:
                 trailerurl = self.getFullUrl(ph.search(item, '''src=['"]([^'^"]+?)['"]''')[0])
-                if trailerurl.endswith('/embed/'): trailerurl = ''
+                if trailerurl.endswith('/embed/'):
+                    trailerurl = ''
                 break
 
         plot = ''
@@ -211,7 +220,8 @@ class Kkiste(CBaseHostClass):
                 item = item.replace('\r','')
                 season = ph.search(item, '''STAFFEL ([^<]+)<''')[0]
                 if len(season):
-                    if season.startswith('0'): season = season.replace('0','')
+                    if season.startswith('0'):
+                        season = season.replace('0','')
                     episodesList = []
                     links = ph.findall(item, '<a href="', '</a>')
                     eNum = 1
@@ -277,7 +287,8 @@ class Kkiste(CBaseHostClass):
                         break
                         
         sts, data = self.getPage(videoUrl)
-        if not sts: return []
+        if not sts:
+            return []
         
         if self.cm.isValidUrl(videoUrl):
             urlTab = self.up.getVideoLinkExt(videoUrl)

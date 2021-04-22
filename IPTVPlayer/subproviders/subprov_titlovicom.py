@@ -23,13 +23,18 @@ import urllib
 import unicodedata
 import base64
 from os import listdir as os_listdir, path as os_path
-try:    import json
-except Exception: import simplejson as json
 try:
-    try: from cStringIO import StringIO
-    except Exception: from StringIO import StringIO 
+    import json
+except Exception:
+    import simplejson as json
+try:
+    try:
+        from cStringIO import StringIO
+    except Exception:
+        from StringIO import StringIO 
     import gzip
-except Exception: pass
+except Exception:
+    pass
 from Components.config import config, ConfigSelection, ConfigYesNo, ConfigText, getConfigListEntry
 ###################################################
 
@@ -79,7 +84,8 @@ class TitlovicomProvider(CBaseSubProviderClass):
     def getMoviesTitles(self, cItem, nextCategory):
         printDBG("TitlovicomProvider.getMoviesTitles")
         sts, tab = self.imdbGetMoviesByTitle(self.params['confirmed_title'])
-        if not sts: return
+        if not sts:
+            return
         printDBG(tab)
         for item in tab:
             params = dict(cItem)
@@ -95,7 +101,8 @@ class TitlovicomProvider(CBaseSubProviderClass):
         if type == 'series':
             promSeason = self.dInfo.get('season')
             sts, tab = self.imdbGetSeasons(imdbid, promSeason)
-            if not sts: return
+            if not sts:
+                return
             for item in tab:
                 params = dict(cItem)
                 params.update({'category':'get_episodes', 'item_title':cItem['title'], 'season':item, 'title':_('Season %s') % item})
@@ -111,7 +118,8 @@ class TitlovicomProvider(CBaseSubProviderClass):
         
         promEpisode = self.dInfo.get('episode')
         sts, tab = self.imdbGetEpisodesForSeason(imdbid, season, promEpisode)
-        if not sts: return
+        if not sts:
+            return
         for item in tab:
             params = dict(cItem)
             params.update(item) # item = "episode_title", "episode", "eimdbid"
@@ -124,7 +132,8 @@ class TitlovicomProvider(CBaseSubProviderClass):
         
         url = self.getFullUrl(self.getBaseGet())
         sts, data = self.cm.getPage(url)
-        if not sts: return
+        if not sts:
+            return
         
         data = self.cm.ph.getDataBeetwenMarkers(data, 'name="jezikSelectedValues"', '</select>', False)[1]
         data = re.compile('<option[^>]+?value="([^"]+?)"[^>]*>([^<]+?)</option>').findall(data)
@@ -150,7 +159,8 @@ class TitlovicomProvider(CBaseSubProviderClass):
         if page == 1:
             url = self.getFullUrl(self.getBaseGet())
             sts, data = self.cm.getPage(url, self.defaultParams)
-            if not sts: return
+            if not sts:
+                return
             searchName = ''
             post_data = {}
             
@@ -188,7 +198,8 @@ class TitlovicomProvider(CBaseSubProviderClass):
             url = cItem.get('next_page_url', '')
         
         sts, data = self.cm.getPage(url, self.defaultParams, post_data)
-        if not sts: return
+        if not sts:
+            return
         
         tmp = self.cm.ph.getDataBeetwenMarkers(data, '<ul class="titlovi">', '</section>', False)[1].split('<div class="paging">')
         if 2 == len(tmp):
@@ -203,20 +214,24 @@ class TitlovicomProvider(CBaseSubProviderClass):
         for item in data:
             descTab = []
             url = self.cm.ph.getSearchGroups(item, 'href="([^"]+?)"')[0]
-            if url == '': continue
+            if url == '':
+                continue
             title  = item.split('<h5>')[0] #self.cm.ph.getDataBeetwenMarkers(item, '<h4', '</h4>')[1]
             lang   = self.cm.ph.getSearchGroups(item, 'flags/([a-z]{2})')[0] 
             
             # lang name
             desc = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<span class="lang', '</span>')[1])
-            if desc != '': descTab.append(desc)
+            if desc != '':
+                descTab.append(desc)
             
             # release
             desc = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<span class="release">', '</span>')[1])
-            if desc != '': descTab.append(desc)
+            if desc != '':
+                descTab.append(desc)
             
             desc = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '</ul>', '</li>')[1])
-            if desc != '': descTab.append(desc)
+            if desc != '':
+                descTab.append(desc)
             
             params = dict(cItem)
             params.update({'category':nextCategory, 'url':self.getFullUrl(url), 'title':self.cleanHtmlStr(title), 'lang':lang, 'desc':self.cleanHtmlStr(item)}) #'[/br]'.join(descTab)
@@ -232,20 +247,23 @@ class TitlovicomProvider(CBaseSubProviderClass):
         printDBG("TitlovicomProvider.getSubtitlesList")
         
         sts, data = self.cm.getPage(cItem['url'], self.defaultParams)
-        if not sts: return
+        if not sts:
+            return
         
         imdbid = self.cm.ph.getSearchGroups(data, '/title/(tt[0-9]+?)[^0-9]')[0]
         subId  = self.cm.ph.getSearchGroups(data, 'mediaid=([0-9]+?)[^0-9]')[0]
         url    = self.getFullUrl( self.cm.ph.getSearchGroups(data, 'href="([^"]*?/download[^"]+?mediaid=[^"]+?)"')[0] )
         
-        try: fps = float(self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(data, 'class="fps">', 'FPS', False)[1].upper()))
+        try:
+            fps = float(self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(data, 'class="fps">', 'FPS', False)[1].upper()))
         except Exception:
             fps = 0
             printExc()
 
         urlParams = dict(self.defaultParams)
         tmpDIR = self.downloadAndUnpack(url, urlParams)
-        if None == tmpDIR: return
+        if None == tmpDIR:
+            return
         
         cItem = dict(cItem)
         cItem.update({'category':'', 'path':tmpDIR, 'fps':fps, 'imdbid':imdbid, 'sub_id':subId})
@@ -254,7 +272,8 @@ class TitlovicomProvider(CBaseSubProviderClass):
     def _getFileName(self, title, lang, subId, imdbid, fps, ext):
         title = RemoveDisallowedFilenameChars(title).replace('_', '.')
         match = re.search(r'[^.]', title)
-        if match: title = title[match.start():]
+        if match:
+            title = title[match.start():]
 
         fileName = "{0}_{1}_0_{2}_{3}".format(title, lang, subId, imdbid)
         if fps > 0:

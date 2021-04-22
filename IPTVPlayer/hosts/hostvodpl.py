@@ -13,8 +13,10 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, by
 import time
 import urllib
 import random
-try:    import json
-except Exception: import simplejson as json
+try:
+    import json
+except Exception:
+    import simplejson as json
 from Components.config import config, ConfigSelection, ConfigYesNo, getConfigListEntry
 ###################################################
 
@@ -81,7 +83,8 @@ class VODPL(CBaseHostClass):
         self.cacheFiltersKeys = []
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         def addFilter(data, marker, baseKey, allTitle='', titleBase=''):
             key = 'f_' + baseKey
@@ -102,17 +105,20 @@ class VODPL(CBaseHostClass):
         # genres
         tmp = self.cm.ph.getDataBeetwenMarkers(data, '<select name="genres"', '</select>')[1]
         tmp = self.cm.ph.getAllItemsBeetwenMarkers(tmp, '<option ', '</option>')
-        if len(tmp): addFilter(tmp, 'value', 'genres')
+        if len(tmp):
+            addFilter(tmp, 'value', 'genres')
         
         # country
         tmp = self.cm.ph.getDataBeetwenMarkers(data, '<select name="country"', '</select>')[1]
         tmp = self.cm.ph.getAllItemsBeetwenMarkers(tmp, '<option ', '</option>')
-        if len(tmp): addFilter(tmp, 'value', 'country')
+        if len(tmp):
+            addFilter(tmp, 'value', 'country')
         
         # sort
         tmp = self.cm.ph.getDataBeetwenMarkers(data, '<select name="sort"', '</select>')[1]
         tmp = self.cm.ph.getAllItemsBeetwenMarkers(tmp, '<option ', '</option>')
-        if len(tmp): addFilter(tmp, 'value', 'sort')
+        if len(tmp):
+            addFilter(tmp, 'value', 'sort')
         
         printDBG(self.cacheFilters)
         
@@ -121,9 +127,11 @@ class VODPL(CBaseHostClass):
         cItem = dict(cItem)
         
         f_idx = cItem.get('f_idx', 0)
-        if f_idx == 0: self.fillCacheFilters(cItem)
+        if f_idx == 0:
+            self.fillCacheFilters(cItem)
         
-        if 0 == len(self.cacheFiltersKeys): return
+        if 0 == len(self.cacheFiltersKeys):
+            return
         
         filter = self.cacheFiltersKeys[f_idx]
         f_idx += 1
@@ -137,7 +145,8 @@ class VODPL(CBaseHostClass):
         
         if 'url' in cItem:
             sts, data = self.getPage(cItem['url'])
-            if not sts: return
+            if not sts:
+                return
             mainDesc = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(data, '<p class="hyphenate"', '</p>')[1])
         else:
             mainDesc = ''
@@ -159,12 +168,18 @@ class VODPL(CBaseHostClass):
             filters['channel'] = cItem['f_channel']
         
         reqParams = {elementId:{'elementId':elementId, 'site':page}}
-        if 'f_genres' in cItem: reqParams[elementId]['genres'] = urllib.quote(cItem.get('f_genres', ''))
-        if 'f_query' in cItem: reqParams[elementId]['query'] = urllib.quote(cItem.get('f_query', ''))
-        if 'f_sort' in cItem: reqParams[elementId]['sort'] = {cItem['f_sort']:'desc'}
-        if 'f_series' in cItem: reqParams[elementId]['series'] = cItem['f_series']
-        if 'f_season' in cItem: reqParams[elementId]['season'] = cItem['f_season']
-        if 'f_limit' in cItem: reqParams[elementId]['limit'] = cItem['f_limit']
+        if 'f_genres' in cItem:
+            reqParams[elementId]['genres'] = urllib.quote(cItem.get('f_genres', ''))
+        if 'f_query' in cItem:
+            reqParams[elementId]['query'] = urllib.quote(cItem.get('f_query', ''))
+        if 'f_sort' in cItem:
+            reqParams[elementId]['sort'] = {cItem['f_sort']:'desc'}
+        if 'f_series' in cItem:
+            reqParams[elementId]['series'] = cItem['f_series']
+        if 'f_season' in cItem:
+            reqParams[elementId]['season'] = cItem['f_season']
+        if 'f_limit' in cItem:
+            reqParams[elementId]['limit'] = cItem['f_limit']
         
         reqParams[elementId]['filters'] = filters
         
@@ -172,12 +187,14 @@ class VODPL(CBaseHostClass):
         url = self.getFullUrl(baseUrl + urllib.quote(json.dumps(reqParams).decode('utf-8')))
         
         sts, data = self.getPage(url)
-        if not sts: return
+        if not sts:
+            return
         
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<li', '</li>')
         for item in data:
             url = self.getFullUrl( self.cm.ph.getSearchGroups(item, '''href=['"]([^"^']+?)['"]''')[0] )
-            if not self.cm.isValidUrl(url): continue
+            if not self.cm.isValidUrl(url):
+                continue
             
             icon = self.getFullIconUrl( self.cm.ph.getSearchGroups(item, '''data-original=['"]([^"^']+?)['"]''')[0] )
             title = self.cleanHtmlStr( self.cm.ph.getSearchGroups(item, '''alt=['"]([^"^']+?)['"]''')[0] )
@@ -188,7 +205,8 @@ class VODPL(CBaseHostClass):
             tmp = self.cm.ph.getAllItemsBeetwenMarkers(item, '<span class="v_', '</span>')
             for t in tmp:
                 tt = self.cleanHtmlStr(t)
-                if tt == '': continue
+                if tt == '':
+                    continue
                 if 'v_itemTitle' in t: 
                     title = tt
                     continue
@@ -196,7 +214,8 @@ class VODPL(CBaseHostClass):
                     episodeTitle = tt
                 descTab.append(tt)
             ######
-            if episodeTitle != '': title += ', ' + episodeTitle
+            if episodeTitle != '':
+                title += ', ' + episodeTitle
             
             params = dict(cItem)
             params = {'good_for_fav': True, 'title':title, 'url':url, 'desc':' | '.join(descTab) + '[/br]' + mainDesc, 'icon':icon, 'episode_title':episodeTitle}
@@ -207,7 +226,8 @@ class VODPL(CBaseHostClass):
             reqParams[elementId]['site'] = page + 1
             url = self.getFullUrl(baseUrl + urllib.quote(json.dumps(reqParams).decode('utf-8')))
             sts, data = self.getPage(url)
-            if not sts: return
+            if not sts:
+                return
             if 'v_itemTitle' in data:
                 params = dict(cItem)
                 params.update({'title':_("Next page"), 'page':page+1})
@@ -217,7 +237,8 @@ class VODPL(CBaseHostClass):
         printDBG("VODPL.exploreItem")
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         desc  = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(data, '<p class="hyphenate"', '</p>')[1])
         tmpDesc = cItem.get('desc', '') + '[/br]' + desc
@@ -229,7 +250,8 @@ class VODPL(CBaseHostClass):
             if len(data) and seasonTitle != '':
                 for item in data:
                     sNum = self.cm.ph.getSearchGroups(item, '''data\-id=['"]([0-9]+?)['"]''')[0]
-                    if sNum == '': continue
+                    if sNum == '':
+                        continue
                     title = self.cleanHtmlStr(item)
                     params = dict(cItem)
                     params.update({'good_for_fav':False, 'category':nextCategory, 'title':'%s %s' % (seasonTitle, title), 'f_series':seriesId, 'f_season':sNum, 'f_element':'v_seasonEpisodes', 'desc':tmpDesc})
@@ -244,13 +266,15 @@ class VODPL(CBaseHostClass):
             tmpDesc = []
             for t in tmp:
                 t = self.cleanHtmlStr(t)
-                if t != '': tmpDesc.append(t)
+                if t != '':
+                    tmpDesc.append(t)
             tmpDesc = ' | '.join(tmpDesc)
             desc = tmpDesc + '[/br]' + desc
             
             episodeTitle = cItem.get('episode_title', '')
             title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(data, '<div class="v_videoTitle">', '</div>')[1].split('</span>')[0])
-            if episodeTitle != '': title +=  ', ' + episodeTitle
+            if episodeTitle != '':
+                title +=  ', ' + episodeTitle
             
             params = dict(cItem)
             params.update({'title':title, 'desc':desc})
@@ -260,7 +284,8 @@ class VODPL(CBaseHostClass):
         printDBG("VODPL.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         cItem = dict(cItem)
         
-        if searchType == 'wszystkie': searchType = "0"
+        if searchType == 'wszystkie':
+            searchType = "0"
         
         cItem.update({'f_element':'SearchResults', 'f_limit':48, 'f_sort':'score', 'f_channel':searchType, 'f_query':searchPattern})
         self.listItems(cItem, 'explore_item')
@@ -301,9 +326,11 @@ class VODPL(CBaseHostClass):
         while tries < 2:
             tries += 1
             sts, data = self.cm.getPage(url)
-            if not sts: return videoUrls
+            if not sts:
+                return videoUrls
             ckmId = self.cm.ph.getSearchGroups(data, 'data-params-mvp="([^"]+?)"')[0]
-            if '' == ckmId: ckmId = self.cm.ph.getSearchGroups(data, 'id="mvp:([^"]+?)"')[0]
+            if '' == ckmId:
+                ckmId = self.cm.ph.getSearchGroups(data, 'id="mvp:([^"]+?)"')[0]
             if '' != ckmId: 
                 tmpTab = self._getVideoTab(ckmId)
                 break
@@ -316,8 +343,10 @@ class VODPL(CBaseHostClass):
                 tab.append(item)
         
         def __getLinkQuality( itemLink ):
-            try: return int(itemLink[2])
-            except Exception: return 0
+            try:
+                return int(itemLink[2])
+            except Exception:
+                return 0
         
         maxRes = int(config.plugins.iptvplayer.onetvodDefaultformat.value) * 1.1
         tab = CSelOneLink(tab, __getLinkQuality, maxRes).getSortedLinks()
@@ -343,7 +372,8 @@ class VODPL(CBaseHostClass):
         try:
             cItem = byteify(json.loads(fav_data))
             links = self.getLinksForVideo(cItem)
-        except Exception: printExc()
+        except Exception:
+            printExc()
         return links
         
     def setInitListFromFavouriteItem(self, fav_data):
@@ -367,7 +397,8 @@ class VODPL(CBaseHostClass):
         url = cItem.get('url', '')
         
         sts, data = self.getPage(url)
-        if not sts: return retTab
+        if not sts:
+            return retTab
         
         data = self.cm.ph.getDataBeetwenMarkers(data, '<div class="row" id="content-tab">', '<div id="zone')[1]
         
@@ -382,18 +413,24 @@ class VODPL(CBaseHostClass):
             tmp = self.cm.ph.getDataBeetwenMarkers(data, item[0], '</li>', False)[1].split('<br>')
             for t in tmp:
                 t = self.cleanHtmlStr(t).replace(' , ',  ', ')
-                if t != '': tmpTab.append(t)
-            if len(tmpTab): otherInfo[item[1]] = ', '.join(tmpTab)
+                if t != '':
+                    tmpTab.append(t)
+            if len(tmpTab):
+                otherInfo[item[1]] = ', '.join(tmpTab)
         
         for item in [('Játékidő:',     'duration'),
                      ('IMDB Pont:', 'imdb_rating'),
                      ('Nézettség:',       'views')]:
             tmp = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(data, item[0], '</li>', False)[1])
-            if tmp != '': otherInfo[item[1]] = tmp
+            if tmp != '':
+                otherInfo[item[1]] = tmp
         
-        if title == '': title = cItem['title']
-        if desc == '':  desc = cItem.get('desc', '')
-        if icon == '':  icon = cItem.get('icon', self.DEFAULT_ICON_URL)
+        if title == '':
+            title = cItem['title']
+        if desc == '':
+            desc = cItem.get('desc', '')
+        if icon == '':
+            icon = cItem.get('icon', self.DEFAULT_ICON_URL)
         
         return [{'title':self.cleanHtmlStr( title ), 'text': self.cleanHtmlStr( desc ), 'images':[{'title':'', 'url':self.getFullUrl(icon)}], 'other_info':otherInfo}]
     

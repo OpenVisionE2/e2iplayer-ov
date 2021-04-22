@@ -45,8 +45,10 @@ class OtakuFR(CBaseHostClass):
 
     def getFullUrl(self, url):
         url = CBaseHostClass.getFullUrl(self, url)
-        try: url.encode('ascii')
-        except Exception: url = urllib.quote(url, safe="/:&?%@[]()*$!+-=|<>;")
+        try:
+            url.encode('ascii')
+        except Exception:
+            url = urllib.quote(url, safe="/:&?%@[]()*$!+-=|<>;")
         url = url.replace(' ', '%20')
         return url
         
@@ -67,7 +69,8 @@ class OtakuFR(CBaseHostClass):
         self.cacheABC = {}
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         data = self.cm.ph.getDataBeetwenMarkers(data, '<div class="fl"', '<div id="sct_sidebar', False)[1]
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<a name', '</ul>')
@@ -78,9 +81,11 @@ class OtakuFR(CBaseHostClass):
             itemsTab = []
             for item in section:
                 url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0])
-                if not self.cm.isValidUrl(url): continue
+                if not self.cm.isValidUrl(url):
+                    continue
                 title = self.cleanHtmlStr(self.cm.ph.getSearchGroups(item, '''title=['"]([^'^"]+?)['"]''')[0])
-                if title == '': title = self.cleanHtmlStr(item)
+                if title == '':
+                    title = self.cleanHtmlStr(item)
                 itemsTab.append({'title':title, 'url':url})
             
             if len(itemsTab):
@@ -105,23 +110,27 @@ class OtakuFR(CBaseHostClass):
         page = cItem.get('page', 1)
         
         sts, data = self.getPage(cItem['url'], post_data=post_data)
-        if not sts: return
+        if not sts:
+            return
         
         nextPage = self.getFullUrl(self.cm.ph.getSearchGroups(data, '''<a[^>]+?href=['"]([^"^']+?)['"][^>]*?>Suivant</a>''')[0])
         
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<span class="rnk">', '<div class="clear">')
         for item in data:
             url   = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0])
-            if not self.cm.isValidUrl(url): continue
+            if not self.cm.isValidUrl(url):
+                continue
             title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<h2>', '</h2>')[1])
-            if title == '': title = self.cleanHtmlStr(self.cm.ph.getSearchGroups(item, '''title=['"]([^'^"]+?)['"]''')[0])
+            if title == '':
+                title = self.cleanHtmlStr(self.cm.ph.getSearchGroups(item, '''title=['"]([^'^"]+?)['"]''')[0])
             icon  = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''<img[^>]+?src=['"]([^'^"]+?)['"]''')[0])
             
             descTab = []
             tmpTab  = self.cm.ph.getAllItemsBeetwenMarkers(item, '<p', '</p>')
             for idx in range(len(tmpTab)):
                 tmpDesc = self.cleanHtmlStr(tmpTab[idx])
-                if tmpDesc != '': descTab.append(tmpDesc)
+                if tmpDesc != '':
+                    descTab.append(tmpDesc)
             
             params = dict(cItem)
             params.update({'good_for_fav':True, 'category':nextCategory, 'title':title, 'url':url, 'icon':icon, 'desc':'[/br]'.join(descTab)})
@@ -136,7 +145,8 @@ class OtakuFR(CBaseHostClass):
         printDBG("OtakuFR.exploreItem")
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         tmp  = self.cm.ph.getDataBeetwenMarkers(data, '<input class=', '<div class="clr">')[1]
         printDBG(tmp)
@@ -146,14 +156,16 @@ class OtakuFR(CBaseHostClass):
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<li', '</li>')
         for item in data:
             url   = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0])
-            if not self.cm.isValidUrl(url): continue
+            if not self.cm.isValidUrl(url):
+                continue
             title = self.cleanHtmlStr(self.cm.ph.getSearchGroups(item, '''title=['"]([^'^"]+?)['"]''')[0])
             
             descTab = []
             tmpTab  = self.cm.ph.getAllItemsBeetwenMarkers(item, '<b', '</b>')
             for idx in range(len(tmpTab)):
                 tmpDesc = self.cleanHtmlStr(tmpTab[idx])
-                if tmpDesc != '': descTab.append(tmpDesc)
+                if tmpDesc != '':
+                    descTab.append(tmpDesc)
                
             params = dict(cItem)
             params.update({'good_for_fav':True, 'title':title, 'url':url, 'icon':icon, 'desc':'[/br]'.join(descTab)})
@@ -163,13 +175,15 @@ class OtakuFR(CBaseHostClass):
         printDBG("OtakuFR.listSortFilters")
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         data = self.cm.ph.getDataBeetwenMarkers(data, 'video-listing-filter', '</div>')[1]
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<a ', '</a>')
         for item in data:
             url   = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0])
-            if not self.cm.isValidUrl(url): continue
+            if not self.cm.isValidUrl(url):
+                continue
             title = self.cleanHtmlStr(item)
             params = dict(cItem)
             params.update({'good_for_fav':False, 'title':title, 'url':url, 'category':nextCategory})
@@ -180,22 +194,28 @@ class OtakuFR(CBaseHostClass):
         self.cacheLast = {}
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         data = self.cm.ph.getDataBeetwenMarkers(data, '<article', '</article>')[1]
         data = data.split('<div class="smart-box-head">')
-        if len(data): del data[0]
+        if len(data):
+            del data[0]
         for section in data:
             sectionTitle = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(section, '<h2', '</h2>')[1])
-            if sectionTitle == '': sectionTitle = 'Inne'
+            if sectionTitle == '':
+                sectionTitle = 'Inne'
             section = section.split('<div class="video-item format-video">')
-            if len(section): del section[0]
+            if len(section):
+                del section[0]
             itemsTab = []
             for item in section:
                 url   = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0])
-                if not self.cm.isValidUrl(url): continue
+                if not self.cm.isValidUrl(url):
+                    continue
                 title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<h3>', '</h3>')[1])
-                if title == '': title = self.cleanHtmlStr(self.cm.ph.getSearchGroups(item, '''title=['"]([^'^"]+?)['"]''')[0])
+                if title == '':
+                    title = self.cleanHtmlStr(self.cm.ph.getSearchGroups(item, '''title=['"]([^'^"]+?)['"]''')[0])
                 icon  = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''data-lazy-src=['"]([^'^"]+?)['"]''')[0])
                 desc = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<p>', '</p>')[1])
                 itemsTab.append({'good_for_fav':True, 'title':title, 'url':url, 'icon':icon, 'desc':desc})
@@ -228,14 +248,16 @@ class OtakuFR(CBaseHostClass):
         printDBG("OtakuFR.getLinksForVideo [%s]" % cItem)
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return []
+        if not sts:
+            return []
         
         urlTab = []
         data = self.cm.ph.getDataBeetwenMarkers(data, '<h3 style="text-align:', '</div>')[1]
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<a', '</a>')
         for item in data:
             playerUrl = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0])
-            if not self.cm.isValidUrl(playerUrl): continue
+            if not self.cm.isValidUrl(playerUrl):
+                continue
             urlTab.append({'name':self.cleanHtmlStr(item), 'url':playerUrl, 'need_resolve':1})
         return urlTab
         
@@ -244,7 +266,8 @@ class OtakuFR(CBaseHostClass):
         urlTab = []
         
         sts, data = self.getPage(videoUrl)
-        if not sts: return []
+        if not sts:
+            return []
         
         data = self.cm.ph.getDataBeetwenMarkers(data, '<div class="vdo_wrp">', '</div>')[1]        
         videoUrl = self.getFullUrl(self.cm.ph.getSearchGroups(data, '''<iframe[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0])

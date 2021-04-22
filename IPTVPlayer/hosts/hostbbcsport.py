@@ -15,8 +15,10 @@ from Plugins.Extensions.IPTVPlayer.libs.youtube_dl.extractor.bbc import BBCCoUkI
 ###################################################
 import urllib
 from datetime import datetime, timedelta
-try:    import json
-except Exception: import simplejson as json
+try:
+    import json
+except Exception:
+    import simplejson as json
 from Components.config import config, ConfigText, getConfigListEntry
 ###################################################
 
@@ -63,8 +65,10 @@ class BBCSport(CBaseHostClass):
         
         self.OFFSET = datetime.now() - datetime.utcnow()
         seconds = self.OFFSET.seconds + self.OFFSET.days * 24 * 3600
-        if ((seconds + 1) % 10) == 0: seconds += 1  
-        elif ((seconds - 1) % 10) == 0: seconds -= 1 
+        if ((seconds + 1) % 10) == 0:
+            seconds += 1  
+        elif ((seconds - 1) % 10) == 0:
+            seconds -= 1 
         self.OFFSET = timedelta(seconds=seconds)
         
         self.ABBREVIATED_DAYS_NAME_TAB = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -81,8 +85,10 @@ class BBCSport(CBaseHostClass):
         return utc_date
     
     def _absTimeDelta(self, d1, d2, div=60):
-        if d1 > d2: td = d1 - d2
-        else: td = d2 - d1
+        if d1 > d2:
+            td = d1 - d2
+        else:
+            td = d2 - d1
         return (td.seconds + td.days * 24 * 3600) / div
     
     def setMainUrl(self, url):
@@ -103,7 +109,8 @@ class BBCSport(CBaseHostClass):
         
         url = self.getFullUrl('/sport')
         sts, data = self.getPage(url)
-        if not sts: return
+        if not sts:
+            return
         self.setMainUrl(data.meta['url'])
         
         liveguideData = self.cm.ph.getDataBeetwenNodes(data, ('<aside', '</aside>', 'liveguide'), ('<div', '</div>'))[1]
@@ -122,11 +129,15 @@ class BBCSport(CBaseHostClass):
         for item in data:
             title = self.cleanHtmlStr(item)
             url = self.getFullUrl( self.cm.ph.getSearchGroups(item, '''\shref=['"]([^"^']+?)['"]''')[0] )
-            if not self.cm.isValidUrl(url): continue
-            if '/my-sport' in url: continue
+            if not self.cm.isValidUrl(url):
+                continue
+            if '/my-sport' in url:
+                continue
             
-            if '/all-sports' in url: category = nextCategory2
-            else: category = nextCategory1
+            if '/all-sports' in url:
+                category = nextCategory2
+            else:
+                category = nextCategory1
             
             params = dict(cItem)
             params.update({'good_for_fav':True, 'category':category, 'title':title, 'url':url})
@@ -139,12 +150,14 @@ class BBCSport(CBaseHostClass):
     def listAllItems(self, cItem, nextCategory):
         printDBG("BBCSport.listAllItems")
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<li', '>', 'list-item'), ('</li', '>'), False)
         for item in data:
             url = self.getFullUrl( self.cm.ph.getSearchGroups(item, '''\shref=['"]([^"^']+?)['"]''')[0] )
-            if not self.cm.isValidUrl(url): continue
+            if not self.cm.isValidUrl(url):
+                continue
             title = self.cleanHtmlStr(item)
             params = dict(cItem)
             params.update({'good_for_fav':True, 'category':nextCategory, 'title':title, 'url':url})
@@ -155,7 +168,8 @@ class BBCSport(CBaseHostClass):
         self.liveGuideItemsCache = {}
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         mediaDataTab = []
         
@@ -190,23 +204,28 @@ class BBCSport(CBaseHostClass):
                 
                 if (datItem['hasAudio'] or datItem['hasVideo']) and (datItem['status'] != 'COMING_UP'):  #NOW > sDate or self._absTimeDelta(NOW, sDate, 60) < 6
                     for item in datItem['media']:
-                        if 'identifiers' not in item or 'playablePid' not in item['identifiers']: continue
+                        if 'identifiers' not in item or 'playablePid' not in item['identifiers']:
+                            continue
                         vpid = item['identifiers']['playablePid']
-                        if vpid == '': continue
+                        if vpid == '':
+                            continue
                         url  = self.getFullUrl('/iplayer/vpid/%s/' % vpid)
                         icon = self.getFullIconUrl(item['coverImage'])
                         title = self.cleanHtmlStr(item['title'])
                         mediaType = item['mediaType']
                         
-                        if 'COMING_SOON' in item['status']: continue
+                        if 'COMING_SOON' in item['status']:
+                            continue
                         
                         desc = [datItem['sectionName'], item['status']]
                         if 'schedule' in item and 'formattedStartTime' in item['schedule']:
                             desc.append('%s-%s' % (item['schedule']['formattedStartTime'], item['schedule']['formattedEndTime']) )
                         h = self.cm.ph.getSearchGroups(item.get('duration', ''), '''([0-9]+)H''')[0]
-                        if h == '': h = '0'
+                        if h == '':
+                            h = '0'
                         m = self.cm.ph.getSearchGroups(item.get('duration', ''), '''([0-9]+)M''')[0]
-                        if m == '': m = '0'
+                        if m == '':
+                            m = '0'
                         if m != '0' or h != '0':
                             desc.append(str(timedelta(hours=int(h), minutes=int(m))))
                         desc = [' | '.join(desc)]
@@ -250,7 +269,8 @@ class BBCSport(CBaseHostClass):
     def listSubMenu(self, cItem, nextCategory1, nextCategory2):
         printDBG("BBCSport.listSubMenu")
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         cItem = dict(cItem)
         cItem.update({'category':nextCategory1})
@@ -261,7 +281,8 @@ class BBCSport(CBaseHostClass):
 
         if data == None:
             sts, data = self.getPage(cItem['url'])
-            if not sts: return
+            if not sts:
+                return
         
         liveItemList = []
         maediaList = []
@@ -269,14 +290,17 @@ class BBCSport(CBaseHostClass):
         
         tmp = self.cm.ph.getAllItemsBeetwenMarkers(data, '<section', '</section>')
         for data in tmp:
-            if 'id="audio-video"' in data: promote = True
-            else: promote = False
+            if 'id="audio-video"' in data:
+                promote = True
+            else:
+                promote = False
             
             data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<article', '>', 'has-media'), ('</article', '>'))
             for item in data:
                 tmp = self.cm.ph.getDataBeetwenMarkers(item, '<h3', '</h3>')[1]
                 url = self.getFullUrl( self.cm.ph.getSearchGroups(tmp, '''\shref=['"]([^"^']+?)['"]''')[0] )
-                if not self.cm.isValidUrl(url): continue
+                if not self.cm.isValidUrl(url):
+                    continue
                 
                 title = self.cleanHtmlStr(tmp)
                 icon = self.getFullIconUrl(self.cm.ph.getSearchGroups(item, '''\ssrc=['"]([^"^']+?\.(?:jpe?g|png)(?:\?[^"^']+?)?)['"]''')[0])
@@ -286,10 +310,13 @@ class BBCSport(CBaseHostClass):
                 tmp = self.cm.ph.getAllItemsBeetwenMarkers(tmp, '<li', '</li>')
                 for t in tmp:
                     t = self.cleanHtmlStr(t)
-                    if t != '': desc.append(t)
+                    if t != '':
+                        desc.append(t)
                 desc = ' | '.join(desc)
-                if desc == '': desc = []
-                else: desc = [desc]
+                if desc == '':
+                    desc = []
+                else:
+                    desc = [desc]
                 desc.append(self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(item, ('<p', '>', 'summary'), ('</p', '>'), False)[1]))
                 
                 params = dict(cItem)
@@ -316,7 +343,8 @@ class BBCSport(CBaseHostClass):
         printDBG("BBCSport.exploreItem")
 
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         mediaDataTab = []
         
         tmp = self.cm.ph.getAllItemsBeetwenMarkers(data, '.setPayload(', '</script>', False)
@@ -344,15 +372,18 @@ class BBCSport(CBaseHostClass):
         
         for item in mediaDataTab:
             try:
-                if 'identifiers' not in item or 'playablePid' not in item['identifiers']: continue
+                if 'identifiers' not in item or 'playablePid' not in item['identifiers']:
+                    continue
                 vpid = item['identifiers']['playablePid']
-                if vpid == '': continue
+                if vpid == '':
+                    continue
                 url  = self.getFullUrl('/iplayer/vpid/%s/' % vpid)
                 icon = self.getFullIconUrl(item['coverImage'])
                 title = self.cleanHtmlStr(item['title'])
                 mediaType = item['mediaType']
                 
-                if 'COMING_SOON' in item['status']: continue
+                if 'COMING_SOON' in item['status']:
+                    continue
                 
                 desc = [item['status']]
                 if 'schedule' in item and 'formattedStartTime' in item['schedule']:
@@ -383,7 +414,8 @@ class BBCSport(CBaseHostClass):
             icon = self.getFullIconUrl(self.cm.ph.getSearchGroups(item, '\sdata\-image\-url=["]([^"]+?)["]')[0])
             duration = self.cleanHtmlStr(self.cm.ph.getSearchGroups(item, '\sdata\-media\-duration=["]([^"]+?)["]')[0])
             
-            if vpid == '': continue
+            if vpid == '':
+                continue
             url  = self.getFullUrl('/iplayer/vpid/%s/' % vpid)
             
             params = dict(cItem)
@@ -452,7 +484,8 @@ class BBCSport(CBaseHostClass):
                     return False
                 
                 actionUrl = self.cm.getFullUrl(self.cm.ph.getSearchGroups(data, '''action=['"]([^'^"]+?)['"]''')[0].replace('&amp;', '&'), self.cm.getBaseUrl(cUrl))
-                if actionUrl == '': actionUrl = cUrl
+                if actionUrl == '':
+                    actionUrl = cUrl
                 formData = self.cm.ph.getAllItemsBeetwenMarkers(data, '<input', '>')
                 post_data = {}
                 for item in formData:
@@ -497,7 +530,8 @@ class BBCSport(CBaseHostClass):
             urlTab.append({'name':cItem['title'], 'url':cItem['url'], 'need_resolve':1})
         else:
             sts, data = self.getPage(cItem['url'])
-            if not sts: return urlTab
+            if not sts:
+                return urlTab
             
             mediaData = self.cm.ph.getDataBeetwenMarkers(data, '.setPayload(', '</script>', False)[1]
             mediaData = self.cm.ph.getDataBeetwenMarkers(mediaData, '"body":{', '});', False)[1].strip()[:-1]
@@ -519,7 +553,8 @@ class BBCSport(CBaseHostClass):
                         title = self.cleanHtmlStr(tmp['smpConfig']['title'])
                         for item in tmp['smpConfig']['items']:
                             url  = self.getFullUrl('/iplayer/vpid/%s/' % item['vpid'])
-                            if url in uniqueTab: continue
+                            if url in uniqueTab:
+                                continue
                             uniqueTab.append(url)
                             name = item['kind'].title()
                             urlTab.append({'name':'[%s] %s' % (name, title), 'url':url, 'need_resolve':1})

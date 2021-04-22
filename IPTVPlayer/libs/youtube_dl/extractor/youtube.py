@@ -88,7 +88,8 @@ class CYTSignAlgoExtractor:
 
     def _findFunction(self, funcname):
         data = self._findFunctionByMarker('function %s(' % funcname)
-        if data: return data
+        if data:
+            return data
         return self._findFunctionByMarker('%s=function(' % funcname)
 
     def _findObject(self, objname, methods):
@@ -117,7 +118,8 @@ class CYTSignAlgoExtractor:
         
             # get main function
             sts, self.playerData = self.cm.getPage(playerUrl)
-            if not sts: return []
+            if not sts:
+                return []
 
             t1 = time.time()
             code = []
@@ -402,10 +404,12 @@ class YoutubeIE(object):
         if None == webpage:
             url = 'http://www.youtube.com/watch?v=%s&hl=%s&has_verified=1' % (video_id, GetDefaultLang())
             sts, data = self.cm.getPage(url)
-            if not sts: return sub_tracks
+            if not sts:
+                return sub_tracks
         
         sts, data = self.cm.ph.getDataBeetwenMarkers(data, ';ytplayer.config =', '};', False)
-        if not sts: return sub_tracks
+        if not sts:
+            return sub_tracks
         try:
             player_config = json_loads(data.strip()+'}')
             args = player_config['args']
@@ -460,7 +464,8 @@ class YoutubeIE(object):
             for lang in caption_translation_languages.split(','):
                 lang_qs = compat_parse_qs(urllib.unquote_plus(lang))
                 sub_lang = lang_qs.get('lc', [None])[0]
-                if not sub_lang: continue
+                if not sub_lang:
+                    continue
                 caption_qs.update({
                     'tlang': [sub_lang],
                     'fmt': ['vtt'],
@@ -477,7 +482,8 @@ class YoutubeIE(object):
         try:
             url = 'https://www.youtube.com/api/timedtext?hl=%s&type=list&v=%s' % (GetDefaultLang(), video_id)
             sts, data = self.cm.getPage(url)
-            if not sts: return sub_tracks
+            if not sts:
+                return sub_tracks
             
             encoding = self.cm.ph.getDataBeetwenMarkers(data, 'encoding="', '"', False)[1]
             
@@ -487,7 +493,8 @@ class YoutubeIE(object):
             
             data = data.split('/>')
             for item in data:
-                if 'lang_code' not in item: continue
+                if 'lang_code' not in item:
+                    continue
                 id = getArg(item, 'id')
                 name = getArg(item, 'name')
                 lang_code = getArg(item, 'lang_code')
@@ -527,7 +534,8 @@ class YoutubeIE(object):
             videoInfoparams = {}
 
         sts, video_webpage = self.cm.getPage(url)
-        if not sts: raise ExtractorError('Unable to download video webpage')
+        if not sts:
+            raise ExtractorError('Unable to download video webpage')
 
         # Get video info
         #if re.search(r'player-age-gate-content">', video_webpage) is not None:
@@ -545,7 +553,8 @@ class YoutubeIE(object):
                                                   })
             video_info_url = videoInfoBase + data
             sts, video_info = self.cm.getPage(video_info_url, videoInfoparams)
-            if not sts: raise ExtractorError('Faile to get "%s"' % video_info_url)
+            if not sts:
+                raise ExtractorError('Faile to get "%s"' % video_info_url)
         else:
             age_gate = False
             tries = 0
@@ -584,7 +593,8 @@ class YoutubeIE(object):
         video_info2 = {}
         for item in video_info:
             item = item.split('=')
-            if len(item) < 2: continue
+            if len(item) < 2:
+                continue
             video_info2[item[0].strip()] = item[1].strip()
         video_info = video_info2
         del video_info2
@@ -641,7 +651,8 @@ class YoutubeIE(object):
                     supported = False
                     for item in url_data_str:
                         item = item.split('=')
-                        if len(item) < 2: continue
+                        if len(item) < 2:
+                            continue
                         key = item[1].strip()
                         if item[0] == 'itag':
                             if key in self._supported_formats:
@@ -708,10 +719,14 @@ class YoutubeIE(object):
                             #sig_item = ''
                             #s_item = ''
                             #sp_item = ''
-                            if 'url=' in item: url_item = {'url':_unquote(item.replace('url=',''), None)}
-                            if 'sig=' in item: sig_item = item.replace('sig=','')
-                            if 's=' in item: s_item = item.replace('s=','')
-                            if 'sp=' in item: sp_item = item.replace('sp=','')
+                            if 'url=' in item:
+                                url_item = {'url':_unquote(item.replace('url=',''), None)}
+                            if 'sig=' in item:
+                                sig_item = item.replace('sig=','')
+                            if 's=' in item:
+                                s_item = item.replace('s=','')
+                            if 'sp=' in item:
+                                sp_item = item.replace('sp=','')
                         if 'sig' in cipher:
                             signature = sig_item
                             url_item['url'] += '&signature=' + signature
@@ -734,9 +749,11 @@ class YoutubeIE(object):
 
         if self.cm.isValidUrl(dashmpd):
             sign = ph.search(dashmpd, r'/s/([a-fA-F0-9\.]+)')[0]
-            if sign: dashmpd = dashmpd.replace(sign, '{0}')
+            if sign:
+                dashmpd = dashmpd.replace(sign, '{0}')
             video_url_list.append(('mpd', {'url':dashmpd}))
-            if sign: video_url_list[-1][1]['esign'] = sign
+            if sign:
+                video_url_list[-1][1]['esign'] = sign
 
         signItems = []
         signatures = []
@@ -824,7 +841,8 @@ class YoutubeIE(object):
         else:
             for p in pattern:
                 mobj = re.search(p, string, flags)
-                if mobj: break
+                if mobj:
+                    break
 
         if mobj:
             # return the first matching group

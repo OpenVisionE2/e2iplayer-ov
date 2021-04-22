@@ -55,11 +55,13 @@ class FilmeHD(CBaseHostClass):
         printDBG("FilmeHD.listSort")
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         tmp = self.cm.ph.getAllItemsBeetwenNodes(data, ('<div', '>', 'category-list'), ('</ul', '>'), False)
         for section in tmp:
-            if 'sortby=' not in section: continue
+            if 'sortby=' not in section:
+                continue
             section = self.cm.ph.getAllItemsBeetwenMarkers(section, '<li', '</li>')
             for item in section:
                 url = self.getFullUrl( self.cm.ph.getSearchGroups(item, '''href=['"]([^"^']+?)['"]''')[0] )
@@ -82,7 +84,8 @@ class FilmeHD(CBaseHostClass):
         printDBG("FilmeHD.listCategories")
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         data = self.cm.ph.getDataBeetwenNodes(data, ('<ul', '>', m1), ('</ul', '>'), False)[1]
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<li', '</li>')
@@ -99,7 +102,8 @@ class FilmeHD(CBaseHostClass):
         
         if data == None:
             sts, data = self.getPage(cItem['url'])
-            if not sts: return
+            if not sts:
+                return
         
         nextPage = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'pagenavi'), ('</div', '>'), False)[1]
         nextPage = self.getFullUrl( self.cm.ph.getSearchGroups(nextPage, '''<a[^>]+?href=['"]([^"^']+?)['"][^>]*?>%s<''' % (page + 1))[0] )
@@ -109,14 +113,16 @@ class FilmeHD(CBaseHostClass):
         for item in data:
             url = self.getFullUrl( self.cm.ph.getSearchGroups(item, '''href=['"]([^"^']+?)['"]''')[0] )
             title = self.cleanHtmlStr( self.cm.ph.getDataBeetwenNodes(item, ('<h', '>', 'title'), ('</h', '>'))[1])
-            if not self.cm.isValidUrl(url): continue
+            if not self.cm.isValidUrl(url):
+                continue
             icon = self.getFullIconUrl( self.cm.ph.getSearchGroups(item, '''src=['"]([^"^']+?)['"]''')[0] )
 
             desc = []
             tmp = self.cm.ph.getAllItemsBeetwenMarkers(item, '<span', '</span>')
             for t in tmp:
                 t = self.cleanHtmlStr(t)
-                if t != '': desc.append(t)
+                if t != '':
+                    desc.append(t)
             desc = '[/br]'.join(desc) 
             
             params = dict(cItem)
@@ -132,7 +138,8 @@ class FilmeHD(CBaseHostClass):
         printDBG("FilmeHD.exploreItem")
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         # trailer
         trailer = self.cm.ph.getSearchGroups(data, '''<a[^>]+?href=['"]([^"^']+?)['"][^>]*?>([^>]*?trailer[^>]*?)<''', 2, ignoreCase=True)
@@ -161,12 +168,14 @@ class FilmeHD(CBaseHostClass):
             for idx in range(2, len(data), 2):
                 tabId = self.cm.ph.getSearchGroups(data[idx-1], '''id=['"]([^'^"]+?)['"]''')[0]
                 playersData = data[idx].split('<center')
-                if len(playersData): del playersData[0]
+                if len(playersData):
+                    del playersData[0]
                 for item in playersData:
                     title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '>', '<', False)[1])
                     url = self.cm.ph.getDataBeetwenNodes(item, ('<div', '>', 'lazyload'), ('</div', '>'))[1]
                     url = self.getFullUrl(self.cm.ph.getSearchGroups(url, '''data\-src=['"]([^'^"]+?)['"]''')[0])
-                    if url == '': continue
+                    if url == '':
+                        continue
                     if title not in titlesTab:
                         titlesTab.append(title)
                         self.cacheLinks[title] = []
@@ -188,12 +197,14 @@ class FilmeHD(CBaseHostClass):
             linksKey = cItem['url']
             self.cacheLinks[linksKey] = []
             playersData = data[0].split('<center')
-            if len(playersData): del playersData[0]
+            if len(playersData):
+                del playersData[0]
             for item in playersData:
                 name = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '>', '<', False)[1])
                 url = self.cm.ph.getDataBeetwenNodes(item, ('<div', '>', 'lazyload'), ('</div', '>'))[1]
                 url = self.getFullUrl(self.cm.ph.getSearchGroups(url, '''data\-src=['"]([^'^"]+?)['"]''')[0])
-                if url == '': continue
+                if url == '':
+                    continue
                 url = strwithmeta(url, {'Referer':cItem['url']})
                 self.cacheLinks[linksKey].append({'name':name, 'url':url, 'need_resolve':1})
             
@@ -237,7 +248,8 @@ class FilmeHD(CBaseHostClass):
         params['header']['Referer'] = str(videoUrl.meta.get('Referer', self.getMainUrl()))
         
         sts, data = self.getPage(videoUrl, params)
-        if not sts: return urlTab
+        if not sts:
+            return urlTab
         
         url = self.getFullUrl(self.cm.ph.getSearchGroups(data, '''<iframe[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0])
         if url == '':
@@ -246,7 +258,8 @@ class FilmeHD(CBaseHostClass):
             for item in data:
                 item = self.getFullUrl(item)
                 sts, item = self.getPage(item, params)
-                if sts: jscode.append(item)
+                if sts:
+                    jscode.append(item)
             
             ret = js_execute( '\n'.join(jscode) )
             if ret['sts'] and 0 == ret['code']:
@@ -264,11 +277,13 @@ class FilmeHD(CBaseHostClass):
         if data == None:
             url = strwithmeta(cItem['url']).meta.get('Referer', cItem['url'])
             sts, data = self.getPage(url)
-            if not sts: return []
+            if not sts:
+                return []
             
         descData = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'tv-content-custom'), ('<div', '>', 'content-bottom'), True)[1]
         icon = self.cm.ph.getDataBeetwenMarkers(descData, 'url(', ')', False)[1].strip()
-        if not self.cm.isValidUrl(icon): icon = ''
+        if not self.cm.isValidUrl(icon):
+            icon = ''
         
         desc = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(descData, '<p', '</p>')[1])
         if desc == '':
@@ -280,9 +295,12 @@ class FilmeHD(CBaseHostClass):
             title = self.cm.ph.getSearchGroups(data, '''(<meta[^>]+?title['"][^>]*?>)''')[0]
             title = self.cleanHtmlStr( self.cm.ph.getSearchGroups(title, '''content=['"]([^'^"]+?)['"]''')[0] )
         
-        if title == '': title = cItem['title']
-        if desc == '':  desc = cItem['desc']
-        if icon == '':  icon = cItem['icon']
+        if title == '':
+            title = cItem['title']
+        if desc == '':
+            desc = cItem['desc']
+        if icon == '':
+            icon = cItem['icon']
         
         otherInfo = {}
         
@@ -290,9 +308,12 @@ class FilmeHD(CBaseHostClass):
         tmp = self.cm.ph.getAllItemsBeetwenNodes(descData, ('<div', '>', 'rating-circle'), ('</div', '>'), True)
         for item in tmp:
             t = self.cleanHtmlStr(item)
-            if t == '': continue
-            if 'imbd' in item: otherInfo['imdb_rating'] = t
-            else: otherInfo['rating'] = t
+            if t == '':
+                continue
+            if 'imbd' in item:
+                otherInfo['imdb_rating'] = t
+            else:
+                otherInfo['rating'] = t
         
         # stars
         t = []
@@ -300,25 +321,30 @@ class FilmeHD(CBaseHostClass):
         tmp = self.cm.ph.getAllItemsBeetwenMarkers(tmp, '<a', '</a>')
         for item in tmp:
             item = self.cleanHtmlStr(item)
-            if item == '': continue
+            if item == '':
+                continue
             t.append(item)
-        if len(t): otherInfo['stars'] = ', '.join(t)
+        if len(t):
+            otherInfo['stars'] = ', '.join(t)
         
         # genres
         tmp = self.cm.ph.getDataBeetwenNodes(descData, ('<span', '>', 'genre'), ('</span', '>'), False)[1]
         tmp = self.cm.ph.getAllItemsBeetwenMarkers(tmp, '<a', '</a>')
         tmp = ', '.join([self.cleanHtmlStr(item) for item in tmp])
-        if tmp != '': otherInfo['genres'] = tmp
+        if tmp != '':
+            otherInfo['genres'] = tmp
         
         # director
         tmp = self.cm.ph.getDataBeetwenNodes(descData, ('<div', '>', 'director'), ('</div', '>'), False)[1].split(':', 1)[-1]
         tmp = self.cm.ph.getAllItemsBeetwenMarkers(tmp, '<a', '</a>')
         tmp = ', '.join([self.cleanHtmlStr(item) for item in tmp])
-        if tmp != '': otherInfo['director'] = tmp
+        if tmp != '':
+            otherInfo['director'] = tmp
         
         # year
         tmp = self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(descData, ('<div', '>', 'year'), ('</div', '>'), False)[1].split(':', 1)[-1])
-        if tmp != '': otherInfo['year'] = tmp
+        if tmp != '':
+            otherInfo['year'] = tmp
         
         return [{'title':self.cleanHtmlStr( title ), 'text': self.cleanHtmlStr( desc ), 'images':[{'title':'', 'url':self.getFullUrl(icon)}], 'other_info':otherInfo}]
         

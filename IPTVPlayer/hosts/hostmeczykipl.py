@@ -48,7 +48,8 @@ class MeczykiPL(CBaseHostClass):
         self.addDir(params)
         
         sts, data = self.getPage(self.getFullUrl('/najnowsze_skroty.html'))
-        if not sts: return 
+        if not sts:
+            return 
         data = self.cm.ph.getDataBeetwenMarkers(data, '<div class="content-box-text"', 'shortcuts-content-start')[1]
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<a', '</a>')
         for item in data:
@@ -71,7 +72,8 @@ class MeczykiPL(CBaseHostClass):
         url = baseUrl + '?' + urllib.urlencode(query)
         
         sts, data = self.getPage(url)
-        if not sts: return
+        if not sts:
+            return
         
         try:
             data = json_loads(data)
@@ -83,7 +85,8 @@ class MeczykiPL(CBaseHostClass):
                     title = self.cleanHtmlStr(item['title']) + ' ' + item['score']
                     url   = self.getFullUrl(item['url'])
                     icon  = self.getFullIconUrl(self.cm.ph.getSearchGroups(item['title'], '''src=['"]([^'^"]+?)['"]''')[0])
-                    if icon == '': icon = self.getFullIconUrl(item['area'])
+                    if icon == '':
+                        icon = self.getFullIconUrl(item['area'])
                     desc  = '%s | %s' % (item['competition'], item['event_date'])
                     params = dict(cItem)
                     params.update({'good_for_fav':True, 'category':nextCategory, 'title':title, 'url':url, 'icon':icon, 'desc':desc})
@@ -91,12 +94,14 @@ class MeczykiPL(CBaseHostClass):
         except Exception:
             printExc()
         
-        if 0 == len(self.currList): return
+        if 0 == len(self.currList):
+            return
         
         query['page'] = page + 1
         url = baseUrl + '?' + urllib.urlencode(query)
         sts, data = self.getPage(url)
-        if not sts: return
+        if not sts:
+            return
         
         try:
             if len(json_loads(data)['shortcuts'].keys()):
@@ -110,7 +115,8 @@ class MeczykiPL(CBaseHostClass):
         printDBG("OkGoals.exploreItem")
         
         sts, data = self.cm.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
 
         #reObj = re.compile('<[\s/]*?br[\s/]*?>', re.IGNORECASE)
         titles = []
@@ -130,7 +136,8 @@ class MeczykiPL(CBaseHostClass):
         
         for idx in range(len(tmp)):
             url = self.getFullUrl(tmp[idx])
-            if not self.cm.isValidUrl(url): continue
+            if not self.cm.isValidUrl(url):
+                continue
             if 'playwire.com' not in url and  self.up.checkHostSupport(url) != 1:
                 video_id  = ph.search(url, r'''https?://.*([a-zA-Z0-9]{10})''')[0]
                 if video_id != '':
@@ -154,7 +161,8 @@ class MeczykiPL(CBaseHostClass):
         videoUrl = cItem['url']
         if 'playwire.com' in videoUrl:
             sts, data = self.cm.getPage(videoUrl)
-            if not sts: return []
+            if not sts:
+                return []
             try:
                 data = json_loads(data)
                 if 'content' in data:

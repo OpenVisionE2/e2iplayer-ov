@@ -40,7 +40,8 @@ class Cover(Pixmap):
         try:
             if 'preWidgetRemove' in dir(Pixmap):
                 Pixmap.preWidgetRemove(self, instance)
-        except Exception: printExc()
+        except Exception:
+            printExc()
 
     def onShow(self):      
         Pixmap.onShow(self)
@@ -78,7 +79,8 @@ class Cover(Pixmap):
             
     def checkDecodeNeeded(self, filename):
         iconFile = self.waitIcon.get('FileName', '')
-        if '' == iconFile: iconFile = self.currIcon.get('FileName', '')
+        if '' == iconFile:
+            iconFile = self.currIcon.get('FileName', '')
         return filename != iconFile
             
     # end decodeCover(self, filename, callBackFun, ident):
@@ -117,7 +119,8 @@ class Cover2(Pixmap):
         try:
             if 'preWidgetRemove' in dir(Pixmap):
                 Pixmap.preWidgetRemove(self, instance)
-        except Exception: printExc()
+        except Exception:
+            printExc()
 
     def onShow(self):
         Pixmap.onShow(self)

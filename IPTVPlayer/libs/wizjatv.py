@@ -14,8 +14,10 @@ from Plugins.Extensions.IPTVPlayer.components.ihost import CBaseHostClass
 ###################################################
 from Components.config import config, ConfigText, getConfigListEntry
 import urllib
-try:    import json
-except Exception: import simplejson as json
+try:
+    import json
+except Exception:
+    import simplejson as json
 
 from os import path as os_path
 ############################################
@@ -63,7 +65,8 @@ class WizjaTvApi(CBaseHostClass):
         
         rm(self.COOKIE_FILE)
         sts, data = self.cm.getPage(loginUrl, self.http_params)
-        if not sts: return False, False
+        if not sts:
+            return False, False
         
         HTTP_HEADER= dict(self.HTTP_HEADER)
         HTTP_HEADER.update( {'Referer':loginUrl} )
@@ -110,16 +113,19 @@ class WizjaTvApi(CBaseHostClass):
         channelsTab = []
         
         sts, data = self.cm.getPage(self.getMainUrl(), self.http_params)
-        if not sts: return channelsTab
+        if not sts:
+            return channelsTab
         
         data = self.cm.ph.getDataBeetwenMarkers(data, '<ul class="dropdown-menu">', '</ul>')[1]
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<a', '</a>')
         for item in data:
             icon  = self.getFullUrl( self.cm.ph.getSearchGroups(item, '''src=['"]([^"^']+?)['"]''')[0] )
             url   = self.getFullUrl( self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0] )
-            if not self.cm.isValidUrl(url): continue
+            if not self.cm.isValidUrl(url):
+                continue
             title = self.cleanHtmlStr( item )
-            if title == '': title = icon.split('/')[-1][:-4].upper()
+            if title == '':
+                title = icon.split('/')[-1][:-4].upper()
             
             params = {'name':'wizja.tv', 'type':'video', 'title':title, 'url':url, 'icon':icon}
             channelsTab.append(params)
@@ -131,13 +137,15 @@ class WizjaTvApi(CBaseHostClass):
         urlsTab = []
         
         sts, data = self.cm.getPage(cItem['url'], self.http_params)
-        if not sts: return urlsTab
+        if not sts:
+            return urlsTab
         
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<iframe', '>', caseSensitive=False)
         printDBG(data)
         for item in data:
             url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''src=['"]([^'^"]+?)['"]''')[0])
-            if not self.cm.isValidUrl(url): continue
+            if not self.cm.isValidUrl(url):
+                continue
             HTTP_HEADER= dict(self.HTTP_HEADER)
             HTTP_HEADER.update( {'Referer':cItem['url']} )
             params = dict(self.http_params)
@@ -149,7 +157,8 @@ class WizjaTvApi(CBaseHostClass):
                 
                 if 'porter' in url or 'player' in item:
                     sts, tmp = self.cm.getPage(url, params)
-                    if not sts: break
+                    if not sts:
+                        break
                     printDBG(tmp)
                     videoUrl = urllib.unquote(self.cm.ph.getSearchGroups(tmp, '''['"]?src['"]?\s*:\s*['"](rtmp[^'^"]+?)['"]''')[0])
                     killUrl  = self.getFullUrl(self.cm.ph.getSearchGroups(tmp, '''<a[^>]+?href=["']([^'^"]*?killme\.php[^'^"]*?)''')[0])

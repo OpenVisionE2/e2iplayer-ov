@@ -14,8 +14,10 @@ from Plugins.Extensions.IPTVPlayer.tools.e2ijs import js_execute
 ###################################################
 import re
 import urllib
-try:    import json
-except Exception: import simplejson as json
+try:
+    import json
+except Exception:
+    import simplejson as json
 ###################################################
 
 def gettytul():
@@ -44,7 +46,8 @@ class SerialeCO(CBaseHostClass):
         self.cacheLinks = {}
         
     def getPage(self, baseUrl, addParams = {}, post_data = None):
-        if addParams == {}: addParams = dict(self.defaultParams)
+        if addParams == {}:
+            addParams = dict(self.defaultParams)
         origBaseUrl = baseUrl
         baseUrl = self.cm.iriToUri(baseUrl)
         addParams['cloudflare_params'] = {'cookie_file':self.COOKIE_FILE, 'User-Agent':self.USER_AGENT}
@@ -58,7 +61,8 @@ class SerialeCO(CBaseHostClass):
         printDBG("SerialeCO.listSeries [%s]" % cItem)
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         data = self.cm.ph.getDataBeetwenNodes(data, ('<ul', '>', 'flexible-posts'), ('</ul', '>'))[1]
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<li', '</li>')
@@ -75,14 +79,16 @@ class SerialeCO(CBaseHostClass):
         marker = cItem.get('f_marker', 'block-span')
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         nextPage = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'page-nav'), ('</div', '>'))[1]
         nextPage = self.getFullUrl(self.cm.ph.getSearchGroups(nextPage, '''href=['"]([^'^"]+?/page/%s/[^'^"]*?)['"]''' % (page + 1))[0])
         
         data = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', marker), ('<div', '>', 'main-sidebar'))[1]
         data = re.compile('''<div[^>]*?%s[^>]*?>''' % re.escape(marker)).split(data)
-        if len(data): del data[0]
+        if len(data):
+            del data[0]
         for item in data:
             url   = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0])
             icon  = self.getFullIconUrl(self.cm.ph.getSearchGroups(item, '''[\s\-]src=['"]([^'^"]+?)['"]''')[0])
@@ -104,7 +110,8 @@ class SerialeCO(CBaseHostClass):
         self.playerData = {}
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         cUrl = data.meta['url']
         
         data = self.cm.ph.getDataBeetwenNodes(data, ('<script', '>', 'player.js'), ('<header', '>'))[1]
@@ -118,7 +125,8 @@ class SerialeCO(CBaseHostClass):
             self.playerData[id] = val
         
         sts, data = self.getPage(playerUrl)
-        if not sts: return
+        if not sts:
+            return
         
         # function pobierz_info_o_odcinkach
         ajaxInfoData = self.cm.ph.getDataBeetwenMarkers(data, 'function pobierz_info_o_odcinkach', '});')[1]
@@ -153,7 +161,8 @@ class SerialeCO(CBaseHostClass):
         
         seasons = self.playerData.get('odc', '').split(',')
         for idx in range(len(seasons)):
-            if seasons[idx] == '' : continue
+            if seasons[idx] == '' :
+                continue
             sNum = str(idx + 1)
             params = dict(cItem)
             params.update({'good_for_fav':False, 'category':nextCategory, 'title': _('Season %s') % sNum.zfill(2), 's_title':cItem['title'], 's_num':sNum, 'e_count':seasons[idx]})
@@ -170,7 +179,8 @@ class SerialeCO(CBaseHostClass):
                     post_data = data['data']
                     
                     sts, data = self.getPage(searchUrl, httpParams, post_data)
-                    if not sts: return
+                    if not sts:
+                        return
                     
                     printDBG('DATA -> \n[%s]\n' % data)
                     
@@ -209,8 +219,10 @@ class SerialeCO(CBaseHostClass):
                 self.addVideo(params)
         else:
             sNum = cItem.get('s_num', '')
-            try: eCount = int(cItem.get('e_count', '0'))
-            except Exception: eCount = 0
+            try:
+                eCount = int(cItem.get('e_count', '0'))
+            except Exception:
+                eCount = 0
             for idx in range(eCount):
                 eNum = str(idx + 1)
                 params = dict(cItem)
@@ -245,7 +257,8 @@ class SerialeCO(CBaseHostClass):
         httpParams['header']['Origin']  = self.getMainUrl()[:-1]
         
         sts, data = self.getPage(playerUrl, httpParams, {'fid_name':fid, 'sezon':sNum, 'odcinek':eNum, 'title': fid, 'blocked':''})
-        if not sts: return []
+        if not sts:
+            return []
         
         printDBG(data)
         verMap = {'1':'ENG', '2':'NAPISY', '3':'PL'}
@@ -282,7 +295,8 @@ class SerialeCO(CBaseHostClass):
             httpParams['header']['Referer'] = referer
             httpParams['header']['Origin']  = self.getMainUrl()[:-1]
             sts, data = self.getPage(baseUrl, httpParams)
-            if not sts: return []
+            if not sts:
+                return []
             baseUrl = self.getFullUrl(self.cm.ph.getSearchGroups(data, '''<iframe[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0])
             
         return self.up.getVideoLinkExt(self.getFullUrl(baseUrl))

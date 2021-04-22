@@ -12,8 +12,10 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc
 ###################################################
 import re
 import urllib
-try:    import json
-except Exception: import simplejson as json
+try:
+    import json
+except Exception:
+    import simplejson as json
 ###################################################
 
 
@@ -72,16 +74,19 @@ class WgranePL(CBaseHostClass):
         page = cItem.get('page', 1)
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         data = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'window_title'), ('<div', '>', 'footer'), False)[1]
 
         data = re.compile('''<div[^>]+?class=['"]list['"][^>]*?>''').split(data)
-        if len(data): del data[0]
+        if len(data):
+            del data[0]
 
         for item in data:
             url  = self.getFullUrl( self.cm.ph.getSearchGroups(item, '''\shref=['"]([^"^']+?)['"]''')[0] )
-            if url == '': continue
+            if url == '':
+                continue
             icon = self.getFullIconUrl( self.cm.ph.getSearchGroups(item, '''<img[^>]+?src=['"]([^"^']+?)['"]''')[0] )
             tmp = self.cm.ph.getAllItemsBeetwenMarkers(item, '<div', '</div>')
             if len(tmp):
@@ -89,12 +94,15 @@ class WgranePL(CBaseHostClass):
                 desc = []
                 for it in tmp[1:]:
                     it = self.cleanHtmlStr( it )
-                    if it != '': desc.append(it)
+                    if it != '':
+                        desc.append(it)
                 desc = '[/br]'.join(desc)
             else:
-                if title == '': title = self.cleanHtmlStr( self.cm.ph.getSearchGroups(item, '''\stitle=['"]([^"^']+?)['"]''')[0] )
+                if title == '':
+                    title = self.cleanHtmlStr( self.cm.ph.getSearchGroups(item, '''\stitle=['"]([^"^']+?)['"]''')[0] )
                 desc = self.cleanHtmlStr(item)
-            if title == '': self.cleanHtmlStr( self.cm.ph.getSearchGroups(item, '''\salt=['"]([^"^']+?)['"]''')[0] )
+            if title == '':
+                self.cleanHtmlStr( self.cm.ph.getSearchGroups(item, '''\salt=['"]([^"^']+?)['"]''')[0] )
 
             params = dict(cItem)
             params.update({'good_for_fav': True, 'category':nextCategory, 'title':title, 'url':url, 'icon':icon, 'desc':desc})
@@ -104,7 +112,8 @@ class WgranePL(CBaseHostClass):
         printDBG("WgranePL.listSort")
 
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
 
         data = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'window_menu'), ('</ul', '>'), False)[1]
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<a', '</a>')
@@ -120,7 +129,8 @@ class WgranePL(CBaseHostClass):
         page = cItem.get('page', 1)
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         data = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'window_title'), ('<div', '>', 'footer'), False)[1]
         nextPage = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'pages'), ('</div', '>'), False)[1]
@@ -130,17 +140,21 @@ class WgranePL(CBaseHostClass):
         data = re.compile('''<div[^>]+?class=['"]list['"][^>]*?>''').split(data)
         for item in data:
             url  = self.getFullUrl( self.cm.ph.getSearchGroups(item, '''\shref=['"]([^"^'^\:]+?)['"]''')[0] )
-            if url == '': continue
+            if url == '':
+                continue
             if 'playlist=' in url:
                 icon = self.getFullIconUrl( self.cm.ph.getSearchGroups(item, '''<img[^>]+?src=['"]([^"^']+?)['"]''')[0] )
                 continue # playlists not supported now
             else:
                 icon = self.getFullIconUrl( self.cm.ph.getSearchGroups(item, '''<img[^>]+?src=['"]([^"^']*?video_picture[^"^']+?)['"]''')[0] )
-                if icon == '': continue
+                if icon == '':
+                    continue
 
             title = self.cleanHtmlStr( self.cm.ph.getDataBeetwenNodes(item, ('<div', '>', 'list_title'), ('</div', '>'), False)[1] )
-            if title == '': title = self.cleanHtmlStr( self.cm.ph.getSearchGroups(item, '''\stitle=['"]([^"^']+?)['"]''')[0] )
-            if title == '': self.cleanHtmlStr( self.cm.ph.getSearchGroups(item, '''\salt=['"]([^"^']+?)['"]''')[0] )
+            if title == '':
+                title = self.cleanHtmlStr( self.cm.ph.getSearchGroups(item, '''\stitle=['"]([^"^']+?)['"]''')[0] )
+            if title == '':
+                self.cleanHtmlStr( self.cm.ph.getSearchGroups(item, '''\salt=['"]([^"^']+?)['"]''')[0] )
 
             desc = self.cm.ph.getDataBeetwenNodes(item, ('<div', '>', 'list_detail'), ('</div', '>'), False)[1]
             desc = self.cleanHtmlStr( descObj.sub('[/br]', desc) )
@@ -177,7 +191,8 @@ class WgranePL(CBaseHostClass):
             if sts:
                 data = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'FileContent'), ('<div', '>', 'ajaxWaitLinks'), False)[1]
                 icon = self.getFullIconUrl( self.cm.ph.getSearchGroups(data, '''<img[^>]+?src=['"]([^"^']*?download.php[^"^']+?)['"]''')[0] )
-            if icon == '': icon = cItem.get('icon', '')
+            if icon == '':
+                icon = cItem.get('icon', '')
             if icon != '':
                 urlTab = [{'name':'link', 'url':icon, 'need_resolve':0}]
         else:

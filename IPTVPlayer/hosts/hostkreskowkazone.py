@@ -13,8 +13,10 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
 import urllib
 from hashlib import md5
-try:    import json
-except Exception: import simplejson as json
+try:
+    import json
+except Exception:
+    import simplejson as json
 from Components.config import config, ConfigText, getConfigListEntry
 ###################################################
 
@@ -85,7 +87,8 @@ class KreskowkaZonePL(CBaseHostClass):
         printDBG("KreskowkaZonePL.listRank")
         
         sts, data = self.cm.getPage(cItem['url'], self.defaultParams)
-        if not sts: return
+        if not sts:
+            return
         
         self.rankCache = {}
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<div class="naglowek naglowek-click">', '</table>', withMarkers=True)
@@ -114,7 +117,8 @@ class KreskowkaZonePL(CBaseHostClass):
         printDBG("KreskowkaZonePL.listABC")
         
         sts, data = self.cm.getPage(cItem['url'], self.defaultParams)
-        if not sts: return
+        if not sts:
+            return
         
         data = self.cm.ph.getDataBeetwenMarkers(data, '<ul class="litery-conteiner">', '</ul>')[1]
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<li ', '</li>', withMarkers=True)
@@ -133,21 +137,26 @@ class KreskowkaZonePL(CBaseHostClass):
         cItem.pop('m1', None)
         
         sts, data = self.cm.getPage(cItem['url'], self.defaultParams)
-        if not sts: return
+        if not sts:
+            return
         
         data = self.cm.ph.getDataBeetwenMarkers(data, m1, '</ul>')[1]
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<div class="box">', '</li>', withMarkers=True)
         for item in data:
             tmp    = self.cm.ph.getDataBeetwenMarkers(item, '<div class="box-title">', '</div>')[1]
             url    = self.getFullUrl(self.cm.ph.getSearchGroups(tmp, '''href=['"]([^'^"]+?)['"]''')[0])
-            if not self.cm.isValidUrl(url): url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0])
+            if not self.cm.isValidUrl(url):
+                url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0])
             icon   = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''src=['"]([^'^"]+?)['"]''')[0])
             title  = self.cleanHtmlStr(tmp)
-            if title == '': title = self.cm.ph.getSearchGroups(item, '''title=['"]([^'^"]+?)['"]''')[0]
-            if title == '': title = self.cm.ph.getSearchGroups(item, '''alt=['"]([^'^"]+?)['"]''')[0]
+            if title == '':
+                title = self.cm.ph.getSearchGroups(item, '''title=['"]([^'^"]+?)['"]''')[0]
+            if title == '':
+                title = self.cm.ph.getSearchGroups(item, '''alt=['"]([^'^"]+?)['"]''')[0]
             
             newUrl = self.cm.ph.getSearchGroups(url, '''(.+?)_[0-9]+$''')[0]
-            if newUrl != '': url = newUrl
+            if newUrl != '':
+                url = newUrl
             
             desc   = self.cleanHtmlStr(item)
             params = dict(cItem)
@@ -158,7 +167,8 @@ class KreskowkaZonePL(CBaseHostClass):
         printDBG("KreskowkaZonePL.listThreads")
         
         sts, data = self.cm.getPage(cItem['url'], self.defaultParams)
-        if not sts: return
+        if not sts:
+            return
         
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<tr class="wiersz">', '</tr>', withMarkers=True)
         for item in data:
@@ -184,7 +194,8 @@ class KreskowkaZonePL(CBaseHostClass):
             return self.cacheLinks[cItem['url']]
         
         sts, data = self.cm.getPage(cItem['url'], self.defaultParams)
-        if not sts: return []
+        if not sts:
+            return []
         
         varName = self.cm.ph.getSearchGroups(data, '''var\s*__gaq\s*=\s*['"]([^'^"]+?)['"]''')[0]
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<tr class="wiersz">', '</tr>', withMarkers=True)
@@ -218,14 +229,18 @@ class KreskowkaZonePL(CBaseHostClass):
                 params['header'] = dict(self.AJAX_HEADER)
                 params['header']['Referer'] = originUrl
                 sts, data = self.cm.getPage(url, params, {'o':str(videoUrl)})
-                if not sts: return []
+                if not sts:
+                    return []
                 printDBG('+++++++++++++++++++++++++++++++++++++++++++++++')
                 printDBG(data)
                 printDBG('+++++++++++++++++++++++++++++++++++++++++++++++')
                 tmp = self.getFullUrl(self.cm.ph.getSearchGroups(data, '''<iframe[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0])
-                if tmp == '': tmp = self.getFullUrl(self.cm.ph.getSearchGroups(data, '''<embed[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0])
-                if tmp == '': tmp = self.cm.ph.getSearchGroups(data, '''<a[^>]+?href="([^>\s]+?)"[>\s]''')[0]
-                if tmp == '': tmp = self.cleanHtmlStr(data)
+                if tmp == '':
+                    tmp = self.getFullUrl(self.cm.ph.getSearchGroups(data, '''<embed[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0])
+                if tmp == '':
+                    tmp = self.cm.ph.getSearchGroups(data, '''<a[^>]+?href="([^>\s]+?)"[>\s]''')[0]
+                if tmp == '':
+                    tmp = self.cleanHtmlStr(data)
                 if not self.cm.isValidUrl(tmp) and 1 <> self.up.checkHostSupport(tmp) and retry:
                     sts, tmp = self.cm.getPage(self.getFullUrl('images/statystyki.gif'), self.defaultParams)
                 else:
@@ -247,7 +262,8 @@ class KreskowkaZonePL(CBaseHostClass):
         try:
             cItem = byteify(json.loads(fav_data))
             links = self.getLinksForVideo(cItem)
-        except Exception: printExc()
+        except Exception:
+            printExc()
         return links
         
     def setInitListFromFavouriteItem(self, fav_data):
@@ -266,7 +282,8 @@ class KreskowkaZonePL(CBaseHostClass):
         
         rm(self.COOKIE_FILE)
         sts, data = self.cm.getPage(self.MAIN_URL, self.defaultParams)
-        if not sts: return False, connFailed 
+        if not sts:
+            return False, connFailed 
         
         md5Password = md5(password).hexdigest()
         post_data = {"vb_login_username":login, "vb_login_password_hint":"Hasło", "vb_login_password":"", "do":"login", "s":"", "securitytoken":"guest", "cookieuser":"1", "vb_login_md5password":md5Password, "vb_login_md5password_utf8":md5Password}
@@ -275,11 +292,13 @@ class KreskowkaZonePL(CBaseHostClass):
         
         # login
         sts, data = self.cm.getPage(self.getFullUrl('login.php?s=&do=login'), params, post_data)
-        if not sts: return False, connFailed
+        if not sts:
+            return False, connFailed
         
         # check if logged
         sts, data = self.cm.getPage(self.MAIN_URL, self.defaultParams)
-        if not sts: return False, connFailed 
+        if not sts:
+            return False, connFailed 
         
         if 'do=logout' in data:
             return True, 'OK'
@@ -349,7 +368,8 @@ class IPTVHost(CHostBase):
     def getLinksForVideo(self, Index = 0, selItem = None):
         retCode = RetHost.ERROR
         retlist = []
-        if not self.isValidIndex(Index): return RetHost(retCode, value=retlist)
+        if not self.isValidIndex(Index):
+            return RetHost(retCode, value=retlist)
         
         urlList = self.host.getLinksForVideo(self.host.currList[Index])
         for item in urlList:
@@ -399,7 +419,8 @@ class IPTVHost(CHostBase):
         title       =  cItem.get('title', '')
         description =  cItem.get('desc', '')
         icon        =  cItem.get('icon', '')
-        if icon == '':  icon = self.host.DEFAULT_ICON_URL
+        if icon == '':
+            icon = self.host.DEFAULT_ICON_URL
         isGoodForFavourites = cItem.get('good_for_fav', False)
         
         return CDisplayListItem(name = title,

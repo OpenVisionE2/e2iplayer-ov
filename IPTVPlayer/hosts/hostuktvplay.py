@@ -14,8 +14,10 @@ from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Play
 import urlparse
 import urllib
 from datetime import timedelta
-try:    import json
-except Exception: import simplejson as json
+try:
+    import json
+except Exception:
+    import simplejson as json
 ###################################################
 
 
@@ -41,12 +43,15 @@ class UKTVPlay(CBaseHostClass):
         self.tmpUrl = 'http://vschedules.uktv.co.uk/mobile/v2/%splatform=android&app_ver=4.3.2'
         
     def getPage(self, baseUrl, addParams = {}, post_data = None):
-        if addParams == {}: addParams = dict(self.defaultParams)
+        if addParams == {}:
+            addParams = dict(self.defaultParams)
         origBaseUrl = baseUrl
         baseUrl = self.cm.iriToUri(baseUrl)
         def _getFullUrl(url):
-            if self.cm.isValidUrl(url): return url
-            else: return urlparse.urljoin(baseUrl, url)
+            if self.cm.isValidUrl(url):
+                return url
+            else:
+                return urlparse.urljoin(baseUrl, url)
         addParams['cloudflare_params'] = {'domain':self.up.getDomain(baseUrl), 'cookie_file':self.COOKIE_FILE, 'User-Agent':self.USER_AGENT, 'full_url_handle':_getFullUrl}
         return self.cm.getPageCFProtection(baseUrl, addParams, post_data)
     
@@ -78,7 +83,8 @@ class UKTVPlay(CBaseHostClass):
             
             if data == None:
                 sts, data = self.getPage(url)
-                if not sts: return
+                if not sts:
+                    return
                 data = byteify(json.loads(data), '', True)
             
             for item in data:
@@ -97,7 +103,8 @@ class UKTVPlay(CBaseHostClass):
             url = self.tmpUrl % cItem['url']
             
             sts, data = self.getPage(url)
-            if not sts: return
+            if not sts:
+                return
             
             data = byteify(json.loads(data), '', True)
             for item in data:
@@ -113,28 +120,38 @@ class UKTVPlay(CBaseHostClass):
             if data == None:
                 url = self.tmpUrl % cItem['url']
                 sts, data = self.getPage(url)
-                if not sts: return
+                if not sts:
+                    return
                 data = byteify(json.loads(data), '', True)
             
             for item in data:
-                if item == '': continue
+                if item == '':
+                    continue
                 descTab = []
 
                 icon  = item.get('image', '')
                 house = item.get('top_house_number', '')
                 title = self.cleanHtmlStr(item.get('title', ''))
                 
-                if icon == '':  icon  = item['brand_image']
-                if house == '': house = item['house_num']
-                if title == '': title = self.cleanHtmlStr(item['brand_name'])
+                if icon == '':
+                    icon  = item['brand_image']
+                if house == '':
+                    house = item['house_num']
+                if title == '':
+                    title = self.cleanHtmlStr(item['brand_name'])
                 
                 pg = []
-                if '' != item.get('guidance_age', ''): pg.append(item['guidance_age'])
-                if '' != item.get('guidance_text', ''): pg.append(item['guidance_text'])
-                if len(pg): descTab.append(' '.join(pg))
+                if '' != item.get('guidance_age', ''):
+                    pg.append(item['guidance_age'])
+                if '' != item.get('guidance_text', ''):
+                    pg.append(item['guidance_text'])
+                if len(pg):
+                    descTab.append(' '.join(pg))
                 
-                if '' != item.get('channel', ''): descTab.append(_('Channel: %s') % item['channel'].title())
-                if '' != item.get('video_count', ''): descTab.append(_('Videos count: %s') % item['video_count'])
+                if '' != item.get('channel', ''):
+                    descTab.append(_('Channel: %s') % item['channel'].title())
+                if '' != item.get('video_count', ''):
+                    descTab.append(_('Videos count: %s') % item['video_count'])
                 
                 desc  = '[/br]'.join(descTab)
                 
@@ -149,7 +166,8 @@ class UKTVPlay(CBaseHostClass):
             url = self.tmpUrl % ('item_details?vod_ids=%s&' % cItem['f_house'])
             
             sts, data = self.getPage(url)
-            if not sts: return
+            if not sts:
+                return
             
             data = byteify(json.loads(data), '', True)[0]
             brandId = data['brand_id']
@@ -174,7 +192,8 @@ class UKTVPlay(CBaseHostClass):
             url = self.tmpUrl % ('brand_episodes?brand_id=%s&series_id=%s&' % (cItem['f_brand_id'], cItem['f_series_id']) )
             
             sts, data = self.getPage(url)
-            if not sts: return
+            if not sts:
+                return
             
             data = byteify(json.loads(data), '', True)
             for item in data['episodes']:
@@ -192,12 +211,16 @@ class UKTVPlay(CBaseHostClass):
                 
                 descTab = []
                 pg = []
-                if '' != item.get('guidance_age', ''): pg.append(item['guidance_age'])
-                if '' != item.get('guidance_text', ''): pg.append(item['guidance_text'])
-                if len(pg): descTab.append(' '.join(pg))
+                if '' != item.get('guidance_age', ''):
+                    pg.append(item['guidance_age'])
+                if '' != item.get('guidance_text', ''):
+                    pg.append(item['guidance_text'])
+                if len(pg):
+                    descTab.append(' '.join(pg))
                 
                 descTab.append(_('Duration: %s') % str(timedelta(seconds=int(item['content_duration']))))
-                if '' != item.get('channel', ''): descTab.append(_('Channel: %s') % item['channel'].title())
+                if '' != item.get('channel', ''):
+                    descTab.append(_('Channel: %s') % item['channel'].title())
                 
                 descTab.append(item.get('teaser_text', ''))
                 desc  = '[/br]'.join(descTab)
@@ -213,7 +236,8 @@ class UKTVPlay(CBaseHostClass):
             url = self.tmpUrl % ('search?q=%s&' % urllib.quote(searchPattern))
             
             sts, data = self.getPage(url)
-            if not sts: return
+            if not sts:
+                return
             
             data = byteify(json.loads(data), '', True)
             self.listItems(cItem, 'list_seasons', data.get('brands', []))
@@ -231,8 +255,10 @@ class UKTVPlay(CBaseHostClass):
         retTab = getDirectM3U8Playlist(videoUrl, checkContent=True)
         
         def __getLinkQuality( itemLink ):
-            try: return int(itemLink['bitrate'])
-            except Exception: return 0
+            try:
+                return int(itemLink['bitrate'])
+            except Exception:
+                return 0
         
         retTab = CSelOneLink(retTab, __getLinkQuality, 99999999).getSortedLinks()
         

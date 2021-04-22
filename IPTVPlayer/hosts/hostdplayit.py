@@ -65,7 +65,8 @@ class Dplayit(CBaseHostClass):
             printDBG('Dplay init and get access token')
             
             sts, data = self.getPage(self.TOKEN_URL)
-            if not sts: return
+            if not sts:
+                return
             
             response = json_loads(data)
             self.AccessToken = response['Data']['AccessToken']
@@ -96,7 +97,8 @@ class Dplayit(CBaseHostClass):
                 return linksTab
         
             sts, data = self.getPage(url, { 'header': h })
-            if not sts: return
+            if not sts:
+                return
         
             #printDBG(data)
             response=json_loads(data)
@@ -105,7 +107,7 @@ class Dplayit(CBaseHostClass):
             linksTab.extend(getDirectM3U8Playlist(stream_url, checkExt=False, variantCheck=True, checkContent=True, sortWithMaxBitrate=99999999))  
                         
         else: 
-            printDBG("Dplay: video form category %s with url %s not handled" % (cItem["category"],cItem["url"]));
+            printDBG("Dplay: video form category %s with url %s not handled" % (cItem["category"],cItem["url"]))
             linksTab.append({'url': cItem["url"], 'name': 'link1'})
         
         return linksTab
@@ -129,7 +131,8 @@ class Dplayit(CBaseHostClass):
             return
         
         sts, data = self.getPage(self.CHANNEL_MENU_URL, { 'header': h })
-        if not sts: return
+        if not sts:
+            return
         
         #printDBG(data)
         response=json_loads(data)
@@ -153,7 +156,8 @@ class Dplayit(CBaseHostClass):
         
         ch_id=cItem["id"]
         sts, data = self.getPage(self.CHANNEL_URL.format(ch_id), { 'header': h })
-        if not sts: return
+        if not sts:
+            return
         
         #printDBG(data)
         response = json_loads(data)
@@ -192,7 +196,8 @@ class Dplayit(CBaseHostClass):
             return
         
         sts, data = self.getPage(self.PROGRAMS_URL, { 'header': h })
-        if not sts: return
+        if not sts:
+            return
         
         #printDBG(data)
         response=json_loads(data)
@@ -227,7 +232,8 @@ class Dplayit(CBaseHostClass):
         
         url=self.SHOW_URL.format(show_id)
         sts, data = self.getPage(url, { 'header': h })
-        if not sts: return
+        if not sts:
+            return
 
         #printDBG(data)
         response=json_loads(data)
@@ -259,7 +265,8 @@ class Dplayit(CBaseHostClass):
             return
         
         sts, data = self.getPage(self.GENRE_URL, { 'header': h })
-        if not sts: return
+        if not sts:
+            return
         
         #printDBG(data)
         response = json_loads(data)
@@ -282,7 +289,8 @@ class Dplayit(CBaseHostClass):
             return
         
         sts, data = self.getPage(self.SHOWBYGENRE_URL.format(gen_id), { 'header': h })
-        if not sts: return
+        if not sts:
+            return
         
         #printDBG(data)
         response=json_loads(data)
@@ -305,7 +313,8 @@ class Dplayit(CBaseHostClass):
             return
         
         sts, data = self.getPage(self.PLAYLIST_URL.format(list_id), { 'header': h })
-        if not sts: return
+        if not sts:
+            return
         
         #printDBG(data)
         response = json_loads(data)
@@ -329,7 +338,8 @@ class Dplayit(CBaseHostClass):
             return
         
         sts, data = self.getPage(self.POPULAR_URL, { 'header': h })
-        if not sts: return
+        if not sts:
+            return
         
         printDBG(data)
         response = json_loads(data)

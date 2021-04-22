@@ -13,8 +13,10 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc
 import urlparse
 import re
 import urllib
-try:    import json
-except Exception: import simplejson as json
+try:
+    import json
+except Exception:
+    import simplejson as json
 ###################################################
 
 
@@ -46,12 +48,15 @@ class ClassicCinemaOnline(CBaseHostClass):
         return 10
     
     def getPage(self, baseUrl, addParams = {}, post_data = None):
-        if addParams == {}: addParams = dict(self.defaultParams)
+        if addParams == {}:
+            addParams = dict(self.defaultParams)
         origBaseUrl = baseUrl
         baseUrl = self.cm.iriToUri(baseUrl)
         def _getFullUrl(url):
-            if self.cm.isValidUrl(url): return url
-            else: return urlparse.urljoin(baseUrl, url)
+            if self.cm.isValidUrl(url):
+                return url
+            else:
+                return urlparse.urljoin(baseUrl, url)
         addParams['cloudflare_params'] = {'domain':self.up.getDomain(baseUrl), 'cookie_file':self.COOKIE_FILE, 'User-Agent':self.USER_AGENT, 'full_url_handle':_getFullUrl}
         return self.cm.getPageCFProtection(baseUrl, addParams, post_data)
         
@@ -63,7 +68,8 @@ class ClassicCinemaOnline(CBaseHostClass):
         printDBG("ClassicCinemaOnline.listCats")
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         tmp = []
         data = self.cm.ph.getDataBeetwenNodes(data, ('<a', '</a>', 'javascript:void(0);'), ('<a', '</a>', '/serials'), False)[1]
@@ -89,12 +95,14 @@ class ClassicCinemaOnline(CBaseHostClass):
         printDBG("ClassicCinemaOnline.listItems [%s]" % cItem)
         page = cItem.get('page', 0)
         post_data = None
-        if page == 0: post_data = {'limit':self.getMaxDisplayItems(), 'filter_order':'', 'filter_order_Dir':'', 'limitstart':''}
+        if page == 0:
+            post_data = {'limit':self.getMaxDisplayItems(), 'filter_order':'', 'filter_order_Dir':'', 'limitstart':''}
         
         url = cItem['url']
         
         sts, data = self.getPage(url, post_data=post_data)
-        if not sts: return
+        if not sts:
+            return
         
         nextPage = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'pagination'), ('</div', '>'))[1]
         nextPage = self.cm.ph.getDataBeetwenNodes(nextPage, ('<a', '>', 'Next'), ('</a', '>'))[1]
@@ -137,7 +145,8 @@ class ClassicCinemaOnline(CBaseHostClass):
             url = cItem['url']
         
         sts, data = self.getPage(url)
-        if not sts: return
+        if not sts:
+            return
         
         nextPage = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'pagination'), ('</div', '>'))[1]
         nextPage = self.cm.ph.getDataBeetwenNodes(nextPage, ('<a', '>', 'Next'), ('</a', '>'))[1]
@@ -145,7 +154,8 @@ class ClassicCinemaOnline(CBaseHostClass):
         
         data = self.cm.ph.getDataBeetwenMarkers(data, '<dl', '</dl>')[1]
         data = re.compile('<dt[^>]+?result-title[^>]+?>').split(data)
-        if len(data): del data[0]
+        if len(data):
+            del data[0]
         for item in data:
             tmp = item.split('</dt>', 1)
             url = self.getFullUrl(self.cm.ph.getSearchGroups(tmp[0], '''href=['"]([^'^"]+?)['"]''')[0])
@@ -165,7 +175,8 @@ class ClassicCinemaOnline(CBaseHostClass):
         printDBG("ClassicCinemaOnline.exploreItem")
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return
+        if not sts:
+            return
         
         if 'Display #' in data:
             cItem = dict(cItem)
@@ -182,14 +193,17 @@ class ClassicCinemaOnline(CBaseHostClass):
         retTab = []
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return []
+        if not sts:
+            return []
         
         reObj = re.compile('''['"]([^"^']+?\.mp4(:?\?[^"^']+?)?)['"]''', re.IGNORECASE)
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<center>', '</center>')
         for item in data:
             videoUrl = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''<iframe[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0])
-            if videoUrl == '': videoUrl = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''<embed[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0])
-            if videoUrl == '': videoUrl = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''<object[^>]+?value=['"]([^"^']+?)['"]''', 1, True)[0])
+            if videoUrl == '':
+                videoUrl = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''<embed[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0])
+            if videoUrl == '':
+                videoUrl = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''<object[^>]+?value=['"]([^"^']+?)['"]''', 1, True)[0])
             if videoUrl.split('?', 1)[0].endswith('.swf'):
                 baseUrl = self.cm.ph.getSearchGroups(item, '''['"]?baseUrl['"]?\s*:\s*['"](https?://[^"^']+?)['"]''', 1, True)[0]
                 item = reObj.findall(item)
@@ -210,7 +224,8 @@ class ClassicCinemaOnline(CBaseHostClass):
         retTab = []
         
         sts, data = self.getPage(cItem['url'])
-        if not sts: return retTab
+        if not sts:
+            return retTab
         
         imdbId = self.cm.ph.getSearchGroups(data, 'imdb\.com/title/tt([0-9]+?)[^0-9$]')[0]
         if imdbId == '': 
@@ -220,15 +235,19 @@ class ClassicCinemaOnline(CBaseHostClass):
         
         url = 'http://www.imdb.com/title/tt{0}/'.format(imdbId)
         sts, data = self.getPage(url)
-        if not sts: return retTab
+        if not sts:
+            return retTab
         
         title = self.cleanHtmlStr( self.cm.ph.getSearchGroups(data, '''<meta property=['"]?og\:title['"]?[^>]+?content=['"]([^"^']+?)['"]''')[0] )
         desc  = self.cleanHtmlStr( self.cm.ph.getDataBeetwenMarkers(data, '<div class="summary_text"' , '</div>')[1] )
-        if desc == '': desc  = self.cleanHtmlStr( self.cm.ph.getSearchGroups(data, '''<meta property=['"]?og\:description['"]?[^>]+?content=['"]([^"^']+?)['"]''')[0] )
+        if desc == '':
+            desc  = self.cleanHtmlStr( self.cm.ph.getSearchGroups(data, '''<meta property=['"]?og\:description['"]?[^>]+?content=['"]([^"^']+?)['"]''')[0] )
         icon  = self.getFullUrl( self.cm.ph.getSearchGroups(data, '''<meta property=['"]?og\:image['"]?[^>]+?content=['"]([^"^']+?)['"]''')[0] )
         
-        if title == '': title = cItem['title']
-        if desc == '':  title = cItem.get('desc', '')
+        if title == '':
+            title = cItem['title']
+        if desc == '':
+            title = cItem.get('desc', '')
         
         descData = self.cm.ph.getAllItemsBeetwenMarkers(data, '<h4 class="inline"', '</div>')
         descKeyMap = {"also known as": "alternate_title",
@@ -248,9 +267,11 @@ class ClassicCinemaOnline(CBaseHostClass):
         for item in descData:
             item = item.split('</h4>')
             printDBG(item)
-            if len(item) < 2: continue
+            if len(item) < 2:
+                continue
             key = self.cleanHtmlStr( item[0] ).replace(':', '').strip().lower()
-            if key not in descKeyMap: continue
+            if key not in descKeyMap:
+                continue
             val = self.cleanHtmlStr( item[1] ).split('See more')[0]
             otherInfo[descKeyMap[key]] = val
         data = self.cm.ph.getDataBeetwenMarkers(data, '<div class="ratingValue">', '</div>')[1]

@@ -102,7 +102,7 @@ class IPTVPinWidget(Screen):
     def nextPinItem(self):
         self.selIndx += 1
         if self.PIN_LEN <= self.selIndx:
-            self.selIndx = 0;
+            self.selIndx = 0
 
         self.updatePinDisplay()
             
@@ -113,7 +113,7 @@ class IPTVPinWidget(Screen):
     def keyLeft(self):
         self.selIndx -= 1
         if self.selIndx < 0:
-            self.selIndx = self.PIN_LEN - 1;
+            self.selIndx = self.PIN_LEN - 1
             
         self.updatePinDisplay()
         return

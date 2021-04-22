@@ -16,8 +16,10 @@ from Plugins.Extensions.IPTVPlayer.libs.youtube_dl.extractor.bbc import BBCCoUkI
 ###################################################
 import re
 import urllib
-try:    import json
-except Exception: import simplejson as json
+try:
+    import json
+except Exception:
+    import simplejson as json
 from Components.config import config, getConfigListEntry
 ###################################################
 
@@ -163,7 +165,8 @@ class BBCiPlayer(CBaseHostClass):
     def listChannelMenu(self, cItem, nextCategory):
         printDBG("BBCiPlayer.listChannelMenu")
         sts, data = self.cm.getPage(cItem['url'], self.defaultParams)
-        if not sts: return
+        if not sts:
+            return
         
         azItem = False
         data = self.cm.ph.getDataBeetwenMarkers(data, '<div id="main"', '</ul>', withMarkers=True)[1]
@@ -171,8 +174,10 @@ class BBCiPlayer(CBaseHostClass):
         for item in data:
             item = item.split('</li>')[0]
             url = self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?rewindTo[^'^"]+?)['"]''')[0]
-            if url == '': url = self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0]
-            if url == '': continue
+            if url == '':
+                url = self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0]
+            if url == '':
+                continue
             title = self.cleanHtmlStr(item)
             icon  = self.cm.ph.getSearchGroups(item, '''<source[^>]+?srcset=['"]([^'^"^\s]+?)['"\s]''')[0]
             
@@ -221,7 +226,8 @@ class BBCiPlayer(CBaseHostClass):
         printDBG("BBCiPlayer.listCatFilters")
         
         sts, data = self.cm.getPage(cItem['url'], self.defaultParams)
-        if not sts: return
+        if not sts:
+            return
         baseUrl = self.cm.meta['url']
         
         data = self.cm.ph.getDataBeetwenMarkers(data, '<div class="filters">', '</ul>', withMarkers=False)[1]
@@ -245,7 +251,8 @@ class BBCiPlayer(CBaseHostClass):
         
         if not cItem.get('is_sub_cat', False):
             sts, data = self.cm.getPage(cItem['url'], self.defaultParams)
-            if not sts: return
+            if not sts:
+                return
             baseUrl = self.cm.meta['url']
             
             data = self.cm.ph.getDataBeetwenMarkers(data, '<ul id="tleo-switcher"', '</ul>', withMarkers=False)[1]
@@ -254,7 +261,8 @@ class BBCiPlayer(CBaseHostClass):
                 for item in data:
                     title = self.cleanHtmlStr(item)
                     url   = self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0]
-                    if url == '': url = baseUrl
+                    if url == '':
+                        url = baseUrl
                     params = dict(cItem)
                     params.update({'is_sub_cat':True, 'title':title, 'url':self.getFullUrl(url)})
                     self.addDir(params)
@@ -271,7 +279,8 @@ class BBCiPlayer(CBaseHostClass):
         printDBG("BBCiPlayer.listItems3")
 
         sts, data = self.cm.getPage(cItem['url'], self.defaultParams)
-        if not sts: return
+        if not sts:
+            return
         
         data = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'channel-page'), ('<div', '>', 'endpanel js-stat'), withNodes=False)[1]
         data = data.split('</div><div class="gel-layout__item')
@@ -280,18 +289,22 @@ class BBCiPlayer(CBaseHostClass):
                 item = item.split('<ul class="group__list">')[0]
                 
                 url = self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0]
-                if url == '' or '/features/' in url: continue
+                if url == '' or '/features/' in url:
+                    continue
                 title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<h3', '</h3>')[1])
-                if title == '': continue
+                if title == '':
+                    continue
                 icon  = self.cm.ph.getSearchGroups(item, '''src=['"]([^'^"]+?)['"]''')[0]
                 desc  = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<p', '</p>')[1])
                 params = {'good_for_fav': True, 'category':nextCategory, 'title':title, 'url':self.getFullUrl(url), 'icon':self.getFullIconUrl(icon), 'desc':'[/br]'.join(descTab)}
                 self.addDir(params)
             else:
                 url = self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0]
-                if url == '' or '/features/' in url: continue
+                if url == '' or '/features/' in url:
+                    continue
                 title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<h3', '</p>')[1])
-                if title == '': continue
+                if title == '':
+                    continue
                 
                 icon  = self.cm.ph.getSearchGroups(item, '''<source[^>]+?srcset=['"]([^'^"^\s]+?)['"\s]''')[0]
                 
@@ -311,7 +324,8 @@ class BBCiPlayer(CBaseHostClass):
         printDBG("BBCiPlayer.listItems2")
 
         sts, data = self.cm.getPage(cItem['url'], self.defaultParams)
-        if not sts: return
+        if not sts:
+            return
         
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<ol class="grid__row', '</ol>', withMarkers=True)
         for group in data:
@@ -319,9 +333,11 @@ class BBCiPlayer(CBaseHostClass):
                 item = group.split('<li class="grouped-items__list-item">')[0]
                 
                 url = self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0]
-                if url == '' or '/features/' in url: continue
+                if url == '' or '/features/' in url:
+                    continue
                 title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<h3', '</h3>')[1])
-                if title == '': continue
+                if title == '':
+                    continue
                 icon  = self.cm.ph.getSearchGroups(item, '''src=['"]([^'^"]+?)['"]''')[0]
                 desc  = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<p', '</p>')[1])
                 params = {'good_for_fav': True, 'category':nextCategory, 'title':title, 'url':self.getFullUrl(url), 'icon':self.getFullIconUrl(icon), 'desc':'[/br]'.join(descTab)}
@@ -330,9 +346,11 @@ class BBCiPlayer(CBaseHostClass):
                 group = group.split('</li>')
                 for item in group:
                     url = self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0]
-                    if url == '' or '/features/' in url: continue
+                    if url == '' or '/features/' in url:
+                        continue
                     title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<h3', '</p>')[1])
-                    if title == '': continue
+                    if title == '':
+                        continue
                     
                     icon  = self.cm.ph.getSearchGroups(item, '''<source[^>]+?srcset=['"]([^'^"^\s]+?)['"\s]''')[0]
                     
@@ -374,12 +392,15 @@ class BBCiPlayer(CBaseHostClass):
         url  = cItem['url']
         page = cItem.get('page', 1)
         if page > 1:
-            if '?' in url: url += '&'
-            else: url += '?'
+            if '?' in url:
+                url += '&'
+            else:
+                url += '?'
             url += 'page=%s' % page
         
         sts, data = self.cm.getPage(url, self.defaultParams)
-        if not sts: return
+        if not sts:
+            return
         
         printDBG("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         printDBG(data)
@@ -387,28 +408,36 @@ class BBCiPlayer(CBaseHostClass):
         
         t1 = '<div id="tvip-footer-wrap">'
         t2 = '<div class="footer js-footer">'
-        if t1 in data: endTag = t1
-        else: endTag = t2
+        if t1 in data:
+            endTag = t1
+        else:
+            endTag = t2
         
         nextPage = self.cm.ph.getDataBeetwenNodes(data, ('<ol', '>', 'pagination'), ('</ol', '>'))[1]
         if nextPage != '':
             nextPage = self.cm.ph.getSearchGroups(nextPage, '''page=(%s)[^0-9]''' % (page+1))[0]
-            if '' != nextPage: nextPage = True
-            else: nextPage = False
+            if '' != nextPage:
+                nextPage = True
+            else:
+                nextPage = False
             endTag = '<ol[^>]+?pagination[^>]+?>'
         else:
             mTag = '<div class="paginate">'
             nextPage = self.cm.ph.getDataBeetwenMarkers(data, mTag, '</div>', withMarkers=False)[1]
             if '' != nextPage: 
-                if '' != self.cm.ph.getSearchGroups(nextPage, '''page=(%s)[^0-9]''' % (page+1))[0]: nextPage = True
-                else: nextPage = False
+                if '' != self.cm.ph.getSearchGroups(nextPage, '''page=(%s)[^0-9]''' % (page+1))[0]:
+                    nextPage = True
+                else:
+                    nextPage = False
                 endTag = mTag
             else:
                 mTag = '<ul class="pagination'
                 nextPage = self.cm.ph.getDataBeetwenMarkers(data, mTag, '</ul>', withMarkers=False)[1]
                 if '' != nextPage: 
-                    if '' != self.cm.ph.getSearchGroups(nextPage, '''page&#x3D;(%s)[^0-9]''' % (page+1))[0]: nextPage = True
-                    else: nextPage = False
+                    if '' != self.cm.ph.getSearchGroups(nextPage, '''page&#x3D;(%s)[^0-9]''' % (page+1))[0]:
+                        nextPage = True
+                    else:
+                        nextPage = False
                     endTag = mTag
         
         startTag = re.compile('''<li[^>]+?(?:class=['"]list-item|list__grid__item|layout__item)[^>]*?>''')
@@ -419,7 +448,8 @@ class BBCiPlayer(CBaseHostClass):
         subTitleReOb2 = re.compile('</h2>')
         for item in data:
             title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(item, ('<div', '>', 'title'), ('</div', '>'))[1])
-            if title == '': title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<h1 class="list-item__title', '</h1>')[1])
+            if title == '':
+                title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<h1 class="list-item__title', '</h1>')[1])
             icon  = self.cm.ph.getSearchGroups(item, '''<source[^>]+?srcset=['"]([^'^"]+?)['"]''', ignoreCase=True)[0]
             
             printDBG(item)
@@ -437,14 +467,18 @@ class BBCiPlayer(CBaseHostClass):
                 
             if type == 'video':
                 subtitle = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<div class="subtitle', '</div>')[1])
-                if subtitle == '': subtitle = self.cleanHtmlStr(self.cm.ph.getDataBeetwenReMarkers(item, subTitleReOb1, subTitleReOb2)[1])
-                if subtitle != '': title += ' ' + subtitle
+                if subtitle == '':
+                    subtitle = self.cleanHtmlStr(self.cm.ph.getDataBeetwenReMarkers(item, subTitleReOb1, subTitleReOb2)[1])
+                if subtitle != '':
+                    title += ' ' + subtitle
             
             if 'data-timeliness-type="unavailable"' in item:
                 title = '[' + self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<span class="signpost editorial">', '</span>')[1]) + '] ' + title
             
-            if title.lower().startswith('episode '): title = '%s - %s' % (cItem['title'], title)
-            elif cItem['category'] == 'list_episodes': title = cItem['title'] + ' ' + title
+            if title.lower().startswith('episode '):
+                title = '%s - %s' % (cItem['title'], title)
+            elif cItem['category'] == 'list_episodes':
+                title = cItem['title'] + ' ' + title
             
             if url == '' or title == '': 
                 printDBG("+++++++++++++++ NO TITLE url[%s], title[%s]" % (url, title))
@@ -517,7 +551,8 @@ class BBCiPlayer(CBaseHostClass):
         retTab = []
         
         sts, data = self.cm.getPage(cItem['url'], self.defaultParams)
-        if not sts: return retTab
+        if not sts:
+            return retTab
         
         json_data = self.scrapeJSON(data)
         if json_data:
