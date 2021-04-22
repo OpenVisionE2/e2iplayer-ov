@@ -5,7 +5,7 @@
 from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT as _
 from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostClass, CDisplayListItem
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, byteify, CSelOneLink
-from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import  getDirectM3U8Playlist
+from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Playlist
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
 
@@ -23,7 +23,7 @@ from Components.config import config, ConfigSelection, getConfigListEntry
 ###################################################
 # Config options for HOST
 ###################################################
-config.plugins.iptvplayer.kisscartoon_defaultformat = ConfigSelection(default="999999", choices=[("0", _("the worst")), ("360", "360p"), ("480", "480p"), ("720", "720p"),  ("1080", "1080p"), ("999999", "the best")])
+config.plugins.iptvplayer.kisscartoon_defaultformat = ConfigSelection(default="999999", choices=[("0", _("the worst")), ("360", "360p"), ("480", "480p"), ("720", "720p"), ("1080", "1080p"), ("999999", "the best")])
 
 def GetConfigList():
     optionList = []
@@ -43,14 +43,14 @@ class KissCartoonMe(CBaseHostClass):
     MAIN_URL = 'https://kisscartoon.ac/'
     DEFAULT_ICON_URL = "http://kisscartoon.bz/image/logo.png"
     
-    MAIN_CAT_TAB = [{'category':'home',            'title': _('Home'),              'url':MAIN_URL,},
-                    {'category':'list_cats',       'title': _('Catrtoon list'),     'url':MAIN_URL+'CartoonList', },
-                    {'category':'search',          'title': _('Search'), 'search_item':True,},
-                    {'category':'search_history',  'title': _('Search history'),}]
+    MAIN_CAT_TAB = [{'category':'home', 'title': _('Home'), 'url':MAIN_URL,},
+                    {'category':'list_cats', 'title': _('Catrtoon list'), 'url':MAIN_URL + 'CartoonList', },
+                    {'category':'search', 'title': _('Search'), 'search_item':True,},
+                    {'category':'search_history', 'title': _('Search history'),}]
     SORT_BY_TAB = [{'title':_('Sort by alphabet')},
                    {'title':_('Sort by popularity'), 'sort_by':'MostPopular'},
-                   {'title':_('Latest update'),      'sort_by':'LatestUpdate'},
-                   {'title':_('New cartoon'),        'sort_by':'Newest'}]
+                   {'title':_('Latest update'), 'sort_by':'LatestUpdate'},
+                   {'title':_('New cartoon'), 'sort_by':'Newest'}]
  
     def __init__(self):
         CBaseHostClass.__init__(self, {'history':'kisscartoon.io', 'cookie':'kisscartoonme.cookie'})
@@ -71,7 +71,7 @@ class KissCartoonMe(CBaseHostClass):
             if url.startswith('/'):
                 url = url[1:]
             if not url.startswith('http'):
-                url =  self.MAIN_URL + url
+                url = self.MAIN_URL + url
         
         url = self.cleanHtmlStr(url)
         url = self.replacewhitespace(url)
@@ -110,7 +110,7 @@ class KissCartoonMe(CBaseHostClass):
         for item in tab:
             params = dict(cItem)
             params.update(item)
-            params['name']  = 'category'
+            params['name'] = 'category'
             if type == 'dir' and 'video' != item.get('category', ''):
                 self.addDir(params)
             else:
@@ -125,19 +125,19 @@ class KissCartoonMe(CBaseHostClass):
             del data[0]
         tab = []
         for item in data:
-            url   = self.cm.ph.getSearchGroups(item, '''href=["']([^"^']+?)["']''')[0]
+            url = self.cm.ph.getSearchGroups(item, '''href=["']([^"^']+?)["']''')[0]
             if '' == url:
                 continue
             title = self.cm.ph.getDataBeetwenMarkers(item, '<span class="title">', '</span>', False)[1]
             if '' == title:
                 title = self.cm.ph.getDataBeetwenMarkers(item, '<a ', '</a>')[1]
             if forceIcon == '':
-                icon  = self.cm.ph.getSearchGroups(item, '''src=["']([^"^']+?)["']''')[0]
+                icon = self.cm.ph.getSearchGroups(item, '''src=["']([^"^']+?)["']''')[0]
             else:
                 icon = forceIcon
-            desc  = self.cm.ph.getDataBeetwenMarkers(item, '<p>', '</p>', False)[1]
+            desc = self.cm.ph.getDataBeetwenMarkers(item, '<p>', '</p>', False)[1]
             if '' == desc:
-                desc = '<'+item
+                desc = '<' + item
             tab.append({'good_for_fav': True, 'title':self.cleanHtmlStr(title), 'url':self._getFullUrl(url), 'icon':self._urlWithCookie(icon), 'desc':self.cleanHtmlStr(desc)})
         return tab
             
@@ -227,9 +227,9 @@ class KissCartoonMe(CBaseHostClass):
             self.cache[catTitle] = []
             tmp2 = self.cm.ph.getAllItemsBeetwenMarkers(item, '<a ', '</a>')
             for item2 in tmp2:
-                url  = self.cm.ph.getSearchGroups(item2, '''href="([^"]+?)"''')[0]
+                url = self.cm.ph.getSearchGroups(item2, '''href="([^"]+?)"''')[0]
                 title = self.cleanHtmlStr(item2)
-                desc  = self.cm.ph.getSearchGroups(item2, '''title="([^"]+?)"''')[0]
+                desc = self.cm.ph.getSearchGroups(item2, '''title="([^"]+?)"''')[0]
                 self.cache[catTitle].append({'title':title, 'desc':desc, 'url':self._getFullUrl(url)})
             
             if len(self.cache[catTitle]) > 0:
@@ -248,7 +248,7 @@ class KissCartoonMe(CBaseHostClass):
         if sortBy != '':
             if not url.endswith('/'):
                 url += '/'
-            url += sortBy+'/'
+            url += sortBy + '/'
         if page > 1:
             if '?' in url:
                 url += '&'
@@ -260,14 +260,14 @@ class KissCartoonMe(CBaseHostClass):
     def listItems(self, cItem, category):
         printDBG("KissCartoonMe.listItems [%s]" % cItem)
         page = cItem.get('page', 1)
-        sort_by   = cItem.get('sort_by', '')
+        sort_by = cItem.get('sort_by', '')
         url = self._urlAppendPage(cItem['url'], page, sort_by)
         sts, data = self.getPage(url)
         if not sts:
             return
         
         nextPage = False
-        if ('page=%d"' % (page+1)) in data:
+        if ('page=%d"' % (page + 1)) in data:
             nextPage = True
         
         #if '/Search/' in cItem['url']:
@@ -284,7 +284,7 @@ class KissCartoonMe(CBaseHostClass):
         
         if nextPage:
             params = dict(cItem)
-            params.update({'title':_('Next page'), 'page':page+1})
+            params.update({'title':_('Next page'), 'page':page + 1})
             self.addDir(params)
             
     def listEpisodes(self, cItem):
@@ -329,7 +329,7 @@ class KissCartoonMe(CBaseHostClass):
             if url.startswith('//'):
                 url = 'https:' + url
             if not self.cm.isValidUrl(url):
-                url  = self.cm.ph.getSearchGroups(url, '''<iframe[^>]+?src=['"]([^'^"]+?)['"]''', ignoreCase=True)[0]
+                url = self.cm.ph.getSearchGroups(url, '''<iframe[^>]+?src=['"]([^'^"]+?)['"]''', ignoreCase=True)[0]
                 url = self._getFullUrl(url)
             url = strwithmeta(url, {'Referer':cItem['url']})
             urlTab.append({'name':'default', 'url':url, 'need_resolve':1})
@@ -382,7 +382,7 @@ class KissCartoonMe(CBaseHostClass):
             max_bitrate = int(config.plugins.iptvplayer.kisscartoon_defaultformat.value)
             def __getLinkQuality(itemLink):
                 try:
-                    return int(self.cm.ph.getSearchGroups('|'+itemLink['name']+'|', '[^0-9]([0-9]+?)[^0-9]')[0])
+                    return int(self.cm.ph.getSearchGroups('|' + itemLink['name'] + '|', '[^0-9]([0-9]+?)[^0-9]')[0])
                 except Exception:
                     return 0
             urlTab = CSelOneLink(urlTab, __getLinkQuality, max_bitrate).getBestSortedList()
@@ -429,9 +429,9 @@ class KissCartoonMe(CBaseHostClass):
         
         CBaseHostClass.handleService(self, index, refresh, searchPattern, searchType)
 
-        name     = self.currItem.get("name", '')
+        name = self.currItem.get("name", '')
         category = self.currItem.get("category", '')
-        mode     = self.currItem.get("mode", '')
+        mode = self.currItem.get("mode", '')
         
         printDBG("handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category))
         self.currList = []

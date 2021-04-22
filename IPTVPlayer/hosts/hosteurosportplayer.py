@@ -26,13 +26,13 @@ from Components.config import config, ConfigText, getConfigListEntry
 ###################################################
 # Config options for HOST
 ###################################################
-config.plugins.iptvplayer.eurosportplayer_login    = ConfigText(default="", fixed_size=False)
+config.plugins.iptvplayer.eurosportplayer_login = ConfigText(default="", fixed_size=False)
 config.plugins.iptvplayer.eurosportplayer_password = ConfigText(default="", fixed_size=False)
 
 def GetConfigList():
     optionList = []
-    optionList.append(getConfigListEntry(_("e-mail")+":",    config.plugins.iptvplayer.eurosportplayer_login))
-    optionList.append(getConfigListEntry(_("password")+":", config.plugins.iptvplayer.eurosportplayer_password))
+    optionList.append(getConfigListEntry(_("e-mail") + ":", config.plugins.iptvplayer.eurosportplayer_login))
+    optionList.append(getConfigListEntry(_("password") + ":", config.plugins.iptvplayer.eurosportplayer_password))
     return optionList
 ###################################################
 def gettytul():
@@ -63,18 +63,18 @@ class EuroSportPlayer(CBaseHostClass):
         self.recaptcha_sitekey = "6LfvErIUAAAAABlpqACnxRiUhqhX4p14sPxx_sKf"
         
         self.loggedIn = None
-        self.login    = ''
+        self.login = ''
         self.password = ''
         
         # eurosport database
-        self.espChannels={}
-        self.espRoutes={}
-        self.espCollections={}
-        self.espCollectionItems={}
-        self.espImages={}
-        self.espVideos={}
-        self.espTaxonomyNodes={}
-        self.espShows={}
+        self.espChannels = {}
+        self.espRoutes = {}
+        self.espCollections = {}
+        self.espCollectionItems = {}
+        self.espImages = {}
+        self.espVideos = {}
+        self.espTaxonomyNodes = {}
+        self.espShows = {}
         
         self.OFFSET = datetime.now() - datetime.utcnow()
         seconds = self.OFFSET.seconds + self.OFFSET.days * 24 * 3600
@@ -94,9 +94,9 @@ class EuroSportPlayer(CBaseHostClass):
         
     def getFullPath(self, url, category):
         if category == 'route':
-            url =  self.API_URL + 'cms/routes' + url
+            url = self.API_URL + 'cms/routes' + url
         elif category == 'video':
-            url =  'https://www.eurosportplayer.com/videos/' + url
+            url = 'https://www.eurosportplayer.com/videos/' + url
         return url
     
     def listMainMenu(self, cItem):
@@ -104,9 +104,9 @@ class EuroSportPlayer(CBaseHostClass):
         
         try:
             CAT_TAB = [
-                       {'category':'on_air',             'title': _('On Air'),}, 
-                       {'category':'schedule',           'title': _('Schedule'),},
-                       {'category':'vod_sport_filters',  'title': _('All Sports'),} #,
+                       {'category':'on_air', 'title': _('On Air'),}, 
+                       {'category':'schedule', 'title': _('Schedule'),},
+                       {'category':'vod_sport_filters', 'title': _('All Sports'),} #,
                        #{'category':'search',             'title': _('Search'),          'search_item':True    }, 
                        #{'category':'search_history',     'title': _('Search history')}
                       ]
@@ -137,21 +137,21 @@ class EuroSportPlayer(CBaseHostClass):
         itemType = item['type']
         itemId = item['id']
 
-        if itemType=='channel':
+        if itemType == 'channel':
             self.espChannels[itemId] = item
-        elif itemType=='route':
+        elif itemType == 'route':
             self.espRoutes[itemId] = item
-        elif itemType=='collection':
+        elif itemType == 'collection':
             self.espCollections[itemId] = item
-        elif itemType=='collectionItem':
+        elif itemType == 'collectionItem':
             self.espCollectionItems[itemId] = item
-        elif itemType=='image':
+        elif itemType == 'image':
             self.espImages[itemId] = item
-        elif itemType=='show':
+        elif itemType == 'show':
             self.espShows[itemId] = item
-        elif itemType=='video':
+        elif itemType == 'video':
             self.espVideos[itemId] = item
-        elif itemType=='taxonomyNode':
+        elif itemType == 'taxonomyNode':
             self.espTaxonomyNodes[itemId] = item
         else:
             printDBG("unhandled type %s" % itemType)
@@ -224,8 +224,8 @@ class EuroSportPlayer(CBaseHostClass):
             
             if scheduleDate < datetime.now() or future:
             
-                txtDate=scheduleDate.strftime("%d/%m/%Y")
-                txtTime=scheduleDate.strftime("%H:%M")
+                txtDate = scheduleDate.strftime("%d/%m/%Y")
+                txtTime = scheduleDate.strftime("%H:%M")
 
                 #"routes": {"data": [{"type": "route", "id": "ba42a747696c2cc69574ee9414806703f3cc4271c97578ed68d795e81f526c3c"}]}, 
                 if 'routes' in videoData['relationships']:
@@ -253,12 +253,12 @@ class EuroSportPlayer(CBaseHostClass):
                             txtChannel = ''
 
                         if bt == 'LIVE':
-                            title =" %s %s - %s [%s]" % (txtTime, txtSport.upper(), item_data['name'], bt)
+                            title = " %s %s - %s [%s]" % (txtTime, txtSport.upper(), item_data['name'], bt)
                         else:
-                            title =" %s %s - %s - %s" % (txtTime, txtSport.upper(), item_data['name'], txtChannel)
+                            title = " %s %s - %s - %s" % (txtTime, txtSport.upper(), item_data['name'], txtChannel)
                     # elif altri casi
                     else:
-                        title = item_data['name'] + "  [%s] - (%s)" % (bt,  txtDate)
+                        title = item_data['name'] + "  [%s] - (%s)" % (bt, txtDate)
 
                 else:
                     title = item_data['name'] + "  [%s] - (%s)" % (bt, txtDate)
@@ -338,8 +338,8 @@ class EuroSportPlayer(CBaseHostClass):
             #printDBG(data)
             data = json_loads(data)
             
-            videoList=[]
-            videoParamsList=[]
+            videoList = []
+            videoParamsList = []
             for item in data['included']:
                 self.addItemInDB(item)
                 
@@ -371,8 +371,8 @@ class EuroSportPlayer(CBaseHostClass):
             
             data = json_loads(data)
             
-            videoList=[]
-            videoParamsList=[]
+            videoList = []
+            videoParamsList = []
             for item in data['included']:
                 self.addItemInDB(item)
                 
@@ -599,7 +599,7 @@ class EuroSportPlayer(CBaseHostClass):
                 '''
                 
                 if not sts and '401' in str(data):
-                    msg =  _('Login failed. Invalid email or password.')
+                    msg = _('Login failed. Invalid email or password.')
                     GetIPTVNotify().push(msg, 'error', 10)
                     return False
                 else:
@@ -688,9 +688,9 @@ class EuroSportPlayer(CBaseHostClass):
         
         CBaseHostClass.handleService(self, index, refresh, searchPattern, searchType)
 
-        name     = self.currItem.get("name", '')
+        name = self.currItem.get("name", '')
         category = self.currItem.get("category", '')
-        mode     = self.currItem.get("mode", '')
+        mode = self.currItem.get("mode", '')
         
         printDBG("handleService: |||| name[%s], category[%s] " % (name, category))
         self.cacheLinks = {}

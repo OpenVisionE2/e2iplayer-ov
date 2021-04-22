@@ -17,7 +17,7 @@ from Plugins.Extensions.IPTVPlayer.libs import ph
 import re
 import urllib
 from datetime import timedelta
-from urlparse import  urljoin
+from urlparse import urljoin
 ###################################################
 
 
@@ -73,11 +73,11 @@ class TED(CBaseHostClass):
         
     def selectDomain(self):                
         self.MAIN_URL = 'https://ted.com/'
-        self.MAIN_CAT_TAB = [{'category':'list_talks_filters',      'title': _('Talks'),                    'url':self.getFullUrl('/talks')},
-                             {'category':'list_playlists_filters',  'title': _('Playlists'),                'url':self.getFullUrl('/playlists')},
+        self.MAIN_CAT_TAB = [{'category':'list_talks_filters', 'title': _('Talks'), 'url':self.getFullUrl('/talks')},
+                             {'category':'list_playlists_filters', 'title': _('Playlists'), 'url':self.getFullUrl('/playlists')},
                              
-                             {'category':'search',          'title': _('Search'), 'search_item':True, },
-                             {'category':'search_history',  'title': _('Search history'),} 
+                             {'category':'search', 'title': _('Search'), 'search_item':True, },
+                             {'category':'search_history', 'title': _('Search history'),} 
                             ]
     
     def _addFilter(self, data, cacheTab, key, anyTitle='', titleBase=''):
@@ -151,7 +151,7 @@ class TED(CBaseHostClass):
         # sort
         tmp = self.cm.ph.getDataBeetwenMarkers(data, "name='curator'", '</select>')[1]
         tmp = self.cm.ph.getAllItemsBeetwenMarkers(tmp, '<option', '</option>')
-        self._addFilter(tmp, self.cachePlaylistsFilters, 'f_curator',  _('--Any--'))
+        self._addFilter(tmp, self.cachePlaylistsFilters, 'f_curator', _('--Any--'))
             
     def listFilters(self, cItem, cacheTab):
         params = dict(cItem)
@@ -310,10 +310,10 @@ class TED(CBaseHostClass):
                 data[-1] = data[-1][:idx]
         
         for item in data:
-            url   = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''', ignoreCase=True)[0])
+            url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''', ignoreCase=True)[0])
             if not self.cm.isValidUrl(url):
                 continue
-            icon  = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''<img[^>]+?src=['"]([^'^"]+?)['"]''', ignoreCase=True)[0])
+            icon = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''<img[^>]+?src=['"]([^'^"]+?)['"]''', ignoreCase=True)[0])
             
             tmp = self.cm.ph.getAllItemsBeetwenMarkers(item, '<h4', '</h4>')
             titles = []
@@ -324,7 +324,7 @@ class TED(CBaseHostClass):
             title = ': '.join(titles)
             
             duration = self.cm.ph.getSearchGroups(item, '<span[^>]+?duration[^>]*?>([^>]+?)<')[0]
-            desc  = self.cleanHtmlStr(item.split("</h4>")[-1])
+            desc = self.cleanHtmlStr(item.split("</h4>")[-1])
             if duration != '':
                 desc = duration + ' | ' + desc
             
@@ -334,7 +334,7 @@ class TED(CBaseHostClass):
         
         if nextPage:
             params = dict(cItem)
-            params.update({'good_for_fav':False, 'title':_('Next page'), 'page':page+1})
+            params.update({'good_for_fav':False, 'title':_('Next page'), 'page':page + 1})
             self.addDir(params)
             
     def listPlaylists(self, cItem, nextCategory):
@@ -371,11 +371,11 @@ class TED(CBaseHostClass):
             if page < data['metadata']['pageCount']:
                 nextPage = True
             for item in data['records']:
-                url   = self.getFullUrl(item['url'])
-                icon  = self.getFullIconUrl(item['thumb'])
+                url = self.getFullUrl(item['url'])
+                icon = self.getFullIconUrl(item['thumb'])
                 title = self.cleanHtmlStr(item['title'])
                 
-                descTab = ['%s: %s' %(_('Talks'), item['talks'])]
+                descTab = ['%s: %s' % (_('Talks'), item['talks'])]
                 duration = str(timedelta(seconds=int(item['duration'])))
                 if duration.startswith("0:"):
                     duration = duration[2:]
@@ -391,7 +391,7 @@ class TED(CBaseHostClass):
             
         if nextPage:
             params = dict(cItem)
-            params.update({'good_for_fav':False, 'title':_('Next page'), 'page':page+1})
+            params.update({'good_for_fav':False, 'title':_('Next page'), 'page':page + 1})
             self.addDir(params)
         
     def listPlaylistItems(self, cItem):
@@ -404,10 +404,10 @@ class TED(CBaseHostClass):
         data = self.cm.ph.getDataBeetwenMarkers(data, 'playlist-talks', '</ul>')[1]
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<li', '</li>')
         for item in data:
-            url   = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''', ignoreCase=True)[0])
+            url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''', ignoreCase=True)[0])
             if not self.cm.isValidUrl(url):
                 continue
-            icon  = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''<img[^>]+?src=['"]([^'^"]+?)['"]''', ignoreCase=True)[0])
+            icon = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''<img[^>]+?src=['"]([^'^"]+?)['"]''', ignoreCase=True)[0])
             
             titles = [self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<h9', '</h9>')[1])]
             speaker = self.cm.ph.getSearchGroups(item, '<a[^>]+?speaker[^>]*?>([^>]+?)<')[0]
@@ -416,7 +416,7 @@ class TED(CBaseHostClass):
             title = ': '.join(titles)
             
             duration = self.cm.ph.getSearchGroups(item, '<span[^>]+?duration[^>]*?>([^>]+?)<')[0]
-            desc  = self.cleanHtmlStr(item.split("</h9>")[-1])
+            desc = self.cleanHtmlStr(item.split("</h9>")[-1])
             if duration != '':
                 desc = duration + ' | ' + desc
             
@@ -440,13 +440,13 @@ class TED(CBaseHostClass):
         
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<article', '</article>')
         for item in data:
-            url   = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''', ignoreCase=True)[0])
+            url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''', ignoreCase=True)[0])
             if not self.cm.isValidUrl(url):
                 continue
-            icon  = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''<img[^>]+?src=['"]([^'^"]+?)['"]''', ignoreCase=True)[0])
+            icon = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''<img[^>]+?src=['"]([^'^"]+?)['"]''', ignoreCase=True)[0])
             tmp = item.split('</h3>')
             title = self.cleanHtmlStr(tmp[0])
-            desc  = self.cleanHtmlStr(tmp[-1])
+            desc = self.cleanHtmlStr(tmp[-1])
             params = dict(cItem)
             params.update({'good_for_fav':True, 'title':title, 'url':url, 'desc':desc, 'icon':icon})
             if searchType == 'talks':
@@ -457,7 +457,7 @@ class TED(CBaseHostClass):
             
         if nextPage:
             params = dict(cItem)
-            params.update({'good_for_fav':False, 'title':_('Next page'), 'page':page+1})
+            params.update({'good_for_fav':False, 'title':_('Next page'), 'page':page + 1})
             self.addDir(params)
     
     def getLinksForVideo(self, cItem):
@@ -585,9 +585,9 @@ class TED(CBaseHostClass):
             #rm(self.COOKIE_FILE)
             self.selectDomain()
 
-        name     = self.currItem.get("name", '')
+        name = self.currItem.get("name", '')
         category = self.currItem.get("category", '')
-        mode     = self.currItem.get("mode", '')
+        mode = self.currItem.get("mode", '')
         
         printDBG("handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category))
         self.currList = []

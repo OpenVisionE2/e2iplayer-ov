@@ -35,7 +35,7 @@ def int2base(x, base):
     digs = string.digits + string.lowercase
     if x < 0:
         sign = -1
-    elif x==0:
+    elif x == 0:
         return '0'
     else:
         sign = 1
@@ -54,7 +54,7 @@ def JS_toString(x, base):
 
 # returns timestamp in milliseconds
 def JS_DateValueOf():
-    return time.time()*1000
+    return time.time() * 1000
     
 def JS_FromCharCode(*args): 
     return ''.join(map(unichr, args))
@@ -88,7 +88,7 @@ def drdX_fx(e):
         f = 0
         l = 0
         c = 0
-        h = e[n:n+72]
+        h = e[n:n + 72]
         while l < len(h):
             f = t[h[l]]
             a = (a << 6) + f
@@ -135,7 +135,7 @@ def SAWLIVETV_decryptPlayerParams(p, a, c, k, e, d):
             ret = e(c / a)
         c = c % a
         if c > 35:
-            ret += chr(c+29)
+            ret += chr(c + 29)
         else:
             ret += JS_toString(c, 36)
         return ret
@@ -180,7 +180,7 @@ def TEAMCASTPL_decryptPlayerParams(p, a, c, k, e=None, d=None):
             ret = e(c / a)
         c = c % a
         if c > 35:
-            ret += chr(c+29)
+            ret += chr(c + 29)
         else:
             ret += JS_toString(c, 36)
         return ret
@@ -257,7 +257,7 @@ def VIDUPME_decryptPlayerParams(p=None, a=None, c=None, k=None, e=None, d=None):
     while c > 0:
         c -= 1
         if k[c]:
-            p = re.sub('\\b'+ int2base(c, a) +'\\b', k[c], p)
+            p = re.sub('\\b' + int2base(c, a) + '\\b', k[c], p)
     return p
     
 ###############################################################################
@@ -301,7 +301,7 @@ def VIDEOWEED_decryptPlayerParams(w, i, s=None, e=None):
         ll11 = -1
         if ord(I1lI[ll1I]) % 2:
             ll11 = 1
-        l1ll.append(JS_FromCharCode(int(lI1l[lIll:lIll+2], 36) - ll11))
+        l1ll.append(JS_FromCharCode(int(lI1l[lIll:lIll + 2], 36) - ll11))
         ll1I += 1
         if ll1I >= len(l1lI):
             ll1I = 0
@@ -312,7 +312,7 @@ def VIDEOWEED_decryptPlayerParams(w, i, s=None, e=None):
 def VIDEOWEED_decryptPlayerParams2(w, i, s=None, e=None):
     s = 0
     while s < len(w):
-        i += JS_FromCharCode(int(w[s:s+2], 36))
+        i += JS_FromCharCode(int(w[s:s + 2], 36))
         s += 2
     return i
 
@@ -417,7 +417,7 @@ def getDirectM3U8Playlist(M3U8Url, checkExt=True, variantCheck=True, cookieParam
                 item['width'] = item['with']
                 item['height'] = item['heigth']
                 try:
-                    tmpCodecs =  playlist.stream_info.codecs.split(',')
+                    tmpCodecs = playlist.stream_info.codecs.split(',')
                     codecs = []
                     for c in tmpCodecs[::-1]:
                         codecs.append(c.split('.')[0].strip())
@@ -425,7 +425,7 @@ def getDirectM3U8Playlist(M3U8Url, checkExt=True, variantCheck=True, cookieParam
                 except Exception:
                     item['codecs'] = None
                     
-                item['name']  = "bitrate: %s res: %dx%d %s" % (item['bitrate'],
+                item['name'] = "bitrate: %s res: %dx%d %s" % (item['bitrate'],
                                                                item['width'],
                                                                item['height'],
                                                                item['codecs'])
@@ -558,7 +558,7 @@ def getMPDLinksWithMeta(manifestUrl, checkExt=True, cookieParams={}, sortWithMax
                 repParam = {}
                 repParam['bandwidth'] = _getNumAttrib(rep, 'bandwidth')
                 
-                repParam['codecs']  = cm.ph.getSearchGroups(rep, '''codecs=['"]([^'^"]+?)['"]''')[0]
+                repParam['codecs'] = cm.ph.getSearchGroups(rep, '''codecs=['"]([^'^"]+?)['"]''')[0]
                 if '' == repParam['codecs']:
                     repParam['codecs'] = cm.ph.getSearchGroups(item, '''codecs=['"]([^'^"]+?)['"]''')[0]
                 
@@ -567,15 +567,15 @@ def getMPDLinksWithMeta(manifestUrl, checkExt=True, cookieParams={}, sortWithMax
                     continue
                 
                 if type == 'video':
-                    repParam['width']  = _getNumAttrib(rep, 'width')
+                    repParam['width'] = _getNumAttrib(rep, 'width')
                     if 0 == repParam['width']:
-                        repParam['width']  = _getNumAttrib(item, 'width')
+                        repParam['width'] = _getNumAttrib(item, 'width')
                     
-                    repParam['height']  = _getNumAttrib(rep, 'height')
+                    repParam['height'] = _getNumAttrib(rep, 'height')
                     if 0 == repParam['height']:
-                        repParam['height']  = _getNumAttrib(item, 'height')
+                        repParam['height'] = _getNumAttrib(item, 'height')
                     
-                    repParam['frame_rate']  = cm.ph.getSearchGroups(rep, '''frameRate=['"]([^'^"]+?)['"]''')[0]
+                    repParam['frame_rate'] = cm.ph.getSearchGroups(rep, '''frameRate=['"]([^'^"]+?)['"]''')[0]
                     if '' == repParam['frame_rate']:
                         repParam['frame_rate'] = cm.ph.getSearchGroups(item, '''frameRate=['"]([^'^"]+?)['"]''')[0]
                 else:
@@ -589,9 +589,9 @@ def getMPDLinksWithMeta(manifestUrl, checkExt=True, cookieParams={}, sortWithMax
         for audio in representation['audio']:
             audioItem = {}
             audioItem['livestream'] = liveStreamDetected
-            audioItem['codecs']     = audio['codecs']
-            audioItem['bandwidth']  = audio['bandwidth']
-            audioItem['lang']       = audio['lang']
+            audioItem['codecs'] = audio['codecs']
+            audioItem['bandwidth'] = audio['bandwidth']
+            audioItem['lang'] = audio['lang']
             audioItem['audio_rep_idx'] = audioIdx
             
             if len(representation['video']):
@@ -600,11 +600,11 @@ def getMPDLinksWithMeta(manifestUrl, checkExt=True, cookieParams={}, sortWithMax
                     videoItem = dict(audioItem)
                     videoItem['codecs'] += ',' + video['codecs']
                     videoItem['bandwidth'] += video['bandwidth']
-                    videoItem['width']      = video['width']
-                    videoItem['height']     = video['height']
+                    videoItem['width'] = video['width']
+                    videoItem['height'] = video['height']
                     videoItem['frame_rate'] = video['frame_rate']
                     
-                    videoItem['name']  = "[%s] bitrate: %s %dx%d %s %sfps" % (videoItem['lang'],
+                    videoItem['name'] = "[%s] bitrate: %s %dx%d %s %sfps" % (videoItem['lang'],
                                                                                videoItem['bandwidth'],
                                                                                videoItem['width'],
                                                                                videoItem['height'],
@@ -614,7 +614,7 @@ def getMPDLinksWithMeta(manifestUrl, checkExt=True, cookieParams={}, sortWithMax
                     retPlaylists.append(videoItem)
                     videoIdx += 1
             else:
-                audioItem['name']  = "[%s] bandwidth: %s %s" % (audioItem['lang'],
+                audioItem['name'] = "[%s] bandwidth: %s %s" % (audioItem['lang'],
                                                                  audioItem['bandwidth'],
                                                                  audioItem['codecs'])
                 audioItem['url'] = strwithmeta(manifestUrl, {'iptv_proto':'mpd', 'iptv_audio_rep_idx':audioIdx, 'iptv_livestream':audioItem['livestream']})

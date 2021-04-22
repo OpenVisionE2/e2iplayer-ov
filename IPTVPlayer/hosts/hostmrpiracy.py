@@ -22,7 +22,7 @@ try:
 except Exception:
     import simplejson as json
 from Components.config import config, ConfigSelection, ConfigYesNo, ConfigText, getConfigListEntry
-from Plugins.Extensions.IPTVPlayer.libs.recaptcha_v2 import UnCaptchaReCaptcha as  UnCaptchaReCaptcha_fallback
+from Plugins.Extensions.IPTVPlayer.libs.recaptcha_v2 import UnCaptchaReCaptcha as UnCaptchaReCaptcha_fallback
 ###################################################
 
 
@@ -35,14 +35,14 @@ from Screens.MessageBox import MessageBox
 ###################################################
 # Config options for HOST
 ###################################################
-config.plugins.iptvplayer.mrpiracy_login     = ConfigText(default="", fixed_size=False)
-config.plugins.iptvplayer.mrpiracy_password  = ConfigText(default="", fixed_size=False)
+config.plugins.iptvplayer.mrpiracy_login = ConfigText(default="", fixed_size=False)
+config.plugins.iptvplayer.mrpiracy_password = ConfigText(default="", fixed_size=False)
 
 config.plugins.iptvplayer.api_key_9kweu = ConfigText(default="", fixed_size=False)
 config.plugins.iptvplayer.api_key_2captcha = ConfigText(default="", fixed_size=False)
 config.plugins.iptvplayer.mrpiracy_linkcache = ConfigYesNo(default=True)
-config.plugins.iptvplayer.mrpiracy_bypassrecaptcha = ConfigSelection(default="None", choices=[("None",        _("None")),
-                                                                                                 ("9kw.eu",       "https://9kw.eu/"),
+config.plugins.iptvplayer.mrpiracy_bypassrecaptcha = ConfigSelection(default="None", choices=[("None", _("None")),
+                                                                                                 ("9kw.eu", "https://9kw.eu/"),
                                                                                                  ("2captcha.com", "http://2captcha.com/")])
 
 def GetConfigList():
@@ -73,17 +73,17 @@ class MRPiracyGQ(CBaseHostClass, CaptchaHelper):
         self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'})
         self.MAIN_URL = None
         
-        self.cacheLinks    = {}
-        self.cacheFilters  = {}
+        self.cacheLinks = {}
+        self.cacheFilters = {}
         self.cacheFiltersKeys = []
         self.defaultParams = {'header':self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
         
-        self.cookiename  = ''
+        self.cookiename = ''
         self.cookievalue = ''
-        self.username    = ''
-        self.userid      = ''
+        self.username = ''
+        self.userid = ''
         
-        self.login    = ''
+        self.login = ''
         self.password = ''
         
         self.loggedIn = False
@@ -113,12 +113,12 @@ class MRPiracyGQ(CBaseHostClass, CaptchaHelper):
         domain = domain.replace('http://', 'https://')
         self.MAIN_URL = domain
     
-        self.MAIN_CAT_TAB = [{'category':'list_filters',      'mode':'movie',   'title': 'Movies',       'url':self.getFullUrl('filmes.php')},
-                             {'category':'list_filters',      'mode':'serie',   'title': 'TV Shows',     'url':self.getFullUrl('series.php')},
-                             {'category':'list_filters',      'mode':'anime',   'title': 'Animes',       'url':self.getFullUrl('animes.php')},
+        self.MAIN_CAT_TAB = [{'category':'list_filters', 'mode':'movie', 'title': 'Movies', 'url':self.getFullUrl('filmes.php')},
+                             {'category':'list_filters', 'mode':'serie', 'title': 'TV Shows', 'url':self.getFullUrl('series.php')},
+                             {'category':'list_filters', 'mode':'anime', 'title': 'Animes', 'url':self.getFullUrl('animes.php')},
                              
-                             {'category':'search',            'title': _('Search'), 'search_item':True,},
-                             {'category':'search_history',    'title': _('Search history'),} 
+                             {'category':'search', 'title': _('Search'), 'search_item':True,},
+                             {'category':'search_history', 'title': _('Search history'),} 
                             ]
     
         
@@ -221,7 +221,7 @@ class MRPiracyGQ(CBaseHostClass, CaptchaHelper):
         filter = self.cacheFiltersKeys[f_idx]
         f_idx += 1
         cItem['f_idx'] = f_idx
-        if f_idx  == len(self.cacheFiltersKeys):
+        if f_idx == len(self.cacheFiltersKeys):
             cItem['category'] = nextCategory
         self.listsTab(self.cacheFilters.get(filter, []), cItem)
         
@@ -252,7 +252,7 @@ class MRPiracyGQ(CBaseHostClass, CaptchaHelper):
             return
         
         nextPage = self.cm.ph.getDataBeetwenMarkers(data, 'pagination-aux', '</div>', False)[1]
-        if ('>%s<' % (page+1)) in nextPage: 
+        if ('>%s<' % (page + 1)) in nextPage: 
             nextPage = True
             m2 = '<div class="pagination-aux">'
         else: 
@@ -263,7 +263,7 @@ class MRPiracyGQ(CBaseHostClass, CaptchaHelper):
         for item in data:
             item = re.sub('<script.+?</script>', '', item)
             item = item.split('<div class="clear">')
-            url  = self.getFullUrl(self.cm.ph.getSearchGroups(item[0], 'href="([^"]+?)"')[0])
+            url = self.getFullUrl(self.cm.ph.getSearchGroups(item[0], 'href="([^"]+?)"')[0])
             if not self.cm.isValidUrl(url):
                 continue
             icon = self.getFullUrl(self.cm.ph.getSearchGroups(item[0], 'src="([^"]+?)"')[0])
@@ -292,7 +292,7 @@ class MRPiracyGQ(CBaseHostClass, CaptchaHelper):
         
         if nextPage and len(self.currList) > 0:
             params = dict(cItem)
-            params.update({'title':_("Next page"), 'page':page+1})
+            params.update({'title':_("Next page"), 'page':page + 1})
             self.addDir(params)
             
     def listSeasons(self, cItem, nextCategory='list_episodes'):
@@ -334,7 +334,7 @@ class MRPiracyGQ(CBaseHostClass, CaptchaHelper):
             eNum = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<div class="episode-number">', '</div>')[1])
             if eNum != '':
                 eNum = self.cleanHtmlStr(self.cm.ph.getSearchGroups(item, '''name=['"]([^'^"]+?)['"]''')[0])
-            url  = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0].split('#')[0])
+            url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0].split('#')[0])
             if not self.cm.isValidUrl(url):
                 continue
             icon = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''src=["']([^"^']+?)["']''')[0])
@@ -575,10 +575,10 @@ class MRPiracyGQ(CBaseHostClass, CaptchaHelper):
         
         desc = self.cleanHtmlStr(self.cm.ph.getDataBeetwenReMarkers(data, re.compile('<[^>]+?id="movie-synopsis"[^>]*?>'), re.compile('</div>'))[1])
         if desc == '':
-            desc  = self.cleanHtmlStr(self.cm.ph.getSearchGroups(data, '<meta property="og:description"[^>]+?content="([^"]+?)"')[0])
+            desc = self.cleanHtmlStr(self.cm.ph.getSearchGroups(data, '<meta property="og:description"[^>]+?content="([^"]+?)"')[0])
         
         title = self.cleanHtmlStr(self.cm.ph.getSearchGroups(data, '<meta property="og:title"[^>]+?content="([^"]+?)"')[0])
-        icon  = self.getFullUrl(self.cm.ph.getSearchGroups(data, '<meta property="og:image"[^>]+?content="([^"]+?)"')[0])
+        icon = self.getFullUrl(self.cm.ph.getSearchGroups(data, '<meta property="og:image"[^>]+?content="([^"]+?)"')[0])
         
         if title == '':
             title = cItem['title']
@@ -588,8 +588,8 @@ class MRPiracyGQ(CBaseHostClass, CaptchaHelper):
             title = cItem['icon']
         
         descData = self.cm.ph.getDataBeetwenMarkers(data, '<div class="movie-detailed-info">', '<div class="clear">', False)[1] 
-        descTabMap = {"genre":         "genre",
-                      "year":          "year",
+        descTabMap = {"genre": "genre",
+                      "year": "year",
                       "original-name": "alternate_title"}
         
         otherInfo = {}
@@ -639,7 +639,7 @@ class MRPiracyGQ(CBaseHostClass, CaptchaHelper):
         if 'logout.php' in data:
             return True, 'OK'
 
-        login  = config.plugins.iptvplayer.mrpiracy_login.value
+        login = config.plugins.iptvplayer.mrpiracy_login.value
         passwd = config.plugins.iptvplayer.mrpiracy_password.value
         
         post_data = {'email':login, 'password':passwd, 'lembrar_senha':'lembrar'}
@@ -654,8 +654,8 @@ class MRPiracyGQ(CBaseHostClass, CaptchaHelper):
                 return False, 'NOT OK'
             post_data.update({'g-recaptcha-response':token, 'g-recaptcha-response2':token, 'url':'/'})
 
-        data  = self.cm.ph.getDataBeetwenMarkers(data, '<form', '</form>', False)[1]
-        url   = self.getFullUrl(self.cm.ph.getSearchGroups(data, '''action=['"]([^'^"]+?)['"]''')[0])
+        data = self.cm.ph.getDataBeetwenMarkers(data, '<form', '</form>', False)[1]
+        url = self.getFullUrl(self.cm.ph.getSearchGroups(data, '''action=['"]([^'^"]+?)['"]''')[0])
 
         params = dict(self.defaultParams)
         params['header'] = dict(self.HEADER)
@@ -687,7 +687,7 @@ class MRPiracyGQ(CBaseHostClass, CaptchaHelper):
                 userName = config.plugins.iptvplayer.mrpiracy_login.value
                 self.sessionEx.open(MessageBox, 'Login failed for user "%s".' % userName, type=MessageBox.TYPE_INFO, timeout=10)
             else:
-                self.loogin   = config.plugins.iptvplayer.mrpiracy_login.value
+                self.loogin = config.plugins.iptvplayer.mrpiracy_login.value
                 self.password = config.plugins.iptvplayer.mrpiracy_password.value
         elif ('' == config.plugins.iptvplayer.mrpiracy_login.value.strip() or
               '' == config.plugins.iptvplayer.mrpiracy_password.value.strip()):
@@ -695,9 +695,9 @@ class MRPiracyGQ(CBaseHostClass, CaptchaHelper):
         
         CBaseHostClass.handleService(self, index, refresh, searchPattern, searchType)
 
-        name     = self.currItem.get("name", '')
+        name = self.currItem.get("name", '')
         category = self.currItem.get("category", '')
-        mode     = self.currItem.get("mode", '')
+        mode = self.currItem.get("mode", '')
         
         printDBG("handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category))
         self.currList = []
@@ -736,9 +736,9 @@ class IPTVHost(CHostBase):
         
     def getSearchTypes(self):
         searchTypesOptions = []
-        searchTypesOptions.append((_("Movies"),  "movie"))
+        searchTypesOptions.append((_("Movies"), "movie"))
         searchTypesOptions.append((_("TV Show"), "serie"))
-        searchTypesOptions.append((_("Anime"),   "anime"))
+        searchTypesOptions.append((_("Anime"), "anime"))
         return searchTypesOptions
         
     def withArticleContent(self, cItem):

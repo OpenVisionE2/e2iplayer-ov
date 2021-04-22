@@ -33,8 +33,8 @@ class FightVideo(CBaseHostClass):
         self.AJAX_HEADER = dict(self.HEADER)
         self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest'})
         self.MAIN_URL = 'http://fight.mmashare.club/'
-        self.cacheLinks    = {}
-        self.cacheFilters  = {}
+        self.cacheLinks = {}
+        self.cacheFilters = {}
         self.cacheFiltersKeys = []
         self.defaultParams = {'header':self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
         
@@ -119,7 +119,7 @@ class FightVideo(CBaseHostClass):
         filter = self.cacheFiltersKeys[f_idx]
         f_idx += 1
         cItem['f_idx'] = f_idx
-        if f_idx  == len(self.cacheFiltersKeys):
+        if f_idx == len(self.cacheFiltersKeys):
             cItem['category'] = nextCategory
         self.listsTab(self.cacheFilters.get(filter, []), cItem)
         
@@ -131,7 +131,7 @@ class FightVideo(CBaseHostClass):
         
         query = {}
         if page > 1:
-            query['start'] = page*perPage
+            query['start'] = page * perPage
         
         keys = list(self.cacheFiltersKeys)
         keys.append('f_sd')
@@ -150,7 +150,7 @@ class FightVideo(CBaseHostClass):
         if not sts:
             return
         
-        if  '<li class="next"><a' in data:
+        if '<li class="next"><a' in data:
             nextPage = True
         else:
             nextPage = False
@@ -174,7 +174,7 @@ class FightVideo(CBaseHostClass):
         
         if nextPage and len(self.currList) > 0:
             params = dict(cItem)
-            params.update({'title':_("Next page"), 'page':page+1})
+            params.update({'title':_("Next page"), 'page':page + 1})
             self.addDir(params)
             
     def exploreItem(self, cItem):
@@ -189,7 +189,7 @@ class FightVideo(CBaseHostClass):
         if not sts:
             return []
         
-        if self.cm.ph.getSearchGroups(data, '''[&;]start=(%s)[^0-9]''' % ((page+1)*14))[0] != '':
+        if self.cm.ph.getSearchGroups(data, '''[&;]start=(%s)[^0-9]''' % ((page + 1) * 14))[0] != '':
             nextPage = True
         else:
             nextPage = False
@@ -203,7 +203,7 @@ class FightVideo(CBaseHostClass):
             printDBG(">>>>>>>>>>>>>>>>>>>>>>>>>> VIDEO [%s]" % mTitle.upper())
             
             if 'VIDEO' == mTitle.upper().strip():
-                url  = self.cm.ph.getSearchGroups(tmp, 'href="(https?://[^"]+?)"')[0].replace('&amp;', '&')
+                url = self.cm.ph.getSearchGroups(tmp, 'href="(https?://[^"]+?)"')[0].replace('&amp;', '&')
                 sts, data = self.getPage(url)
                 if not sts:
                     break
@@ -254,7 +254,7 @@ class FightVideo(CBaseHostClass):
                         
         if nextPage:
             params = dict(cItem)
-            params.update({'title':_("Next page"), 'video_idx':idx, 'page':page+1})
+            params.update({'title':_("Next page"), 'video_idx':idx, 'page':page + 1})
             self.addDir(params)
         
     def getLinksForVideo(self, cItem):
@@ -301,9 +301,9 @@ class FightVideo(CBaseHostClass):
         
         CBaseHostClass.handleService(self, index, refresh, searchPattern, searchType)
 
-        name     = self.currItem.get("name", '')
+        name = self.currItem.get("name", '')
         category = self.currItem.get("category", '')
-        mode     = self.currItem.get("mode", '')
+        mode = self.currItem.get("mode", '')
         
         printDBG("handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category))
         self.currList = []

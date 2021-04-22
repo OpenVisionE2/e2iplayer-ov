@@ -464,7 +464,7 @@ class HTTPResponse(httplib.HTTPResponse):
         if i < 0:
             i = len(self._rbuf)
         else:
-            i = i+1
+            i = i + 1
         if 0 <= limit < len(self._rbuf):
             i = limit
         data, self._rbuf = self._rbuf[:i], self._rbuf[i:]

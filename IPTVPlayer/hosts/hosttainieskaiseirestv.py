@@ -53,7 +53,7 @@ class TainieskaiSeiresTv(CBaseHostClass):
         else:
             self.MAIN_URL = domain
         
-        self.MAIN_CAT_TAB = [{'category':'search',         'title': _('Search'),    'search_item':True,},
+        self.MAIN_CAT_TAB = [{'category':'search', 'title': _('Search'), 'search_item':True,},
                              {'category':'search_history', 'title': _('Search history'),}]
     
     def listMainMenu(self, cItem):
@@ -79,7 +79,7 @@ class TainieskaiSeiresTv(CBaseHostClass):
             cTree = cItem['c_tree']
             for item in cTree['list']:
                 title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item['dat'], '<a', '</a>')[1])
-                url   = self.getFullUrl(self.cm.ph.getSearchGroups(item['dat'], '''href=['"]([^'^"]+?)['"]''')[0])
+                url = self.getFullUrl(self.cm.ph.getSearchGroups(item['dat'], '''href=['"]([^'^"]+?)['"]''')[0])
                 if 'list' not in item:
                     if self.cm.isValidUrl(url) and title != '':
                         params = dict(cItem)
@@ -129,7 +129,7 @@ class TainieskaiSeiresTv(CBaseHostClass):
             
             data = self.cm.ph.rgetAllItemsBeetwenNodes(data, ('<div', '>', 'clearfix'), ('<div', '>', 'video-item'))
             for item in data:
-                url  = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''\shref=['"]([^"^']+?)['"]''')[0])
+                url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''\shref=['"]([^"^']+?)['"]''')[0])
                 if url == '':
                     continue
                 icon = self.getFullIconUrl(self.cm.ph.getSearchGroups(item, '''\ssrc=['"]([^"^']+?)['"]''')[0])
@@ -143,7 +143,7 @@ class TainieskaiSeiresTv(CBaseHostClass):
                 
             if nextPage != '':
                 params = dict(cItem)
-                params.update({'title':_("Next page"), 'url':nextPage, 'page':page+1})
+                params.update({'title':_("Next page"), 'url':nextPage, 'page':page + 1})
                 self.addDir(params)
         else:
             data = self.cm.ph.getDataBeetwenMarkers(data, '<article', '</article>')[1]
@@ -153,7 +153,7 @@ class TainieskaiSeiresTv(CBaseHostClass):
                 itemsTab = []
                 section = self.cm.ph.getAllItemsBeetwenNodes(section, ('<div', '>', 'video-item'), ('</a', '>'))
                 for item in section:
-                    url  = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''\shref=['"]([^"^']+?)['"]''')[0])
+                    url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''\shref=['"]([^"^']+?)['"]''')[0])
                     if url == '':
                         continue
                     icon = self.getFullIconUrl(self.cm.ph.getSearchGroups(item, '''\ssrc=['"]([^"^']+?)['"]''')[0])
@@ -193,7 +193,7 @@ class TainieskaiSeiresTv(CBaseHostClass):
         url = self.getFullUrl(self.cm.ph.getSearchGroups(tmp, '''<(?:iframe|embed)[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0])
         if self.cm.isValidUrl(url):
             params = dict(cItem)
-            params.update({'good_for_fav':False, 'title':'%s %s' %(_('[trailer]'), cItem['title']), 'url':url})
+            params.update({'good_for_fav':False, 'title':'%s %s' % (_('[trailer]'), cItem['title']), 'url':url})
             self.addVideo(params)
         
         reObjSeasons = re.compile('(<strong[^>]*?>[^>]*?SEASON[^>]*?</strong>)', re.IGNORECASE)
@@ -227,7 +227,7 @@ class TainieskaiSeiresTv(CBaseHostClass):
                     seasonsKeys.append(seasonId)
                     self.seasonsCache[seasonId] = {'title':sTitle.replace(sSubTitle, ''), 'season_id':seasonId, 'episodes':[]}
                 
-                tmp = self.cm.ph.getAllItemsBeetwenMarkers(seasonsData[idx+1], '<a', '</a>')
+                tmp = self.cm.ph.getAllItemsBeetwenMarkers(seasonsData[idx + 1], '<a', '</a>')
                 for item in tmp:
                     eTitle = ' ' + self.cleanHtmlStr(item).replace("Ε", "E")
                     eSubTitle = self.cleanHtmlStr(reEpisodeObj.sub('', eTitle))
@@ -268,7 +268,7 @@ class TainieskaiSeiresTv(CBaseHostClass):
         else:
             for idx in range(0, len(seasonsData), 2):
                 quality = self.cleanHtmlStr(seasonsData[idx])
-                tmp = self.cm.ph.getAllItemsBeetwenMarkers(seasonsData[idx+1], '<a', '</a>')
+                tmp = self.cm.ph.getAllItemsBeetwenMarkers(seasonsData[idx + 1], '<a', '</a>')
                 for item in tmp:
                     name = self.cleanHtmlStr(item)
                     url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''\shref=['"]([^"^']+?)['"]''')[0])
@@ -300,7 +300,7 @@ class TainieskaiSeiresTv(CBaseHostClass):
         if 1 == self.up.checkHostSupport(cItem['url']): 
             return self.up.getVideoLinkExt(cItem['url'])
         
-        return self.cacheLinks.get(cItem['url'],  [])
+        return self.cacheLinks.get(cItem['url'], [])
         
     def getVideoLinks(self, videoUrl):
         printDBG("TainieskaiSeiresTv.getVideoLinks [%s]" % videoUrl)
@@ -341,8 +341,8 @@ class TainieskaiSeiresTv(CBaseHostClass):
         if len(tmp) > 2:
             desc = tmp[1].split('</span>', 1)
             title = self.cleanHtmlStr(desc[0])
-            desc  = self.cleanHtmlStr(desc[-1])
-        icon  = self.getFullIconUrl(self.cm.ph.getSearchGroups(tmp[0], '''\ssrc=['"]([^'^"]+?)['"]''')[0])
+            desc = self.cleanHtmlStr(desc[-1])
+        icon = self.getFullIconUrl(self.cm.ph.getSearchGroups(tmp[0], '''\ssrc=['"]([^'^"]+?)['"]''')[0])
         
         if title == '':
             title = cItem['title']
@@ -353,15 +353,15 @@ class TainieskaiSeiresTv(CBaseHostClass):
         
         descData = self.cm.ph.getAllItemsBeetwenMarkers(tmp[-1], '<span', '</span>')
         descTabMap = {"Ετος παραγωγής": "year",
-                      "Βαθμολογία":     "rated",
-                      "Ηθοποιοί":       "actors",
-                      "Κατηγορία":      "genres",
-                      "Σκηνοθεσία":     "director",
+                      "Βαθμολογία": "rated",
+                      "Ηθοποιοί": "actors",
+                      "Κατηγορία": "genres",
+                      "Σκηνοθεσία": "director",
                      }
         
         otherInfo = {}
         for idx in range(1, len(descData), 2):
-            key = self.cleanHtmlStr(descData[idx-1])
+            key = self.cleanHtmlStr(descData[idx - 1])
             val = self.cleanHtmlStr(descData[idx])
             if val.endswith(','):
                 val = val[:-1]
@@ -381,9 +381,9 @@ class TainieskaiSeiresTv(CBaseHostClass):
             rm(self.COOKIE_FILE)
             self.selectDomain()
 
-        name     = self.currItem.get("name", '')
+        name = self.currItem.get("name", '')
         category = self.currItem.get("category", '')
-        mode     = self.currItem.get("mode", '')
+        mode = self.currItem.get("mode", '')
         
         printDBG("handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category))
         self.currList = []

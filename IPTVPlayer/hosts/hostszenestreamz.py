@@ -28,19 +28,19 @@ class Kkiste(CBaseHostClass):
         self.AJAX_HEADER = dict(self.HEADER)
         self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest'})
         self.MAIN_URL = 'http://szene-streamz.com/'
-        self.cacheLinks   = {}
-        self.cacheFilters  = {}
+        self.cacheLinks = {}
+        self.cacheFilters = {}
         self.cacheFiltersKeys = []
         self.cacheSeasons = {}
         self.MOVIES_GENRE_CAT = []
         self.SERIES_GENRE_CAT = []
         self.defaultParams = {'header':self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
-        self.MAIN_CAT_TAB = [{'category':'list_items',         'title': _('Movies'),        'url':self.getFullUrl('publ/')},
-                             {'category':'list_cats',          'title': _('Genre selection')+': '+_('Movies'), 'url':self.getFullUrl('publ/')},
-                             {'category':'list_items',         'title': _('Series'),            'url':self.getFullUrl('load/')},
-                             {'category':'list_cats',          'title': _('Genre selection')+': '+_('Series'), 'url':self.getFullUrl('load/')},
-                             {'category':'search',             'title': _('Search'), 'search_item':True,},
-                             {'category':'search_history',     'title': _('Search history'),} 
+        self.MAIN_CAT_TAB = [{'category':'list_items', 'title': _('Movies'), 'url':self.getFullUrl('publ/')},
+                             {'category':'list_cats', 'title': _('Genre selection') + ': ' + _('Movies'), 'url':self.getFullUrl('publ/')},
+                             {'category':'list_items', 'title': _('Series'), 'url':self.getFullUrl('load/')},
+                             {'category':'list_cats', 'title': _('Genre selection') + ': ' + _('Series'), 'url':self.getFullUrl('load/')},
+                             {'category':'search', 'title': _('Search'), 'search_item':True,},
+                             {'category':'search_history', 'title': _('Search history'),} 
                             ]
         
 
@@ -53,7 +53,7 @@ class Kkiste(CBaseHostClass):
     def listsCats(self, cItem, nextCat):
         printDBG("hostszenestreamz.listsCats |%s|" % cItem)
         
-        url  = cItem['url']
+        url = cItem['url']
 
         if '/publ/' in url:
             cats = self.MOVIES_GENRE_CAT
@@ -77,7 +77,7 @@ class Kkiste(CBaseHostClass):
     def listItems(self, cItem, nextCategory, post_data=None):
         printDBG("hostszenestreamz.listItems |%s|" % cItem)
         
-        url  = cItem['url']
+        url = cItem['url']
         page = cItem.get('page', 1)
         
         sts, data = self.getPage(url, {}, post_data)
@@ -137,7 +137,7 @@ class Kkiste(CBaseHostClass):
 
             if url != '':
                 params = dict(cItem)
-                params.update({'good_for_fav':False, 'title':_('Next page'), 'page':page+1, 'url':url})
+                params.update({'good_for_fav':False, 'title':_('Next page'), 'page':page + 1, 'url':url})
                 self.addDir(params)
         
     def exploreItem(self, cItem):
@@ -153,7 +153,7 @@ class Kkiste(CBaseHostClass):
         title = cItem.get('title','')
 
         trailerurl = ''
-        trailerdata =  ph.findall(data, '<iframe src=', '</iframe>')
+        trailerdata = ph.findall(data, '<iframe src=', '</iframe>')
         for item in trailerdata:
             if 'youtube' in item:
                 trailerurl = self.getFullUrl(ph.search(item, '''src=['"]([^'^"]+?)['"]''')[0])
@@ -187,7 +187,7 @@ class Kkiste(CBaseHostClass):
         if '/publ/' in url:
             links = ph.findall(data, '<div class="inner', '</fieldset>')
 
-            self.cacheLinks  = {}
+            self.cacheLinks = {}
             linksKey = cItem['url']
             self.cacheLinks[linksKey] = []
             params = dict(cItem)
@@ -317,7 +317,7 @@ class Kkiste(CBaseHostClass):
         
         CBaseHostClass.handleService(self, index, refresh, searchPattern, searchType)
 
-        name     = self.currItem.get("name", '')
+        name = self.currItem.get("name", '')
         category = self.currItem.get("category", '')
         
         printDBG("handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category))

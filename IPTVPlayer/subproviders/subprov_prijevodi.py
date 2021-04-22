@@ -34,9 +34,9 @@ def GetConfigList():
 class PrijevodiOnline(CBaseSubProviderClass): 
     
     def __init__(self, params={}):
-        self.MAIN_URL      = 'https://www.prijevodi-online.org/'
-        self.USER_AGENT    = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0'
-        self.HTTP_HEADER   = {'User-Agent':self.USER_AGENT, 'Referer':self.MAIN_URL, 'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'}
+        self.MAIN_URL = 'https://www.prijevodi-online.org/'
+        self.USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0'
+        self.HTTP_HEADER = {'User-Agent':self.USER_AGENT, 'Referer':self.MAIN_URL, 'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'}
         
         params['cookie'] = 'prijevodionlineorg.cookie'
         CBaseSubProviderClass.__init__(self, params)
@@ -80,7 +80,7 @@ class PrijevodiOnline(CBaseSubProviderClass):
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<li', '</li>')
         for item in data:
             title = self.cleanHtmlStr(item)
-            url   = self.getFullUrl(self.cm.ph.getSearchGroups(item, 'href="([^"]+?)"')[0])
+            url = self.getFullUrl(self.cm.ph.getSearchGroups(item, 'href="([^"]+?)"')[0])
             if not self.cm.isValidUrl(url):
                 continue
             params = dict(cItem)
@@ -107,7 +107,7 @@ class PrijevodiOnline(CBaseSubProviderClass):
             title = self.cleanHtmlStr(tmp)
             if title == '':
                 title = self.cm.ph.getSearchGroups(tmp, '''title=['"]([^'^"]+?)['"]''')[0]
-            url   = self.getFullUrl(self.cm.ph.getSearchGroups(tmp, 'href="([^"]+?)"')[0])
+            url = self.getFullUrl(self.cm.ph.getSearchGroups(tmp, 'href="([^"]+?)"')[0])
             if not self.cm.isValidUrl(url):
                 continue
             descTab = []
@@ -161,7 +161,7 @@ class PrijevodiOnline(CBaseSubProviderClass):
                 tmp = self.cm.ph.getAllItemsBeetwenMarkers(eItem, '<li', '</li>')
                 if len(tmp) < 2:
                     continue
-                url   = self.getFullUrl(self.cm.ph.getSearchGroups(tmp[1], 'rel="([^"]+?/get/[^"]+?)"')[0])
+                url = self.getFullUrl(self.cm.ph.getSearchGroups(tmp[1], 'rel="([^"]+?/get/[^"]+?)"')[0])
                 if not self.cm.isValidUrl(url):
                     continue
                 
@@ -224,11 +224,11 @@ class PrijevodiOnline(CBaseSubProviderClass):
             subId = self.cm.ph.getSearchGroups(item, 'rel="([0-9]+?)"')[0]
             if subId == '':
                 subId = '0'
-            lang  = 'hr'
-            fps   = 0
+            lang = 'hr'
+            fps = 0
             format = 'srt'
             
-            descTab  = []
+            descTab = []
             tmp = self.cm.ph.getAllItemsBeetwenMarkers(item, '<td', '</td>') 
             for t in tmp:
                 t = self.cleanHtmlStr(t)
@@ -276,7 +276,7 @@ class PrijevodiOnline(CBaseSubProviderClass):
                 title = self.cleanHtmlStr(tmp)
                 if title == '':
                     title = self.cm.ph.getSearchGroups(tmp, '''title=['"]([^'^"]+?)['"]''')[0]
-                url   = self.getFullUrl(self.cm.ph.getSearchGroups(tmp, 'href="([^"]+?)"')[0])
+                url = self.getFullUrl(self.cm.ph.getSearchGroups(tmp, 'href="([^"]+?)"')[0])
                 if '' == url:
                     continue
                 descTab = []
@@ -307,9 +307,9 @@ class PrijevodiOnline(CBaseSubProviderClass):
             return
         
         imdbid = '0'
-        subId  = '0'
-        lang   = 'hr'
-        fps    = 0
+        subId = '0'
+        lang = 'hr'
+        fps = 0
         format = 'srt'
         
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<a', '</a>')
@@ -320,7 +320,7 @@ class PrijevodiOnline(CBaseSubProviderClass):
             title = urllib.unquote(url.split('/')[-1])
             url = url.replace(' ', '%20')
             
-            desc   = self.cleanHtmlStr(item)
+            desc = self.cleanHtmlStr(item)
             params = dict(cItem)
             params.update({'category':nextCategory, 'lang':lang, 'fps':fps, 'format':format, 'title':title, 'imdbid':imdbid, 'subid':subId, 'url':url, 'desc':desc})
             self.addDir(params)
@@ -345,7 +345,7 @@ class PrijevodiOnline(CBaseSubProviderClass):
     def listSubsInPackedFile(self, cItem, nextCategory):
         printDBG("PrijevodiOnline.listSubsInPackedFile")
         tmpFile = cItem['file_path']
-        tmpDIR  = tmpFile[:-4]
+        tmpDIR = tmpFile[:-4]
         
         if not self.unpackArchive(tmpFile, tmpDIR):
             return
@@ -369,13 +369,13 @@ class PrijevodiOnline(CBaseSubProviderClass):
     def downloadSubtitleFile(self, cItem):
         printDBG("SubsceneComProvider.downloadSubtitleFile")
         retData = {}
-        title    = cItem['title']
-        lang     = cItem.get('lang', '')
-        subId    = cItem.get('subid', '0')
-        imdbid   = cItem.get('imdbid', '0')
+        title = cItem['title']
+        lang = cItem.get('lang', '')
+        subId = cItem.get('subid', '0')
+        imdbid = cItem.get('imdbid', '0')
         inFilePath = cItem['file_path']
-        ext      = cItem.get('ext', 'srt')
-        fps      = cItem.get('fps', 0)
+        ext = cItem.get('ext', 'srt')
+        fps = cItem.get('fps', 0)
         
         outFileName = self._getFileName(title, lang, subId, imdbid, fps, ext)
         outFileName = GetSubtitlesDir(outFileName)
@@ -395,7 +395,7 @@ class PrijevodiOnline(CBaseSubProviderClass):
         
         CBaseSubProviderClass.handleService(self, index, refresh)
 
-        name     = self.currItem.get("name", '')
+        name = self.currItem.get("name", '')
         category = self.currItem.get("category", '')
         
         printDBG("handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category))

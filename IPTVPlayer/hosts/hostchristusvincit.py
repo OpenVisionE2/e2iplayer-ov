@@ -18,13 +18,13 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 import re
 import time
 import urllib
-from datetime import  timedelta
+from datetime import timedelta
 ###################################################
 
-config.plugins.iptvplayer.christusvincit_preferred_bitrate = ConfigSelection(default="99999999", choices=[("0",      _("the lowest")),
-                                                                                                    ("360000",  "360000"),
-                                                                                                    ("590000",  "590000"),
-                                                                                                    ("820000",  "820000"),
+config.plugins.iptvplayer.christusvincit_preferred_bitrate = ConfigSelection(default="99999999", choices=[("0", _("the lowest")),
+                                                                                                    ("360000", "360000"),
+                                                                                                    ("590000", "590000"),
+                                                                                                    ("820000", "820000"),
                                                                                                     ("1250000", "1250000"),
                                                                                                     ("1750000", "1750000"),
                                                                                                     ("2850000", "2850000"),
@@ -41,7 +41,7 @@ config.plugins.iptvplayer.christusvincit_use_preferred_bitrate = ConfigYesNo(def
 
 def GetConfigList():
     optionList = []
-    optionList.append(getConfigListEntry("Preferred video bitrate",     config.plugins.iptvplayer.christusvincit_preferred_bitrate))
+    optionList.append(getConfigListEntry("Preferred video bitrate", config.plugins.iptvplayer.christusvincit_preferred_bitrate))
     optionList.append(getConfigListEntry("Use preferred video bitrate", config.plugins.iptvplayer.christusvincit_use_preferred_bitrate))
     return optionList
 ###################################################
@@ -58,7 +58,7 @@ class Christusvincit(CBaseHostClass):
         self.HTTP_HEADER = self.cm.getDefaultHeader(browser='chrome')
         self.defaultParams = {'header':self.HTTP_HEADER}
 
-        self.MAIN_URL   = 'http://christusvincit-tv.pl/'
+        self.MAIN_URL = 'http://christusvincit-tv.pl/'
         self.DEFAULT_ICON_URL = 'http://christusvincit-tv.pl/images/christusbg.jpg'
         self.reImgObj = re.compile(r'''<img[^>]+?src=(['"])([^>]*?)(?:\1)''', re.I)
         self.titlesMap = {'wspolodkupicielka': 'Współodkupicielka i Pośredniczka Wszelkich Łask',
@@ -300,7 +300,7 @@ class Christusvincit(CBaseHostClass):
             else:
                 self.currList.append(item)
 
-        MAIN_CAT_TAB = [{'category':'search',         'title': _('Search'),       'search_item':True},
+        MAIN_CAT_TAB = [{'category':'search', 'title': _('Search'), 'search_item':True},
                         {'category':'search_history', 'title': _('Search history'),}]
         self.listsTab(MAIN_CAT_TAB, cItem)
 
@@ -433,7 +433,7 @@ class Christusvincit(CBaseHostClass):
         data = ph.find(data, 'search_result', '</table>', flags=0)[1]
         data = re.compile('''<div[^>]+?pagenav[^>]*?>''').split(data, 1)
         if len(data) == 2: 
-            nextPage = ph.find(data[-1], ('<a', '>%s<' % (page+1)))[1]
+            nextPage = ph.find(data[-1], ('<a', '>%s<' % (page + 1)))[1]
             nextPage = self.getFullUrl(ph.getattr(nextPage, 'href'))
         else:
             nextPage = ''
@@ -448,7 +448,7 @@ class Christusvincit(CBaseHostClass):
 
             self.addDir(MergeDicts(cItem, {'good_for_fav':True, 'category':'explore_item', 'title':title, 'url':url, 'icon':icon, 'desc':desc}))
         if nextPage:
-            self.addDir(MergeDicts(cItem, {'good_for_fav':False, 'title':_('Next page'), 'page':page+1, 'url':nextPage}))
+            self.addDir(MergeDicts(cItem, {'good_for_fav':False, 'title':_('Next page'), 'page':page + 1, 'url':nextPage}))
 
     def getLinksForVideo(self, cItem):
         urlsTab = []
@@ -472,7 +472,7 @@ class Christusvincit(CBaseHostClass):
                     if item['fileExt'] != 'mp4' or not item['isWeb']:
                         continue
                     item['bitrate'] *= 1024
-                    name = '%sx%s %s, bitrate: %s' % (item['width'], item['height'], formatBytes(item['size']*1024), item['bitrate'])
+                    name = '%sx%s %s, bitrate: %s' % (item['width'], item['height'], formatBytes(item['size'] * 1024), item['bitrate'])
                     url = baseUrl.replace('/format/', '/flavorId/%s/format/' % item['id'])
                     urlsTab.append({'name':name, 'url':url, 'need_resolve':0, 'bitrate':item['bitrate'], 'original':item['isOriginal']})
                 urlsTab.sort(key=lambda x: x['bitrate'], reverse=True)
@@ -490,7 +490,7 @@ class Christusvincit(CBaseHostClass):
         
         CBaseHostClass.handleService(self, index, refresh, searchPattern, searchType)
 
-        name     = self.currItem.get("name", '')
+        name = self.currItem.get("name", '')
         category = self.currItem.get("category", '')
         printDBG("handleService: ||| name[%s], category[%s] " % (name, category))
         self.currList = []

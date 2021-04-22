@@ -98,10 +98,10 @@ class CParsingHelper:
     def listToDir(cList, idx):
         cTree = {'dat':''}
         deep = 0 
-        while (idx+1) < len(cList):
+        while (idx + 1) < len(cList):
             if cList[idx].startswith('<ul') or cList[idx].startswith('<li'):
                 deep += 1
-                nTree, idx, nDeep = CParsingHelper.listToDir(cList, idx+1)
+                nTree, idx, nDeep = CParsingHelper.listToDir(cList, idx + 1)
                 if 'list' not in cTree:
                     cTree['list'] = []
                 cTree['list'].append(nTree)
@@ -138,7 +138,7 @@ class CParsingHelper:
     def getDataBeetwenMarkers(data, marker1, marker2, withMarkers=True, caseSensitive=True):
         flags = 0
         if withMarkers:
-            flags |= ph.START_E|ph.END_E
+            flags |= ph.START_E | ph.END_E
         if not caseSensitive:
             flags |= ph.IGNORECASE
         return ph.find(data, marker1, marker2, flags)
@@ -147,7 +147,7 @@ class CParsingHelper:
     def getAllItemsBeetwenMarkers(data, marker1, marker2, withMarkers=True, caseSensitive=True):
         flags = 0
         if withMarkers:
-            flags |= ph.START_E|ph.END_E
+            flags |= ph.START_E | ph.END_E
         if not caseSensitive:
             flags |= ph.IGNORECASE
         return ph.findall(data, marker1, marker2, flags)
@@ -156,7 +156,7 @@ class CParsingHelper:
     def rgetAllItemsBeetwenMarkers(data, marker1, marker2, withMarkers=True, caseSensitive=True):
         flags = 0
         if withMarkers:
-            flags |= ph.START_E|ph.END_E
+            flags |= ph.START_E | ph.END_E
         if not caseSensitive:
             flags |= ph.IGNORECASE
         return ph.rfindall(data, marker1, marker2, flags)
@@ -165,7 +165,7 @@ class CParsingHelper:
     def rgetDataBeetwenMarkers2(data, marker1, marker2, withMarkers=True, caseSensitive=True):
         flags = 0
         if withMarkers:
-            flags |= ph.START_E|ph.END_E
+            flags |= ph.START_E | ph.END_E
         if not caseSensitive:
             flags |= ph.IGNORECASE
         return ph.rfind(data, marker1, marker2, flags)
@@ -190,7 +190,7 @@ class CParsingHelper:
     def getDataBeetwenNodes(data, node1, node2, withNodes=True, caseSensitive=True):
         flags = 0
         if withNodes:
-            flags |= ph.START_E|ph.END_E
+            flags |= ph.START_E | ph.END_E
         if not caseSensitive:
             flags |= ph.IGNORECASE
         return ph.find(data, node1, node2, flags)
@@ -199,7 +199,7 @@ class CParsingHelper:
     def getAllItemsBeetwenNodes(data, node1, node2, withNodes=True, numNodes=-1, caseSensitive=True):
         flags = 0
         if withNodes:
-            flags |= ph.START_E|ph.END_E
+            flags |= ph.START_E | ph.END_E
         if not caseSensitive:
             flags |= ph.IGNORECASE
         return ph.findall(data, node1, node2, flags, limits=numNodes)
@@ -208,7 +208,7 @@ class CParsingHelper:
     def rgetDataBeetwenNodes(data, node1, node2, withNodes=True, caseSensitive=True):
         flags = 0
         if withNodes:
-            flags |= ph.START_E|ph.END_E
+            flags |= ph.START_E | ph.END_E
         if not caseSensitive:
             flags |= ph.IGNORECASE
         return ph.rfind(data, node1, node2, flags)
@@ -217,7 +217,7 @@ class CParsingHelper:
     def rgetAllItemsBeetwenNodes(data, node1, node2, withNodes=True, numNodes=-1, caseSensitive=True):
         flags = 0
         if withNodes:
-            flags |= ph.START_E|ph.END_E
+            flags |= ph.START_E | ph.END_E
         if not caseSensitive:
             flags |= ph.IGNORECASE
         return ph.rfindall(data, node1, node2, flags, limits=numNodes)
@@ -262,7 +262,7 @@ class CParsingHelper:
         return ph.clean_html(str)
 
 class common:
-    HOST   = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'
+    HOST = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'
     HEADER = None
     ph = CParsingHelper
     
@@ -334,7 +334,7 @@ class common:
             url = mainUrl + url[1:]
         elif 0 < len(url) and '://' not in url:
             if currUrl == mainUrl:
-                url =  mainUrl + url
+                url = mainUrl + url
             else:
                 url = urljoin(currUrl, url)
         return url
@@ -383,7 +383,7 @@ class common:
             try:
                 verInfo = pycurl.version_info()
                 printDBG("usePyCurl VERSION: %s" % [verInfo])
-                if verInfo[4] & (1<<7) and verInfo[1].startswith('7.6') and verInfo[5] == 'wolfSSL/3.15.3':
+                if verInfo[4] & (1 << 7) and verInfo[1].startswith('7.6') and verInfo[5] == 'wolfSSL/3.15.3':
                     pyCurlInstalled = True
             except Exception:
                 printExc()
@@ -408,7 +408,7 @@ class common:
                     # #define CURL_VERSION_ASYNCHDNS    (1<<7)
                     # we need to have ASYNC DNS to be able "cancel"
                     # request
-                    if verInfo[4] & (1<<7):
+                    if verInfo[4] & (1 << 7):
                         self.pyCurlAvailable = True
                     else:
                         self.pyCurlAvailable = False
@@ -613,7 +613,7 @@ class common:
                     printExc()
                     return 0 # wrong file handle
                 
-            if  toWriteData != None and params['return_data']:
+            if toWriteData != None and params['return_data']:
                 buffer.write(toWriteData)
             
         def _terminateFunction(download_t, download_d, upload_t, upload_d):
@@ -889,12 +889,12 @@ class common:
         if collectAllHeaders:
             if "Access-Control-Allow-Headers" in responseHeaders:
                 acah = responseHeaders["Access-Control-Allow-Headers"]
-                acah_keys= acah.split(',')
+                acah_keys = acah.split(',')
                 
                 for key in acah_keys:
                     key = key.strip()
                     if key in responseHeaders:
-                        metadata[key.lower()]=responseHeaders[key]
+                        metadata[key.lower()] = responseHeaders[key]
 
             for header, value in responseHeaders.iteritems():
                 metadata[header.lower()] = responseHeaders[header]
@@ -1037,7 +1037,7 @@ class common:
                         else:
                             continue
                         params2 = dict(params)
-                        params2['header']= dict(params['header'])
+                        params2['header'] = dict(params['header'])
                         params2['header']['Referer'] = baseUrl
                         if actionType == 'get':
                             if '?' in url:
@@ -1079,7 +1079,7 @@ class common:
                         printDBG(">>")
                         printDBG(verData)
                         printDBG("<<")
-                        verUrl =  _getFullUrl(ph.getattr(verData, 'action'), domain)
+                        verUrl = _getFullUrl(ph.getattr(verData, 'action'), domain)
                         get_data = {}
                         verData = re.findall(r'(<input[^>]*)>', re.sub("<!--.*?-->", "<!-- -->", verData))
                         for item in verData:
@@ -1100,7 +1100,7 @@ class common:
                             params2['Accept-Encoding'] = '*'
                         printDBG("Time spent: [%s]" % (time.time() - start_time))
                         if current == 1:
-                            GetIPTVSleep().Sleep(0.2 + (decoded['timeout'] / 1000.0)-(time.time() - start_time))
+                            GetIPTVSleep().Sleep(0.2 + (decoded['timeout'] / 1000.0) - (time.time() - start_time))
                         else:
                             GetIPTVSleep().Sleep((decoded['timeout'] / 1000.0))
                         printDBG("Time spent: [%s]" % (time.time() - start_time))
@@ -1257,9 +1257,9 @@ class common:
         
         cj = cookielib.MozillaCookieJar()
         response = None
-        req      = None
+        req = None
         out_data = None
-        opener   = None
+        opener = None
         self.meta = {}
         metadata = self.meta
         
