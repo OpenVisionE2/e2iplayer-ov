@@ -24,7 +24,7 @@ from Components.config import config, ConfigSelection, getConfigListEntry
 ###################################################
 # Config options for HOST
 ###################################################
-config.plugins.iptvplayer.ngolos_language = ConfigSelection(default = "en", choices = [("en", _("English")), ("es", _("Spanish")), ("pt", _("Portuguese"))])
+config.plugins.iptvplayer.ngolos_language = ConfigSelection(default="en", choices=[("en", _("English")), ("es", _("Spanish")), ("pt", _("Portuguese"))])
 
 def GetConfigList():
     optionList = []
@@ -59,7 +59,7 @@ class NGolosCOM(CBaseHostClass):
         self.MAIN_URL   = 'https://www.ngolos.com/'
         self.DEFAULT_ICON_URL = self.getFullIconUrl('/assets/images/thumbnail.png')
     
-    def getPage(self, baseUrl, addParams = {}, post_data = None):
+    def getPage(self, baseUrl, addParams={}, post_data=None):
         if addParams == {}:
             addParams = dict(self.defaultParams)
         lang = config.plugins.iptvplayer.ngolos_language.value
@@ -377,7 +377,7 @@ class NGolosCOM(CBaseHostClass):
         urlTab = []
         return urlTab
 
-    def handleService(self, index, refresh = 0, searchPattern = '', searchType = ''):
+    def handleService(self, index, refresh=0, searchPattern='', searchType=''):
         printDBG('handleService start')
         
         CBaseHostClass.handleService(self, index, refresh, searchPattern, searchType)

@@ -21,7 +21,7 @@ import urllib
 from datetime import  timedelta
 ###################################################
 
-config.plugins.iptvplayer.christusvincit_preferred_bitrate = ConfigSelection(default = "99999999", choices = [("0",      _("the lowest")),
+config.plugins.iptvplayer.christusvincit_preferred_bitrate = ConfigSelection(default="99999999", choices=[("0",      _("the lowest")),
                                                                                                     ("360000",  "360000"),
                                                                                                     ("590000",  "590000"),
                                                                                                     ("820000",  "820000"),
@@ -33,7 +33,7 @@ config.plugins.iptvplayer.christusvincit_preferred_bitrate = ConfigSelection(def
                                                                                                     ("9100000", "9100000"),
                                                                                                     ("99999999",_("the highest")),
                                                                                                     ])
-config.plugins.iptvplayer.christusvincit_use_preferred_bitrate = ConfigYesNo(default = True)
+config.plugins.iptvplayer.christusvincit_use_preferred_bitrate = ConfigYesNo(default=True)
 
 ###################################################
 # Config options for HOST
@@ -485,7 +485,7 @@ class Christusvincit(CBaseHostClass):
                 urlsTab = [urlsTab[0]]
         return urlsTab
 
-    def handleService(self, index, refresh = 0, searchPattern = '', searchType = ''):
+    def handleService(self, index, refresh=0, searchPattern='', searchType=''):
         printDBG('handleService start')
         
         CBaseHostClass.handleService(self, index, refresh, searchPattern, searchType)

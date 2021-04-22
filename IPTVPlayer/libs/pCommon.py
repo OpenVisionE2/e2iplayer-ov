@@ -171,7 +171,7 @@ class CParsingHelper:
         return ph.rfind(data, marker1, marker2, flags)
 
     @staticmethod
-    def rgetDataBeetwenMarkers(data, marker1, marker2, withMarkers = True):
+    def rgetDataBeetwenMarkers(data, marker1, marker2, withMarkers=True):
         # this methods is not working as expected, but is is used in many places
         # so I will leave at it is, please use rgetDataBeetwenMarkers2
         idx1 = data.rfind(marker1)
@@ -225,7 +225,7 @@ class CParsingHelper:
     # this method is useful only for developers 
     # to dump page code to the file
     @staticmethod
-    def writeToFile(file, data, mode = "w"):
+    def writeToFile(file, data, mode="w"):
         #helper to see html returned by ajax
         file_path = file
         text_file = open(file_path, mode)
@@ -359,7 +359,7 @@ class common:
         _process(_query, query, '')
         return _query
 
-    def __init__(self, proxyURL= '', useProxy = False, useMozillaCookieJar=True):
+    def __init__(self, proxyURL='', useProxy=False, useMozillaCookieJar=True):
         self.proxyURL = proxyURL
         self.useProxy = useProxy
         self.geolocation = {}
@@ -456,13 +456,13 @@ class common:
                 cj = self._pyCurlLoadCookie(cookiefile, ignoreDiscard, ignoreExpires)
             else:
                 cj = cookielib.MozillaCookieJar()
-            cj.load(cookiefile, ignore_discard = ignoreDiscard)
+            cj.load(cookiefile, ignore_discard=ignoreDiscard)
             for cookie in cj:
                 if cookie.name not in leaveNames and (None == removeNames or cookie.name in removeNames):
                     toRemove.append(cookie)
             for cookie in toRemove:
                 cj.clear(cookie.domain, cookie.path, cookie.name)
-            cj.save(cookiefile, ignore_discard = ignoreDiscard)
+            cj.save(cookiefile, ignore_discard=ignoreDiscard)
         except Exception:
             printExc()
             return False
@@ -479,7 +479,7 @@ class common:
                 cj = self._pyCurlLoadCookie(cookiefile, ignoreDiscard, ignoreExpires)
             else:
                 cj = cookielib.MozillaCookieJar()
-                cj.load(cookiefile, ignore_discard = ignoreDiscard)
+                cj.load(cookiefile, ignore_discard=ignoreDiscard)
         except Exception:
             printExc()
         return cj
@@ -509,7 +509,7 @@ class common:
             printExc()
         return ret
 
-    def _getPageWithPyCurl(self, url, params = {}, post_data = None):
+    def _getPageWithPyCurl(self, url, params={}, post_data=None):
         if IsMainThread():
             msg1 = _('It is not allowed to call getURLRequestData from main thread.')
             msg2 = _('You should never perform block I/O operations in the __init__.')
@@ -835,7 +835,7 @@ class common:
             
         return sts, out_data
     
-    def getPageWithPyCurl(self, url, params = {}, post_data = None):
+    def getPageWithPyCurl(self, url, params={}, post_data=None):
         # some error can be caused because of session reuse 
         # if we use old curlSession and fail we should
         # re-try with fresh curlSession
@@ -899,7 +899,7 @@ class common:
             for header, value in responseHeaders.iteritems():
                 metadata[header.lower()] = responseHeaders[header]
 
-    def getPage(self, url, addParams = {}, post_data = None):
+    def getPage(self, url, addParams={}, post_data=None):
         ''' wraps getURLRequestData '''
         
         # if curl should be used and can be used
@@ -1113,7 +1113,7 @@ class common:
                 break
         return sts, data
     
-    def saveWebFileWithPyCurl(self, file_path, url, add_params = {}, post_data = None):
+    def saveWebFileWithPyCurl(self, file_path, url, add_params={}, post_data=None):
         bRet = False
         downDataSize = 0
         
@@ -1131,7 +1131,7 @@ class common:
             rm(file_path)
         return {'sts': sts, 'fsize': downDataSize}
     
-    def saveWebFile(self, file_path, url, addParams = {}, post_data = None):
+    def saveWebFile(self, file_path, url, addParams={}, post_data=None):
         addParams = dict(addParams)
         
         outParams, postData = self.getParamsFromUrlWithMeta(url)
@@ -1230,7 +1230,7 @@ class common:
             return pycurl.SSLVERSION_TLSv1_1
         return None
     
-    def getURLRequestData(self, params = {}, post_data = None):
+    def getURLRequestData(self, params={}, post_data=None):
         
         def urlOpen(req, customOpeners, timeout):
             if len(customOpeners) > 0:
@@ -1291,7 +1291,7 @@ class common:
         if params.get('use_cookie', False):
             if params.get('load_cookie', False):
                 try:
-                    cj.load(params['cookiefile'], ignore_discard = True)
+                    cj.load(params['cookiefile'], ignore_discard=True)
                 except IOError:
                     printDBG('Cookie file [%s] not exists' % params['cookiefile'])
                 except Exception:
@@ -1402,7 +1402,7 @@ class common:
                     if params.get('use_cookie', False):
                         new_cookie = e.fp.info().get('Set-Cookie', '')
                         printDBG("> new_cookie[%s]" % new_cookie)
-                        cj.save(params['cookiefile'], ignore_discard = True)
+                        cj.save(params['cookiefile'], ignore_discard=True)
                     raise e
                 else:
                     if e.code in [300, 302, 303, 307] and params.get('use_cookie', False) and params.get('save_cookie', False):
@@ -1410,7 +1410,7 @@ class common:
                         printDBG("> new_cookie[%s]" % new_cookie)
                         #for cookieKey in params.get('cookie_items', {}).keys():
                         #    cj.clear('', '/', cookieKey)
-                        cj.save(params['cookiefile'], ignore_discard = True)
+                        cj.save(params['cookiefile'], ignore_discard=True)
                     raise e
             try:
                 if gzip_encoding:
@@ -1428,7 +1428,7 @@ class common:
  
         if params.get('use_cookie', False) and params.get('save_cookie', False):
             try:
-                cj.save(params['cookiefile'], ignore_discard = True)
+                cj.save(params['cookiefile'], ignore_discard=True)
             except Exception as e:
                 printExc()
                 raise e
@@ -1482,7 +1482,7 @@ class common:
             printExc()
         return iri
 
-    def makeABCList(self, tab = ['0 - 9']):
+    def makeABCList(self, tab=['0 - 9']):
         strTab = list(tab)
         for i in range(65,91):
             strTab.append(str(unichr(i)))    

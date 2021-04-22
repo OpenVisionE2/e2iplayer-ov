@@ -169,7 +169,7 @@ class SubtitlesGrProvider(CBaseSubProviderClass):
         
         return retData
     
-    def handleService(self, index, refresh = 0):
+    def handleService(self, index, refresh=0):
         printDBG('handleService start')
         
         CBaseSubProviderClass.handleService(self, index, refresh)

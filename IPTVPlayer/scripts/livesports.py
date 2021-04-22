@@ -62,7 +62,7 @@ def getPage(url, params={}):
         if cj == None:
             cj = cookielib.MozillaCookieJar()
             try:
-                cj.load(params['cookiefile'], ignore_discard = True)
+                cj.load(params['cookiefile'], ignore_discard=True)
             except IOError:
                 pass
         customOpeners.append( urllib2.HTTPCookieProcessor(cj) )

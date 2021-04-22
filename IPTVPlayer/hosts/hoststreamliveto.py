@@ -30,8 +30,8 @@ from Screens.MessageBox import MessageBox
 ###################################################
 # Config options for HOST
 ###################################################
-config.plugins.iptvplayer.streamliveto_login    = ConfigText(default = "", fixed_size = False)
-config.plugins.iptvplayer.streamliveto_password = ConfigText(default = "", fixed_size = False)
+config.plugins.iptvplayer.streamliveto_login    = ConfigText(default="", fixed_size=False)
+config.plugins.iptvplayer.streamliveto_password = ConfigText(default="", fixed_size=False)
 
 def GetConfigList():
     optionList = []
@@ -395,7 +395,7 @@ class StreamLiveTo(CBaseHostClass):
                 return False, None
             resultMarker = 'Your answer is wrong.'
             if  resultMarker in data:
-                self.sessionEx.open(MessageBox, resultMarker, type = MessageBox.TYPE_ERROR, timeout = 10 )
+                self.sessionEx.open(MessageBox, resultMarker, type=MessageBox.TYPE_ERROR, timeout=10 )
             else:
                 return True, data
         return False, None
@@ -413,7 +413,7 @@ class StreamLiveTo(CBaseHostClass):
             logged = True
         return logged
         
-    def handleService(self, index, refresh = 0, searchPattern = '', searchType = ''):
+    def handleService(self, index, refresh=0, searchPattern='', searchType=''):
         printDBG('handleService start')
         
         CBaseHostClass.handleService(self, index, refresh, searchPattern, searchType)
@@ -433,7 +433,7 @@ class StreamLiveTo(CBaseHostClass):
             if '' != login.strip() and '' != passwd.strip():
                 logged = self.doLogin(login, passwd)
                 if not logged:
-                    self.sessionEx.open(MessageBox, _('Login failed.'), type = MessageBox.TYPE_INFO, timeout = 10 )
+                    self.sessionEx.open(MessageBox, _('Login failed.'), type=MessageBox.TYPE_INFO, timeout=10 )
             self.listsTab(self.MAIN_CAT_TAB, {'name':'category'})
             #if logged:  
             #    self.addDir({'name':'category', 'title':_('Get free credits'), 'category':'get_free_credits'})
