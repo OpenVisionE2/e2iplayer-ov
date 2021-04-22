@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 
+
 def enum(**enums):
     return type('Enum', (), enums)
 
@@ -41,6 +42,8 @@ def enum(**enums):
 #   "Orgin": http header field
 #   "Origin": http header field
 #   "X-Forwarded-For": http header field
+
+
 class strwithmeta(str):
     def __new__(cls, value, meta={}):
         obj = str.__new__(cls, value)

@@ -36,6 +36,7 @@ from Screens.MessageBox import MessageBox
 config.plugins.iptvplayer.filmezzeu_login = ConfigText(default="", fixed_size=False)
 config.plugins.iptvplayer.filmezzeu_password = ConfigText(default="", fixed_size=False)
 
+
 def GetConfigList():
     optionList = []
     optionList.append(getConfigListEntry(_("login") + ":", config.plugins.iptvplayer.filmezzeu_login))
@@ -43,8 +44,10 @@ def GetConfigList():
     return optionList
 ###################################################
 
+
 def gettytul():
     return 'http://filmezz.eu/'
+
 
 class FilmezzEU(CBaseHostClass):
  
@@ -569,6 +572,7 @@ class FilmezzEU(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

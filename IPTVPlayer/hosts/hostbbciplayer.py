@@ -26,6 +26,8 @@ from Components.config import config, getConfigListEntry
 ###################################################
 # Config options for HOST
 ###################################################
+
+
 def GetConfigList():
     optionList = []
     optionList.append(getConfigListEntry(_("Default video quality:"), config.plugins.iptvplayer.bbc_default_quality))
@@ -38,6 +40,7 @@ def GetConfigList():
 
 def gettytul():
     return 'http://www.bbc.co.uk/iplayer'
+
 
 class BBCiPlayer(CBaseHostClass):
  
@@ -651,6 +654,7 @@ class BBCiPlayer(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

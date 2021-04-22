@@ -26,6 +26,7 @@ from Components.config import config, ConfigSelection, getConfigListEntry
 ###################################################
 config.plugins.iptvplayer.ngolos_language = ConfigSelection(default="en", choices=[("en", _("English")), ("es", _("Spanish")), ("pt", _("Portuguese"))])
 
+
 def GetConfigList():
     optionList = []
     optionList.append(getConfigListEntry(_("Language:"), config.plugins.iptvplayer.ngolos_language))
@@ -35,6 +36,7 @@ def GetConfigList():
 
 def gettytul():
     return 'https://ngolos.com/'
+
 
 class NGolosCOM(CBaseHostClass):
  
@@ -208,7 +210,6 @@ class NGolosCOM(CBaseHostClass):
             params.update({'good_for_fav': True, 'category': nextCategory, 'title': title, 'url': url, 'desc': desc})
             self.addDir(params)
         
-        
         if self.cm.isValidUrl(nextPage):
             params = dict(cItem)
             params.update({'good_for_fav': False, 'title': _('Next page'), 'url': nextPage, 'page': page + 1})
@@ -371,7 +372,6 @@ class NGolosCOM(CBaseHostClass):
             urlTab.extend(self.up.getVideoLinkExt(videoUrl))
         return urlTab
 
-        
     def getVideoLinks(self, videoUrl):
         printDBG("NGolosCOM.getVideoLinks [%s]" % videoUrl)
         urlTab = []
@@ -416,6 +416,7 @@ class NGolosCOM(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

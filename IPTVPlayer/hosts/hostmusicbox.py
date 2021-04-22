@@ -32,12 +32,14 @@ audioscrobbler_api_key = "d49b72ffd881c2cb13b4595e67005ac4"
 
 HEADER = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; rv:33.0) Gecko/20100101 Firefox/33.0'}
 
+
 def GetConfigList():
     optionList = []
     optionList.append(getConfigListEntry("Użytkownik Last.fm", config.plugins.iptvplayer.MusicBox_premium))
     if config.plugins.iptvplayer.MusicBox_premium.value:
         optionList.append(getConfigListEntry(" Last.fm login:", config.plugins.iptvplayer.MusicBox_login))
     return optionList
+
 
 def gettytul():
     return 'Music-Box'
@@ -380,6 +382,7 @@ class MusicBox(CBaseHostClass):
             self.Lastfmlist_track(artist)
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

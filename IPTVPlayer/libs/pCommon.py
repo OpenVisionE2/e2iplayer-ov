@@ -40,10 +40,12 @@ from urlparse import urljoin, urlparse, urlunparse
 from binascii import hexlify
 ###################################################
 
+
 def DecodeGzipped(data):
     buf = StringIO(data)
     f = gzip.GzipFile(fileobj=buf)
     return f.read()
+
 
 def EncodeGzipped(data):
     f = StringIO()
@@ -53,6 +55,7 @@ def EncodeGzipped(data):
     encoded = f.getvalue()
     f.close()
     return encoded
+
 
 class NoRedirection(urllib2.HTTPRedirectHandler):
     def http_error_302(self, req, fp, code, msg, headers):
@@ -64,6 +67,7 @@ class NoRedirection(urllib2.HTTPRedirectHandler):
     http_error_301 = http_error_302
     http_error_303 = http_error_302
     http_error_307 = http_error_302
+
 
 class MultipartPostHandler(urllib2.BaseHandler):
     handler_order = urllib2.HTTPHandler.handler_order - 10
@@ -92,6 +96,7 @@ class MultipartPostHandler(urllib2.BaseHandler):
         return content_type, body
     
     https_request = http_request
+
 
 class CParsingHelper:
     @staticmethod
@@ -260,6 +265,7 @@ class CParsingHelper:
     @staticmethod 
     def cleanHtmlStr(str):
         return ph.clean_html(str)
+
 
 class common:
     HOST = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'
@@ -532,6 +538,7 @@ class common:
         maxDataSize = params.get('max_data_size', -1)
         
         responseHeaders = {}
+
         def _headerFunction(headerLine):
             if ':' not in headerLine:
                 if 0 == maxDataSize:

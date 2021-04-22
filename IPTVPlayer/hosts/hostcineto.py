@@ -22,6 +22,7 @@ import urllib
 def gettytul():
     return 'https://cine.to/'
 
+
 class CineTO(CBaseHostClass, CaptchaHelper):
     LINKS_CACHE = {}
     
@@ -500,6 +501,7 @@ class CineTO(CBaseHostClass, CaptchaHelper):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

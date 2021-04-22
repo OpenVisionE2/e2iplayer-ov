@@ -24,6 +24,7 @@ from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import unpackJSPlayerPar
 def gettytul():
     return 'https://streamcomplet.me/'
 
+
 class StreamComplet(CBaseHostClass):
     MAIN_URL = 'https://www.streamcomplet.me/'
     SRCH_URL = MAIN_URL + '?s='
@@ -272,6 +273,8 @@ class StreamComplet(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
+
 class IPTVHost(CHostBase):
 
     def __init__(self):

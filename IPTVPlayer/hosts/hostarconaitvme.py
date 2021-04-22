@@ -26,6 +26,7 @@ except Exception:
 # Config options for HOST
 ###################################################
 
+
 def GetConfigList():
     optionList = []
     return optionList
@@ -34,6 +35,7 @@ def GetConfigList():
 
 def gettytul():
     return 'http://arconaitv.us/'
+
 
 class ArconaitvME(CBaseHostClass):
  
@@ -230,6 +232,8 @@ class ArconaitvME(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
+
 class IPTVHost(CHostBase):
 
     def __init__(self):

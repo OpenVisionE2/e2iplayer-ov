@@ -29,11 +29,14 @@ gSetIPTVPlayerLastHostError = ""
 gIPTVPlayerNotificationList = None
 
 ###################################################
+
+
 def localeInit():
     lang = language.getLanguage()[:2] # getLanguage returns e.g. "fi_FI" for "language_country"
     os.environ["LANGUAGE"] = lang # Enigma doesn't set this (or LC_ALL, LC_MESSAGES, LANG). gettext needs it!
     printDBG(PluginLanguageDomain + " set language to " + lang)
     gettext.bindtextdomain(PluginLanguageDomain, resolveFilename(SCOPE_PLUGINS, PluginLanguagePath))
+
 
 def TranslateTXT(txt):
     t = gettext.dgettext(PluginLanguageDomain, txt)
@@ -41,8 +44,10 @@ def TranslateTXT(txt):
         t = gettext.gettext(txt)
     return t
 
+
 localeInit()
 language.addCallback(localeInit)
+
 
 def IPTVPlayerNeedInit(value=None):
     global gInitIPTVPlayer
@@ -50,9 +55,11 @@ def IPTVPlayerNeedInit(value=None):
         gInitIPTVPlayer = value
     return gInitIPTVPlayer
     
+
 def SetIPTVPlayerLastHostError(value=""):
     global gSetIPTVPlayerLastHostError
     gSetIPTVPlayerLastHostError = value
+
 
 def GetIPTVPlayerLastHostError(clear=True):
     global gSetIPTVPlayerLastHostError
@@ -60,6 +67,7 @@ def GetIPTVPlayerLastHostError(clear=True):
     if clear:
         gSetIPTVPlayerLastHostError = ""
     return tmp
+
 
 class IPTVPlayerNotification():
     def __init__(self, title, message, type, timeout, messageHash=None, timestamp=0):
@@ -86,6 +94,7 @@ class IPTVPlayerNotification():
            self.timeout != a.timeout:
             return True
         return False
+
 
 class IPTVPlayerNotificationList(object):
     
@@ -161,11 +170,15 @@ class IPTVPlayerNotificationList(object):
                 self.empty = True
         return notification
 
+
 gIPTVPlayerNotificationList = IPTVPlayerNotificationList()
+
+
 def GetIPTVNotify():
     global gIPTVPlayerNotificationList
     return gIPTVPlayerNotificationList
     
+
 class IPTVPlayerSleep(object):
     
     def __init__(self):
@@ -195,7 +208,10 @@ class IPTVPlayerSleep(object):
                     ret = 0
         return ret
     
+
 gIPTVPlayerSleep = IPTVPlayerSleep()
+
+
 def GetIPTVSleep():
     global gIPTVPlayerSleep
     return gIPTVPlayerSleep

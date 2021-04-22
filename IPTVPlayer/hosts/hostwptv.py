@@ -24,6 +24,7 @@ from Components.config import config, ConfigSelection, ConfigYesNo, getConfigLis
 config.plugins.iptvplayer.wpDefaultformat = ConfigSelection(default="2", choices=[("1", "Niska"), ("2", "Wysoka")])
 config.plugins.iptvplayer.wpUseDF = ConfigYesNo(default=False)
 
+
 def GetConfigList():
     optionList = []
     optionList.append(getConfigListEntry("Domyślny jakość video:", config.plugins.iptvplayer.wpDefaultformat))
@@ -32,9 +33,9 @@ def GetConfigList():
 ###################################################
 
 
-
 def gettytul():
     return 'http://wp.tv/'
+
 
 class WpTV(CBaseHostClass):
  
@@ -262,6 +263,7 @@ class WpTV(CBaseHostClass):
                 
             if 0 < len(urlTab):
                 max_bitrate = int(config.plugins.iptvplayer.wpDefaultformat.value)
+
                 def __getLinkQuality(itemLink):
                     if 'mobile' in itemLink['name']:
                         return 0
@@ -334,6 +336,7 @@ class WpTV(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

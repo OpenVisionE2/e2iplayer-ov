@@ -27,6 +27,7 @@ import cookielib
 def gettytul():
     return 'http://cinemaxx.cc/'
 
+
 class Cinemaxx(CBaseHostClass):
 
     def __init__(self):
@@ -314,7 +315,6 @@ class Cinemaxx(CBaseHostClass):
         icon = self.getFullIconUrl(ph.search(tmp, ph.IMAGE_SRC_URI_RE)[1])
         desc = self.cleanHtmlStr(ph.find(data, ('<div', '>', 'fstory-content'), '</div>', flags=0)[1])
 
-
         data = ph.find(data, ('<div', '>', 'finfo'), ('<div', '>', 'fstory-content'), flags=0)[1]
         data = ph.rfindall(data, '</div>', ('<div', '>', 'finfo-block'), flags=0)
 
@@ -372,6 +372,7 @@ class Cinemaxx(CBaseHostClass):
             printExc()
 
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
     def __init__(self):

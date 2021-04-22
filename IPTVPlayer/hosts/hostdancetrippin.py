@@ -19,6 +19,7 @@ import urllib
 def gettytul():
     return 'http://dancetrippin.tv/'
 
+
 class DancetrippinTV(CBaseHostClass):
  
     def __init__(self):
@@ -364,6 +365,8 @@ class DancetrippinTV(CBaseHostClass):
         else:
             printExc()
         CBaseHostClass.endHandleService(self, index, refresh)
+
+
 class IPTVHost(CHostBase):
 
     def __init__(self):

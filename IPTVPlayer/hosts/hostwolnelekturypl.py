@@ -19,12 +19,13 @@ except Exception:
     import simplejson as json
 ###################################################
 
+
 def gettytul():
     return 'http://wolnelektury.pl/'
 
+
 class WolnelekturyPL(CBaseHostClass):
 
-    
     def __init__(self):
         CBaseHostClass.__init__(self, {'history': 'wolnelektury.pl', 'cookie': 'WolnelekturyPL.cookie'})
         self.HTTP_HEADER = {'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html'}
@@ -279,6 +280,8 @@ class WolnelekturyPL(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
+
 class IPTVHost(CHostBase):
 
     def __init__(self):

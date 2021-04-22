@@ -37,6 +37,7 @@ config.plugins.iptvplayer.ekinotv_password = ConfigText(default="", fixed_size=F
 config.plugins.iptvplayer.ekinotv_sortby = ConfigSelection(default="data-dodania", choices=[("alfabetycznie", "nazwy"), ("ocena", "oceny"), ("odslony", "ilości odsłon"), ("data-dodania", "daty dodania"), ("data-premiery", "daty premiery"), ('data-aktualizacji', 'daty aktualizacji')])            
 config.plugins.iptvplayer.ekinotv_sortorder = ConfigSelection(default="desc", choices=[("desc", "malejąco"), ("asc", "rosnąco")]) 
 
+
 def GetConfigList():
     optionList = []
     optionList.append(getConfigListEntry("Ekino TV login:", config.plugins.iptvplayer.ekinotv_login))
@@ -46,8 +47,10 @@ def GetConfigList():
     return optionList
 ###################################################
 
+
 def gettytul():
     return 'http://ekino-tv.pl/'
+
 
 class EkinoTv(CBaseHostClass, CaptchaHelper):
     
@@ -88,6 +91,7 @@ class EkinoTv(CBaseHostClass, CaptchaHelper):
             addParams = dict(self.defaultParams)
         origBaseUrl = baseUrl
         baseUrl = self.cm.iriToUri(baseUrl)
+
         def _getFullUrl(url):
             if self.cm.isValidUrl(url):
                 return url
@@ -389,7 +393,6 @@ class EkinoTv(CBaseHostClass, CaptchaHelper):
                 if sts and 'setStandard()' in data:
                     _findHostingLinks(data, ultraTab, True)
                     
-                    
         ultraTab.extend(premiumTab)
         ultraTab.extend(urlTab)
         return ultraTab
@@ -599,6 +602,7 @@ class EkinoTv(CBaseHostClass, CaptchaHelper):
             printExc()
         CBaseHostClass.endHandleService(self, index, refresh)
     
+
 class IPTVHost(CHostBase):
 
     def __init__(self):

@@ -27,6 +27,7 @@ config.plugins.iptvplayer.kkiste_proxy = ConfigSelection(default="None", choices
                                                                                            ("proxy_2", _("Alternative proxy server (2)"))])
 config.plugins.iptvplayer.kkiste_alt_domain = ConfigText(default="", fixed_size=False)
 
+
 def GetConfigList():
     optionList = []
     optionList.append(getConfigListEntry(_("Use proxy server:"), config.plugins.iptvplayer.kkiste_proxy))
@@ -35,8 +36,10 @@ def GetConfigList():
     return optionList
 ###################################################
 
+
 def gettytul():
     return 'https://kinokiste.me/' #'https://kkiste.ag/'
+
 
 class KKisteAG(CBaseHostClass):
 
@@ -467,6 +470,7 @@ class KKisteAG(CBaseHostClass):
             printExc()
 
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
     def __init__(self):

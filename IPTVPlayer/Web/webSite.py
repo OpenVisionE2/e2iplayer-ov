@@ -22,6 +22,8 @@ from twisted.web import resource, http, util
 import urllib
 
 ########################################################
+
+
 def reloadScripts():
     #### Reload scripts if new version of source exists ####
     webPath = GetPluginDir(file='/Web/')
@@ -40,6 +42,8 @@ def reloadScripts():
         else:
             reload(webThreads)
 ########################################################
+
+
 class redirectionPage(resource.Resource):
     
     title = "E2iPlayer Webinterface"
@@ -71,6 +75,8 @@ class redirectionPage(resource.Resource):
         return html
 
 #######################################################
+
+
 class StartPage(resource.Resource):
     title = "E2iPlayer Webinterface"
     isLeaf = False
@@ -107,7 +113,6 @@ class StartPage(resource.Resource):
                 else:
                     resetStatusMSG.insert(0, _('Web component has been reset, the following threads are still working:'))
               
-                
         """ rendering server response """
         if isActiveHostInitiated():
             return util.redirectTo("/iptvplayer/usehost", req)
@@ -117,6 +122,8 @@ class StartPage(resource.Resource):
         html += webParts.Body().StartPageContent(', '.join(resetStatusMSG))
         return html 
 #######################################################
+
+
 class searchPage(resource.Resource):
     title = "E2iPlayer Webinterface"
     isLeaf = False
@@ -231,6 +238,8 @@ class hostsPage(resource.Resource):
         html += webParts.Body().hostsPageContent(MenuStatusMSG, ShowCancelButton)
         return html
 ##########################################################
+
+
 class logsPage(resource.Resource):
     title = "E2iPlayer Webinterface"
     isLeaf = False
@@ -239,7 +248,6 @@ class logsPage(resource.Resource):
         pass
    
     def render(self, req):
-
         """ rendering server response """
         htmlError = ''
         DBGFileContent = ''
@@ -253,7 +261,6 @@ class logsPage(resource.Resource):
         else:
             DBGFileName = ''
             
-
         command = req.args.get("cmd", ['NOcmd'])
         
         if DBGFileName == '':
@@ -292,6 +299,8 @@ class logsPage(resource.Resource):
         html += webParts.Body().logsPageContent(MenuStatusMSG, htmlError, DBGFileName, DBGFileContent)
         return html
 #######################################################
+
+
 class settingsPage(resource.Resource):
     title = "E2iPlayer Webinterface"
     isLeaf = False
@@ -356,6 +365,8 @@ class settingsPage(resource.Resource):
 
         return html
 #######################################################
+
+
 class downloaderPage(resource.Resource):
     title = "E2iPlayer Webinterface"
     isLeaf = False
@@ -470,6 +481,8 @@ class downloaderPage(resource.Resource):
         html += webParts.Body().downloaderPageContent(Plugins.Extensions.IPTVPlayer.components.iptvplayerwidget.gDownloadManager, DMlist)
         return html
 #######################################################
+
+
 class useHostPage(resource.Resource):
     title = "E2iPlayer Webinterface"
     isLeaf = False

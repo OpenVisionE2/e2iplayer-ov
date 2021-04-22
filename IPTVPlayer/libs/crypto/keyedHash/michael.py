@@ -12,8 +12,10 @@
 from struct import pack, unpack
 from binascii_plus import *
 
+
 class Michael:
     """ The Michael keyed hash as defined in IEEE 802.11i D2.0 """
+
     def __init__(self, key=None):
         self.name = 'Michael'
         self.blocksize = 1  # single octets can be hashed by padding to raw block size
@@ -49,10 +51,13 @@ class Michael:
 
     def update(self, data):
         raise 'No update method supported for Michael keyed hash'
+
     def digest(self):
         raise 'No digest method supported for Michael keyed hash'
+
     def final(self, data):
         raise 'No final method supported for Michael keyed hash'
+
 
 def b(l, r):
     """ The 'b' block function for the IEEE 802.11i Michael Integrity Check """

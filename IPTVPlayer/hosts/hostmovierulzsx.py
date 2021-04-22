@@ -20,8 +20,10 @@ except Exception:
     import simplejson as json
 ###################################################
 
+
 def gettytul():
     return 'https://movierulz.be/'
+
 
 class MovieRulzSX(CBaseHostClass):
     
@@ -48,6 +50,7 @@ class MovieRulzSX(CBaseHostClass):
             addParams = dict(self.defaultParams)
         origBaseUrl = baseUrl
         baseUrl = self.cm.iriToUri(baseUrl)
+
         def _getFullUrl(url):
             if self.cm.isValidUrl(url):
                 return url
@@ -341,6 +344,7 @@ class MovieRulzSX(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

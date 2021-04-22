@@ -23,6 +23,7 @@ from datetime import datetime, tzinfo
 def gettytul():
     return 'https://it.dplay.com/'
 
+
 class Dplayit(CBaseHostClass):
  
     def __init__(self):
@@ -82,7 +83,6 @@ class Dplayit(CBaseHostClass):
             
             return headers
     
-    
     def getLinksForVideo(self, cItem):
         printDBG("Dplay getLinksForVideo [%s]" % cItem)
         linksTab = []
@@ -112,7 +112,6 @@ class Dplayit(CBaseHostClass):
         
         return linksTab
 
-   
     def listMainMenu(self, cItem):
         MAIN_CAT_TAB = [{'category': 'ondemand', 'title': 'Programmi on demand'},
                         {'category': 'channel-menu', 'title': 'Canali'},
@@ -173,7 +172,6 @@ class Dplayit(CBaseHostClass):
                 if url != "/api/video/GetVideoPopolari" and url != "/api/video/GetUltimiVideoAggiunti":
                     self.addDir(MergeDicts(cItem, {'category': 'channel_list', 'title': title, 'url': url, 'id': ch_id}))  
                 
-        
     def listPrograms(self, cItem, ch_id='0'):
         printDBG("Dplay start alphabetical index")
 
@@ -184,7 +182,6 @@ class Dplayit(CBaseHostClass):
         for i in range(26):
             self.addDir(MergeDicts(cItem, {'category': 'programs_az', 'title': chr(ord('A') + i), 'ch_id': ch_id}))  
 
-    
     def listProgramsByLetter(self, cItem):
         printDBG("Dplay start programs list")
         letter = cItem["title"]
@@ -219,7 +216,6 @@ class Dplayit(CBaseHostClass):
                     params = {'category': 'program', 'title': title, 'desc': desc, 'icon': icon, 'id': show_id}
                     self.addDir(params)     
 
-    
     def listProgramItems(self, cItem):
         title = cItem['title']
         show_id = cItem['id']
@@ -328,7 +324,6 @@ class Dplayit(CBaseHostClass):
             printDBG("add video '%s' with playback info url '%s'" % (title, videoUrl)) 
             self.addVideo(MergeDicts(cItem, {'title': title, 'name': title, 'desc': desc, 'video_id': video_id, 'url': videoUrl, 'icon': icon, 'category': 'video'}))  
 
-        
     def listPopular(self, cItem, ch_id='0'):
         printDBG("Dplay start popular list")
         h = self.getHeader()

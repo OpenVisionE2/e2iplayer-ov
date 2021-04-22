@@ -25,6 +25,7 @@ except Exception:
 def gettytul():
     return 'https://gledalica.com/'
 
+
 class Gledalica(CBaseHostClass):
     
     def __init__(self):
@@ -49,6 +50,7 @@ class Gledalica(CBaseHostClass):
             addParams = dict(self.defaultParams)
         origBaseUrl = baseUrl
         baseUrl = self.cm.iriToUri(baseUrl)
+
         def _getFullUrl(url):
             if self.cm.isValidUrl(url):
                 return url
@@ -524,7 +526,6 @@ class Gledalica(CBaseHostClass):
         elif category == 'list_by_letter':
             self.listByLetter(self.currItem, 'sort') 
            
-            
     #SECTIONS
         elif category == 'sections':
             self.listSections(self.currItem, 'list_sub_items', 'explore_item')
@@ -559,6 +560,7 @@ class Gledalica(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

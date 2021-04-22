@@ -40,11 +40,14 @@ from Screens.MessageBox import MessageBox
 ###################################################
 # Config options for HOST
 ###################################################
+
+
 def GetConfigList():
     optionList = []
     return optionList
     
 ###################################################
+
 
 class Sport365LiveApi:
     MAIN_URL = 'http://www.sport365.live/'
@@ -165,7 +168,6 @@ class Sport365LiveApi:
         
         return
 
-        
         for awrapperUrl in awrapperUrls:
             awrapperUrl = self.getFullUrl(awrapperUrl)
             params['header']['Referer'] = baseUrl

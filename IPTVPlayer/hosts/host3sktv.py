@@ -17,8 +17,10 @@ import urllib
 from urlparse import urlparse
 ###################################################
 
+
 def gettytul():
     return 'http://33sk.tv/'
+
 
 class C3skTv(CBaseHostClass):
  
@@ -82,7 +84,6 @@ class C3skTv(CBaseHostClass):
                         {'category': 'search_history', 'title': _('Search history'), }]
         self.listsTab(MAIN_CAT_TAB, cItem)
 
-        
     def listItems(self, cItem):
         printDBG("C3skTv.listItems")
         
@@ -322,6 +323,7 @@ class C3skTv(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

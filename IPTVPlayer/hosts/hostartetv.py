@@ -20,6 +20,7 @@ import urllib
 def gettytul():
     return 'https://www.arte.tv/'
 
+
 class ArteTV(CBaseHostClass):
     
     def __init__(self):
@@ -500,6 +501,7 @@ class ArteTV(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

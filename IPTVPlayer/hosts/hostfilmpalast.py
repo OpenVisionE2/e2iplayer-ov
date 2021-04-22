@@ -17,8 +17,10 @@ import urllib
 from urlparse import urljoin
 ###################################################
 
+
 def gettytul():
     return 'http://filmpalast.to/'
+
 
 class FilmPalastTo(CBaseHostClass):
  
@@ -449,6 +451,7 @@ class FilmPalastTo(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

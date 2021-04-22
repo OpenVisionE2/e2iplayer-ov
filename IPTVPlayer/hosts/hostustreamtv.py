@@ -23,6 +23,7 @@ except Exception:
 def gettytul():
     return 'http://ustream.tv/'
 
+
 class UstreamTV(CBaseHostClass):
     MAIN_URL = 'https://www.ustream.tv/'
     SRCH_URL = MAIN_URL + 'search?q='
@@ -222,6 +223,8 @@ class UstreamTV(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
+
 class IPTVHost(CHostBase):
 
     def __init__(self):

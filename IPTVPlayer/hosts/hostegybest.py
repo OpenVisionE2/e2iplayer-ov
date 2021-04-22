@@ -34,14 +34,18 @@ from Screens.MessageBox import MessageBox
 config.plugins.iptvplayer.egybest_login = ConfigText(default="", fixed_size=False)
 config.plugins.iptvplayer.egybest_password = ConfigText(default="", fixed_size=False)
 
+
 def GetConfigList():
     optionList = []
     optionList.append(getConfigListEntry(_("login") + ":", config.plugins.iptvplayer.egybest_login))
     optionList.append(getConfigListEntry(_("password") + ":", config.plugins.iptvplayer.egybest_password))
     return optionList
 ###################################################
+
+
 def gettytul():
     return 'http://egy.best/'
+
 
 class EgyBest(CBaseHostClass):
     
@@ -76,6 +80,7 @@ class EgyBest(CBaseHostClass):
             addParams = dict(self.defaultParams)
         origBaseUrl = baseUrl
         baseUrl = self.cm.iriToUri(baseUrl)
+
         def _getFullUrl(url):
             if self.cm.isValidUrl(url):
                 return url
@@ -268,7 +273,6 @@ class EgyBest(CBaseHostClass):
             params = dict(cItem)
             params.update({'good_for_fav': True, 'title': title, 'url': url, 'icon': icon})
             self.addVideo(params)
-        
         
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("EgyBest.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
@@ -548,6 +552,7 @@ class EgyBest(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

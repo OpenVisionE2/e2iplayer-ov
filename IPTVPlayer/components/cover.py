@@ -16,6 +16,7 @@ from Tools.BoundFunction import boundFunction
 
 import threading
 
+
 class Cover(Pixmap):
     def __init__(self):
         printDBG("Cover.__init__ ---------------------------")
@@ -104,6 +105,7 @@ class Cover(Pixmap):
             self.currIcon["CallBackFun"]({"Changed": True, "Pixmap": ptr, "FileName": self.currIcon['FileName'], "Ident": self.currIcon["Ident"]})
     # end decodeCallBack(self, picInfo=None):
         
+
 class Cover2(Pixmap):
     def __init__(self):
         Pixmap.__init__(self)
@@ -141,6 +143,7 @@ class Cover2(Pixmap):
         if ret != 0:
             self.picload_conn = None
         
+
 class Cover3(Pixmap):
     def __init__(self):
         Pixmap.__init__(self)
@@ -162,6 +165,7 @@ class Cover3(Pixmap):
         p = self.instance.position()
         return (p.x(), p.y())
         
+
 class SimpleAnimatedCover(Pixmap):
     def __init__(self):
         Pixmap.__init__(self)

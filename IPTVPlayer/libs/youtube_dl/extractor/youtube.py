@@ -16,6 +16,7 @@ from Plugins.Extensions.IPTVPlayer.libs import ph
 
 from Plugins.Extensions.IPTVPlayer.tools.e2ijs import js_execute_ext, is_js_cached
 
+
 class CYTSignAlgoExtractor:
     # MAX RECURSION Depth for security
     MAX_REC_DEPTH = 5
@@ -164,6 +165,7 @@ class CYTSignAlgoExtractor:
             except Exception:
                 printExc()
         return decSignatures
+
 
 def ExtractorError(text):
     printDBG(text)
@@ -822,6 +824,7 @@ class YoutubeIE(object):
         
     def _extract_from_m3u8(self, manifest_url, video_id):
         url_map = {}
+
         def _get_urls(_manifest):
             lines = _manifest.split('\n')
             urls = filter(lambda l: l and not l.startswith('#'),

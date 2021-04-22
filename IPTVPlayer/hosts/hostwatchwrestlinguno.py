@@ -16,8 +16,10 @@ import urllib
 import urlparse
 ###################################################
 
+
 def gettytul():
     return 'http://watchwrestling.la/'
+
 
 class WatchwrestlingUNO(CBaseHostClass):
     def __init__(self):
@@ -292,6 +294,7 @@ class WatchwrestlingUNO(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

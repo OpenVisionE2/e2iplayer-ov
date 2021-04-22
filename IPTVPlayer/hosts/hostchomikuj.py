@@ -37,6 +37,7 @@ config.plugins.iptvplayer.Chomikuj_folder = ConfigText(default="", fixed_size=Fa
 config.plugins.iptvplayer.Chomikuj_password = ConfigText(default="", fixed_size=False)
 config.plugins.iptvplayer.Chomikuj_login = ConfigText(default="", fixed_size=False)
 
+
 def GetConfigList():
     optionList = []
 
@@ -50,6 +51,7 @@ def GetConfigList():
 
 def gettytul():
     return 'http://chomikuj.pl/'
+
 
 class Chomikuj(CBaseHostClass):
     
@@ -404,6 +406,7 @@ class Chomikuj(CBaseHostClass):
             self.listsHistory({'name': 'history', 'category': 'search'}, 'desc', _("Type: "))
         else:
             printExc()
+
 
 class IPTVHost(CHostBase):
 

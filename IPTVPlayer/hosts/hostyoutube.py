@@ -29,6 +29,7 @@ from Components.config import config, ConfigDirectory, getConfigListEntry
 ###################################################
 config.plugins.iptvplayer.Sciezkaurllist = ConfigDirectory(default="/hdd/")
 
+
 def GetConfigList():
     optionList = []
     optionList.append(getConfigListEntry(_("Sort by:"), config.plugins.iptvplayer.ytSortBy))
@@ -47,8 +48,10 @@ def GetConfigList():
 ###################################################
 ###################################################
 
+
 def gettytul():
     return 'https://youtube.com/'
+
 
 class Youtube(CBaseHostClass):
     
@@ -296,6 +299,7 @@ class Youtube(CBaseHostClass):
         printDBG('Youtube.getSuggestionsProvider')
         from Plugins.Extensions.IPTVPlayer.suggestions.google import SuggestionsProvider
         return SuggestionsProvider(True)
+
 
 class IPTVHost(CHostBase):
     

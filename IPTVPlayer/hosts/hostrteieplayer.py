@@ -20,8 +20,10 @@ except Exception:
     import simplejson as json
 ###################################################
 
+
 def gettytul():
     return 'http://rte.ie/player'
+
 
 class RteIE(CBaseHostClass):
  
@@ -39,7 +41,6 @@ class RteIE(CBaseHostClass):
         self.cacheLinks = {}
         self.defaultParams = {'header': self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
 
-        
     def selectDomain(self):
         
         if self.MAIN_URL == None:
@@ -280,7 +281,6 @@ class RteIE(CBaseHostClass):
         if not sts:
             return []
         
-        
         if live:
             # prepare idsMap
             idsMap = {}
@@ -377,6 +377,7 @@ class RteIE(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

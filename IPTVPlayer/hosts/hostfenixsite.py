@@ -23,6 +23,7 @@ import re
 def gettytul():
     return 'http://fenixsite.com/'
 
+
 class Fenixsite(CBaseHostClass):
 
     def __init__(self):
@@ -384,6 +385,7 @@ class Fenixsite(CBaseHostClass):
             printExc()
 
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
     def __init__(self):

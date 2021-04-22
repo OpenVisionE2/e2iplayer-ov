@@ -39,6 +39,7 @@ config.plugins.iptvplayer.christusvincit_use_preferred_bitrate = ConfigYesNo(def
 # Config options for HOST
 ###################################################
 
+
 def GetConfigList():
     optionList = []
     optionList.append(getConfigListEntry("Preferred video bitrate", config.plugins.iptvplayer.christusvincit_preferred_bitrate))
@@ -49,6 +50,7 @@ def GetConfigList():
 
 def gettytul():
     return 'http://christusvincit-tv.pl/'
+
 
 class Christusvincit(CBaseHostClass):
 
@@ -519,6 +521,7 @@ class Christusvincit(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

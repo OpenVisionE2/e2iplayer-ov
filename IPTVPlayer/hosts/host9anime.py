@@ -22,8 +22,10 @@ from binascii import hexlify, unhexlify
 from hashlib import md5
 ###################################################
 
+
 def gettytul():
     return 'https://9anime.to/'
+
 
 class AnimeTo(CBaseHostClass, CaptchaHelper):
  
@@ -618,6 +620,7 @@ class AnimeTo(CBaseHostClass, CaptchaHelper):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

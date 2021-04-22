@@ -25,14 +25,17 @@ from Components.config import config, ConfigSelection, getConfigListEntry
 ###################################################
 config.plugins.iptvplayer.kisscartoon_defaultformat = ConfigSelection(default="999999", choices=[("0", _("the worst")), ("360", "360p"), ("480", "480p"), ("720", "720p"), ("1080", "1080p"), ("999999", "the best")])
 
+
 def GetConfigList():
     optionList = []
     optionList.append(getConfigListEntry(_("Default video quality:"), config.plugins.iptvplayer.kisscartoon_defaultformat))
     return optionList
 ###################################################
 
+
 def gettytul():
     return 'https://kisscartoon.ac/'
+
 
 class KissCartoonMe(CBaseHostClass):
     USER_AGENT = 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/37.0.2062.120 Chrome/37.0.2062.120 Safari/537.36'
@@ -380,6 +383,7 @@ class KissCartoonMe(CBaseHostClass):
             
         if 0 < len(urlTab):
             max_bitrate = int(config.plugins.iptvplayer.kisscartoon_defaultformat.value)
+
             def __getLinkQuality(itemLink):
                 try:
                     return int(self.cm.ph.getSearchGroups('|' + itemLink['name'] + '|', '[^0-9]([0-9]+?)[^0-9]')[0])
@@ -472,6 +476,7 @@ class KissCartoonMe(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

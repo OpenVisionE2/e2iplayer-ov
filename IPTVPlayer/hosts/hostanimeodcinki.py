@@ -26,6 +26,7 @@ except Exception:
 def gettytul():
     return 'https://anime-odcinki.pl/'
 
+
 class AnimeOdcinkiPL(CBaseHostClass):
  
     def __init__(self):
@@ -412,6 +413,8 @@ class AnimeOdcinkiPL(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
+
 class IPTVHost(CHostBase):
 
     def __init__(self):

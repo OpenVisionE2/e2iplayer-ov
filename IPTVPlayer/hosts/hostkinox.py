@@ -30,6 +30,7 @@ config.plugins.iptvplayer.kinox_proxy = ConfigSelection(default="None", choices=
                                                                                      ("proxy_2", _("Alternative proxy server (2)"))])
 config.plugins.iptvplayer.kinox_alt_domain = ConfigText(default="", fixed_size=False)
 
+
 def GetConfigList():
     optionList = []
     optionList.append(getConfigListEntry(_("Use proxy server:"), config.plugins.iptvplayer.kinox_proxy))
@@ -41,6 +42,7 @@ def GetConfigList():
 
 def gettytul():
     return 'https://kinox.to/'
+
 
 class Kinox(CBaseHostClass):
  
@@ -331,7 +333,6 @@ class Kinox(CBaseHostClass):
                     subCats.append({'url': url, 'title': title, 'get_list_mode': mode})
                 self.cacheSubCategories.append(subCats)
                 
-        
         if subIdx >= len(self.cacheSubCategories):
             return
         
@@ -679,6 +680,7 @@ class Kinox(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

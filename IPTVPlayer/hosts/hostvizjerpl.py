@@ -27,6 +27,7 @@ except Exception:
 def gettytul():
     return 'https://vizjer.pl/'
 
+
 class Vizjer(CBaseHostClass):
     
     def __init__(self):
@@ -361,6 +362,7 @@ class Vizjer(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

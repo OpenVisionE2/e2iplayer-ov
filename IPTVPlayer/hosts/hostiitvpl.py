@@ -22,6 +22,7 @@ except Exception:
 def gettytul():
     return 'http://iitvx.pl/'
 
+
 class IITVPL(CBaseHostClass):
  
     def __init__(self):
@@ -307,6 +308,8 @@ class IITVPL(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
+
 class IPTVHost(CHostBase):
 
     def __init__(self):

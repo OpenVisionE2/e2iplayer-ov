@@ -22,6 +22,7 @@ except Exception:
 def gettytul():
     return 'http://www.filma24hd.com/'
 
+
 class Filma24hdCom(CBaseHostClass):
     MAIN_URL = 'http://www.filma24hd.com/'
     SRCH_URL = MAIN_URL + '?s='
@@ -36,7 +37,6 @@ class Filma24hdCom(CBaseHostClass):
                     {'category': 'search_history', 'title': _('Search history'), 'icon': DEFAULT_ICON_URL} 
                    ]
 
- 
     def __init__(self):
         CBaseHostClass.__init__(self, {'history': 'Filma24hdCom', 'cookie': 'Filma24hdCom.cookie'})
         self.seriesSubCategoryCache = []
@@ -106,7 +106,6 @@ class Filma24hdCom(CBaseHostClass):
                 self.addDir(params)
                 self.seriesSubCategoryCache.append(subItemsTab)
 
-        
     def listsTab(self, tab, cItem, type='dir'):
         printDBG("Filma24hdCom.listsTab")
         for item in tab:
@@ -282,6 +281,8 @@ class Filma24hdCom(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
+
 class IPTVHost(CHostBase):
 
     def __init__(self):

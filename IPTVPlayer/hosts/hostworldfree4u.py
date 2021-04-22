@@ -15,8 +15,10 @@ import re
 import urllib
 ###################################################
 
+
 def gettytul():
     return 'https://www.worldfree4u.ws/'
+
 
 class WorldFree4u(CBaseHostClass):
  
@@ -293,6 +295,7 @@ class WorldFree4u(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

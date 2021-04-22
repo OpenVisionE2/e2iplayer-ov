@@ -24,12 +24,14 @@ from datetime import datetime, timedelta
 ###################################################
 config.plugins.iptvplayer.mlbstreamtv_port = ConfigInteger(8193, (1024, 65535))
 
+
 def GetConfigList():
     optionList = []
     optionList.append(getConfigListEntry(_('PORT') + ": ", config.plugins.iptvplayer.mlbstreamtv_port))
     return optionList
     
 ###################################################
+
 
 class MLBStreamTVApi(CBaseHostClass):
     def __init__(self):
@@ -216,7 +218,6 @@ class MLBStreamTVApi(CBaseHostClass):
     def getResolvedVideoLink(self, videoUrl):
         printDBG("MLBStreamTVApi.getResolvedVideoLink [%s]" % videoUrl)
         urlsTab = []
-        
         
         baseUrl = self.cm.getBaseUrl(videoUrl.meta.get('Referer', ''))
         scriptUrl = videoUrl.meta.get('priv_script_url', '')

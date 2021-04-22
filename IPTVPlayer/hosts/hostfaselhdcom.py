@@ -22,6 +22,7 @@ import urllib
 def gettytul():
     return 'https://faselhd.co/'
 
+
 class FaselhdCOM(CBaseHostClass):
     
     def __init__(self):
@@ -403,6 +404,7 @@ class FaselhdCOM(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

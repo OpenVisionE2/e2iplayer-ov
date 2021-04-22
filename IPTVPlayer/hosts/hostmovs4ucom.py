@@ -24,6 +24,7 @@ except Exception:
 def gettytul():
     return 'http://movs4u.tv/'
 
+
 class Movs4uCOM(CBaseHostClass):
  
     def __init__(self):
@@ -545,6 +546,7 @@ class Movs4uCOM(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

@@ -15,8 +15,11 @@ import urllib
 ###################################################
 
 ###################################################
+
+
 def gettytul():
     return 'http://interia.tv/'
+
 
 class InteriaTv(CBaseHostClass):
     
@@ -288,6 +291,7 @@ class InteriaTv(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

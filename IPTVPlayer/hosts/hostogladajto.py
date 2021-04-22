@@ -34,6 +34,7 @@ from Screens.MessageBox import MessageBox
 config.plugins.iptvplayer.ogladajto_login = ConfigText(default="", fixed_size=False)
 config.plugins.iptvplayer.ogladajto_password = ConfigText(default="", fixed_size=False)
 
+
 def GetConfigList():
     optionList = []
     optionList.append(getConfigListEntry("ogladaj.to login:", config.plugins.iptvplayer.ogladajto_login))
@@ -44,6 +45,7 @@ def GetConfigList():
 
 def gettytul():
     return 'https://ogladaj.to/'
+
 
 class ogladajto(CBaseHostClass):
     
@@ -71,6 +73,7 @@ class ogladajto(CBaseHostClass):
             addParams = dict(self.defaultParams)
         origBaseUrl = baseUrl
         baseUrl = self.cm.iriToUri(baseUrl)
+
         def _getFullUrl(url):
             if self.cm.isValidUrl(url):
                 return url
@@ -369,6 +372,7 @@ class ogladajto(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

@@ -24,6 +24,7 @@ from urlparse import urljoin
 def gettytul():
     return 'https://ted.com/'
 
+
 class TED(CBaseHostClass):
  
     def __init__(self):
@@ -51,7 +52,6 @@ class TED(CBaseHostClass):
     def getPage(self, baseUrl, addParams={}, post_data=None):
         if addParams == {}:
             addParams = dict(self.defaultParams)
-        
         
         addParams['cloudflare_params'] = {'cookie_file': self.COOKIE_FILE, 'User-Agent': self.USER_AGENT}
         return self.cm.getPageCFProtection(baseUrl, addParams, post_data)
@@ -646,6 +646,7 @@ class TED(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

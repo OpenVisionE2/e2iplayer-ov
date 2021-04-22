@@ -22,6 +22,7 @@ from datetime import datetime
 def gettytul():
     return 'https://gamato-movies.com/'
 
+
 class GamatoMovies(CBaseHostClass):
  
     def __init__(self):
@@ -388,6 +389,8 @@ class GamatoMovies(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
+
 class IPTVHost(CHostBase):
 
     def __init__(self):

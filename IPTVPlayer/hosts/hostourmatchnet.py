@@ -25,6 +25,7 @@ from Components.config import config
 def gettytul():
     return 'http://ourmatch.net/'
 
+
 class OurmatchNet(CBaseHostClass):
     HEADER = {'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html'}
     AJAX_HEADER = dict(HEADER)
@@ -402,6 +403,8 @@ class OurmatchNet(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
+
 class IPTVHost(CHostBase):
 
     def __init__(self):

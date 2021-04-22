@@ -17,8 +17,10 @@ import re
 import urllib
 ###################################################
 
+
 def gettytul():
     return 'http://www.meczyki.pl/'
+
 
 class MeczykiPL(CBaseHostClass):
  
@@ -219,6 +221,7 @@ class MeczykiPL(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

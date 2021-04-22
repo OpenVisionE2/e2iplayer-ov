@@ -34,14 +34,18 @@ from Screens.MessageBox import MessageBox
 config.plugins.iptvplayer.maxtvgo_login = ConfigText(default="", fixed_size=False)
 config.plugins.iptvplayer.maxtvgo_password = ConfigText(default="", fixed_size=False)
 
+
 def GetConfigList():
     optionList = []
     optionList.append(getConfigListEntry(_("login") + ":", config.plugins.iptvplayer.maxtvgo_login))
     optionList.append(getConfigListEntry(_("password") + ":", config.plugins.iptvplayer.maxtvgo_password))
     return optionList
 ###################################################
+
+
 def gettytul():
     return 'https://maxtvgo.com/'
+
 
 class MaxtvGO(CBaseHostClass):
     
@@ -72,6 +76,7 @@ class MaxtvGO(CBaseHostClass):
             addParams = dict(self.defaultParams)
         origBaseUrl = baseUrl
         baseUrl = self.cm.iriToUri(baseUrl)
+
         def _getFullUrl(url):
             if self.cm.isValidUrl(url):
                 return url
@@ -333,6 +338,7 @@ class MaxtvGO(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

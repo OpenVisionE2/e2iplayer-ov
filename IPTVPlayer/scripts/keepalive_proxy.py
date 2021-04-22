@@ -12,13 +12,19 @@ import SimpleHTTPServer
 
 import signal
 import os
+
+
 def signal_handler(sig, frame):
     os.kill(os.getpid(), signal.SIGTERM)
+
+
 signal.signal(signal.SIGINT, signal_handler)
+
 
 def printExc(msg=''):
     msg = 'EXCEPTION: \n%s' % traceback.format_exc()
     print(msg)
+
 
 def getPage(url, params={}, post_data=None):
     sts = False
@@ -43,7 +49,10 @@ def getPage(url, params={}, post_data=None):
         printExc()
     return sts, data
 
+
 HTTP_HEADER = {'Connection': 'keep-alive', 'return_data': False}
+
+
 class Proxy(SimpleHTTPServer.SimpleHTTPRequestHandler):
     def do_GET(self):
         try:
@@ -71,6 +80,7 @@ class Proxy(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
     def log_error(self, format, *args):
         pass
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 5:

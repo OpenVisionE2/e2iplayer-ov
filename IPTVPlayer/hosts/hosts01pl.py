@@ -27,6 +27,7 @@ except Exception:
 def gettytul():
     return 'http://s01.pl/'
 
+
 class S01pl(CBaseHostClass):
     
     def __init__(self):
@@ -49,6 +50,7 @@ class S01pl(CBaseHostClass):
             addParams = dict(self.defaultParams)
         origBaseUrl = baseUrl
         baseUrl = self.cm.iriToUri(baseUrl)
+
         def _getFullUrl(url):
             if self.cm.isValidUrl(url):
                 return url
@@ -330,6 +332,7 @@ class S01pl(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

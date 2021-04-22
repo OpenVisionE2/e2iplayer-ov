@@ -19,9 +19,9 @@ except Exception:
 ###################################################
 
 
-
 def gettytul():
     return 'http://wgrane.pl/'
+
 
 class WgranePL(CBaseHostClass):
 
@@ -51,6 +51,7 @@ class WgranePL(CBaseHostClass):
     def getPage(self, baseUrl, addParams={}, post_data=None):
         if addParams == {}:
             addParams = dict(self.defaultParams)
+
         def _getFullUrl(url):
             if self.cm.isValidUrl(url):
                 return url
@@ -61,7 +62,6 @@ class WgranePL(CBaseHostClass):
     
     def listMainMenu(self, cItem):
         printDBG("WgranePL.listMainMenu")
-
 
         MAIN_CAT_TAB = [{'category': 'list_sort', 'title': 'Przeglądaj pliki', 'url': self.getFullUrl('/watch.html')},
                         {'category': 'categories', 'title': 'Kategorie', 'url': self.getFullUrl('/categories.html')},
@@ -238,6 +238,7 @@ class WgranePL(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

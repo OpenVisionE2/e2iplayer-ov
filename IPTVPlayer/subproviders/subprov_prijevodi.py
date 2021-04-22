@@ -26,10 +26,12 @@ from Screens.MessageBox import MessageBox
 # Config options for HOST
 ###################################################
 
+
 def GetConfigList():
     optionList = []
     return optionList
 ###################################################
+
 
 class PrijevodiOnline(CBaseSubProviderClass): 
     
@@ -433,6 +435,7 @@ class PrijevodiOnline(CBaseSubProviderClass):
             self.listSubsInPackedFile(self.currItem, 'list_sub_in_packed_file')
         
         CBaseSubProviderClass.endHandleService(self, index, refresh)
+
 
 class IPTVSubProvider(CSubProviderBase):
 

@@ -25,6 +25,7 @@ from Components.config import config, ConfigSelection, getConfigListEntry
 ###################################################
 config.plugins.iptvplayer.swatchseries_web_proxy_gateway = ConfigSelection(default="auto", choices=[("auto", _("Auto")), ("always", _("Always")), ("never", _("Never"))])
 
+
 def GetConfigList():
     optionList = []
     optionList.append(getConfigListEntry(_("Use web proxy gateway"), config.plugins.iptvplayer.swatchseries_web_proxy_gateway))
@@ -34,6 +35,7 @@ def GetConfigList():
 
 def gettytul():
     return 'https://swatchseries.to/'
+
 
 class TheWatchseriesTo(CBaseHostClass):
     DOMAIN = 'www1.swatchseries.to'
@@ -356,6 +358,8 @@ class TheWatchseriesTo(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
+
 class IPTVHost(CHostBase):
 
     def __init__(self):

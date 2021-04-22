@@ -12,8 +12,10 @@
 """
 import struct
 
+
 class PagingEntropyCollector:
     """ collect entropy from memory paging """
+
     def __init__(self, memSize=500000000L):            #? how should this be picked?
         """ Initialize paging entropy collector,
             memSize must be larger than allocated memory """
@@ -46,6 +48,7 @@ class PagingEntropyCollector:
         randomBit = intToParity(count) ^ floatToParity(time() - t1)
         return randomBit
 
+
 def intToParity(integer):
     s = struct.pack('i', integer)
     parity = 0
@@ -54,6 +57,7 @@ def intToParity(integer):
         parity = parity ^ (0x01 & (byte ^ (byte >> 1) ^ (byte >> 2) ^ (byte >> 3) ^ (byte >> 4) ^ (byte >> 5) ^ (byte >> 6) ^ (byte >> 7)))
     return parity
 
+
 def floatToParity(float):
     s = struct.pack('d', float)
     parity = 0
@@ -61,6 +65,7 @@ def floatToParity(float):
         byte = ord(character)
         parity = parity ^ (0x01 & (byte ^ (byte >> 1) ^ (byte >> 2) ^ (byte >> 3) ^ (byte >> 4) ^ (byte >> 5) ^ (byte >> 6) ^ (byte >> 7)))
     return parity
+
 
 if __name__ == "__main__":
     from binascii import b2a_hex

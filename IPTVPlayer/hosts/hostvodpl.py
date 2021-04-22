@@ -28,6 +28,7 @@ config.plugins.iptvplayer.onetvodDefaultformat = ConfigSelection(default="9999",
 config.plugins.iptvplayer.onetvodUseDF = ConfigYesNo(default=True)
 config.plugins.iptvplayer.proxyOnet = ConfigYesNo(default=False)
 
+
 def GetConfigList():
     optionList = []
     optionList.append(getConfigListEntry("Domyślny format video:", config.plugins.iptvplayer.onetvodDefaultformat))
@@ -36,8 +37,10 @@ def GetConfigList():
     return optionList
 ###################################################
 
+
 def gettytul():
     return 'https://vod.pl/'
+
 
 class VODPL(CBaseHostClass):
  
@@ -100,7 +103,6 @@ class VODPL(CBaseHostClass):
                 if allTitle != '':
                     self.cacheFilters[key].insert(0, {'title': allTitle})
                 self.cacheFiltersKeys.append(key)
-        
         
         # genres
         tmp = self.cm.ph.getDataBeetwenMarkers(data, '<select name="genres"', '</select>')[1]
@@ -467,6 +469,7 @@ class VODPL(CBaseHostClass):
             printExc()
         
         CBaseHostClass.endHandleService(self, index, refresh)
+
 
 class IPTVHost(CHostBase):
 

@@ -77,6 +77,7 @@ from Plugins.Extensions.IPTVPlayer.components.e2ivkselector import GetVirtualKey
 ######################################################
 gDownloadManager = None
 
+
 class E2iPlayerWidget(Screen):
     IPTV_VERSION = GetIPTVPlayerVerstion()
     screenwidth = getDesktop(0).size().width()
@@ -132,6 +133,7 @@ class E2iPlayerWidget(Screen):
                             <widget name="spinner_4" zPosition="1" position="511,200" size="16,16" transparent="1" alphatest="blend" />
                     </screen>
                 """ % (IPTV_VERSION, GetIconDir('red.png'), GetIconDir('green.png'), GetIconDir('yellow.png'), GetIconDir('blue.png'), GetIconDir('line.png'))
+
     def __init__(self, session):
         printDBG("E2iPlayerWidget.__init__ desktop IPTV_VERSION[%s]\n" % (E2iPlayerWidget.IPTV_VERSION))
         self.session = session
@@ -267,7 +269,6 @@ class E2iPlayerWidget(Screen):
         self.visible = True
         self.bufferSize = config.plugins.iptvplayer.requestedBuffSize.value * 1024 * 1024
         
-    
         #################################################################
         #                      Inits for Proxy Queue
         #################################################################
@@ -2293,6 +2294,7 @@ class E2iPlayerWidget(Screen):
             except:
                 printExc()
 #class E2iPlayerWidget
+
 
 class IPTVPlayerLCDScreen(Screen):
     try:
