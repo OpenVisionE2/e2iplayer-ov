@@ -39,5 +39,3 @@ class TKIP_MIC(Michael):
             raise 'bad version'
 
         return Michael.hash(self, micData)
-
-

@@ -92,6 +92,3 @@ class TKIP_encr:
         if plainText[-4:] != pack('<I', crc32(plainText[:-4])):  # check data integrity
             raise IntegrityCheckError, 'WEP CRC Integrity Check Error'
         return plainText[:-4]
-
-
-

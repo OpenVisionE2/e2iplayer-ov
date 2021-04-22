@@ -47,14 +47,14 @@ class Pinkbike(CBaseHostClass):
                     {'category': 'video_categories', 'title': _('Categories')},
                     {'category': 'search', 'title': _('Search'), 'search_item': True},
                     {'category': 'search_history', 'title': _('Search history')}]
-    
+
     def __init__(self):
         printDBG("Pinkbike.__init__")
         CBaseHostClass.__init__(self, {'history': 'Pinkbike.tv'})
         self.best = []
         self.categories = []
         self.catItems = {}
-        
+
     def _fillCategories(self):
         printDBG("Pinkbike._fillCategories")
         if len(self.best):
@@ -66,10 +66,10 @@ class Pinkbike(CBaseHostClass):
         bestData = re.compile('href="([^"]+?)"[^>]*?>([^<]+?)</a>').findall(bestData)
         for item in bestData:
             self.best.append({'url': item[0], 'title': item[1]})
-        
+
         if len(self.categories):
             return
-        
+
         data = self.cm.ph.getDataBeetwenMarkers(data, '<td valign="top" width="25%">', '</div>', False)[1]
         data = data.split('</table>')
         if len(data):
@@ -77,7 +77,7 @@ class Pinkbike(CBaseHostClass):
         for item in data:
             title = self.cm.ph.getDataBeetwenMarkers(item, '<h3>', '</h3>', False)[1]
             desc = self.cm.ph.getDataBeetwenMarkers(item, '<h5>', '</h5>', False)[1]
-            
+
             catItems = []
             tmp = re.compile('<td>(.+?)</td>').findall(item)
             for cat in tmp:
@@ -85,11 +85,11 @@ class Pinkbike(CBaseHostClass):
                 tit = self.cleanHtmlStr(cat)
                 if url.startswith('http'):
                     catItems.append({'title': tit, 'url': url})
-            
+
             if len(tmp):
                 self.categories.append({'title': title, 'desc': desc})
                 self.catItems[title] = catItems
-            
+
     def listBestCategories(self, cItem, category):
         printDBG("Pinkbike.listBestCategories")
         self._fillCategories()
@@ -98,7 +98,7 @@ class Pinkbike(CBaseHostClass):
             params.update(item)
             params['category'] = category
             self.addDir(params)
-            
+
     def listCategories(self, cItem, category):
         printDBG("Pinkbike.listCategories")
         self._fillCategories()
@@ -107,7 +107,7 @@ class Pinkbike(CBaseHostClass):
             params.update(item)
             params['category'] = category
             self.addDir(params)
-            
+
     def listCatItems(self, cItem, category):
         printDBG("Pinkbike.listSubCategories")
         for item in self.catItems[cItem['title']]:
@@ -115,7 +115,7 @@ class Pinkbike(CBaseHostClass):
             params.update(item)
             params['category'] = category
             self.addDir(params)
-        
+
     def listVideos(self, cItem):
         printDBG("Pinkbike.listVideos")
         page = cItem.get('page', 1)
@@ -131,7 +131,7 @@ class Pinkbike(CBaseHostClass):
             nextPage = True
         else:
             nextPage = False
-        
+
         if '<table class="paging-container">' in data:
             marker = '<table class="paging-container">'
         else:
@@ -160,7 +160,7 @@ class Pinkbike(CBaseHostClass):
         item['category'] = 'list_videos'
         item['url'] = Pinkbike.VID_SRCH_URL + searchPattern
         self.listVideos(item)
-    
+
     def getLinksForVideo(self, cItem):
         printDBG("Pinkbike.getLinksForVideo [%s]" % cItem)
         urlTab = []
@@ -172,13 +172,13 @@ class Pinkbike(CBaseHostClass):
         for item in data:
             urlTab.append({'name': item[0], 'url': self.getFullUrl(item[1])})
         return urlTab
-        
+
     def getFavouriteData(self, cItem):
         return cItem['url']
-        
+
     def getLinksForFavourite(self, fav_data):
         return self.getLinksForVideo({'url': fav_data})
-    
+
     def handleService(self, index, refresh=0, searchPattern='', searchType=''):
         printDBG('Pinkbike.handleService start')
         CBaseHostClass.handleService(self, index, refresh, searchPattern, searchType)
@@ -186,7 +186,7 @@ class Pinkbike(CBaseHostClass):
         category = self.currItem.get("category", '')
         printDBG("Pinkbike.handleService: ---------> name[%s], category[%s] " % (name, category))
         searchPattern = self.currItem.get("search_pattern", searchPattern)
-        self.currList = [] 
+        self.currList = []
 
         if None == name:
             self.listsTab(Pinkbike.MAIN_CAT_TAB, {'name': 'category'})
@@ -201,7 +201,7 @@ class Pinkbike(CBaseHostClass):
     #WYSZUKAJ
         elif category in ["search"]:
             cItem = dict(self.currItem)
-            cItem.update({'search_item': False, 'name': 'category'}) 
+            cItem.update({'search_item': False, 'name': 'category'})
             self.listSearchResult(cItem, searchPattern, searchType)
     #HISTORIA WYSZUKIWANIA
         elif category == "search_history":

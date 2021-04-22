@@ -24,7 +24,7 @@ import time
 
 
 ###################################################
-# E2 GUI COMMPONENTS 
+# E2 GUI COMMPONENTS
 ###################################################
 from Screens.MessageBox import MessageBox
 ###################################################
@@ -73,7 +73,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
     DEFAULT_ICON_URL = 'https://s.tvp.pl/files/vod.tvp.pl/img/menu/logo_vod.png' #'http://sd-xbmc.org/repository/xbmc-addons/tvpvod.png'
     PAGE_SIZE = 12
     SPORT_PAGE_SIZE = 20
-    ALL_FORMATS = [{"video/mp4": "mp4"}, {"application/x-mpegurl": "m3u8"}, {"video/x-ms-wmv": "wmv"}] 
+    ALL_FORMATS = [{"video/mp4": "mp4"}, {"application/x-mpegurl": "m3u8"}, {"video/x-ms-wmv": "wmv"}]
     REAL_FORMATS = {'m3u8': 'ts', 'mp4': 'mp4', 'wmv': 'wmv'}
     MAIN_VOD_URL = "https://vod.tvp.pl/"
     LOGIN_URL = "https://www.tvp.pl/sess/user-2.0/login.php?ref="
@@ -82,15 +82,15 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
     SEARCH_VOD_URL = MAIN_VOD_URL + 'szukaj?query=%s'
     IMAGE_URL = 'http://s.v3.tvp.pl/images/%s/%s/%s/uid_%s_width_500_gs_0.%s'
     HTTP_HEADERS = {}
-    
+
     RIGI_DEFAULT_ICON_URL = 'https://pbs.twimg.com/profile_images/999586990650638337/YHEsWRTs_400x400.jpg'
-    
+
     VOD_CAT_TAB = [{'category': 'tvp_sport', 'title': 'TVP Sport', 'url': 'http://sport.tvp.pl/wideo'},
                     {'category': 'streams', 'title': 'TVP na żywo', 'url': 'http://tvpstream.tvp.pl/'},
                     {'category': 'vods_explore_item', 'title': 'Przegapiłeś w TV?', 'url': MAIN_VOD_URL + 'przegapiles-w-tv'},
                     {'category': 'vods_list_cats', 'title': 'Katalog', 'url': MAIN_VOD_URL},
                     {'category': 'digi_menu', 'title': 'Rekonstrukcja cyfrowa TVP', 'url': 'https://cyfrowa.tvp.pl/', 'icon': RIGI_DEFAULT_ICON_URL},
-                    
+
                     #{'category':'vods_list_items1',    'title':'Polecamy',                  'url':MAIN_VOD_URL},
                     #{'category':'vods_sub_categories', 'title':'Polecane',                  'marker':'Polecane'},
                     #{'category':'vods_sub_categories', 'title':'VOD',                       'marker':'VOD'},
@@ -98,12 +98,12 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                     #{'category':'vods_sub_categories', 'title':'Informacje i publicystyka', 'marker':'Informacje i publicystyka'},
                     {'category': 'search', 'title': _('Search'), 'search_item': True},
                     {'category': 'search_history', 'title': _('Search history')}]
-                    
+
     STREAMS_CAT_TAB = [{'category': 'tvp3_streams', 'title': 'TVP 3', 'url': 'http://tvpstream.tvp.pl/', 'icon': 'http://ncplus.pl/~/media/n/npl/kanaly/logo%20na%20strony%20kanalow/tvp3.png?bc=white&w=480'},
                        {'category': 'week_epg', 'title': 'TVP SPORT', 'url': STREAMS_URL_TEMPLATE, 'icon': 'https://upload.wikimedia.org/wikipedia/commons/9/9d/TVP_Sport_HD_Logo.png'},
                        {'category': 'tvpsport_streams', 'title': 'Transmisje sport.tvp.pl', 'url': 'http://sport.tvp.pl/transmisje', 'icon': 'https://upload.wikimedia.org/wikipedia/commons/9/9d/TVP_Sport_HD_Logo.png'},
                       ]
-    
+
     def __init__(self):
         printDBG("TvpVod.__init__")
         CBaseHostClass.__init__(self, {'history': 'TvpVod', 'cookie': 'tvpvod.cookie', 'proxyURL': config.plugins.iptvplayer.proxyurl.value, 'useProxy': config.plugins.iptvplayer.tvpVodProxyEnable.value})
@@ -117,13 +117,13 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                                   ("1750000", "800x450"), ("2850000", "960x540"), ("5420000", "1280x720"), ("6500000", "1600x900"), ("9100000", "1920x1080")]
         self.MAIN_URL = 'https://vod.tvp.pl/'
         self.loginMessage = ''
-    
+
     def getJItemStr(self, item, key, default=''):
         v = item.get(key, None)
         if None == v:
             return default
         return str(v)
-    
+
     def getImageUrl(self, item):
         keys = ['logo_4x3', 'image_16x9', 'image_4x3', 'image_ns954', 'image_ns644', 'image']
         iconFile = ""
@@ -134,9 +134,9 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                 tmp = iconFile.split('.')
                 return self.IMAGE_URL % (iconFile[0], iconFile[1], iconFile[2], tmp[0], tmp[1])
         return ''
-        
+
     def _getPage(self, url, addParams={}, post_data=None):
-        
+
         try:
             import httplib
 
@@ -157,10 +157,10 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
         except Exception:
             printExc()
         return sts, data
-        
+
     def _getStr(self, v, default=''):
         return self.cleanHtmlStr(self._encodeStr(v, default))
-        
+
     def _encodeStr(self, v, default=''):
         if type(v) == type(u''):
             return v.encode('utf-8')
@@ -168,7 +168,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
             return v
         else:
             return default
-        
+
     def _getNum(self, v, default=0):
         try:
             return int(v)
@@ -177,7 +177,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                 return float(v)
             except Exception:
                 return default
-            
+
     def _getFullUrl(self, url, baseUrl=None):
         if None == baseUrl:
             baseUrl = TvpVod.MAIN_VOD_URL
@@ -191,7 +191,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                     url = url[1:]
                 url = baseUrl + url
         return url
-        
+
     def getFormatFromBitrate(self, bitrate):
         ret = ''
         for item in self.FormatBitrateMap:
@@ -200,14 +200,14 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
         if '' == ret:
             ret = 'Bitrate[%s]' % bitrate
         return ret
-        
+
     def getBitrateFromFormat(self, format):
         ret = 0
         for item in self.FormatBitrateMap:
             if format == item[1]:
                 ret = int(item[0])
         return ret
-     
+
     def tryTologin(self):
         self.loginMessage = ''
         email = config.plugins.iptvplayer.tvpvod_login.value
@@ -240,17 +240,17 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
             msg.append('Strefa Abo %s' % data)
             self.loginMessage = '[/br]'.join(msg)
             msg = self.loginMessage.replace('[/br]', '\n')
-        else: 
+        else:
             sts = False
         return sts, msg
-        
+
     def _addNavCategories(self, data, cItem, category):
         data = re.findall('href="([^"]+?)"[^>]*?>([^<]+?)<', data)
         for item in data:
             params = dict(cItem)
             params.update({'category': category, 'title': self.cleanHtmlStr(item[1]), 'url': item[0]})
             self.addDir(params)
-            
+
     def _getAjaxUrl(self, parent_id, location):
         if location == 'directory_series':
             order = ''
@@ -277,11 +277,11 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
             type = 'video'
             template = 'listing.html'
             direct = '&filter=%7B%22playable%22%3Atrue%7D&direct=true'
-            
-        url = '/shared/listing.php?parent_id=' + parent_id + '&type=' + type + order + direct + '&template=directory/' + template + '&count=' + str(TvpVod.PAGE_SIZE) 
-                    
+
+        url = '/shared/listing.php?parent_id=' + parent_id + '&type=' + type + order + direct + '&template=directory/' + template + '&count=' + str(TvpVod.PAGE_SIZE)
+
         return self._getFullUrl(url)
-        
+
     def listTVP3Streams(self, cItem):
         printDBG("TvpVod.listTVP3Streams")
         sts, data = self._getPage(cItem['url'], self.defaultParams)
@@ -297,14 +297,14 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                 params = dict(cItem)
                 params.update({'title': title, 'url': 'http://tvpstream.tvp.pl/sess/tvplayer.php?object_id=%s&autoplay=true' % id, 'icon': icon, 'desc': desc})
                 self.addVideo(params)
-                
+
     def listTVPSportStreams(self, cItem, nextCategory):
         printDBG("TvpVod.listTVPSportStreams")
         sts, data = self._getPage(cItem['url'], self.defaultParams)
         if not sts:
             return
         cUrl = self.cm.getBaseUrl(data.meta['url'])
-        
+
         data = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'epg-broadcasts'), ('</section', '>'), False)[1]
         data = re.compile('''<div[^>]*?class=['"]date['"][^>]*?>''').split(data)
         for idx in range(1, len(data), 1):
@@ -324,7 +324,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                 t = self.cm.ph.getDataBeetwenNodes(tmp[i], ('<div', '>', 'title'), ('</div', '>'), False)[1]
                 url = self._getFullUrl(self.cm.ph.getSearchGroups(t, '''<a[^>]+?href=['"]([^'^"]+?)['"]''')[0], cUrl)
                 title = '%s - %s' % (time, self.cleanHtmlStr(t))
-                
+
                 params = dict(cItem)
                 params.update({'good_for_fav': False, 'title': title, 'url': url, 'desc': desc})
                 if url == '':
@@ -336,11 +336,11 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                 params = dict(cItem)
                 params.update({'category': nextCategory, 'good_for_fav': True, 'title': dateTitle, 'sub_items': subItems})
                 self.addDir(params)
-        
+
     def listWeekEPG(self, cItem, nextCategory):
         printDBG("TvpVod.listWeekEPG")
         urlTemplate = cItem['url']
-        
+
         d = datetime.today()
         for i in range(7):
             url = urlTemplate.replace('[iptv_date]', d.strftime('%Y-%m-%d'))
@@ -349,7 +349,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
             params.update({'category': nextCategory, 'title': title, 'url': url})
             self.addDir(params)
             d += timedelta(days=1)
-            
+
     def listEPGItems(self, cItem):
         printDBG("TvpVod.listEPGItems")
         sts, data = self._getPage(cItem['url'], self.defaultParams)
@@ -361,18 +361,18 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
             data['items'].sort(key=lambda item: item['release_date_hour'])
             for item in data['items']:
                 if not item.get('is_live', False):
-                    continue 
+                    continue
                 title = str(item['title'])
                 desc = str(item['lead'])
                 asset_id = str(item['asset_id'])
                 asset_id = str(item['video_id'])
                 icon = self.getImageUrl(item)
-                desc = item['release_date_hour'] + ' - ' + item['broadcast_end_date_hour'] + '[/br]' + desc 
+                desc = item['release_date_hour'] + ' - ' + item['broadcast_end_date_hour'] + '[/br]' + desc
                 self.addVideo({'title': title, 'url': '', 'object_id': asset_id, 'icon': icon, 'desc': desc})
             printDBG(data)
         except Exception:
             printExc()
-        
+
     def listTVPSportCategories(self, cItem, nextCategory):
         printDBG("TvpVod.listTVPSportCategories")
         sts, data = self._getPage(cItem['url'], self.defaultParams)
@@ -400,13 +400,13 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
 
     def listTVPSportVideos(self, cItem):
         printDBG("TvpVod.listTVPSportVideos")
-        
+
         page = cItem.get('page', 1)
         videosNum = 0
 
         url = cItem['url']
         url += '?page=%d' % (page)
-        
+
         sts, data = self._getPage(url, self.defaultParams)
         if not sts:
             return
@@ -425,7 +425,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                     self.addVideo(params)
         except Exception:
             printExc()
-                
+
         if videosNum >= self.SPORT_PAGE_SIZE:
             params = dict(cItem)
             params.update({'page': page + 1})
@@ -435,7 +435,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
             else:
                 params['title'] = _('More')
                 self.addMore(params)
-                
+
     def listCatalog(self, cItem, nextCategory):
         printDBG("TvpVod.listCatalog")
         sts, data = self._getPage(cItem['url'], self.defaultParams)
@@ -453,7 +453,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
             params = dict(cItem)
             params.update({'good_for_fav': False, 'category': nextCategory, 'title': self.cleanHtmlStr(item).title(), 'url': url, 'desc': ''})
             self.addDir(params)
-            
+
     def mapHoeverItem(self, cItem, item, rawItem, nextCategory):
         try:
             item = json_loads(item)
@@ -465,17 +465,17 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                 val = self.getJItemStr(item, key)
                 if val != '':
                     tmp.append(labelMap.get(key, '%s') % val)
-                
+
             paymentTag = self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(rawItem, ('<div', '>', 'showPaymentTag'), ('</div', '>'))[1])
             if paymentTag != '':
                 tmp.append(paymentTag)
             desc = ' | '.join(tmp)
             desc += '[/br]' + self.getJItemStr(item, 'description')
-            
+
             params = {'good_for_fav': True, 'icon': icon, 'desc': self.cleanHtmlStr(desc)}
             seriesLink = self._getFullUrl(self.getJItemStr(item, 'seriesLink'))
             episodeUrl = self._getFullUrl(self.getJItemStr(item, 'episodeLink'))
-            
+
             if self.cm.isValidUrl(episodeUrl) and '/video/' in episodeUrl:
                 title += ' ' + self.getJItemStr(item, 'episodeCount')
                 params.update({'title': title, 'url': episodeUrl})
@@ -483,26 +483,26 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
             else:
                 params.update({'category': nextCategory, 'title': title, 'url': seriesLink})
                 self.addDir(params)
-            
+
             printDBG("======================")
             printDBG(item)
         except Exception:
             printExc()
-                
+
     def exploreVODItem(self, cItem, nextCategory):
         printDBG("TvpVod.exploreVODItem")
-        
+
         sts, data = self._getPage(cItem['url'], self.defaultParams)
         if not sts:
             return []
-        
+
         if '/szukaj?query=' in cItem['url']:
             isSearch = True
         else:
             isSearch = False
-            
+
         printDBG(">>>>>>>>>>>>. isSearch [%s]" % isSearch)
-        
+
         tmp = self.cm.ph.getDataBeetwenMarkers(data, '<section class="episodes"', '</h1>')[1]
         if self.cleanHtmlStr(tmp) == "Odcinki":
             url = self._getFullUrl(self.cm.ph.getSearchGroups(tmp, '''<a[^>]+?href\s*=\s*['"]([^'^"]+?)['"]''')[0])
@@ -512,9 +512,9 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                 sts, data = self._getPage(cItem['url'], self.defaultParams)
                 if not sts:
                     return []
-        
+
         data = re.sub("<!--[\s\S]*?-->", "", data)
-        
+
         page = cItem.get('page', 1)
         lastPage = self.cm.ph.getDataBeetwenMarkers(data, '<li class="lastItem"', '</li>')[1]
         lastPage = self.cm.ph.getSearchGroups(lastPage, '''<a[^>]+?href\s*=\s*['"][^'^"]*?page=([0-9]+?)[^0-9]''')[0]
@@ -523,12 +523,12 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
             nextPageUrl = self._getFullUrl(self.cm.ph.getSearchGroups(nextPageUrl, '''<a[^>]+?href\s*=\s*['"]([^'^"]+?)['"]''')[0])
         else:
             nextPageUrl = ''
-        
+
         sectionsData = self.cm.ph.getDataBeetwenMarkers(data, '<section', '<footer>')[1]
         sectionsData = sectionsData.split('<section')
         if len(sectionsData):
             del sectionsData[0]
-        
+
         subFiltersData = self.cm.ph.getAllItemsBeetwenNodes(data[data.rfind('</header>'):], ('<ul', '>', '"dropdown-menu'), ('</ul', '>'))
         #subFiltersData.reverse()
         allSubFiltersTab = []
@@ -544,7 +544,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                 subFiltersTab.append(params)
             if len(subFiltersTab):
                 allSubFiltersTab.append(subFiltersTab)
-        
+
         subFiltersTab = []
         subFiltersNames = []
         for subFiltersTab in allSubFiltersTab:
@@ -556,14 +556,14 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                 subFiltersNames.append(params['title'])
             if len(subFiltersTab):
                 break
-            
+
         for params in subFiltersTab:
             params['sub_filters_names'] = subFiltersNames
             self.addDir(params)
-        
+
         if len(self.currList):
             return
-                
+
         if isSearch:
             data = self.cm.ph.getDataBeetwenMarkers(data, 'serachContent', '</section>')[1]
         else:
@@ -588,13 +588,13 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                 sectionUrl = self._getFullUrl(self.cm.ph.getSearchGroups(sectionHeader, '''<a[^>]+?href\s*=\s*['"]([^'^"]+?)['"]''')[0])
                 sectionIcon = self._getFullUrl(self.cm.ph.getSearchGroups(section, '''<img[^>]+?data-lazy\s*=\s*['"]([^'^"]+?)['"]''')[0])
                 sectionTitle = self.cleanHtmlStr(sectionHeader)
-                
+
                 if self.cm.isValidUrl(sectionUrl):
                     if '>Oglądaj<' in section:
                         continue
                     if sectionTitle.startswith('Zobacz także:'):
                         continue
-                
+
                 itemsTab = []
                 tmp = self.cm.ph.getAllItemsBeetwenNodes(section, ('<div', '>', 'item'), ('</a', '>'))
                 for item in tmp:
@@ -602,17 +602,17 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                     if icon == '':
                         icon = self._getFullUrl(self.cm.ph.getSearchGroups(item, '''<img[^>]+?src\s*=\s*['"]([^'^"]+?\.jpg)['"]''')[0])
                     url = self._getFullUrl(self.cm.ph.getSearchGroups(item, '''<a[^>]+?href\s*=\s*['"]([^'^"]+?)['"]''')[0])
-                    
+
                     title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(item, ('<h', '>', 'title'), ('</h', '>'))[1])
                     desc = self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(item, ('<h', '>', 'sub-title'), ('</h', '>'))[1])
-                    if '/' not in desc: 
+                    if '/' not in desc:
                         title += ' ' + desc
                         desc = ''
                     if title == '':
                         title = self.cleanHtmlStr(item)
                     title = title.strip()
                     if self.cm.isValidUrl(url) and title != '':
-                        if title.startswith('odc.'): 
+                        if title.startswith('odc.'):
                             title = cItem['title'] + ' ' + title
                         params = dict(cItem)
                         params.update({'good_for_fav': False, 'title': title, 'url': url, 'icon': icon, 'desc': ''})
@@ -622,14 +622,14 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                         else:
                             params.update({'category': nextCategory, })
                             itemsTab.append(params)
-                            
+
                 if self.cm.isValidUrl(sectionUrl) and (len(itemsTab) > 1 or 0 == len(itemsTab)):
                     params = dict(cItem)
                     params.update({'good_for_fav': False, 'category': nextCategory, 'title': sectionTitle, 'url': sectionUrl, 'icon': sectionIcon, 'desc': ''})
                     sectionItems.append({'title': sectionTitle, 'items': [params]})
                 elif len(itemsTab):
                     sectionItems.append({'title': sectionTitle, 'items': itemsTab})
-            
+
             allItems = []
             for sectionItem in sectionItems:
                 if sectionItem['title'] in ['Przeglądaj', 'Wideo', 'Oglądaj'] and not isSearch:
@@ -637,32 +637,32 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                     break
                 else:
                     allItems.extend(sectionItem['items'])
-            
+
             if 0 == len(self.currList):
                 self.currList = allItems
-        
+
         if self.cm.isValidUrl(nextPageUrl):
             params = dict(cItem)
             params.update({'good_for_fav': False, 'category': nextCategory, 'title': _("Next page"), 'url': nextPageUrl, 'page': page + 1})
             self.addDir(params)
-            
+
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("TvpVod.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         url = TvpVod.SEARCH_VOD_URL % urllib.quote(searchPattern)
         cItem = dict(cItem)
         cItem['url'] = url
-        
+
         self.exploreVODItem(cItem, 'vods_explore_item')
-        
+
     def listsMenuGroups(self, cItem, category):
         printDBG("TvpVod.listsGroupsType1")
         url = self._getFullUrl(cItem['url'])
         sts, data = self._getPage(url, self.defaultParams)
         if sts:
-            # check if 
+            # check if
             data = self.cm.ph.getDataBeetwenMarkers(data, '<section id="menu"', '</section>', False)[1]
             self._addNavCategories(data, cItem, category)
-        
+
     def listItems2(self, cItem, category, data):
         printDBG("TvpVod.listItems2")
         itemMarker = '<div class="'
@@ -672,7 +672,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
         icon = self.cm.ph.getSearchGroups(tmp, 'src="([^"]+?)"')[0]
         desc = self.cm.ph.getDataBeetwenMarkers(tmp, '<p>', '</div>', False)[1]
         data = self.cm.ph.getDataBeetwenMarkers(data, sectionMarker, '</section>', True)[1]
-        
+
         printDBG("TvpVod.listItems2 start parse")
         data = data.split(itemMarker)
         if len(data):
@@ -683,20 +683,20 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
             params = dict(cItem)
             params.update({'category': category, 'title': title, 'url': url, 'icon': icon, 'desc': desc, 'page': 0})
             self.addVideo(params)
-            
+
     def getObjectID(self, url):
         sts, data = self.cm.getPage(url, self.defaultParams)
         if not sts:
             return ''
-        
+
         sess_player_url = self.cm.ph.getSearchGroups(data, '''(https?://[^'^"]+?/sess/player/video/[^'^"]+?)['"]''')[0]
         if sess_player_url != '':
             sts, tmp = self.cm.getPage(sess_player_url, self.defaultParams)
             if sts:
                 data = tmp
-        
+
         asset_id = self.cm.ph.getSearchGroups(data, '''id=['"]tvplayer\-[0-9]+\-([0-9]+)''')[0]
-        
+
         if asset_id == '':
             asset_id = self.cm.ph.getSearchGroups(data, 'object_id=([0-9]+?)[^0-9]')[0]
         if asset_id == '':
@@ -707,18 +707,18 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
             asset_id = self.cm.ph.getSearchGroups(data, "object_id:'([0-9]+?)'")[0]
         if '' == asset_id:
             asset_id = self.cm.ph.getSearchGroups(data, 'data\-object\-id="([0-9]+?)"')[0]
-        
+
         return asset_id
-                
+
     def getLinksForVideo(self, cItem):
         asset_id = str(cItem.get('object_id', ''))
         url = self._getFullUrl(cItem.get('url', ''))
-        
+
         if 'tvpstream.tvp.pl' in url:
             sts, data = self.cm.getPage(url)
             if not sts:
                 return []
-            
+
             hlsUrl = self.cm.ph.getSearchGroups(data, '''['"](http[^'^"]*?\.m3u8[^'^"]*?)['"]''')[0]
             if '' != hlsUrl:
                 videoTab = getDirectM3U8Playlist(hlsUrl, checkExt=False, variantCheck=False)
@@ -738,25 +738,25 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                         videoTab = oneLink.getSortedLinks()
                 if 1 <= len(videoTab):
                     return videoTab
-            
+
         if '' == asset_id:
             asset_id = self.getObjectID(url)
 
         return self.getVideoLink(asset_id)
-        
+
     def isVideoData(self, asset_id):
         sts, data = self.cm.getPage('http://www.tvp.pl/shared/cdn/tokenizer_v2.php?mime_type=video%2Fmp4&object_id=' + asset_id, self.defaultParams)
         if not sts:
             return False
         return not 'NOT_FOUND' in data
-        
+
     def getVideoLink(self, asset_id):
         printDBG("getVideoLink asset_id [%s]" % asset_id)
         videoTab = []
-        
+
         if '' == asset_id:
             return videoTab
-        
+
         def _sortVideoLinks(videoTab):
             if 1 < len(videoTab):
                 max_bitrate = int(config.plugins.iptvplayer.tvpVodDefaultformat.value)
@@ -773,14 +773,14 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                 oneLink = CSelOneLink(videoTab, __getLinkQuality, max_bitrate)
                 videoTab = oneLink.getSortedLinks()
             return videoTab
-        
+
         # main routine
-        if len(videoTab) == 0: 
+        if len(videoTab) == 0:
             sts, data = self.cm.getPage('http://www.tvp.pl/shared/cdn/tokenizer_v2.php?mime_type=video%2Fmp4&object_id=' + asset_id, self.defaultParams)
             printDBG("%s -> [%s]" % (sts, data))
             try:
                 data = json_loads(data)
-                
+
                 def _getVideoLink(data, FORMATS):
                     videoTab = []
                     for item in data['formats']:
@@ -797,23 +797,23 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                                     meta['http_proxy'] = config.plugins.iptvplayer.proxyurl.value
                                 videoTab.append({'name': name, 'bitrate': str(item['totalBitrate']), 'url': self.up.decorateUrl(url, meta)})
                     return videoTab
-                
+
                 preferedFormats = []
                 if config.plugins.iptvplayer.tvpVodPreferedformat.value == 'm3u8':
                     preferedFormats = [TvpVod.ALL_FORMATS[1], TvpVod.ALL_FORMATS[0], TvpVod.ALL_FORMATS[2]]
                 else:
                     preferedFormats = TvpVod.ALL_FORMATS
-                
+
                 for item in preferedFormats:
                     videoTab.extend(_sortVideoLinks(_getVideoLink(data, item)))
-                
+
             except Exception:
                 printExc("getVideoLink exception")
-        
+
         # fallback routine
-        if len(videoTab) == 0: 
+        if len(videoTab) == 0:
             formatMap = {'1': ("320x180", 360000), '2': ('398x224', 590000), '3': ('480x270', 820000), '4': ('640x360', 1250000), '5': ('800x450', 1750000), '6': ('960x540', 2850000), '7': ('1280x720', 5420000), '8': ("1600x900", 6500000), '9': ('1920x1080', 9100000)}
-            
+
             params = dict(self.defaultParams)
             params['header'] = {'User-Agent': 'okhttp/3.8.1', 'Authorization': 'Basic YXBpOnZvZA==', 'Accept-Encoding': 'gzip'}
 #            sts, data = self.cm.getPage( 'https://apivod.tvp.pl/tv/video/%s/default/default?device=android' % asset_id, params)
@@ -836,7 +836,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                         id = self.cm.ph.getSearchGroups(item['url'], '''/video\-([1-9])\.mp4$''')[0]
                         fItem = formatMap.get(id, ('0x0', 0))
                         mp4Tab.append({'name': '%s \t mp4' % fItem[0], 'url': item['url'], 'bitrate': fItem[1], 'id': id})
-                
+
                 if len(hlsTab) > 0 and 1 == len(mp4Tab) and mp4Tab[0]['id'] != '':
                     for item in hlsTab:
                         res = '%sx%s' % (item['width'], item['height'])
@@ -848,7 +848,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                             url = mp4Tab[0]['url']
                             url = url[:url.rfind('/')] + ('/video-%s.mp4' % key)
                             mp4Tab.append({'name': '%s \t mp4' % formatMap[key][0], 'url': url, 'bitrate': formatMap[key][1], 'id': key})
-               
+
                 hlsTab = _sortVideoLinks(hlsTab)
                 mp4Tab = _sortVideoLinks(mp4Tab)
                 if config.plugins.iptvplayer.tvpVodPreferedformat.value == 'm3u8':
@@ -859,18 +859,18 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                     videoTab.extend(hlsTab)
             except Exception:
                 printExc("getVideoLink exception")
-        
+
         if config.plugins.iptvplayer.tvpVodUseDF.value and len(videoTab):
             videoTab = [videoTab[0]]
-        
+
         return videoTab
-        
+
     def getLinksForFavourite(self, fav_data):
         if None == self.loggedIn:
             premium = config.plugins.iptvplayer.tvpvod_premium.value
             if premium:
                 self.loggedIn, msg = self.tryTologin()
-        
+
         try:
             cItem = json_loads(fav_data)
             links = self.getLinksForVideo(cItem)
@@ -883,19 +883,19 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
             except Exception:
                 pass
         return self.getLinksForVideo(cItem)
-        
+
     def getFavouriteData(self, cItem):
         printDBG('TvpVod.getFavouriteData')
         params = {'type': cItem['type'], 'category': cItem.get('category', ''), 'title': cItem['title'], 'url': cItem['url'], 'desc': cItem.get('desc', ''), 'icon': cItem.get('icon', '')}
         if 'list_episodes' in cItem:
             params['list_episodes'] = cItem['list_episodes']
-        return json_dumps(params) 
-        
+        return json_dumps(params)
+
     def setInitListFromFavouriteItem(self, fav_data):
         printDBG('TvpVod.setInitListFromFavouriteItem')
         try:
             params = json_loads(fav_data)
-        except Exception: 
+        except Exception:
             params = {}
             printExc()
         self.addDir(params)
@@ -1009,9 +1009,9 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                     self.sessionEx.open(MessageBox, msg, type=MessageBox.TYPE_INFO, timeout=10)
 
         CBaseHostClass.handleService(self, index, refresh, searchPattern, searchType)
-        
+
         self.informAboutGeoBlockingIfNeeded('PL')
-        
+
         name = self.currItem.get("name", '')
         category = self.currItem.get("category", '')
         printDBG("TvpVod.handleService: ---------> name[%s], category[%s] " % (name, category))
@@ -1019,10 +1019,10 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
         self.currList = []
         currItem = dict(self.currItem)
         currItem.pop('good_for_fav', None)
-        
+
         if None != name and self.currItem.get('desc', '').startswith('Użytkownik'):
             currItem.pop('desc', None)
-        
+
         if None == name:
             self.listsTab(TvpVod.VOD_CAT_TAB, {'name': 'category', 'desc': self.loginMessage})
     # STREAMS
@@ -1040,7 +1040,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
         elif category == 'sub_items':
             self.currList = currItem.get('sub_items', [])
     # TVP SPORT
-        elif category == 'tvp_sport':    
+        elif category == 'tvp_sport':
             self.listTVPSportCategories(currItem, 'tvp_sport_list_items')
     # LIST TVP SPORT VIDEOS
         elif category == 'tvp_sport_list_items':
@@ -1059,7 +1059,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
     #WYSZUKAJ
         elif category == "search":
             cItem = dict(currItem)
-            cItem.update({'category': 'list_search', 'searchPattern': searchPattern, 'searchType': searchType, 'search_item': False})            
+            cItem.update({'category': 'list_search', 'searchPattern': searchPattern, 'searchType': searchType, 'search_item': False})
             self.listSearchResult(cItem, searchPattern, searchType)
         elif category == "list_search":
             cItem = dict(currItem)

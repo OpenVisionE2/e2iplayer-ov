@@ -4,7 +4,7 @@
 #
 #  $Id$
 #
-# 
+#
 from Screens.InputBox import InputBox
 from cover import Cover3
 from Components.Label import Label
@@ -12,14 +12,14 @@ from Tools.LoadPixmap import LoadPixmap
 
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc
 from cover import Cover2
-    
+
 
 #########################################################
 #                    GLOBALS
 #########################################################
 
 class IPTVInputBoxWidget(InputBox):
-   
+
     def __init__(self, session, icon={}, size=None, title="", windowTitle=_("Input"), useableChars=None, **kwargs):
         self.session = session
         InputBox.__init__(self, session, title, windowTitle, useableChars, **kwargs)
@@ -46,7 +46,7 @@ class IPTVInputBoxWidget(InputBox):
         self["cover"] = Cover2()
         self.onShown.append(self.setIcon)
     #end def __init__(self, session):
-    
+
     def setIcon(self):
         if 0 < len(self.icon.get('icon_path', '')):
             try:

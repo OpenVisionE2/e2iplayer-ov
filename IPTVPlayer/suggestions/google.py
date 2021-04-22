@@ -16,7 +16,7 @@ class SuggestionsProvider:
     def __init__(self, forYouyube=False):
         self.cm = common()
         self.forYouyube = forYouyube
-        
+
     def getName(self):
         return _("Youtube Suggestions") if self.forYouyube else _("Google Suggestions")
 
@@ -28,6 +28,6 @@ class SuggestionsProvider:
             retList = []
             for item in json.loads(data)[1]:
                 retList.append(item.encode('UTF-8'))
-            
-            return retList 
+
+            return retList
         return None

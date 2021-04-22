@@ -17,7 +17,7 @@ class SuggestionsProvider:
         self.cm = common()
 
     def getName(self):
-        return _("Filmstarts Suggestions") 
+        return _("Filmstarts Suggestions")
 
     def getSuggestions(self, text, locale):
         url = 'http://essearch.allocine.net/de/autocomplete?q=' + urllib.quote(text)
@@ -29,6 +29,6 @@ class SuggestionsProvider:
                     retList.append(item['title1'].encode('UTF-8'))
                 if 'title2' in item and item['title2'] != item.get('title1'):
                     retList.append(item['title2'].encode('UTF-8'))
-            
-            return retList 
+
+            return retList
         return None

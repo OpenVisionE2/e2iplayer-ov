@@ -29,7 +29,7 @@ def _async_raise(tid, exctype):
 		raise ValueError("invalid thread id")
 	elif res != 1:
 		print 'res=%d' % res
-		# """if it returns a number greater than one, you're in trouble, 
+		# """if it returns a number greater than one, you're in trouble,
 		# and you should call it again with exc=NULL to revert the effect"""
 		ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, 0)
 		raise SystemError("PyThreadState_SetAsyncExc failed")
@@ -47,9 +47,9 @@ class buildActiveHostsHTML(threading.Thread):
 	def raise_exc(self, exctype):
 		"""raises the given exception type in the context of this thread"""
 		_async_raise(self.ident, exctype)
-    
+
 	def terminate(self):
-		"""raises SystemExit in the context of the given thread, which should 
+		"""raises SystemExit in the context of the given thread, which should
 		cause the thread to exit silently (unless caught)"""
 		self.raise_exc(SystemExit)
 
@@ -66,9 +66,9 @@ class buildActiveHostsHTML(threading.Thread):
 				_temp = None
 			except Exception:
 				continue # we do NOT use broken hosts!!!
-		
+
 			logo = getHostLogo(hostName)
-	
+
 			if title[:4] == 'http' and logo == "":
 				try:
 					hostNameWithURLandLOGO = '<br><a href="./usehost?activeHost=%s" target="_blank"><font size="2" color="#58D3F7">%s</font></a>' % (hostName, '.'.join(title.replace('://', '.').replace('www.', '').split('.')[1:-1]))
@@ -85,7 +85,7 @@ class buildActiveHostsHTML(threading.Thread):
 			else:
 				hostNameWithURLandLOGO = '<br><a>%s</a>' % (title)
 			# Column 2 TBD
-	
+
 			#build table row
 			hostHTML = '<td align="center">%s</td>' % hostNameWithURLandLOGO
 			settings.activeHostsHTML[hostName] = hostHTML
@@ -102,9 +102,9 @@ class buildtempLogsHTML(threading.Thread):
 	def raise_exc(self, exctype):
 		"""raises the given exception type in the context of this thread"""
 		_async_raise(self.ident, exctype)
-    
+
 	def terminate(self):
-		"""raises SystemExit in the context of the given thread, which should 
+		"""raises SystemExit in the context of the given thread, which should
 		cause the thread to exit silently (unless caught)"""
 		self.raise_exc(SystemExit)
 
@@ -128,9 +128,9 @@ class buildConfigsHTML(threading.Thread):
 	def raise_exc(self, exctype):
 		"""raises the given exception type in the context of this thread"""
 		_async_raise(self.ident, exctype)
-    
+
 	def terminate(self):
-		"""raises SystemExit in the context of the given thread, which should 
+		"""raises SystemExit in the context of the given thread, which should
 		cause the thread to exit silently (unless caught)"""
 		self.raise_exc(SystemExit)
 	########################################################
@@ -194,17 +194,17 @@ class buildConfigsHTML(threading.Thread):
 			except Exception:
 				continue # we do NOT use broken hosts!!!
 			usedCFG.append("host%s" % hostName)
-			
+
 			logo = getHostLogo(hostName)
 			if logo == "":
 				logo = title
-	
+
 			if title[:4] == 'http':
 				hostNameWithURLandLOGO = '<a href="%s" target="_blank">%s</a>' % (title, logo)
 			else:
 				hostNameWithURLandLOGO = '<a>%s</a>' % (logo)
 			# Column 2 TBD
-	
+
 			# Column 3 enable/disable host in GUI
 			if IsHostEnabled(hostName):
 				OnOffState = formSUBMITvalue([('cmd', 'OFF:host' + hostName)], _('Disable'))
@@ -217,11 +217,11 @@ class buildConfigsHTML(threading.Thread):
 				OptionsList = _temp.GetConfigList()
 			except Exception:
 				OptionsList = []
-	
+
 			#build table row
 			hostsCFG = '<tr>'
 			hostsCFG += '<td style="width:120px">%s</td>' % hostNameWithURLandLOGO
-			hostsCFG += '<td>%s</td>' % OnOffState 
+			hostsCFG += '<td>%s</td>' % OnOffState
 			if len(OptionsList) == 0:
 				hostsCFG += '<td><a>%s</a></td>' % "" # _('Host does not have configuration options')
 			else:
@@ -256,9 +256,9 @@ class doUseHostAction(threading.Thread):
 	def raise_exc(self, exctype):
 		"""raises the given exception type in the context of this thread"""
 		_async_raise(self.ident, exctype)
-    
+
 	def terminate(self):
-		"""raises SystemExit in the context of the given thread, which should 
+		"""raises SystemExit in the context of the given thread, which should
 		cause the thread to exit silently (unless caught)"""
 		self.raise_exc(SystemExit)
 
@@ -290,8 +290,8 @@ class doUseHostAction(threading.Thread):
 			ret = settings.activeHost['Obj'].getResolvedURL(settings.retObj.value[myID].url)
 			if ret.status == RetHost.OK and isinstance(ret.value, list):
 				for item in ret.value:
-					if isinstance(item, CUrlItem): 
-						item.urlNeedsResolve = 0 # protection from recursion 
+					if isinstance(item, CUrlItem):
+						item.urlNeedsResolve = 0 # protection from recursion
 						linkList.append(item)
 					elif isinstance(item, basestring):
 						linkList.append(CUrlItem(item, item, 0))
@@ -300,7 +300,7 @@ class doUseHostAction(threading.Thread):
 				settings.retObj = RetHost(RetHost.OK, value=linkList)
 			else:
 				print "selectResolvedVideoLinks: wrong status or value"
-				
+
 		elif self.key == 'ListForItem' and self.arg.isdigit():
 			myID = int(self.arg)
 			settings.activeHost['selectedItemType'] = settings.retObj.value[myID].type
@@ -321,7 +321,7 @@ class doUseHostAction(threading.Thread):
 				except Exception, e:
 					print "ListForItem>getLinksForVideo exception:", str(e)
 					settings.retObj = RetHost(RetHost.NOT_IMPLEMENTED, value=[])
-				
+
 				if settings.retObj.status == RetHost.NOT_IMPLEMENTED and links != 'NOVALIDURLS':
 					print "getLinksForVideo not implemented, using CUrlItem"
 					tempUrls = []
@@ -357,9 +357,9 @@ class doGlobalSearch(threading.Thread):
 	def raise_exc(self, exctype):
 		"""raises the given exception type in the context of this thread"""
 		_async_raise(self.ident, exctype)
-    
+
 	def terminate(self):
-		"""raises SystemExit in the context of the given thread, which should 
+		"""raises SystemExit in the context of the given thread, which should
 		cause the thread to exit silently (unless caught)"""
 		self.raise_exc(SystemExit)
 
@@ -413,6 +413,5 @@ class doGlobalSearch(threading.Thread):
 					ret = self.host.getSearchResults(settings.GlobalSearchQuery, SearchType[1])
 					self.stopIfRequested()
 					print SearchType[1], ' searched ', ret.value
-					
+
 		settings.searchingInHost = None
-		

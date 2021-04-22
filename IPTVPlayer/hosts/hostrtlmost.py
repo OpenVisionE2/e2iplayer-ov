@@ -536,4 +536,3 @@ class IPTVHost(CHostBase):
         if (cItem['type'] != 'video' and cItem['category'] not in ['list_playlist', 'list_episodes', 'list_subcategories']):
             return False
         return True
-

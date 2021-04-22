@@ -11,9 +11,9 @@
 #   Lesser General Public License for more details.
 #
 #   You should have received a copy of the GNU Lesser General Public
-#   License along with this library; if not, write to the 
-#      Free Software Foundation, Inc., 
-#      59 Temple Place, Suite 330, 
+#   License along with this library; if not, write to the
+#      Free Software Foundation, Inc.,
+#      59 Temple Place, Suite 330,
 #      Boston, MA  02111-1307  USA
 
 # This file was part of urlgrabber, a high-level cross-protocol url-grabber
@@ -27,7 +27,7 @@
 >>> keepalive_handler = HTTPHandler()
 >>> opener = urllib2.build_opener(keepalive_handler)
 >>> urllib2.install_opener(opener)
->>> 
+>>>
 >>> fo = urllib2.urlopen('http://www.python.org')
 
 If a connection to a given host is requested, and all of the existing
@@ -116,7 +116,7 @@ if sys.version_info < (2, 4):
     HANDLE_ERRORS = 1
 else:
     HANDLE_ERRORS = 0
-    
+
 
 class ConnectionManager:
     """
@@ -162,7 +162,7 @@ class ConnectionManager:
             self._readymap[connection] = ready
         except KeyError:
             pass
-        
+
     def get_ready_conn(self, host):
         conn = None
         self._lock.acquire()
@@ -187,7 +187,7 @@ class ConnectionManager:
 class KeepAliveHandler:
     def __init__(self):
         self._cm = ConnectionManager()
-        
+
     #### Connection Management
     def open_connections(self):
         """return a list of connected hosts and the number of connections
@@ -201,14 +201,14 @@ class KeepAliveHandler:
         for h in self._cm.get_all(host):
             self._cm.remove(h)
             h.close()
-        
+
     def close_all(self):
         """close all open connections"""
         for host, conns in self._cm.get_all().items():
             for h in conns:
                 self._cm.remove(h)
                 h.close()
-        
+
     def _request_closed(self, request, host, connection):
         """tells us that this request is now closed and the the
         connection is ready for another request"""
@@ -218,7 +218,7 @@ class KeepAliveHandler:
         if close:
             connection.close()
         self._cm.remove(connection)
-        
+
     #### Transaction Execution
     def do_open(self, req):
         host = req.host
@@ -251,7 +251,7 @@ class KeepAliveHandler:
                 r = h.getresponse()
         except (socket.error, httplib.HTTPException), err:
             raise urllib2.URLError(err)
-            
+
         if DEBUG:
             DEBUG.info("STATUS: %s, %s", r.status, r.reason)
 
@@ -268,7 +268,7 @@ class KeepAliveHandler:
         r.code = r.status
         r.headers = r.msg
         r.msg = r.reason
-        
+
         if r.status == 200 or not HANDLE_ERRORS:
             return r
         else:
@@ -305,7 +305,7 @@ class KeepAliveHandler:
             self._cm.remove(h)
             h.close()
             raise
-                    
+
         if r is None or r.version == 9:
             # httplib falls back to assuming HTTP 0.9 if it gets a
             # bad header back.  This is most likely to happen if
@@ -375,7 +375,7 @@ class HTTPSHandler(KeepAliveHandler, urllib2.HTTPSHandler):
             except ImportError:
                 pass
         self._ssl_factory = ssl_factory
-    
+
     def https_open(self, req):
         return self.do_open(req)
 
@@ -384,7 +384,7 @@ class HTTPSHandler(KeepAliveHandler, urllib2.HTTPSHandler):
             return self._ssl_factory.get_https_connection(host)
         except AttributeError:
             return HTTPSConnection(host)
-        
+
 
 class HTTPResponse(httplib.HTTPResponse):
     # we need to subclass HTTPResponse in order to
@@ -404,7 +404,7 @@ class HTTPResponse(httplib.HTTPResponse):
     # although read() never adds to the buffer.
     # Both readline and readlines have been stolen with almost no
     # modification from socket.py
-    
+
     def __init__(self, sock, debuglevel=0, strict=0, method=None):
         if method: # the httplib in python 2.3 uses the method arg
             httplib.HTTPResponse.__init__(self, sock, debuglevel, method)
@@ -432,7 +432,7 @@ class HTTPResponse(httplib.HTTPResponse):
     def close_connection(self):
         self._handler._remove_connection(self._host, self._connection, close=1)
         self.close()
-        
+
     def info(self):
         return self.headers
 
