@@ -46,8 +46,8 @@ except Exception:
 ###################################################
 # Config options for HOST
 ###################################################
-config.plugins.iptvplayer.iplacachexml = ConfigSelection(default="12", choices=[("0", "nigdy"), ("6", "przez 6 godzin"), ("12", "przez 12 godzin"),("24", "przez dzień")])
-config.plugins.iptvplayer.iplaDefaultformat = ConfigSelection(default="1900", choices=[("200", "bitrate: 200"),("400", "bitrate: 400"),("900", "bitrate: 900"),("1900", "bitrate: 1900")])
+config.plugins.iptvplayer.iplacachexml = ConfigSelection(default="12", choices=[("0", "nigdy"), ("6", "przez 6 godzin"), ("12", "przez 12 godzin"), ("24", "przez dzień")])
+config.plugins.iptvplayer.iplaDefaultformat = ConfigSelection(default="1900", choices=[("200", "bitrate: 200"), ("400", "bitrate: 400"), ("900", "bitrate: 900"), ("1900", "bitrate: 1900")])
 config.plugins.iptvplayer.iplaUseDF = ConfigYesNo(default=True)
 
 def GetConfigList():
@@ -70,10 +70,10 @@ class Ipla(CBaseHostClass):
     SEARCH_URL = MAIN_URL + '/vods/search/?vod_limit=150&' + IDENTITY + '&page=0&keywords='
     
     def __init__(self):
-        CBaseHostClass.__init__(self, {'history':'ipla'})
+        CBaseHostClass.__init__(self, {'history': 'ipla'})
         self.categoryXMLTree = None
         self.cacheFilePath = os_path.join(config.plugins.iptvplayer.SciezkaCache.value, "iplaxml.cache")
-        self.cm.HEADER = {'User-Agent': self.HOST, 'DNT':'1', 'Accept': 'text/html', 'Accept-Encoding':'gzip, deflate'}
+        self.cm.HEADER = {'User-Agent': self.HOST, 'DNT': '1', 'Accept': 'text/html', 'Accept-Encoding': 'gzip, deflate'}
         
     def getStr(self, v, default=''):
         if None == v:
@@ -126,7 +126,7 @@ class Ipla(CBaseHostClass):
                         sortNum = self.cm.ph.getSearchGroups(title, '''odcinek\s*?([0-9]+?)(?:^0-9|$)''', 1, True)[0]
                         if sortNum != '':
                             sortNum = int(sortNum) 
-                        params = {'category': 'video', 'sort_num':sortNum, 'title': self.cleanHtmlStr(title), 'plot': plot, 'icon':icon, 'urls': urls, 'fav_item':{'url':url, 'vod_id':val.get('id', '')}}
+                        params = {'category': 'video', 'sort_num': sortNum, 'title': self.cleanHtmlStr(title), 'plot': plot, 'icon': icon, 'urls': urls, 'fav_item': {'url': url, 'vod_id': val.get('id', '')}}
                         vodList.append(params)
                     except Exception:
                         printExc()
@@ -152,7 +152,7 @@ class Ipla(CBaseHostClass):
                     if config.plugins.iptvplayer.ZablokujWMV.value and attrib['format'] == '0':
                         continue
                     name = "Jakość: %s\t format: %s\t  bitrate: %s" % (attrib['quality'], attrib['format'], attrib['bitrate'])
-                    urls.append({'name':name, 'url':attrib['url'], 'bitrate':attrib['bitrate']})
+                    urls.append({'name': name, 'url': attrib['url'], 'bitrate': attrib['bitrate']})
         except Exception:
             printExc()
         urls = CSelOneLink(urls, __getLinkQuality, max_bitrate).getSortedLinks()
@@ -165,7 +165,7 @@ class Ipla(CBaseHostClass):
         try:
             if "0" == config.plugins.iptvplayer.iplacachexml.value:
                 return
-            data = str({"timestamp": int(time()), "data":data})
+            data = str({"timestamp": int(time()), "data": data})
             with open(self.cacheFilePath, 'w') as f:
                 f.write(str(data))            
         except Exception:
@@ -198,7 +198,7 @@ class Ipla(CBaseHostClass):
         printDBG("setCatXmlTree refresh[%r]" % refresh)
         
         def _fromUrl():
-            sts,data = self.cm.getPage(Ipla.CAT_URL, {'host': Ipla.HOST})
+            sts, data = self.cm.getPage(Ipla.CAT_URL, {'host': Ipla.HOST})
             if not sts:
                 data = ''
             return data
@@ -265,7 +265,7 @@ class Ipla(CBaseHostClass):
                                     catId = link.replace(linkMarker, "")
                             except Exception:
                                 pass
-                            params = {'category': 'category', 'title': self.cleanHtmlStr(title), 'plot': plot, 'icon':icon, 'catId': catId, 'pCatId': pid}
+                            params = {'category': 'category', 'title': self.cleanHtmlStr(title), 'plot': plot, 'icon': icon, 'catId': catId, 'pCatId': pid}
                             self.addDir(params)
                         #printDBG("||||||||||||||||: %s" %pid)
                     except Exception:

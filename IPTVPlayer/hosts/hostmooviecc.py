@@ -34,33 +34,33 @@ def gettytul():
 class MoovieCC(CBaseHostClass):
  
     def __init__(self):
-        CBaseHostClass.__init__(self, {'history':'moovie.cc', 'cookie':'moovie.cc.cookie'})
+        CBaseHostClass.__init__(self, {'history': 'moovie.cc', 'cookie': 'moovie.cc.cookie'})
         self.DEFAULT_ICON_URL = 'https://moovie.cc/images/logo.png'
         self.USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
-        self.HEADER = {'User-Agent': self.USER_AGENT, 'DNT':'1', 'Accept': 'text/html'}
+        self.HEADER = {'User-Agent': self.USER_AGENT, 'DNT': '1', 'Accept': 'text/html'}
         self.AJAX_HEADER = dict(self.HEADER)
         self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest'})
         self.MAIN_URL = 'https://moovie.cc/'
         self.cacheLinks = {}
         self.cacheSortOrder = []
-        self.defaultParams = {'header':self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
+        self.defaultParams = {'header': self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
     
-        self.MAIN_CAT_TAB = [{'category':'list_movies', 'title': _('Movies')},
-                             {'category':'list_series', 'title': _('Series')},
-                             {'category':'list_main', 'title': 'Legjobbra értékelt', 'tab_id':'now_watched'},
-                             {'category':'list_main', 'title': 'Épp most nézik', 'tab_id':'best_rated'},
-                             {'category':'search', 'title': _('Search'), 'search_item':True,},
-                             {'category':'search_history', 'title': _('Search history'),} 
+        self.MAIN_CAT_TAB = [{'category': 'list_movies', 'title': _('Movies')},
+                             {'category': 'list_series', 'title': _('Series')},
+                             {'category': 'list_main', 'title': 'Legjobbra értékelt', 'tab_id': 'now_watched'},
+                             {'category': 'list_main', 'title': 'Épp most nézik', 'tab_id': 'best_rated'},
+                             {'category': 'search', 'title': _('Search'), 'search_item': True, },
+                             {'category': 'search_history', 'title': _('Search history'), } 
                             ]
                             
-        self.MOVIES_CAT_TAB = [{'category':'movies_cats', 'title': _('Categories'), 'url':self.getFullUrl('/online-filmek/')},
-                               {'category':'list_main', 'title': 'Premier filmek', 'tab_id':'prem_movies'},
-                               {'category':'list_main', 'title': 'Népszerű online filmek', 'tab_id':'pop_movies'},
+        self.MOVIES_CAT_TAB = [{'category': 'movies_cats', 'title': _('Categories'), 'url': self.getFullUrl('/online-filmek/')},
+                               {'category': 'list_main', 'title': 'Premier filmek', 'tab_id': 'prem_movies'},
+                               {'category': 'list_main', 'title': 'Népszerű online filmek', 'tab_id': 'pop_movies'},
                               ]
         
-        self.SERIES_CAT_TAB = [{'category':'series_cats', 'title': _('Categories'), 'url':self.getFullUrl('/online-sorozatok/')},
-                               {'category':'list_main', 'title': 'Népszerű online sorozatok', 'tab_id':'pop_series'},
-                               {'category':'list_main', 'title': 'Új Epizódok', 'tab_id':'new_episodes'},
+        self.SERIES_CAT_TAB = [{'category': 'series_cats', 'title': _('Categories'), 'url': self.getFullUrl('/online-sorozatok/')},
+                               {'category': 'list_main', 'title': 'Népszerű online sorozatok', 'tab_id': 'pop_series'},
+                               {'category': 'list_main', 'title': 'Új Epizódok', 'tab_id': 'new_episodes'},
                               ]
         
     def getPage(self, baseUrl, addParams={}, post_data=None):
@@ -73,7 +73,7 @@ class MoovieCC(CBaseHostClass):
             else:
                 return urlparse.urljoin(baseUrl, url)
             
-        addParams['cloudflare_params'] = {'domain':self.up.getDomain(baseUrl), 'cookie_file':self.COOKIE_FILE, 'User-Agent':self.USER_AGENT, 'full_url_handle':_getFullUrl}
+        addParams['cloudflare_params'] = {'domain': self.up.getDomain(baseUrl), 'cookie_file': self.COOKIE_FILE, 'User-Agent': self.USER_AGENT, 'full_url_handle': _getFullUrl}
         sts, data = self.cm.getPageCFProtection(baseUrl, addParams, post_data)
         return sts, data
         
@@ -137,7 +137,7 @@ class MoovieCC(CBaseHostClass):
                 desc = ' | '.join(desc)
             
             params = dict(cItem)
-            params = {'good_for_fav': True, 'title':title, 'url':url, 'desc':desc, 'icon':icon}
+            params = {'good_for_fav': True, 'title': title, 'url': url, 'desc': desc, 'icon': icon}
             params['category'] = nextCategory
             self.addDir(params)
         
@@ -188,7 +188,7 @@ class MoovieCC(CBaseHostClass):
         query = cItem.get('f_query', '') + (''.join(query))
         
         urlParams = dict(self.defaultParams)
-        urlParams.update({'raw_post_data':True})
+        urlParams.update({'raw_post_data': True})
         sts, data = self.getPage(cItem['url'], urlParams, query)
         if not sts:
             return
@@ -214,13 +214,13 @@ class MoovieCC(CBaseHostClass):
             desc = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<p', '</p>')[1])
             
             params = dict(cItem)
-            params = {'good_for_fav': True, 'title':title, 'url':url, 'desc':desc, 'icon':icon}
+            params = {'good_for_fav': True, 'title': title, 'url': url, 'desc': desc, 'icon': icon}
             params['category'] = nextCategory
             self.addDir(params)
         
         if nextPage and len(self.currList) > 0:
             params = dict(cItem)
-            params.update({'title':_("Next page"), 'f_page':cItem.get('f_page', 1) + 1})
+            params.update({'title': _("Next page"), 'f_page': cItem.get('f_page', 1) + 1})
             self.addDir(params)
             
     def _listCategories(self, cItem, nextCategory, m1, m2):
@@ -235,7 +235,7 @@ class MoovieCC(CBaseHostClass):
             url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href\s*=\s*['"]([^'^"]+?)['"]''')[0])
             title = self.cleanHtmlStr(item)
             params = dict(cItem)
-            params.update({'category':nextCategory, 'title':title, 'url':url})
+            params.update({'category': nextCategory, 'title': title, 'url': url})
             self.addDir(params)
         
     def listMovies(self, cItem, nextCategory):
@@ -261,11 +261,11 @@ class MoovieCC(CBaseHostClass):
                 if sort == '':
                     continue
                 title = self.cleanHtmlStr(item)
-                self.cacheSortOrder.append({'title':title, 'f_sort':sort})
+                self.cacheSortOrder.append({'title': title, 'f_sort': sort})
         
         for item in self.cacheSortOrder:
             params = dict(cItem)
-            params.update({'category':nextCategory})
+            params.update({'category': nextCategory})
             params.update(item)
             self.addDir(params)
     
@@ -298,7 +298,7 @@ class MoovieCC(CBaseHostClass):
                 if episodeName not in episodesTab:
                     episodesTab.append(episodeName)
                     self.cacheLinks[episodeName] = []
-                self.cacheLinks[episodeName].append({'name':serverName, 'url':url, 'need_resolve':1})
+                self.cacheLinks[episodeName].append({'name': serverName, 'url': url, 'need_resolve': 1})
         return episodesTab
     
     def exploreItem(self, cItem, nextCategory=''):
@@ -321,7 +321,7 @@ class MoovieCC(CBaseHostClass):
             title = self.cleanHtmlStr(tmp)
             title = '%s - %s' % (cItem['title'], title)
             params = dict(cItem)
-            params.update({'good_for_fav': False, 'title':title, 'prev_title':cItem['title'], 'url':url, 'prev_url':cItem['url'], 'prev_desc':cItem.get('desc', ''), 'icon':icon, 'desc':desc})
+            params.update({'good_for_fav': False, 'title': title, 'prev_title': cItem['title'], 'url': url, 'prev_url': cItem['url'], 'prev_desc': cItem.get('desc', ''), 'icon': icon, 'desc': desc})
             self.addVideo(params)
         
         sourcesLink = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'streambtn'), ('</div', '>'), caseSensitive=False)[1]
@@ -356,7 +356,7 @@ class MoovieCC(CBaseHostClass):
                     url = urlparse.urljoin(sourcesLink, url)
                 title = self.cleanHtmlStr(item)
                 params = dict(cItem)
-                params.update({'good_for_fav': False, 'category':nextCategory, 'title':title, 'prev_title':mainTitle, 'url':url, 'prev_url':cItem['url'], 'prev_desc':cItem.get('desc', ''), 'icon':icon, 'desc':desc})
+                params.update({'good_for_fav': False, 'category': nextCategory, 'title': title, 'prev_title': mainTitle, 'url': url, 'prev_url': cItem['url'], 'prev_desc': cItem.get('desc', ''), 'icon': icon, 'desc': desc})
                 self.addDir(params)
         else:
             desc2 = self.cleanHtmlStr(desc2)
@@ -365,7 +365,7 @@ class MoovieCC(CBaseHostClass):
             episodesList = self._fillLinksCache(data, '<table')
             for item in episodesList:
                 params = dict(cItem)
-                params.update({'good_for_fav': False, 'links_key':item, 'title':mainTitle, 'icon':icon, 'desc':desc})
+                params.update({'good_for_fav': False, 'links_key': item, 'title': mainTitle, 'icon': icon, 'desc': desc})
                 self.addVideo(params)
             
     def listEpisodes(self, cItem):
@@ -389,7 +389,7 @@ class MoovieCC(CBaseHostClass):
                 title = '%s - s%se%s' % (seriesTitle, sNum.zfill(2), eNum.zfill(2))
             else:
                 title = '%s - %s, %s' % (seriesTitle, cItem['title'], item)
-            params.update({'good_for_fav': False, 'title':title, 'links_key':item, 'prev_desc':cItem.get('desc', ''), 'desc':desc})
+            params.update({'good_for_fav': False, 'title': title, 'links_key': item, 'prev_desc': cItem.get('desc', ''), 'desc': desc})
             self.addVideo(params)
 
     def listSearchResult(self, cItem, searchPattern, searchType):
@@ -473,7 +473,7 @@ class MoovieCC(CBaseHostClass):
                         params['header'] = dict(params['header'])
                         params['header']['Accept'] = 'image/png,image/*;q=0.8,*/*;q=0.5'
                         params = dict(self.defaultParams)
-                        params.update({'maintype': 'image', 'subtypes':['jpeg', 'png'], 'check_first_bytes':['\xFF\xD8','\xFF\xD9','\x89\x50\x4E\x47'], 'header':params['header']})
+                        params.update({'maintype': 'image', 'subtypes': ['jpeg', 'png'], 'check_first_bytes': ['\xFF\xD8', '\xFF\xD9', '\x89\x50\x4E\x47'], 'header': params['header']})
                         filePath = GetTmpDir('.iptvplayer_captcha.jpg')
                         ret = self.cm.saveWebFile(filePath, imgUrl.replace('&amp;', '&'), params)
                         if not ret.get('sts'):
@@ -487,8 +487,8 @@ class MoovieCC(CBaseHostClass):
                         params['with_accept_button'] = True
                         params['list'] = []
                         item = deepcopy(IPTVMultipleInputBox.DEF_INPUT_PARAMS)
-                        item['label_size'] = (160,75)
-                        item['input_size'] = (480,25)
+                        item['label_size'] = (160, 75)
+                        item['input_size'] = (480, 25)
                         item['icon_path'] = filePath
                         item['title'] = _('Answer')
                         item['input']['text'] = ''
@@ -584,8 +584,8 @@ class MoovieCC(CBaseHostClass):
         
         data = self.cm.ph.getDataBeetwenMarkers(data, '<table style="margin-left', '</table>')[1]
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<tr', '</tr>')
-        mapDesc = {'Eredeti Cím:': 'alternate_title', 'Év:':'year', 'Játékidő:':'duration', 'IMDb értékelés:':'imdb_rating',
-                   'Kategória:':'category', 'Írta:':'writers', 'Rendezte:':'directors', 'Szereplők:':'actors'} #'Megtekintve:':'views',
+        mapDesc = {'Eredeti Cím:': 'alternate_title', 'Év:': 'year', 'Játékidő:': 'duration', 'IMDb értékelés:': 'imdb_rating',
+                   'Kategória:': 'category', 'Írta:': 'writers', 'Rendezte:': 'directors', 'Szereplők:': 'actors'} #'Megtekintve:':'views',
         for item in data:
             item = self.cm.ph.getAllItemsBeetwenMarkers(item, '<td', '</td>')
             if len(item) != 2:
@@ -617,7 +617,7 @@ class MoovieCC(CBaseHostClass):
         if icon == '':
             icon = cItem.get('icon', self.DEFAULT_ICON_URL)
         
-        return [{'title':self.cleanHtmlStr(title), 'text': self.cleanHtmlStr(desc), 'images':[{'title':'', 'url':self.getFullUrl(icon)}], 'other_info':otherInfo}]
+        return [{'title': self.cleanHtmlStr(title), 'text': self.cleanHtmlStr(desc), 'images': [{'title': '', 'url': self.getFullUrl(icon)}], 'other_info': otherInfo}]
     
     def handleService(self, index, refresh=0, searchPattern='', searchType=''):
         printDBG('handleService start')
@@ -634,7 +634,7 @@ class MoovieCC(CBaseHostClass):
     #MAIN MENU
         if name == None:
             self.cacheLinks = {}
-            self.listsTab(self.MAIN_CAT_TAB, {'name':'category'})
+            self.listsTab(self.MAIN_CAT_TAB, {'name': 'category'})
         elif category == 'list_movies':
             self.listsTab(self.MOVIES_CAT_TAB, self.currItem)
         elif category == 'list_series':
@@ -656,11 +656,11 @@ class MoovieCC(CBaseHostClass):
     #SEARCH
         elif category in ["search", "search_next_page"]:
             cItem = dict(self.currItem)
-            cItem.update({'search_item':False, 'name':'category'}) 
+            cItem.update({'search_item': False, 'name': 'category'}) 
             self.listSearchResult(cItem, searchPattern, searchType)
     #HISTORIA SEARCH
         elif category == "search_history":
-            self.listsHistory({'name':'history', 'category': 'search'}, 'desc', _("Type: "))
+            self.listsHistory({'name': 'history', 'category': 'search'}, 'desc', _("Type: "))
         else:
             printExc()
         

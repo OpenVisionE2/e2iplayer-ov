@@ -29,8 +29,8 @@ from Screens.MessageBox import MessageBox
 # Config options for HOST
 ###################################################
 
-config.plugins.iptvplayer.videostar_streamprotocol = ConfigSelection(default="2", choices=[("1", "rtmp"),("2", "HLS - m3u8"),("3", "DASHS - mpd"),("4", "DASH - mpd")]) 
-config.plugins.iptvplayer.videostar_defquality = ConfigSelection(default="9999999999", choices=[("0", _("the worst")),("400000", _("low")),("950000", _("average")),("1600000", _("high")), ("9999999999", _("the best"))])
+config.plugins.iptvplayer.videostar_streamprotocol = ConfigSelection(default="2", choices=[("1", "rtmp"), ("2", "HLS - m3u8"), ("3", "DASHS - mpd"), ("4", "DASH - mpd")]) 
+config.plugins.iptvplayer.videostar_defquality = ConfigSelection(default="9999999999", choices=[("0", _("the worst")), ("400000", _("low")), ("950000", _("average")), ("1600000", _("high")), ("9999999999", _("the best"))])
 config.plugins.iptvplayer.videostar_use_defquality = ConfigYesNo(default=True)
 config.plugins.iptvplayer.videostar_show_all_channels = ConfigYesNo(default=False)
 config.plugins.iptvplayer.videostar_login = ConfigText(default="", fixed_size=False)
@@ -59,14 +59,14 @@ class VideoStarApi(CBaseHostClass, CaptchaHelper):
     
         self.DEFAULT_ICON_URL = 'http://satkurier.pl/uploads/53612.jpg'
         self.USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36'
-        self.HTTP_HEADER = {'User-Agent': self.USER_AGENT, 'Accept': 'text/html', 'Accept-Encoding':'gzip, deflate'}
+        self.HTTP_HEADER = {'User-Agent': self.USER_AGENT, 'Accept': 'text/html', 'Accept-Encoding': 'gzip, deflate'}
         self.AJAX_HEADER = dict(self.HTTP_HEADER)
         self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest'})
         
         self.COOKIE_FILE = GetCookieDir('pilot.wp.pl.cookie')
         
         self.defaultParams = {}
-        self.defaultParams.update({'header':self.HTTP_HEADER, 'ignore_http_code_ranges':[(422, 422), (404, 404), (500, 500)], 'save_cookie': True, 'load_cookie': True, 'cookiefile': self.COOKIE_FILE})
+        self.defaultParams.update({'header': self.HTTP_HEADER, 'ignore_http_code_ranges': [(422, 422), (404, 404), (500, 500)], 'save_cookie': True, 'load_cookie': True, 'cookiefile': self.COOKIE_FILE})
         self.loggedIn = False
         self.accountInfo = ''
         
@@ -220,7 +220,7 @@ class VideoStarApi(CBaseHostClass, CaptchaHelper):
                 if item.get('geoblocked', False):
                     desc.append('geoblocked')
                 
-                params = {'name':cItem['name'], 'type':'video', 'title':title, 'url':url, 'icon':icon, 'priv_idx':idx, 'desc':' | '.join(desc)}
+                params = {'name': cItem['name'], 'type': 'video', 'title': title, 'url': url, 'icon': icon, 'priv_idx': idx, 'desc': ' | '.join(desc)}
                 channelsTab.append(params)
                 self.cacheChannelList.append(item)
                 idx += 1
@@ -298,7 +298,7 @@ class VideoStarApi(CBaseHostClass, CaptchaHelper):
         if len(urlsTab):
             cookieHeader = self.cm.getCookieHeader(self.COOKIE_FILE)
             for idx in range(len(urlsTab)):
-                urlsTab[idx]['url'] = strwithmeta(urlsTab[idx]['url'], {'Cookie':cookieHeader, 'User-Agent':self.USER_AGENT})
+                urlsTab[idx]['url'] = strwithmeta(urlsTab[idx]['url'], {'Cookie': cookieHeader, 'User-Agent': self.USER_AGENT})
         
         if len(urlsTab):
             maxBitrate = int(config.plugins.iptvplayer.videostar_defquality.value) * 1.3

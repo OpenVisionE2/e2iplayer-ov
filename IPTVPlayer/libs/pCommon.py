@@ -96,7 +96,7 @@ class MultipartPostHandler(urllib2.BaseHandler):
 class CParsingHelper:
     @staticmethod
     def listToDir(cList, idx):
-        cTree = {'dat':''}
+        cTree = {'dat': ''}
         deep = 0 
         while (idx + 1) < len(cList):
             if cList[idx].startswith('<ul') or cList[idx].startswith('<li'):
@@ -234,10 +234,10 @@ class CParsingHelper:
     
     @staticmethod
     def getNormalizeStr(txt, idx=None):
-        POLISH_CHARACTERS = {u'ą':u'a', u'ć':u'c', u'ę':u'ę', u'ł':u'l', u'ń':u'n', u'ó':u'o', u'ś':u's', u'ż':u'z', u'ź':u'z',
-                             u'Ą':u'A', u'Ć':u'C', u'Ę':u'E', u'Ł':u'L', u'Ń':u'N', u'Ó':u'O', u'Ś':u'S', u'Ż':u'Z', u'Ź':u'Z',
-                             u'á':u'a', u'é':u'e', u'í':u'i', u'ñ':u'n', u'ó':u'o', u'ú':u'u', u'ü':u'u',
-                             u'Á':u'A', u'É':u'E', u'Í':u'I', u'Ñ':u'N', u'Ó':u'O', u'Ú':u'U', u'Ü':u'U',
+        POLISH_CHARACTERS = {u'ą': u'a', u'ć': u'c', u'ę': u'ę', u'ł': u'l', u'ń': u'n', u'ó': u'o', u'ś': u's', u'ż': u'z', u'ź': u'z',
+                             u'Ą': u'A', u'Ć': u'C', u'Ę': u'E', u'Ł': u'L', u'Ń': u'N', u'Ó': u'O', u'Ś': u'S', u'Ż': u'Z', u'Ź': u'Z',
+                             u'á': u'a', u'é': u'e', u'í': u'i', u'ñ': u'n', u'ó': u'o', u'ú': u'u', u'ü': u'u',
+                             u'Á': u'A', u'É': u'E', u'Í': u'I', u'Ñ': u'N', u'Ó': u'O', u'Ú': u'U', u'Ü': u'U',
                             }
         txt = txt.decode('utf-8')
         if None != idx:
@@ -275,10 +275,10 @@ class common:
         else:
             ua = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'
         
-        HTTP_HEADER = {'User-Agent':ua,
-                        'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                        'Accept-Encoding':'gzip, deflate',
-                        'DNT':1 
+        HTTP_HEADER = {'User-Agent': ua,
+                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                        'Accept-Encoding': 'gzip, deflate',
+                        'DNT': 1 
                       }
         return dict(HTTP_HEADER)
     
@@ -977,9 +977,9 @@ class common:
             return url
         
         url = baseUrl
-        header = {'Referer':url, 'User-Agent':cfParams.get('User-Agent', ''), 'Accept-Encoding':'text'}
+        header = {'Referer': url, 'User-Agent': cfParams.get('User-Agent', ''), 'Accept-Encoding': 'text'}
         header.update(params.get('header', {}))
-        params.update({'with_metadata':True, 'use_cookie': True, 'save_cookie': True, 'load_cookie': True, 'cookiefile': cfParams.get('cookie_file', ''), 'header':header})
+        params.update({'with_metadata': True, 'use_cookie': True, 'save_cookie': True, 'load_cookie': True, 'cookiefile': cfParams.get('cookie_file', ''), 'header': header})
         sts, data = self.getPage(url, params, post_data)
         
         current = 0
@@ -1066,9 +1066,9 @@ class common:
                             if item[0] and re.search(r'\w+\d', item[0]):
                                 elemsText[item[0]] = item[1]
 
-                        js_params = [{'path':GetJSScriptFile('cf.byte')}]
+                        js_params = [{'path': GetJSScriptFile('cf.byte')}]
                         try:
-                            dat = dat.replace(dat[dat.index('var isIE'):dat.index('setTimeout')],'')
+                            dat = dat.replace(dat[dat.index('var isIE'):dat.index('setTimeout')], '')
                         except Exception:
                             printExc()
                         js_params.append({'code': "function setInterval(func, delay) { return 1 };var navigator={cookieEnabled:1}; var ELEMS_TEXT = %s; var location = {hash:''}; var iptv_domain='%s';\n%s\niptv_fun();" % (json_dumps(elemsText), domain, dat)})
@@ -1088,13 +1088,13 @@ class common:
                             get_data[name] = value
 #                        get_data = dict(re.findall(r'<input[^>]*name="([^"]*)"[^>]*value="([^"]*)"[^>]*>', verData))
                         get_data['jschl_answer'] = decoded['answer']
-                        post_data = 'r=%s&jschl_vc=%s&pass=%s&jschl_answer=%s' % (urllib.quote(get_data['r'],safe=''), urllib.quote(get_data['jschl_vc'],safe=''), urllib.quote(get_data['pass'],safe=''), get_data['jschl_answer'])
-                        verUrl = _getFullUrl2(verUrl, domain).replace('&amp;','&')
+                        post_data = 'r=%s&jschl_vc=%s&pass=%s&jschl_answer=%s' % (urllib.quote(get_data['r'], safe=''), urllib.quote(get_data['jschl_vc'], safe=''), urllib.quote(get_data['pass'], safe=''), get_data['jschl_answer'])
+                        verUrl = _getFullUrl2(verUrl, domain).replace('&amp;', '&')
                         params2 = dict(params)
                         params2['load_cookie'] = True
                         params2['save_cookie'] = True
                         params2['header'] = dict(params.get('header', {}))
-                        params2['header'].update({'Referer':url, 'User-Agent':cfParams.get('User-Agent', ''), 'Accept-Encoding':'text'})
+                        params2['header'].update({'Referer': url, 'User-Agent': cfParams.get('User-Agent', ''), 'Accept-Encoding': 'text'})
                         params2['raw_post_data'] = True
                         if 'Accept-Encoding' not in params2:
                             params2['Accept-Encoding'] = '*'
@@ -1338,8 +1338,8 @@ class common:
             http_proxy = params['http_proxy']
         if '' != http_proxy:
             printDBG('getURLRequestData USE PROXY')
-            customOpeners.append(urllib2.ProxyHandler({"http":http_proxy}))
-            customOpeners.append(urllib2.ProxyHandler({"https":http_proxy}))
+            customOpeners.append(urllib2.ProxyHandler({"http": http_proxy}))
+            customOpeners.append(urllib2.ProxyHandler({"https": http_proxy}))
         
         pageUrl = params['url']
         proxy_gateway = params.get('proxy_gateway', '')
@@ -1484,6 +1484,6 @@ class common:
 
     def makeABCList(self, tab=['0 - 9']):
         strTab = list(tab)
-        for i in range(65,91):
+        for i in range(65, 91):
             strTab.append(str(unichr(i)))    
         return strTab

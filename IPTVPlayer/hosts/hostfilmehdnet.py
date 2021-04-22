@@ -22,17 +22,17 @@ def gettytul():
 class FilmeHD(CBaseHostClass):
  
     def __init__(self):
-        CBaseHostClass.__init__(self, {'history':'filmehd.net', 'cookie':'filmehd.net.cookie'})
+        CBaseHostClass.__init__(self, {'history': 'filmehd.net', 'cookie': 'filmehd.net.cookie'})
         
         self.DEFAULT_ICON_URL = 'https://i.ytimg.com/vi/BqUtWIyijtY/hqdefault.jpg'
-        self.HEADER = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0', 'DNT':'1', 'Accept': 'text/html'}
+        self.HEADER = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0', 'DNT': '1', 'Accept': 'text/html'}
         self.AJAX_HEADER = dict(self.HEADER)
         self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest'})
         self.MAIN_URL = 'http://filmehd.net/'
         self.cacheLinks = {}
         self.cacheFilters = {}
         self.cacheFiltersKeys = []
-        self.defaultParams = {'with_metadata':True, 'header':self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
+        self.defaultParams = {'with_metadata': True, 'header': self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
         self._myFun = None
     
     def getPage(self, url, addParams={}, post_data=None):
@@ -43,12 +43,12 @@ class FilmeHD(CBaseHostClass):
         
     def listMainMenu(self, cItem):
         url = self.getFullUrl('/page/1')
-        MAIN_CAT_TAB = [{'category':'list_sort', 'title': 'TOATE FILMELE', 'url':url},
-                        {'category':'list_categories', 'title': 'GEN FILM', 'url':url},
-                        {'category':'list_years', 'title': 'FILME DUPA AN', 'url':url},
-                        {'category':'list_sort', 'title': 'SERIALE', 'url':self.getFullUrl('/seriale')},
-                        {'category':'search', 'title': _('Search'), 'search_item':True, },
-                        {'category':'search_history', 'title': _('Search history'),}]
+        MAIN_CAT_TAB = [{'category': 'list_sort', 'title': 'TOATE FILMELE', 'url': url},
+                        {'category': 'list_categories', 'title': 'GEN FILM', 'url': url},
+                        {'category': 'list_years', 'title': 'FILME DUPA AN', 'url': url},
+                        {'category': 'list_sort', 'title': 'SERIALE', 'url': self.getFullUrl('/seriale')},
+                        {'category': 'search', 'title': _('Search'), 'search_item': True, },
+                        {'category': 'search_history', 'title': _('Search history'), }]
         self.listsTab(MAIN_CAT_TAB, cItem)
     
     def listSort(self, cItem, nextCategory1, nextCategory2):
@@ -67,7 +67,7 @@ class FilmeHD(CBaseHostClass):
                 url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^"^']+?)['"]''')[0])
                 title = self.cleanHtmlStr(item)
                 params = dict(cItem)
-                params.update({'good_for_fav':False, 'category':nextCategory1, 'title':title, 'url':url})
+                params.update({'good_for_fav': False, 'category': nextCategory1, 'title': title, 'url': url})
                 self.addDir(params)
             break
         
@@ -77,7 +77,7 @@ class FilmeHD(CBaseHostClass):
             self.listItems(cItem, nextCategory2, data)
         else:
             params = dict(cItem)
-            params.update({'good_for_fav':False, 'category':nextCategory1, 'title':_('Default')})
+            params.update({'good_for_fav': False, 'category': nextCategory1, 'title': _('Default')})
             self.currList.insert(0, params)
         
     def listCategories(self, cItem, nextCategory, m1):
@@ -93,7 +93,7 @@ class FilmeHD(CBaseHostClass):
             url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^"^']+?)['"]''')[0])
             title = self.cleanHtmlStr(item)
             params = dict(cItem)
-            params.update({'good_for_fav':False, 'category':nextCategory, 'title':title, 'url':url})
+            params.update({'good_for_fav': False, 'category': nextCategory, 'title': title, 'url': url})
             self.addDir(params)
 
     def listItems(self, cItem, nextCategory, data=None):
@@ -126,12 +126,12 @@ class FilmeHD(CBaseHostClass):
             desc = '[/br]'.join(desc) 
             
             params = dict(cItem)
-            params = {'good_for_fav': True, 'category':nextCategory, 'title':title, 'url':url, 'icon':icon, 'desc':desc}
+            params = {'good_for_fav': True, 'category': nextCategory, 'title': title, 'url': url, 'icon': icon, 'desc': desc}
             self.addDir(params)
         
         if nextPage and len(self.currList) > 0:
             params = dict(cItem)
-            params.update({'good_for_fav': False, 'title':_("Next page"), 'url':nextPage, 'page':page + 1})
+            params.update({'good_for_fav': False, 'title': _("Next page"), 'url': nextPage, 'page': page + 1})
             self.addDir(params)
     
     def exploreItem(self, cItem):
@@ -145,10 +145,10 @@ class FilmeHD(CBaseHostClass):
         trailer = self.cm.ph.getSearchGroups(data, '''<a[^>]+?href=['"]([^"^']+?)['"][^>]*?>([^>]*?trailer[^>]*?)<''', 2, ignoreCase=True)
         if trailer[0] != '':
             url = self.getFullUrl(trailer[0])
-            url = strwithmeta(url, {'Referer':cItem['url']})
+            url = strwithmeta(url, {'Referer': cItem['url']})
             title = self.cleanHtmlStr(trailer[1])
             params = dict(cItem)
-            params.update({'good_for_fav': False, 'title':'%s : %s' % (cItem['title'], title), 'url':url})
+            params.update({'good_for_fav': False, 'title': '%s : %s' % (cItem['title'], title), 'url': url})
             self.addVideo(params)
             
         data = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'banner-top-mobile'), ('<div', '>', 'comments-loader'), False)[1]
@@ -179,9 +179,9 @@ class FilmeHD(CBaseHostClass):
                     if title not in titlesTab:
                         titlesTab.append(title)
                         self.cacheLinks[title] = []
-                    url = strwithmeta(url, {'Referer':cItem['url']})
+                    url = strwithmeta(url, {'Referer': cItem['url']})
                     name = serverNameDict.get(tabId, 'Player %s' % (len(self.cacheLinks[title]) + 1))
-                    self.cacheLinks[title].append({'name':name, 'url':url, 'need_resolve':1})
+                    self.cacheLinks[title].append({'name': name, 'url': url, 'need_resolve': 1})
             
             baseTitle = re.compile('''\s+?\–\s+?Sezonul\s+?[0-9]+?$''', re.I).split(cItem['title'])[0]
             for item in titlesTab:
@@ -190,7 +190,7 @@ class FilmeHD(CBaseHostClass):
                 else:
                     title = cItem['title']
                 params = dict(cItem)
-                params.update({'good_for_fav': False, 'title':'%s : %s' % (title, item), 'links_key':item})
+                params.update({'good_for_fav': False, 'title': '%s : %s' % (title, item), 'links_key': item})
                 self.addVideo(params)
         else:
             # movie mode
@@ -205,12 +205,12 @@ class FilmeHD(CBaseHostClass):
                 url = self.getFullUrl(self.cm.ph.getSearchGroups(url, '''data\-src=['"]([^'^"]+?)['"]''')[0])
                 if url == '':
                     continue
-                url = strwithmeta(url, {'Referer':cItem['url']})
-                self.cacheLinks[linksKey].append({'name':name, 'url':url, 'need_resolve':1})
+                url = strwithmeta(url, {'Referer': cItem['url']})
+                self.cacheLinks[linksKey].append({'name': name, 'url': url, 'need_resolve': 1})
             
             if len(self.cacheLinks[linksKey]):
                 params = dict(cItem)
-                params.update({'good_for_fav': False, 'links_key':linksKey})
+                params.update({'good_for_fav': False, 'links_key': linksKey})
                 self.addVideo(params)
     
     def listSearchResult(self, cItem, searchPattern, searchType):
@@ -346,7 +346,7 @@ class FilmeHD(CBaseHostClass):
         if tmp != '':
             otherInfo['year'] = tmp
         
-        return [{'title':self.cleanHtmlStr(title), 'text': self.cleanHtmlStr(desc), 'images':[{'title':'', 'url':self.getFullUrl(icon)}], 'other_info':otherInfo}]
+        return [{'title': self.cleanHtmlStr(title), 'text': self.cleanHtmlStr(desc), 'images': [{'title': '', 'url': self.getFullUrl(icon)}], 'other_info': otherInfo}]
         
     def handleService(self, index, refresh=0, searchPattern='', searchType=''):
         printDBG('handleService start')
@@ -362,7 +362,7 @@ class FilmeHD(CBaseHostClass):
         
     #MAIN MENU
         if name == None:
-            self.listMainMenu({'name':'category'})
+            self.listMainMenu({'name': 'category'})
         elif category == 'list_categories':
             self.listCategories(self.currItem, 'list_sort', '-categorys')
         elif category == 'list_years':
@@ -376,11 +376,11 @@ class FilmeHD(CBaseHostClass):
     #SEARCH
         elif category in ["search", "search_next_page"]:
             cItem = dict(self.currItem)
-            cItem.update({'search_item':False, 'name':'category'}) 
+            cItem.update({'search_item': False, 'name': 'category'}) 
             self.listSearchResult(cItem, searchPattern, searchType)
     #HISTORIA SEARCH
         elif category == "search_history":
-            self.listsHistory({'name':'history', 'category': 'search'}, 'desc', _("Type: "))
+            self.listsHistory({'name': 'history', 'category': 'search'}, 'desc', _("Type: "))
         else:
             printExc()
         

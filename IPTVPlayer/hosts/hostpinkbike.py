@@ -40,14 +40,14 @@ class Pinkbike(CBaseHostClass):
     VID_SRCH_URL = VID_MAIN_URL + 'search/?q='
     DEFAULT_ICON_URL = 'http://ep1.pinkbike.org/p2pb10472249/p2pb10472249.jpg'
 
-    MAIN_CAT_TAB = [{'category':'best_video_categories', 'title':_('Best Pinkbike Videos')},
-                    {'category':'video_categories', 'title':_('Categories')},
-                    {'category':'search', 'title':_('Search'), 'search_item':True},
-                    {'category':'search_history', 'title':_('Search history')}]
+    MAIN_CAT_TAB = [{'category': 'best_video_categories', 'title': _('Best Pinkbike Videos')},
+                    {'category': 'video_categories', 'title': _('Categories')},
+                    {'category': 'search', 'title': _('Search'), 'search_item': True},
+                    {'category': 'search_history', 'title': _('Search history')}]
     
     def __init__(self):
         printDBG("Pinkbike.__init__")
-        CBaseHostClass.__init__(self, {'history':'Pinkbike.tv'})
+        CBaseHostClass.__init__(self, {'history': 'Pinkbike.tv'})
         self.best = []
         self.categories = []
         self.catItems = {}
@@ -62,7 +62,7 @@ class Pinkbike(CBaseHostClass):
         bestData = self.cm.ph.getDataBeetwenMarkers(data, 'Best Pinkbike Videos', '</div>', False)[1]
         bestData = re.compile('href="([^"]+?)"[^>]*?>([^<]+?)</a>').findall(bestData)
         for item in bestData:
-            self.best.append({'url':item[0], 'title':item[1]})
+            self.best.append({'url': item[0], 'title': item[1]})
         
         if len(self.categories):
             return
@@ -81,10 +81,10 @@ class Pinkbike(CBaseHostClass):
                 url = self.cm.ph.getSearchGroups(cat, 'href="([^"]+?)"')[0]
                 tit = self.cleanHtmlStr(cat)
                 if url.startswith('http'):
-                    catItems.append({'title':tit, 'url':url})
+                    catItems.append({'title': tit, 'url': url})
             
             if len(tmp):
-                self.categories.append({'title':title, 'desc':desc})
+                self.categories.append({'title': title, 'desc': desc})
                 self.catItems[title] = catItems
             
     def listBestCategories(self, cItem, category):
@@ -121,7 +121,7 @@ class Pinkbike(CBaseHostClass):
         else:
             url = cItem['url'] + '?'
         url = url + 'page=' + str(page)
-        sts,data = self.cm.getPage(url)
+        sts, data = self.cm.getPage(url)
         if not sts:
             return
         if ('page=%d"' % (page + 1)) in data:
@@ -143,11 +143,11 @@ class Pinkbike(CBaseHostClass):
             desc = self.cleanHtmlStr(item[1])
             url = self.cm.ph.getSearchGroups(item[1], 'href="([^"]+?)"')[0]
             title = self.cleanHtmlStr(self.cm.ph.getSearchGroups(item[1], 'title="([^"]+?)"')[0] + ' ' + self.cm.ph.getSearchGroups(item[1], '<a [^>]+?>(.+?)</a>')[0])
-            self.addVideo({'title':title, 'url':self.getFullUrl(url), 'icon':self.getFullUrl(icon), 'desc':desc})
+            self.addVideo({'title': title, 'url': self.getFullUrl(url), 'icon': self.getFullUrl(icon), 'desc': desc})
 
         if nextPage:
             params = dict(cItem)
-            params.update({'title':_('Next page'), 'page':page + 1})
+            params.update({'title': _('Next page'), 'page': page + 1})
             self.addDir(params)
 
 
@@ -162,20 +162,20 @@ class Pinkbike(CBaseHostClass):
     def getLinksForVideo(self, cItem):
         printDBG("Pinkbike.getLinksForVideo [%s]" % cItem)
         urlTab = []
-        sts,data = self.cm.getPage(cItem['url'])
+        sts, data = self.cm.getPage(cItem['url'])
         if not sts:
             return urlTab
         data = self.cm.ph.getDataBeetwenMarkers(data, '<video', '</video>', False)[1].replace('\\"', '"')
         data = re.compile('data-quality="([^"]+?)"[^>]+?src="([^"]+?)"').findall(data)
         for item in data:
-            urlTab.append({'name':item[0], 'url':self.getFullUrl(item[1])})
+            urlTab.append({'name': item[0], 'url': self.getFullUrl(item[1])})
         return urlTab
         
     def getFavouriteData(self, cItem):
         return cItem['url']
         
     def getLinksForFavourite(self, fav_data):
-        return self.getLinksForVideo({'url':fav_data})
+        return self.getLinksForVideo({'url': fav_data})
     
     def handleService(self, index, refresh=0, searchPattern='', searchType=''):
         printDBG('Pinkbike.handleService start')
@@ -187,7 +187,7 @@ class Pinkbike(CBaseHostClass):
         self.currList = [] 
 
         if None == name:
-            self.listsTab(Pinkbike.MAIN_CAT_TAB, {'name':'category'})
+            self.listsTab(Pinkbike.MAIN_CAT_TAB, {'name': 'category'})
         elif 'best_video_categories' == category:
             self.listBestCategories(self.currItem, 'list_videos')
         elif 'video_categories' == category:
@@ -199,11 +199,11 @@ class Pinkbike(CBaseHostClass):
     #WYSZUKAJ
         elif category in ["search"]:
             cItem = dict(self.currItem)
-            cItem.update({'search_item':False, 'name':'category'}) 
+            cItem.update({'search_item': False, 'name': 'category'}) 
             self.listSearchResult(cItem, searchPattern, searchType)
     #HISTORIA WYSZUKIWANIA
         elif category == "search_history":
-            self.listsHistory({'name':'history', 'category': 'search'}, 'desc', _("Type: "))
+            self.listsHistory({'name': 'history', 'category': 'search'}, 'desc', _("Type: "))
         else:
             printExc()
         CBaseHostClass.endHandleService(self, index, refresh)

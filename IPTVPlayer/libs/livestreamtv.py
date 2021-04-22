@@ -25,7 +25,7 @@ class LiveStreamTvApi(CBaseHostClass):
     def getChannelsList(self, cItem):
         printDBG("LiveStreamTvApi.getChannelsList cItem[%s]" % cItem)
         channelsList = []
-        sts,data = self.cm.getPage(self.MAIN_URL)
+        sts, data = self.cm.getPage(self.MAIN_URL)
         if not sts:
             return channelsList
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<div id="channel', '</a>')
@@ -49,7 +49,7 @@ class LiveStreamTvApi(CBaseHostClass):
             else:
                 desc = '[online] ' + desc
             if self.cm.isValidUrl(url):
-                channelsList.append({'name':'live-stream.tv', 'title':title, 'url':url, 'desc':desc, 'icon':icon})
+                channelsList.append({'name': 'live-stream.tv', 'title': title, 'url': url, 'desc': desc, 'icon': icon})
         return channelsList
     
     def getVideoLink(self, cItem):

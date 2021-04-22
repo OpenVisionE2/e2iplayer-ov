@@ -60,12 +60,12 @@ class IPTVFavouritesAddNewGroupWidget(Screen):
             idx = self.favourites._getGroupIdx(group_id)
             if -1 != idx:
                 return False, _("Group \"%s\" already exists.") % group_id
-        return True,""
+        return True, ""
         
     def iptvRetCallback(self, retArg):
         self.group = None
         if retArg and 2 == len(retArg):
-            group = {"title":retArg[0], "group_id":retArg[0].lower(), "desc":retArg[1]}
+            group = {"title": retArg[0], "group_id": retArg[0].lower(), "desc": retArg[1]}
             result = self.favourites.addGroup(group)
             if result:
                 self.group = group
@@ -252,7 +252,7 @@ class IPTVFavouritesMainWidget(Screen):
         else:
             if not self.loadGroupItems(self.menu):
                 return 
-            sts,items = self.favourites.getGroupItems(self.menu)
+            sts, items = self.favourites.getGroupItems(self.menu)
             if not sts:
                 self.session.open(MessageBox, self.favourites.getLastError(), type=MessageBox.TYPE_ERROR, timeout=10)
                 return
@@ -375,7 +375,7 @@ class IPTVFavouritesMainWidget(Screen):
                 return
             if not self.loadGroupItems(self.menu):
                 return 
-            sts,items = self.favourites.getGroupItems(self.menu)
+            sts, items = self.favourites.getGroupItems(self.menu)
             if not sts:
                 self.session.open(MessageBox, self.favourites.getLastError(), type=MessageBox.TYPE_ERROR, timeout=10)
                 return

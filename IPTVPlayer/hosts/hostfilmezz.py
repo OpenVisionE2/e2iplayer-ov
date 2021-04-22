@@ -49,10 +49,10 @@ def gettytul():
 class FilmezzEU(CBaseHostClass):
  
     def __init__(self):
-        CBaseHostClass.__init__(self, {'history':'filmezz.eu', 'cookie':'filmezzeu.cookie'})
+        CBaseHostClass.__init__(self, {'history': 'filmezz.eu', 'cookie': 'filmezzeu.cookie'})
         self.DEFAULT_ICON_URL = 'http://plugins.movian.tv/data/3c3f8bf962820103af9e474604a0c83ca3b470f3'
         self.USER_AGENT = 'User-Agent=Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0'
-        self.HEADER = {'User-Agent': self.USER_AGENT, 'DNT':'1', 'Accept': 'text/html'}
+        self.HEADER = {'User-Agent': self.USER_AGENT, 'DNT': '1', 'Accept': 'text/html'}
         self.AJAX_HEADER = dict(self.HEADER)
         self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest'})
         self.MAIN_URL = 'http://filmezz.eu/'
@@ -62,17 +62,17 @@ class FilmezzEU(CBaseHostClass):
         self.loggedIn = None
         self.login = ''
         self.password = ''
-        self.defaultParams = {'header':self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
+        self.defaultParams = {'header': self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
     
-        self.MAIN_CAT_TAB = [{'category':'list_filters', 'title': _('Home'), 'url':self.getFullUrl('kereses.php')},
-                             {'category':'list_items', 'title': _('Movies'), 'url':self.getFullUrl('kereses.php?q=0&l=0&e=0&c=0&t=1&h=0&o=feltoltve')},
-                             {'category':'list_items', 'title': _('Series'), 'url':self.getFullUrl('kereses.php?q=0&l=0&e=0&c=0&t=2&h=0&o=feltoltve')},
-                             {'category':'list_items', 'title': _('Top movies'), 'url':self.getFullUrl('kereses.php?q=0&l=0&e=0&c=0&t=1&h=0&o=nezettseg')},
-                             {'category':'list_items', 'title': _('Top series'), 'url':self.getFullUrl('kereses.php?q=0&l=0&e=0&c=0&t=2&h=0&o=nezettseg')},
-                             {'category':'list_items', 'title': _('Latest added'), 'url':self.getFullUrl('kereses.php?q=0&l=0&e=0&c=0&t=0&h=0&o=feltoltve')},
+        self.MAIN_CAT_TAB = [{'category': 'list_filters', 'title': _('Home'), 'url': self.getFullUrl('kereses.php')},
+                             {'category': 'list_items', 'title': _('Movies'), 'url': self.getFullUrl('kereses.php?q=0&l=0&e=0&c=0&t=1&h=0&o=feltoltve')},
+                             {'category': 'list_items', 'title': _('Series'), 'url': self.getFullUrl('kereses.php?q=0&l=0&e=0&c=0&t=2&h=0&o=feltoltve')},
+                             {'category': 'list_items', 'title': _('Top movies'), 'url': self.getFullUrl('kereses.php?q=0&l=0&e=0&c=0&t=1&h=0&o=nezettseg')},
+                             {'category': 'list_items', 'title': _('Top series'), 'url': self.getFullUrl('kereses.php?q=0&l=0&e=0&c=0&t=2&h=0&o=nezettseg')},
+                             {'category': 'list_items', 'title': _('Latest added'), 'url': self.getFullUrl('kereses.php?q=0&l=0&e=0&c=0&t=0&h=0&o=feltoltve')},
                              
-                             {'category':'search', 'title': _('Search'), 'search_item':True,},
-                             {'category':'search_history', 'title': _('Search history'),} 
+                             {'category': 'search', 'title': _('Search'), 'search_item': True, },
+                             {'category': 'search_history', 'title': _('Search history'), } 
                             ]
                             
     def getFullIconUrl(self, url):
@@ -89,7 +89,7 @@ class FilmezzEU(CBaseHostClass):
             else:
                 return urlparse.urljoin(baseUrl, url)
             
-        addParams['cloudflare_params'] = {'domain':self.up.getDomain(baseUrl), 'cookie_file':self.COOKIE_FILE, 'User-Agent':self.USER_AGENT, 'full_url_handle':_getFullUrl}
+        addParams['cloudflare_params'] = {'domain': self.up.getDomain(baseUrl), 'cookie_file': self.COOKIE_FILE, 'User-Agent': self.USER_AGENT, 'full_url_handle': _getFullUrl}
         sts, data = self.cm.getPageCFProtection(baseUrl, addParams, post_data)
         return sts, data
     
@@ -112,11 +112,11 @@ class FilmezzEU(CBaseHostClass):
                 title = self.cleanHtmlStr(item)
                 if title in ['Összes']:
                     addAll = False
-                self.cacheFilters[key].append({'title':title.title(), key:value})
+                self.cacheFilters[key].append({'title': title.title(), key: value})
                 
             if len(self.cacheFilters[key]):
                 if addAll:
-                    self.cacheFilters[key].insert(0, {'title':_('All')})
+                    self.cacheFilters[key].insert(0, {'title': _('All')})
                 self.cacheFiltersKeys.append(key)
         
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<div class="row form-group">', '</select>')
@@ -209,13 +209,13 @@ class FilmezzEU(CBaseHostClass):
             ######
             
             params = dict(cItem)
-            params = {'good_for_fav': True, 'title':title, 'url':url, 'desc':'[/br]'.join(descTab), 'icon':icon}
+            params = {'good_for_fav': True, 'title': title, 'url': url, 'desc': '[/br]'.join(descTab), 'icon': icon}
             params['category'] = nextCategory
             self.addDir(params)
         
         if nextPage and len(self.currList) > 0:
             params = dict(cItem)
-            params.update({'title':_("Next page"), 'page':page + 1})
+            params.update({'title': _("Next page"), 'page': page + 1})
             self.addDir(params)
             
     def exploreItem(self, cItem):
@@ -233,7 +233,7 @@ class FilmezzEU(CBaseHostClass):
         title = self.cleanHtmlStr(self.cm.ph.getSearchGroups(tmp, '''title=['"]([^'^"]+?)['"]''')[0])
         if 1 == self.up.checkHostSupport(url):
             params = dict(cItem)
-            params.update({'good_for_fav': False, 'title':title, 'prev_title':cItem['title'], 'url':url, 'prev_url':cItem['url'], 'prev_desc':cItem.get('desc', ''), 'desc':desc})
+            params.update({'good_for_fav': False, 'title': title, 'prev_title': cItem['title'], 'url': url, 'prev_url': cItem['url'], 'prev_desc': cItem.get('desc', ''), 'desc': desc})
             self.addVideo(params)
         
         reDescObj = re.compile('title="([^"]+?)"')
@@ -270,14 +270,14 @@ class FilmezzEU(CBaseHostClass):
             if title not in titlesTab:
                 titlesTab.append(title)
                 self.cacheLinks[title] = []
-            self.cacheLinks[title].append({'name':serverName, 'url':url, 'need_resolve':1})
+            self.cacheLinks[title].append({'name': serverName, 'url': url, 'need_resolve': 1})
         
         for item in titlesTab:
             params = dict(cItem)
             title = cItem['title']
             if item != '':
                 title += ' : ' + item
-            params.update({'good_for_fav': False, 'title':title, 'links_key':item, 'prev_desc':cItem.get('desc', ''), 'desc':desc})
+            params.update({'good_for_fav': False, 'title': title, 'links_key': item, 'prev_desc': cItem.get('desc', ''), 'desc': desc})
             self.addVideo(params)
 
     def listSearchResult(self, cItem, searchPattern, searchType):
@@ -365,7 +365,7 @@ class FilmezzEU(CBaseHostClass):
                         params['header'] = dict(params['header'])
                         params['header']['Accept'] = 'image/png,image/*;q=0.8,*/*;q=0.5'
                         params = dict(self.defaultParams)
-                        params.update({'maintype': 'image', 'subtypes':['jpeg', 'png'], 'check_first_bytes':['\xFF\xD8','\xFF\xD9','\x89\x50\x4E\x47'], 'header':params['header']})
+                        params.update({'maintype': 'image', 'subtypes': ['jpeg', 'png'], 'check_first_bytes': ['\xFF\xD8', '\xFF\xD9', '\x89\x50\x4E\x47'], 'header': params['header']})
                         filePath = GetTmpDir('.iptvplayer_captcha.jpg')
                         ret = self.cm.saveWebFile(filePath, imgUrl.replace('&amp;', '&'), params)
                         if not ret.get('sts'):
@@ -379,8 +379,8 @@ class FilmezzEU(CBaseHostClass):
                         params['with_accept_button'] = True
                         params['list'] = []
                         item = deepcopy(IPTVMultipleInputBox.DEF_INPUT_PARAMS)
-                        item['label_size'] = (160,75)
-                        item['input_size'] = (480,25)
+                        item['label_size'] = (160, 75)
+                        item['input_size'] = (480, 25)
                         item['icon_path'] = filePath
                         item['title'] = _('Answer')
                         item['input']['text'] = ''
@@ -414,7 +414,7 @@ class FilmezzEU(CBaseHostClass):
     
     def getFavouriteData(self, cItem):
         printDBG('FilmezzEU.getFavouriteData')
-        params = {'type':cItem['type'], 'category':cItem.get('category', ''), 'title':cItem['title'], 'url':cItem['url'], 'desc':cItem['desc'], 'icon':cItem['icon']}
+        params = {'type': cItem['type'], 'category': cItem.get('category', ''), 'title': cItem['title'], 'url': cItem['url'], 'desc': cItem['desc'], 'icon': cItem['icon']}
         return json.dumps(params) 
         
     def getLinksForFavourite(self, fav_data):
@@ -501,7 +501,7 @@ class FilmezzEU(CBaseHostClass):
         if year != '':
             otherInfo['year'] = year
         
-        return [{'title':self.cleanHtmlStr(title), 'text': self.cleanHtmlStr(desc), 'images':[{'title':'', 'url':self.getFullUrl(icon)}], 'other_info':otherInfo}]
+        return [{'title': self.cleanHtmlStr(title), 'text': self.cleanHtmlStr(desc), 'images': [{'title': '', 'url': self.getFullUrl(icon)}], 'other_info': otherInfo}]
         
     def tryTologin(self):
         printDBG('tryTologin start')
@@ -518,7 +518,7 @@ class FilmezzEU(CBaseHostClass):
             
         url = self.getFullUrl('/bejelentkezes.php')
         
-        post_data = {'logname':self.login, 'logpass':self.password, 'ref':self.getFullUrl('/index.php')}
+        post_data = {'logname': self.login, 'logpass': self.password, 'ref': self.getFullUrl('/index.php')}
         httpParams = dict(self.defaultParams)
         httpParams['header'] = dict(httpParams['header'])
         httpParams['header']['Referer'] = url
@@ -550,7 +550,7 @@ class FilmezzEU(CBaseHostClass):
     #MAIN MENU
         if name == None:
             self.cacheLinks = {}
-            self.listsTab(self.MAIN_CAT_TAB, {'name':'category'})
+            self.listsTab(self.MAIN_CAT_TAB, {'name': 'category'})
         elif category == 'list_filters':
             self.listFilters(self.currItem, 'list_items')
         elif category == 'list_items':
@@ -560,11 +560,11 @@ class FilmezzEU(CBaseHostClass):
     #SEARCH
         elif category in ["search", "search_next_page"]:
             cItem = dict(self.currItem)
-            cItem.update({'search_item':False, 'name':'category'}) 
+            cItem.update({'search_item': False, 'name': 'category'}) 
             self.listSearchResult(cItem, searchPattern, searchType)
     #HISTORIA SEARCH
         elif category == "search_history":
-            self.listsHistory({'name':'history', 'category': 'search'}, 'desc', _("Type: "))
+            self.listsHistory({'name': 'history', 'category': 'search'}, 'desc', _("Type: "))
         else:
             printExc()
         

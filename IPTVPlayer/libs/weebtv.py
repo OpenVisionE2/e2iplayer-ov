@@ -28,7 +28,7 @@ from Screens.MessageBox import MessageBox
 config.plugins.iptvplayer.weebtv_premium = ConfigYesNo(default=True)
 config.plugins.iptvplayer.weebtv_login = ConfigText(default="", fixed_size=False)
 config.plugins.iptvplayer.weebtv_password = ConfigText(default="", fixed_size=False)
-config.plugins.iptvplayer.weebtv_videoquality = ConfigSelection(default="1", choices=[("0", _("Low")),("1", _("Standard")),("2", _("High (or HD)"))])
+config.plugins.iptvplayer.weebtv_videoquality = ConfigSelection(default="1", choices=[("0", _("Low")), ("1", _("Standard")), ("2", _("High (or HD)"))])
 
 def GetConfigList():
     optionList = []
@@ -43,18 +43,18 @@ def GetConfigList():
 class WeebTvApi:
     HOST = 'XBMC'
     HEADER = {'User-Agent': HOST, 'ContentType': 'application/x-www-form-urlencoded'}
-    DEFPARAMS = {'header':HEADER}
+    DEFPARAMS = {'header': HEADER}
     MAINURL = 'http://weeb.tv'
     checkUrl = MAINURL + '/api/checkPluginVersionXBMC'
     PLAYERURL = MAINURL + '/api/setPlayer'
     JSONURL = MAINURL + '/api/getChannelList'
     VERSION = 140
     
-    MAIN_TAB = [{'category':'main', 'url':JSONURL + '&option=online-alphabetical', 'title':_('Sorted channels A-Z [live]')},
-                 {'category':'main', 'url':JSONURL + '&option=online-now-viewed', 'title':_('Sorted most viewed channels now [live]')},
-                 {'category':'main', 'url':JSONURL + '&option=online-most-viewed', 'title':_('Sorted most viewed channels general [live]')},
-                 {'category':'main', 'url':JSONURL + '&option=offline-ranking', 'title':_('Offline channels')},
-                 {'category':'main', 'url':JSONURL + '&option=all-ranking', 'title':_('Show all channels')}]
+    MAIN_TAB = [{'category': 'main', 'url': JSONURL + '&option=online-alphabetical', 'title': _('Sorted channels A-Z [live]')},
+                 {'category': 'main', 'url': JSONURL + '&option=online-now-viewed', 'title': _('Sorted most viewed channels now [live]')},
+                 {'category': 'main', 'url': JSONURL + '&option=online-most-viewed', 'title': _('Sorted most viewed channels general [live]')},
+                 {'category': 'main', 'url': JSONURL + '&option=offline-ranking', 'title': _('Offline channels')},
+                 {'category': 'main', 'url': JSONURL + '&option=all-ranking', 'title': _('Show all channels')}]
 
     def __init__(self):
         self.cm = common()
@@ -62,7 +62,7 @@ class WeebTvApi:
     def _jsonToSortedTab(self, data):
         strTab = []
         outTab = []
-        for v,k in data.iteritems():
+        for v, k in data.iteritems():
             strTab.append(int(v))
             strTab.append(k)
             outTab.append(strTab)
@@ -131,7 +131,7 @@ class WeebTvApi:
                                 online = 'online'
                                 channel = name
                             title = '%s - %s %s' % (title, user, online)
-                            params = {'url':channel, 'title':title, 'desc':desc, 'icon':image, 'rank':rank, 'bitrate':bitrate, 'user':user}
+                            params = {'url': channel, 'title': title, 'desc': desc, 'icon': image, 'rank': rank, 'bitrate': bitrate, 'user': user}
                             channelsList.append(params)
                         except Exception:
                             printExc()
@@ -213,7 +213,7 @@ class UrlParser:
     
     def getBoolParam(self, params, name):
         try:
-            param = self.getParam(params,name)
+            param = self.getParam(params, name)
             return 'True' == param
         except Exception:
             return None

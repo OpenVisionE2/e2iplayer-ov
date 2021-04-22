@@ -54,11 +54,11 @@ class Youtube(CBaseHostClass):
     
     def __init__(self):
         printDBG("Youtube.__init__")
-        CBaseHostClass.__init__(self, {'history':'ytlist', 'cookie':'youtube.cookie'})
+        CBaseHostClass.__init__(self, {'history': 'ytlist', 'cookie': 'youtube.cookie'})
         self.UTLIST_FILE = 'ytlist.txt'
         self.DEFAULT_ICON_URL = 'https://www.vippng.com/png/full/85-853653_patreon-logo-png-transparent-background-youtube-logo.png'
         self.MAIN_GROUPED_TAB = [{'category': 'from_file', 'title': _("User links"), 'desc': _("User links stored in the ytlist.txt file.")},
-                                 {'category': 'search', 'title': _("Search"), 'desc': _("Search youtube materials "), 'search_item':True},
+                                 {'category': 'search', 'title': _("Search"), 'desc': _("Search youtube materials "), 'search_item': True},
                                  {'category': 'feeds', 'title': _("Trending Feeds"), 'desc': _("Browse youtube trending feeds")},
                                  {'category': 'search_history', 'title': _("Search history"), 'desc': _("History of searched phrases.")}]
         
@@ -105,7 +105,7 @@ class Youtube(CBaseHostClass):
             tmpList = self.currFileHost.getGroups(sortList)
             if 0 < len(tmpList):
                 params = dict(cItem)
-                params.update({'sub_file_category':'all', 'group': 'all', 'title':_("--All--")})
+                params.update({'sub_file_category': 'all', 'group': 'all', 'title': _("--All--")})
                 self.addDir(params)
             for item in tmpList:
                 if '' == item:
@@ -113,7 +113,7 @@ class Youtube(CBaseHostClass):
                 else:
                     title = item
                 params = dict(cItem)
-                params.update({'sub_file_category':'group', 'title':title, 'group':item})
+                params.update({'sub_file_category': 'group', 'title': title, 'group': item})
                 self.addDir(params)
         else:
             if 'all' == cItem['sub_file_category']:
@@ -121,7 +121,7 @@ class Youtube(CBaseHostClass):
                 for item in tmpList:
                     params = dict(cItem)
                     category = self._getCategory(item['url'])
-                    params.update({'good_for_fav':True, 'title':item['full_title'], 'url':item['url'], 'desc': item['url'], 'category': category})
+                    params.update({'good_for_fav': True, 'title': item['full_title'], 'url': item['url'], 'desc': item['url'], 'category': category})
                     if 'video' == category:
                         self.addVideo(params)
                     elif 'more' == category:
@@ -137,7 +137,7 @@ class Youtube(CBaseHostClass):
                         title = item['title_in_group']
                     params = dict(cItem)
                     category = self._getCategory(item['url'])
-                    params.update({'good_for_fav':True, 'title':title, 'url':item['url'], 'desc': item['url'], 'category': category})
+                    params.update({'good_for_fav': True, 'title': title, 'url': item['url'], 'desc': item['url'], 'category': category})
                     if 'video' == category:
                         self.addVideo(params)
                     elif 'more' == category:
@@ -155,13 +155,13 @@ class Youtube(CBaseHostClass):
             self.currList = self.ytp.getListPlaylistsItems(url, category, page, cItem)
         
         for idx in range(len(self.currList)):
-            if self.currList[idx]['category'] in ["channel","playlist","movie","traylist"]:
+            if self.currList[idx]['category'] in ["channel", "playlist", "movie", "traylist"]:
                 self.currList[idx]['good_for_fav'] = True
 
     def listFeeds(self, cItem):
         printDBG('Youtube.listFeeds cItem[%s]' % (cItem))
 
-        category = cItem.get("category","")
+        category = cItem.get("category", "")
         
         if category == "feeds":
             url = "https://www.youtube.com/feed/trending"
@@ -171,17 +171,17 @@ class Youtube(CBaseHostClass):
         
         elif category.startswith("feeds_"):
             topic = category[6:]
-            url = cItem.get('url','')
+            url = cItem.get('url', '')
             tmpList = self.ytp.getVideoFromFeed(url) 
 
             for item in tmpList:
-                item.update({'name':'category'})
+                item.update({'name': 'category'})
                 if 'video' == item['type']:
                     self.addVideo(item)
                 elif 'more' == item['type']:
                     self.addMore(item)
                 else:
-                    if item['category'] in ["channel","playlist","movie","traylist"] or item['category'].startswith("feeds"):
+                    if item['category'] in ["channel", "playlist", "movie", "traylist"] or item['category'].startswith("feeds"):
                         item['good_for_fav'] = True
                     self.addDir(item)
             
@@ -208,7 +208,7 @@ class Youtube(CBaseHostClass):
             
     def listSearchResult(self, cItem, pattern, searchType):
         page = cItem.get("page", '1')
-        url = cItem.get("url","")
+        url = cItem.get("url", "")
         
         if url:
             printDBG("URL ricerca -----------> %s" % url)
@@ -217,13 +217,13 @@ class Youtube(CBaseHostClass):
             tmpList = self.ytp.getSearchResult(urllib.quote_plus(pattern), searchType, page, 'search', config.plugins.iptvplayer.ytSortBy.value)
         
         for item in tmpList:
-            item.update({'name':'category'})
+            item.update({'name': 'category'})
             if 'video' == item['type']:
                 self.addVideo(item)
             elif 'more' == item['type']:
                 self.addMore(item)
             else:
-                if item['category'] in ["channel","playlist","movie","traylist"]:
+                if item['category'] in ["channel", "playlist", "movie", "traylist"]:
                     item['good_for_fav'] = True
                 self.addDir(item)
                 
@@ -246,7 +246,7 @@ class Youtube(CBaseHostClass):
             links = self.getLinksForVideo(cItem)
         except Exception:
             printExc()
-            return self.getLinksForVideo({'url':fav_data})
+            return self.getLinksForVideo({'url': fav_data})
         return links
 
     def setInitListFromFavouriteItem(self, fav_data):
@@ -273,7 +273,7 @@ class Youtube(CBaseHostClass):
             self.listMainMenu()
         elif 'from_file' == category:
             self.listCategory(self.currItem)
-        elif category in ["channel","playlist","movie","traylist"]:
+        elif category in ["channel", "playlist", "movie", "traylist"]:
             self.getVideos(self.currItem)
         elif category.startswith("feeds"):
             self.listFeeds(self.currItem)
@@ -282,11 +282,11 @@ class Youtube(CBaseHostClass):
         #SEARCH
         elif category in ["search", "search_next_page"]:
             cItem = dict(self.currItem)
-            cItem.update({'search_item':False, 'name':'category'}) 
+            cItem.update({'search_item': False, 'name': 'category'}) 
             self.listSearchResult(cItem, searchPattern, searchType)
         #HISTORIA SEARCH
         elif category == "search_history":
-            self.listsHistory({'name':'history', 'category': 'search'}, 'desc', _("Type: "))
+            self.listsHistory({'name': 'history', 'category': 'search'}, 'desc', _("Type: "))
         else:
             printExc()
         

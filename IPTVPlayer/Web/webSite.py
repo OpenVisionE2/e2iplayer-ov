@@ -50,7 +50,7 @@ class redirectionPage(resource.Resource):
         req.setHeader('charset', 'UTF-8')
 
         """ rendering server response """
-        command = req.args.get("cmd",None)
+        command = req.args.get("cmd", None)
         html = """
 <html lang="%s">
   <head>
@@ -105,7 +105,7 @@ class StartPage(resource.Resource):
                 if len(resetStatusMSG) == 0:
                     resetStatusMSG.append(_('Web component has been reset and all threads are stopped. :)'))
                 else:
-                    resetStatusMSG.insert(0,_('Web component has been reset, the following threads are still working:'))
+                    resetStatusMSG.insert(0, _('Web component has been reset, the following threads are still working:'))
               
                 
         """ rendering server response """
@@ -130,16 +130,16 @@ class searchPage(resource.Resource):
 
         if len(req.args.keys()) > 0:
             key = req.args.keys()[0]
-            arg = req.args.get(key,None)[0]
+            arg = req.args.get(key, None)[0]
             if len(req.args.keys()) > 1:
                 if req.args.keys()[1] == 'type':
-                    if req.args.get(req.args.keys()[1],'ALL')[0] == '':
-                        settings.GlobalSearchTypes = ["VIDEO","AUDIO"]
-                    elif req.args.get(req.args.keys()[1],'ALL')[0] == '':
+                    if req.args.get(req.args.keys()[1], 'ALL')[0] == '':
+                        settings.GlobalSearchTypes = ["VIDEO", "AUDIO"]
+                    elif req.args.get(req.args.keys()[1], 'ALL')[0] == '':
                         settings.GlobalSearchTypes = ["AUDIO"]
                     else:
                         settings.GlobalSearchTypes = ["VIDEO"]
-                arg = req.args.get(key,None)[0]
+                arg = req.args.get(key, None)[0]
             #print 'searchPage received: ', key, '=' , arg
         else:
             key = None
@@ -254,7 +254,7 @@ class logsPage(resource.Resource):
             DBGFileName = ''
             
 
-        command = req.args.get("cmd",['NOcmd'])
+        command = req.args.get("cmd", ['NOcmd'])
         
         if DBGFileName == '':
             req.setHeader('Content-type', 'text/html')
@@ -308,7 +308,7 @@ class settingsPage(resource.Resource):
         """ rendering server response """
         if len(req.args.keys()) > 0:
             key = req.args.keys()[0]
-            arg = req.args.get(key,None)[0]
+            arg = req.args.get(key, None)[0]
             print 'Received: ', key, '=', arg
         
             try:
@@ -336,7 +336,7 @@ class settingsPage(resource.Resource):
                     return util.redirectTo("/iptvplayer/settings", req)
                 configfile.save()
             except Exception:
-                printDBG("[webSite.py:settingsPage] EXCEPTION for updating value '%s' for key '%s'" % (arg,key))
+                printDBG("[webSite.py:settingsPage] EXCEPTION for updating value '%s' for key '%s'" % (arg, key))
 
         if isConfigsHTMLempty() and not isThreadRunning('buildConfigsHTML'):
             webThreads.buildConfigsHTML().start()
@@ -376,16 +376,16 @@ class downloaderPage(resource.Resource):
         DMlist = []
         if len(req.args.keys()) >= 1:
             key = req.args.keys()[0]
-            arg = req.args.get(key,None)[0]
+            arg = req.args.get(key, None)[0]
             try:
-                arg2 = req.args.get(key,None)[1]
+                arg2 = req.args.get(key, None)[1]
             except Exception:
                 pass
             try:
-                arg3 = req.args.get(key,None)[2]
+                arg3 = req.args.get(key, None)[2]
             except Exception:
                 pass
-            print 'Received: "%s"="%s","%s","%s"' % (key,arg,arg2,arg3)
+            print 'Received: "%s"="%s","%s","%s"' % (key, arg, arg2, arg3)
 
         if key is None or arg is None:
             if None != Plugins.Extensions.IPTVPlayer.components.iptvplayerwidget.gDownloadManager:
@@ -461,7 +461,7 @@ class downloaderPage(resource.Resource):
             listItem.status = 'INFO'
             DMlist.append(listItem)
             extraMeta = ''
-        elif len(DMlist) == 0 and arg in ['arvchiveDM','stopDM']:
+        elif len(DMlist) == 0 and arg in ['arvchiveDM', 'stopDM']:
             extraMeta = ''
             
         reloadScripts()
@@ -490,7 +490,7 @@ class useHostPage(resource.Resource):
         
         if len(req.args.keys()) > 0:
             self.key = req.args.keys()[0]
-            self.arg = req.args.get(self.key,None)[0]
+            self.arg = req.args.get(self.key, None)[0]
             if len(req.args.keys()) > 1:
                 self.searchType = req.args.keys()[1]
                 print "useHostPage received: '%s'='%s' searchType='%s'" % (self.key, str(self.arg), self.searchType)

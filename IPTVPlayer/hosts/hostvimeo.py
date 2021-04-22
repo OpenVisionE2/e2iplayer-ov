@@ -24,7 +24,7 @@ class SuggestionsProvider:
 
     def __init__(self):
         self.cm = common()
-        self.cm.HEADER = {'User-Agent':self.cm.getDefaultHeader()['User-Agent'], 'X-Requested-With':'XMLHttpRequest'}
+        self.cm.HEADER = {'User-Agent': self.cm.getDefaultHeader()['User-Agent'], 'X-Requested-With': 'XMLHttpRequest'}
 
     def getName(self):
         return _("Vimeo Suggestions")
@@ -43,17 +43,17 @@ class SuggestionsProvider:
 class VimeoCom(CBaseHostClass):
     
     def __init__(self):
-        CBaseHostClass.__init__(self, {'history':'vimeo.com', 'cookie':'vimeo.com.cookie'})
+        CBaseHostClass.__init__(self, {'history': 'vimeo.com', 'cookie': 'vimeo.com.cookie'})
         self.USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0'
         self.MAIN_URL = 'https://vimeo.com/'
         self.DEFAULT_ICON_URL = 'https://avemariaradio.net/wp-content/uploads/2017/03/vimeo_logo_header.jpg'
-        self.HTTP_HEADER = {'User-Agent': self.USER_AGENT, 'DNT':'1', 'Accept': 'text/html', 'Accept-Encoding':'gzip, deflate', 'Referer':self.getMainUrl(), 'Origin':self.getMainUrl()}
+        self.HTTP_HEADER = {'User-Agent': self.USER_AGENT, 'DNT': '1', 'Accept': 'text/html', 'Accept-Encoding': 'gzip, deflate', 'Referer': self.getMainUrl(), 'Origin': self.getMainUrl()}
         self.AJAX_HEADER = dict(self.HTTP_HEADER)
-        self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest', 'Accept-Encoding':'gzip, deflate', 'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8', 'Accept':'application/vnd.vimeo.*+json;version=3.3', 'Origin':self.getMainUrl()[:-1]})
+        self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest', 'Accept-Encoding': 'gzip, deflate', 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'Accept': 'application/vnd.vimeo.*+json;version=3.3', 'Origin': self.getMainUrl()[:-1]})
         
-        self.defaultParams = {'header':self.HTTP_HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
+        self.defaultParams = {'header': self.HTTP_HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
         self.api = {}
-        self.typeMaps = {'clip':'videos', 'ondemand':'', 'people':'peoples', 'group':'groups', 'channel':'channels'}
+        self.typeMaps = {'clip': 'videos', 'ondemand': '', 'people': 'peoples', 'group': 'groups', 'channel': 'channels'}
         
     def getPage(self, baseUrl, addParams={}, post_data=None):
         if addParams == {}:
@@ -63,9 +63,9 @@ class VimeoCom(CBaseHostClass):
     def listMainMenu(self, cItem):
         printDBG("VimeoCom.listMainMenu")
         
-        MAIN_CAT_TAB = [{'category':'categories', 'title': _('Categories'), 'url':self.getFullUrl('/categories')}, 
-                        {'category':'search', 'title': _('Search'), 'search_item':True}, 
-                        {'category':'search_history', 'title': _('Search history')},]
+        MAIN_CAT_TAB = [{'category': 'categories', 'title': _('Categories'), 'url': self.getFullUrl('/categories')}, 
+                        {'category': 'search', 'title': _('Search'), 'search_item': True}, 
+                        {'category': 'search_history', 'title': _('Search history')}, ]
         
         self.listsTab(MAIN_CAT_TAB, cItem)
         
@@ -104,7 +104,7 @@ class VimeoCom(CBaseHostClass):
             else:
                 cat = cat[-1]
             title = self.cleanHtmlStr(item)
-            params = {'good_for_fav':False, 'name':'category', 'category':nextCategory, 'f_cat':cat, 'title':title, 'url':self.getFullUrl(url), 'icon':self.getFullIconUrl(icon)}
+            params = {'good_for_fav': False, 'name': 'category', 'category': nextCategory, 'f_cat': cat, 'title': title, 'url': self.getFullUrl(url), 'icon': self.getFullIconUrl(icon)}
             self.addDir(params)
             
     def listTypes(self, cItem, nextCategory):
@@ -143,7 +143,7 @@ class VimeoCom(CBaseHostClass):
                 desc = str(item['total'])
                 url = cItem['url'] + '/' + self.typeMaps.get(type, '')
                 params = dict(cItem)
-                params.update({'good_for_fav':False, 'category':nextCategory, 'url':url, 'title':title, 'f_type':type, 'desc':desc})
+                params.update({'good_for_fav': False, 'category': nextCategory, 'url': url, 'title': title, 'f_type': type, 'desc': desc})
                 self.addDir(params)
         except Exception:
             printExc()
@@ -166,7 +166,7 @@ class VimeoCom(CBaseHostClass):
             return
 
         params = dict(cItem)
-        params.update({'good_for_fav':False, 'category':nextCategory, 'title':_('Any')})
+        params.update({'good_for_fav': False, 'category': nextCategory, 'title': _('Any')})
         self.addDir(params)
 
         try:
@@ -177,7 +177,7 @@ class VimeoCom(CBaseHostClass):
                 desc = str(item['total'])
                 url = cItem['url'] + '?subcategory=' + type
                 params = dict(cItem)
-                params.update({'good_for_fav':False, 'category':nextCategory, 'title':title, 'f_subcategory':type, 'desc':desc})
+                params.update({'good_for_fav': False, 'category': nextCategory, 'title': title, 'f_subcategory': type, 'desc': desc})
                 self.addDir(params)
         except Exception:
             printExc()
@@ -197,7 +197,7 @@ class VimeoCom(CBaseHostClass):
             for item in data:
                 title = self.cleanHtmlStr(item['label'])
                 params = dict(cItem)
-                params.update({'good_for_fav':False, 'category':nextCategory, 'title':title, 'f_sort':item['identifier']})
+                params.update({'good_for_fav': False, 'category': nextCategory, 'title': title, 'f_sort': item['identifier']})
                 self.addDir(params)
         except Exception:
             printExc()
@@ -214,7 +214,7 @@ class VimeoCom(CBaseHostClass):
         self._fillApiData(data)
         
         url = self.api.get('url', '') + 'search?_video_override=true&filter_type=%s&page=%s&per_page=%s&sizes=250x115&fields=search_web' % (cItem.get('f_type', ''), page, ITEMS_PER_PAGE)
-        sortMap = {'shortest':'duration&direction=asc', 'longest':'duration&direction=desc', 'alphabetical_desc':'alphabetical&direction=desc', 'alphabetical_asc':'alphabetical&direction=asc'}
+        sortMap = {'shortest': 'duration&direction=asc', 'longest': 'duration&direction=desc', 'alphabetical_desc': 'alphabetical&direction=desc', 'alphabetical_asc': 'alphabetical&direction=asc'}
         if cItem.get('f_type') == 'clip':
             url += '&filter_price=free'
         if cItem.get('f_query', '') != '':
@@ -270,7 +270,7 @@ class VimeoCom(CBaseHostClass):
                     
                 params = dict(cItem)
                 params.pop('page', None)
-                params.update({'good_for_fav':True, 'category':type, 'title':title, 'url':url, 'icon':icon, 'desc':desc})
+                params.update({'good_for_fav': True, 'category': type, 'title': title, 'url': url, 'icon': icon, 'desc': desc})
                 if type == 'clip':
                     self.addVideo(params)
                 else:
@@ -278,7 +278,7 @@ class VimeoCom(CBaseHostClass):
             
             if data['total'] > data['page'] * data['per_page']:
                 params = dict(cItem)
-                params.update({'good_for_fav':False, 'title':_('Next page'), 'page':page + 1})
+                params.update({'good_for_fav': False, 'title': _('Next page'), 'page': page + 1})
                 self.addDir(params)
         except Exception:
             printExc()
@@ -297,7 +297,7 @@ class VimeoCom(CBaseHostClass):
             sort = self.cm.ph.getSearchGroups(item, '''/sort\:([^/]+?)/''')[0]
             params = dict(cItem)
             params.pop('page', None)
-            params.update({'good_for_fav':False, 'category':nextCategory, 'title':title, 'f_sort':sort})
+            params.update({'good_for_fav': False, 'category': nextCategory, 'title': title, 'f_sort': sort})
             self.addDir(params)
             
     def listItems2(self, cItem):
@@ -344,12 +344,12 @@ class VimeoCom(CBaseHostClass):
             desc += '[/br]' + self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(item, ('<p', '>', 'description'), ('</p', '>'))[1])
             params = dict(cItem)
             params.pop('page', None)
-            params.update({'good_for_fav':True, 'title':title, 'url':self.getFullUrl(url), 'icon':self.getFullIconUrl(icon), 'desc':desc})
+            params.update({'good_for_fav': True, 'title': title, 'url': self.getFullUrl(url), 'icon': self.getFullIconUrl(icon), 'desc': desc})
             self.addVideo(params)
         
         if nextPage != '':
             params = dict(cItem)
-            params.update({'good_for_fav':False, 'title':_('Next page'), 'page':page + 1})
+            params.update({'good_for_fav': False, 'title': _('Next page'), 'page': page + 1})
             self.addDir(params)
         
         
@@ -358,7 +358,7 @@ class VimeoCom(CBaseHostClass):
         
         url = self.getFullUrl('/search?q=%s' % (urllib.quote(searchPattern)))
         params = dict(cItem)
-        params.update({'url':url, 'category':'list_items', 'f_type':searchType, 'f_c':'s', 'f_query':searchPattern})
+        params.update({'url': url, 'category': 'list_items', 'f_type': searchType, 'f_c': 's', 'f_query': searchPattern})
         self.listItems(params)
             
     def getLinksForVideo(self, cItem):
@@ -380,7 +380,7 @@ class VimeoCom(CBaseHostClass):
         
     #MAIN MENU
         if name == None:
-            self.listMainMenu({'name':'category'})
+            self.listMainMenu({'name': 'category'})
         elif category == 'categories':
             self.listCategories(self.currItem, 'list_types')
         elif category == 'list_types':
@@ -398,11 +398,11 @@ class VimeoCom(CBaseHostClass):
     #SEARCH
         elif category in ["search", "search_next_page"]:
             cItem = dict(self.currItem)
-            cItem.update({'search_item':False, 'name':'category'}) 
+            cItem.update({'search_item': False, 'name': 'category'}) 
             self.listSearchResult(cItem, searchPattern, searchType)
     #HISTORIA SEARCH
         elif category == "search_history":
-            self.listsHistory({'name':'history', 'category': 'search'}, 'desc', _("Type: "))
+            self.listsHistory({'name': 'history', 'category': 'search'}, 'desc', _("Type: "))
         else:
             printExc()
         
@@ -417,7 +417,7 @@ class IPTVHost(CHostBase):
     def __init__(self):
         CHostBase.__init__(self, VimeoCom(), True, [])
         
-        {'clip':'videos', 'ondemand':'', 'people':'peoples', 'group':'groups', 'channel':'channels'}
+        {'clip': 'videos', 'ondemand': '', 'people': 'peoples', 'group': 'groups', 'channel': 'channels'}
     def getSearchTypes(self):
         searchTypesOptions = []
         searchTypesOptions.append((_('Videos'), "clip"))

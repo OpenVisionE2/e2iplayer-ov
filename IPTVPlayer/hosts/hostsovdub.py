@@ -36,10 +36,10 @@ class Sovdub(CBaseHostClass):
         self.encoding = ''
     
     def getPage(self, url, params={}, post_data=None):
-        sts,data = self.cm.getPage(url, params, post_data)
+        sts, data = self.cm.getPage(url, params, post_data)
         if sts and self.encoding == '':
             self.encoding = self.cm.ph.getSearchGroups(data, 'charset=([^"]+?)"')[0]
-        return sts,data
+        return sts, data
     
     def getFullUrl(self, url):
         url = url.replace('&amp;', '&')
@@ -156,7 +156,7 @@ class Sovdub(CBaseHostClass):
         except Exception:
             searchPattern = ''
         
-        post_data = {'do':'search', 'subaction':'search', 'story':searchPattern, 'x': 0, 'y': 0}
+        post_data = {'do': 'search', 'subaction': 'search', 'story': searchPattern, 'x': 0, 'y': 0}
         
         sts, data = self.getPage(self.getMainUrl(), post_data=post_data)
         if not sts:
@@ -191,7 +191,7 @@ class Sovdub(CBaseHostClass):
             url = url.replace('amp;', '')
             url = self.getFullUrl(url)
             if 'money.' not in url:
-                urlTab.append({'name':self.cleanHtmlStr(item), 'url':url, 'need_resolve': 1})
+                urlTab.append({'name': self.cleanHtmlStr(item), 'url': url, 'need_resolve': 1})
         return urlTab
 
     def getVideoLinks(self, videoUrl):

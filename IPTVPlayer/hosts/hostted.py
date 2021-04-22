@@ -27,9 +27,9 @@ def gettytul():
 class TED(CBaseHostClass):
  
     def __init__(self):
-        CBaseHostClass.__init__(self, {'history':'ted.com', 'cookie':'ted.com.cookie'})
+        CBaseHostClass.__init__(self, {'history': 'ted.com', 'cookie': 'ted.com.cookie'})
         self.USER_AGENT = 'User-Agent=Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0'
-        self.HEADER = {'User-Agent': self.USER_AGENT, 'DNT':'1', 'Accept': 'text/html'}
+        self.HEADER = {'User-Agent': self.USER_AGENT, 'DNT': '1', 'Accept': 'text/html'}
         self.AJAX_HEADER = dict(self.HEADER)
         self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest'})
         
@@ -42,7 +42,7 @@ class TED(CBaseHostClass):
         self.cacheTalksLanguages = []
         self.cacheAllEvents = []
         
-        self.defaultParams = {'header':self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
+        self.defaultParams = {'header': self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
         self.defaultAjaxParams = dict(self.defaultParams)
         self.defaultAjaxParams['header'] = self.AJAX_HEADER
         
@@ -53,7 +53,7 @@ class TED(CBaseHostClass):
             addParams = dict(self.defaultParams)
         
         
-        addParams['cloudflare_params'] = {'cookie_file':self.COOKIE_FILE, 'User-Agent':self.USER_AGENT}
+        addParams['cloudflare_params'] = {'cookie_file': self.COOKIE_FILE, 'User-Agent': self.USER_AGENT}
         return self.cm.getPageCFProtection(baseUrl, addParams, post_data)
         
     def getFullUrl(self, url):
@@ -73,11 +73,11 @@ class TED(CBaseHostClass):
         
     def selectDomain(self):                
         self.MAIN_URL = 'https://ted.com/'
-        self.MAIN_CAT_TAB = [{'category':'list_talks_filters', 'title': _('Talks'), 'url':self.getFullUrl('/talks')},
-                             {'category':'list_playlists_filters', 'title': _('Playlists'), 'url':self.getFullUrl('/playlists')},
+        self.MAIN_CAT_TAB = [{'category': 'list_talks_filters', 'title': _('Talks'), 'url': self.getFullUrl('/talks')},
+                             {'category': 'list_playlists_filters', 'title': _('Playlists'), 'url': self.getFullUrl('/playlists')},
                              
-                             {'category':'search', 'title': _('Search'), 'search_item':True, },
-                             {'category':'search_history', 'title': _('Search history'),} 
+                             {'category': 'search', 'title': _('Search'), 'search_item': True, },
+                             {'category': 'search_history', 'title': _('Search history'), } 
                             ]
     
     def _addFilter(self, data, cacheTab, key, anyTitle='', titleBase=''):
@@ -87,9 +87,9 @@ class TED(CBaseHostClass):
             if value in ['', '...']:
                 continue
             title = self.cleanHtmlStr(item)
-            filtersTab.append({'title':titleBase + title, key:value})
+            filtersTab.append({'title': titleBase + title, key: value})
         if anyTitle != '' and len(filtersTab):
-            filtersTab.insert(0, {'title':anyTitle})
+            filtersTab.insert(0, {'title': anyTitle})
         if len(filtersTab):
             cacheTab.append(filtersTab)
             return True
@@ -106,13 +106,13 @@ class TED(CBaseHostClass):
         tmp = self.cm.ph.getDataBeetwenMarkers(data, "name='topics'", '</select>')[1]
         tmp = self.cm.ph.getAllItemsBeetwenMarkers(tmp, '<option', '</option>')
         if self._addFilter(tmp, self.cacheTalksFilters, 'f_topics', _('--Any--')):
-            self.cacheTalksFilters[-1].append({'category':'list_talks_topics_abc', 'title':_('See all topics'), 'f_url':self.getFullUrl('/topics/combo?models=Talks')})
+            self.cacheTalksFilters[-1].append({'category': 'list_talks_topics_abc', 'title': _('See all topics'), 'f_url': self.getFullUrl('/topics/combo?models=Talks')})
     
         # languages
         tmp = self.cm.ph.getDataBeetwenMarkers(data, "name='language'", '</select>')[1]
         tmp = self.cm.ph.getAllItemsBeetwenMarkers(tmp, '<option', '</option>')
         if self._addFilter(tmp, self.cacheTalksFilters, 'f_language', _('--Any--')):
-            self.cacheTalksFilters[-1].append({'category':'list_talks_languages', 'title':_('See all languages'), 'f_url':self.getFullUrl('/languages/combo.json?per_page=10000')})
+            self.cacheTalksFilters[-1].append({'category': 'list_talks_languages', 'title': _('See all languages'), 'f_url': self.getFullUrl('/languages/combo.json?per_page=10000')})
         
         # durations
         tmp = self.cm.ph.getDataBeetwenMarkers(data, "name='duration'", '</select>')[1]
@@ -123,7 +123,7 @@ class TED(CBaseHostClass):
         tmp = self.cm.ph.getDataBeetwenMarkers(data, "name='event'", '</select>')[1]
         tmp = self.cm.ph.getAllItemsBeetwenMarkers(tmp, '<option', '</option>')
         if self._addFilter(tmp, self.cacheTalksFilters, 'f_event', _('--Any--')):
-            self.cacheTalksFilters[-1].append({'category':'list_talks_events_years', 'title':_('See all events'), 'f_url':self.getFullUrl('/talks/events')})
+            self.cacheTalksFilters[-1].append({'category': 'list_talks_events_years', 'title': _('See all events'), 'f_url': self.getFullUrl('/talks/events')})
             
         # sort
         tmp = self.cm.ph.getDataBeetwenMarkers(data, "filters-sort", '</select>')[1]
@@ -141,7 +141,7 @@ class TED(CBaseHostClass):
         tmp = self.cm.ph.getDataBeetwenMarkers(data, "name='topics'", '</select>')[1]
         tmp = self.cm.ph.getAllItemsBeetwenMarkers(tmp, '<option', '</option>')
         if self._addFilter(tmp, self.cachePlaylistsFilters, 'f_topics', _('--Any--')):
-            self.cachePlaylistsFilters[-1].append({'category':'list_playlists_topics_abc', 'title':_('See all topics'), 'f_url':self.getFullUrl('/topics/combo?models=Talks')})
+            self.cachePlaylistsFilters[-1].append({'category': 'list_playlists_topics_abc', 'title': _('See all topics'), 'f_url': self.getFullUrl('/topics/combo?models=Talks')})
         
         # durations
         tmp = self.cm.ph.getDataBeetwenMarkers(data, "name='duration'", '</select>')[1]
@@ -173,7 +173,7 @@ class TED(CBaseHostClass):
                 try:
                     data = json_loads(data)
                     for item in data:
-                        params = {'title':item['label'], 'f_topics':item['value']}
+                        params = {'title': item['label'], 'f_topics': item['value']}
                         self.cacheAllTopics.append(params)
                     if len(self.cacheAllTopics):
                         break
@@ -183,7 +183,7 @@ class TED(CBaseHostClass):
         if len(self.cacheAllTopics):
             for item in ['A-B', 'C', 'D-F', 'G-K', 'L-M', 'N-O', 'P-R', 'S', 'T-Z']:
                 params = dict(cItem)
-                params.update({'category':nextCategory, 'title':item})
+                params.update({'category': nextCategory, 'title': item})
                 self.addDir(params)
         
     def listTopics(self, cItem, nextCategory):
@@ -191,7 +191,7 @@ class TED(CBaseHostClass):
         lettersRange = cItem['title'].split('-')
         
         cItem = dict(cItem)
-        cItem.update({'category':nextCategory, 'f_idx':cItem.get('f_idx', 0) + 1})
+        cItem.update({'category': nextCategory, 'f_idx': cItem.get('f_idx', 0) + 1})
         for item in self.cacheAllTopics:
             letter = item['f_topics'].upper()[0]
             if letter >= lettersRange[0] and letter <= lettersRange[-1]:
@@ -213,7 +213,7 @@ class TED(CBaseHostClass):
                 promotItem = None
                 data = json_loads(data)
                 for item in data:
-                    params = {'title':item['label'], 'f_language':item['value']}
+                    params = {'title': item['label'], 'f_language': item['value']}
                     if item['value'] == userLang:
                         promotItem = params
                     else:
@@ -224,7 +224,7 @@ class TED(CBaseHostClass):
                 printExc()
         
         params = dict(cItem)
-        params.update({'category':nextCategory, 'f_idx':cItem.get('f_idx', 0) + 1})
+        params.update({'category': nextCategory, 'f_idx': cItem.get('f_idx', 0) + 1})
         self.listsTab(self.cacheTalksLanguages, params)
         
     def listEventsYears(self, cItem, nextCategory):
@@ -240,7 +240,7 @@ class TED(CBaseHostClass):
                 try:
                     data = json_loads(data)
                     for item in data:
-                        params = {'title':item['label'], 'f_event':item['value'], 'f_year':item['year']}
+                        params = {'title': item['label'], 'f_event': item['value'], 'f_year': item['year']}
                         self.cacheAllEvents.append(params)
                     if len(self.cacheAllEvents):
                         break
@@ -253,7 +253,7 @@ class TED(CBaseHostClass):
                 if item['f_year'] in yearsTab:
                     continue
                 params = dict(cItem)
-                params.update({'category':nextCategory, 'title':item['f_year'], 'f_year':item['f_year']})
+                params.update({'category': nextCategory, 'title': item['f_year'], 'f_year': item['f_year']})
                 self.addDir(params)
                 yearsTab.append(item['f_year'])
     
@@ -262,7 +262,7 @@ class TED(CBaseHostClass):
         year = cItem['f_year']
         
         cItem = dict(cItem)
-        cItem.update({'category':nextCategory, 'f_idx':cItem.get('f_idx', 0) + 1})
+        cItem.update({'category': nextCategory, 'f_idx': cItem.get('f_idx', 0) + 1})
         for item in self.cacheAllEvents:
             if item['f_year'] != year:
                 continue
@@ -280,7 +280,7 @@ class TED(CBaseHostClass):
         if page > 1:
             query['page'] = page
         
-        queryParamsMap = {'f_topics':'topics[]', 'f_language':'language', 'f_duration':'duration', 'f_event':'event', 'f_sort':'sort'}
+        queryParamsMap = {'f_topics': 'topics[]', 'f_language': 'language', 'f_duration': 'duration', 'f_event': 'event', 'f_sort': 'sort'}
         for key in cItem:
             if key not in queryParamsMap:
                 continue
@@ -329,12 +329,12 @@ class TED(CBaseHostClass):
                 desc = duration + ' | ' + desc
             
             params = dict(cItem)
-            params.update({'good_for_fav':True, 'title':title, 'url':url, 'desc':desc, 'icon':icon})
+            params.update({'good_for_fav': True, 'title': title, 'url': url, 'desc': desc, 'icon': icon})
             self.addVideo(params)
         
         if nextPage:
             params = dict(cItem)
-            params.update({'good_for_fav':False, 'title':_('Next page'), 'page':page + 1})
+            params.update({'good_for_fav': False, 'title': _('Next page'), 'page': page + 1})
             self.addDir(params)
             
     def listPlaylists(self, cItem, nextCategory):
@@ -350,7 +350,7 @@ class TED(CBaseHostClass):
             query['page'] = page
         query['per_page'] = 24
         
-        queryParamsMap = {'f_topics':'topics[]', 'f_duration':'duration', 'f_curator':'curator'}
+        queryParamsMap = {'f_topics': 'topics[]', 'f_duration': 'duration', 'f_curator': 'curator'}
         for key in cItem:
             if key not in queryParamsMap:
                 continue
@@ -384,14 +384,14 @@ class TED(CBaseHostClass):
                 desc = '[/br]'.join(descTab)
                 
                 params = dict(cItem)
-                params.update({'good_for_fav':True, 'category':nextCategory, 'title':title, 'url':url, 'desc':desc, 'icon':icon})
+                params.update({'good_for_fav': True, 'category': nextCategory, 'title': title, 'url': url, 'desc': desc, 'icon': icon})
                 self.addDir(params)
         except Exception:
             printExc()
             
         if nextPage:
             params = dict(cItem)
-            params.update({'good_for_fav':False, 'title':_('Next page'), 'page':page + 1})
+            params.update({'good_for_fav': False, 'title': _('Next page'), 'page': page + 1})
             self.addDir(params)
         
     def listPlaylistItems(self, cItem):
@@ -421,7 +421,7 @@ class TED(CBaseHostClass):
                 desc = duration + ' | ' + desc
             
             params = dict(cItem)
-            params.update({'good_for_fav':True, 'title':title, 'url':url, 'desc':desc, 'icon':icon})
+            params.update({'good_for_fav': True, 'title': title, 'url': url, 'desc': desc, 'icon': icon})
             self.addVideo(params)
 
     def listSearchResult(self, cItem, searchPattern, searchType):
@@ -448,7 +448,7 @@ class TED(CBaseHostClass):
             title = self.cleanHtmlStr(tmp[0])
             desc = self.cleanHtmlStr(tmp[-1])
             params = dict(cItem)
-            params.update({'good_for_fav':True, 'title':title, 'url':url, 'desc':desc, 'icon':icon})
+            params.update({'good_for_fav': True, 'title': title, 'url': url, 'desc': desc, 'icon': icon})
             if searchType == 'talks':
                 self.addVideo(params)
             elif searchType == 'playlists':
@@ -457,7 +457,7 @@ class TED(CBaseHostClass):
             
         if nextPage:
             params = dict(cItem)
-            params.update({'good_for_fav':False, 'title':_('Next page'), 'page':page + 1})
+            params.update({'good_for_fav': False, 'title': _('Next page'), 'page': page + 1})
             self.addDir(params)
     
     def getLinksForVideo(self, cItem):
@@ -480,7 +480,7 @@ class TED(CBaseHostClass):
                 else:
                     name = item.get('name', str(item['bitrate']))
                 bitrate = item['bitrate']
-                urlTab.append({'name':namePrefix + name, 'url':url, 'bitrate':bitrate, 'need_resolve':0})
+                urlTab.append({'name': namePrefix + name, 'url': url, 'bitrate': bitrate, 'need_resolve': 0})
             except Exception:
                 printExc()
         
@@ -548,14 +548,14 @@ class TED(CBaseHostClass):
             
             if 0 == len(urlTab):
                 if self.cm.isValidUrl(tmp['external']['uri']):
-                    urlTab.append({'name':tmp['external']['service'], 'url':tmp['external']['uri'], 'need_resolve':1})
+                    urlTab.append({'name': tmp['external']['service'], 'url': tmp['external']['uri'], 'need_resolve': 1})
             
             userLang = GetDefaultLang()
             promotItem = None
             format = 'srt'
             for item in tmp.get('languages', []):
                 subUrl = 'http://www.ted.com/talks/subtitles/id/%s/lang/%s/format/%s' % (tmp['id'], item['languageCode'], format)
-                params = {'title':"%s (%s)" % (item['languageName'], item['endonym']), 'url':subUrl, 'lang':item['languageCode'], 'format':format}
+                params = {'title': "%s (%s)" % (item['languageName'], item['endonym']), 'url': subUrl, 'lang': item['languageCode'], 'format': format}
                 if item['languageCode'] == userLang:
                     promotItem = params
                 else:
@@ -566,7 +566,7 @@ class TED(CBaseHostClass):
                 
             if len(subTracks):
                 for idx in range(len(urlTab)):
-                    urlTab[idx]['url'] = strwithmeta(urlTab[idx]['url'], {'external_sub_tracks':subTracks})
+                    urlTab[idx]['url'] = strwithmeta(urlTab[idx]['url'], {'external_sub_tracks': subTracks})
             
         except Exception:
             printExc()
@@ -594,7 +594,7 @@ class TED(CBaseHostClass):
         
     #MAIN MENU
         if name == None:
-            self.listsTab(self.MAIN_CAT_TAB, {'name':'category'})
+            self.listsTab(self.MAIN_CAT_TAB, {'name': 'category'})
         
     # TALKS
         elif 'list_talks_filters' == category:
@@ -637,11 +637,11 @@ class TED(CBaseHostClass):
     #SEARCH
         elif category in ["search", "search_next_page"]:
             cItem = dict(self.currItem)
-            cItem.update({'search_item':False, 'name':'category'}) 
+            cItem.update({'search_item': False, 'name': 'category'}) 
             self.listSearchResult(cItem, searchPattern, searchType)
     #HISTORIA SEARCH
         elif category == "search_history":
-            self.listsHistory({'name':'history', 'category': 'search'}, 'desc', _("Type: "))
+            self.listsHistory({'name': 'history', 'category': 'search'}, 'desc', _("Type: "))
         else:
             printExc()
         

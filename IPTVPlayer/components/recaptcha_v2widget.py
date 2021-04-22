@@ -95,7 +95,7 @@ class UnCaptchaReCaptchaWidget(Screen):
         
         for x in range(self.numOfCol):
             for y in range(self.numOfRow):
-                strIndex = "cover_%s%s" % (x,y)
+                strIndex = "cover_%s%s" % (x, y)
                 self[strIndex] = Cover3()
                 
         self.currX = 0
@@ -114,7 +114,7 @@ class UnCaptchaReCaptchaWidget(Screen):
         
         for x in range(self.numOfCol):
             for y in range(self.numOfRow):
-                strIndex = "cover_%s%s" % (x,y)
+                strIndex = "cover_%s%s" % (x, y)
                 self[strIndex].setPixmap(self.selectPixmap)
                 self[strIndex].hide()
                 
@@ -175,7 +175,7 @@ class UnCaptchaReCaptchaWidget(Screen):
         # calculate position of image
         x = self.offsetCoverX + self.markerWidth * self.currX
         y = self.offsetCoverY + self.markerHeight * self.currY
-        self["marker"].instance.move(ePoint(x,y))
+        self["marker"].instance.move(ePoint(x, y))
         return
 
     def keyCancel(self):

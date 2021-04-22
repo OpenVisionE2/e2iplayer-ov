@@ -26,22 +26,22 @@ def gettytul():
 class ClassicCinemaOnline(CBaseHostClass):
     
     def __init__(self):
-        CBaseHostClass.__init__(self, {'history':'classiccinemaonline.com', 'cookie':'classiccinemaonline.com.cookie'})
+        CBaseHostClass.__init__(self, {'history': 'classiccinemaonline.com', 'cookie': 'classiccinemaonline.com.cookie'})
         self.DEFAULT_ICON_URL = 'http://www.classiccinemaonline.com/templates/rt_metropolis/images/logo/dark/logo.png'
         self.USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0'
         self.MAIN_URL = 'http://www.classiccinemaonline.com/'
-        self.HTTP_HEADER = {'User-Agent': self.USER_AGENT, 'DNT':'1', 'Accept': 'text/html', 'Accept-Encoding':'gzip, deflate', 'Referer':self.getMainUrl(), 'Origin':self.getMainUrl()}
+        self.HTTP_HEADER = {'User-Agent': self.USER_AGENT, 'DNT': '1', 'Accept': 'text/html', 'Accept-Encoding': 'gzip, deflate', 'Referer': self.getMainUrl(), 'Origin': self.getMainUrl()}
         self.AJAX_HEADER = dict(self.HTTP_HEADER)
-        self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest', 'Accept-Encoding':'gzip, deflate', 'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8', 'Accept':'application/json, text/javascript, */*; q=0.01'})
+        self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest', 'Accept-Encoding': 'gzip, deflate', 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'Accept': 'application/json, text/javascript, */*; q=0.01'})
         
-        self.defaultParams = {'header':self.HTTP_HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
+        self.defaultParams = {'header': self.HTTP_HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
         
-        self.MAIN_CAT_TAB = [{'category':'list_movies_cats','title': 'Movie Billboards', 'url':self.getMainUrl()},
-                             {'category':'list_items', 'title': 'Serials', 'url':self.getFullUrl('/serials')},
-                             {'category':'list_items', 'title': 'Silent Films', 'url':self.getFullUrl('/silent-films')},
+        self.MAIN_CAT_TAB = [{'category': 'list_movies_cats', 'title': 'Movie Billboards', 'url': self.getMainUrl()},
+                             {'category': 'list_items', 'title': 'Serials', 'url': self.getFullUrl('/serials')},
+                             {'category': 'list_items', 'title': 'Silent Films', 'url': self.getFullUrl('/silent-films')},
                              
-                             {'category':'search', 'title': _('Search'), 'search_item':True}, 
-                             {'category':'search_history', 'title': _('Search history')},
+                             {'category': 'search', 'title': _('Search'), 'search_item': True}, 
+                             {'category': 'search_history', 'title': _('Search history')},
                             ]
         
     def getMaxDisplayItems(self):
@@ -57,7 +57,7 @@ class ClassicCinemaOnline(CBaseHostClass):
                 return url
             else:
                 return urlparse.urljoin(baseUrl, url)
-        addParams['cloudflare_params'] = {'domain':self.up.getDomain(baseUrl), 'cookie_file':self.COOKIE_FILE, 'User-Agent':self.USER_AGENT, 'full_url_handle':_getFullUrl}
+        addParams['cloudflare_params'] = {'domain': self.up.getDomain(baseUrl), 'cookie_file': self.COOKIE_FILE, 'User-Agent': self.USER_AGENT, 'full_url_handle': _getFullUrl}
         return self.cm.getPageCFProtection(baseUrl, addParams, post_data)
         
     def listMainMenu(self, cItem, nextCategory):
@@ -88,7 +88,7 @@ class ClassicCinemaOnline(CBaseHostClass):
             tmp.append(url)
             title = self.cleanHtmlStr(item)
             params = dict(cItem)
-            params.update({'category':nextCategory, 'title':title, 'url':self.getFullUrl(url)})
+            params.update({'category': nextCategory, 'title': title, 'url': self.getFullUrl(url)})
             self.addDir(params)
         
     def listItems(self, cItem, nextCategory):
@@ -96,7 +96,7 @@ class ClassicCinemaOnline(CBaseHostClass):
         page = cItem.get('page', 0)
         post_data = None
         if page == 0:
-            post_data = {'limit':self.getMaxDisplayItems(), 'filter_order':'', 'filter_order_Dir':'', 'limitstart':''}
+            post_data = {'limit': self.getMaxDisplayItems(), 'filter_order': '', 'filter_order_Dir': '', 'limitstart': ''}
         
         url = cItem['url']
         
@@ -117,7 +117,7 @@ class ClassicCinemaOnline(CBaseHostClass):
             title = self.cleanHtmlStr(tmp[0])
             desc = self.cleanHtmlStr(tmp[-1])
             params = dict(cItem)
-            params.update({'good_for_fav':True, 'category':nextCategory, 'title':title, 'url':self.getFullUrl(url), 'desc':desc})
+            params.update({'good_for_fav': True, 'category': nextCategory, 'title': title, 'url': self.getFullUrl(url), 'desc': desc})
             self.addDir(params)
         
         data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<tr', '>', 'cat-list-row'), ('</tr', '>'))
@@ -128,12 +128,12 @@ class ClassicCinemaOnline(CBaseHostClass):
             desc = 'Hits: %s' % self.cleanHtmlStr(tmp[-1])
             icon = url + '?fake=need_resolve.jpeg'
             params = dict(cItem)
-            params.update({'good_for_fav':True, 'category':nextCategory, 'title':title, 'url':self.getFullUrl(url), 'icon':icon, 'desc':desc})
+            params.update({'good_for_fav': True, 'category': nextCategory, 'title': title, 'url': self.getFullUrl(url), 'icon': icon, 'desc': desc})
             self.addVideo(params)
         
         if self.cm.isValidUrl(nextPage):
             params = dict(cItem)
-            params.update({'good_for_fav':False, 'title':_("Next page"), 'url':nextPage, 'page':page + 1})
+            params.update({'good_for_fav': False, 'title': _("Next page"), 'url': nextPage, 'page': page + 1})
             self.addDir(params)
         
     def listSearchResult(self, cItem, searchPattern, searchType):
@@ -163,12 +163,12 @@ class ClassicCinemaOnline(CBaseHostClass):
             desc = self.cleanHtmlStr(tmp[-1])
             
             params = dict(cItem)
-            params.update({'good_for_fav':True, 'category':'explore_item', 'title':title, 'url':url, 'desc':desc})
+            params.update({'good_for_fav': True, 'category': 'explore_item', 'title': title, 'url': url, 'desc': desc})
             self.addDir(params)
         
         if self.cm.isValidUrl(nextPage):
             params = dict(cItem)
-            params.update({'good_for_fav':False, 'title':_("Next page"), 'url':nextPage, 'page':page + 1})
+            params.update({'good_for_fav': False, 'title': _("Next page"), 'url': nextPage, 'page': page + 1})
             self.addDir(params)
             
     def exploreItem(self, cItem, nextCategory):
@@ -212,7 +212,7 @@ class ClassicCinemaOnline(CBaseHostClass):
                     if url != '' and not self.cm.isValidUrl(url):
                         url = baseUrl + url
                     if self.cm.isValidUrl(url):
-                        retTab.append({'name':'mp4', 'url':url, 'need_resolve':0})
+                        retTab.append({'name': 'mp4', 'url': url, 'need_resolve': 0})
             
             if self.cm.isValidUrl(videoUrl):
                 retTab.extend(self.up.getVideoLinkExt(videoUrl))
@@ -231,7 +231,7 @@ class ClassicCinemaOnline(CBaseHostClass):
         if imdbId == '': 
             img_url = self.cm.ph.getDataBeetwenNodes(data, ('<center>', '</center>', '<img'), ('<', '>'))[1]
             img_url = self.getFullUrl(self.cm.ph.getSearchGroups(img_url, '<img[^>]+?src="([^"]+?\.(:?jpe?g|png)(:?\?[^"]+?)?)"')[0])
-            return [{'title':cItem['title'], 'text': cItem.get('desc', ''), 'images':[{'title':'', 'url':img_url}], 'other_info':{}}]
+            return [{'title': cItem['title'], 'text': cItem.get('desc', ''), 'images':[{'title': '', 'url': img_url}], 'other_info': {}}]
         
         url = 'http://www.imdb.com/title/tt{0}/'.format(imdbId)
         sts, data = self.getPage(url)
@@ -277,7 +277,7 @@ class ClassicCinemaOnline(CBaseHostClass):
         data = self.cm.ph.getDataBeetwenMarkers(data, '<div class="ratingValue">', '</div>')[1]
         otherInfo['imdb_rating'] = self.cm.ph.getSearchGroups(data, '''title=['"]([^"^']+?)['"]''')[0]
         
-        return [{'title':title, 'text': desc, 'images':[{'title':'', 'url':icon}], 'other_info':otherInfo}]
+        return [{'title': title, 'text': desc, 'images': [{'title': '', 'url': icon}], 'other_info': otherInfo}]
     
     def handleService(self, index, refresh=0, searchPattern='', searchType=''):
         printDBG('handleService start')
@@ -293,7 +293,7 @@ class ClassicCinemaOnline(CBaseHostClass):
         
     #MAIN MENU
         if name == None:
-            self.listMainMenu({'name':'category'}, 'list_genres')
+            self.listMainMenu({'name': 'category'}, 'list_genres')
         elif category == 'list_movies_cats':
             self.listMoviesCats(self.currItem, 'list_items')
         elif category == 'list_items':
@@ -303,11 +303,11 @@ class ClassicCinemaOnline(CBaseHostClass):
     #SEARCH
         elif category in ["search", "search_next_page"]:
             cItem = dict(self.currItem)
-            cItem.update({'search_item':False, 'name':'category'}) 
+            cItem.update({'search_item': False, 'name': 'category'}) 
             self.listSearchResult(cItem, searchPattern, searchType)
     #HISTORIA SEARCH
         elif category == "search_history":
-            self.listsHistory({'name':'history', 'category': 'search'}, 'desc', _("Type: "))
+            self.listsHistory({'name': 'history', 'category': 'search'}, 'desc', _("Type: "))
         else:
             printExc()
         

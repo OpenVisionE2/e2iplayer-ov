@@ -40,7 +40,7 @@ class LivespottingTvApi:
         if not sts:
             return list
         printDBG("data: %s" % data)
-        data = data.replace('Showroom.Load(','').replace(');','')
+        data = data.replace('Showroom.Load(', '').replace(');', '')
         try:
             data = json_loads(data)
             for item in data:
@@ -50,7 +50,7 @@ class LivespottingTvApi:
                     desc = item['description'] 
                     url = str(item['sources'])
                     url = ph.search(url, '''file['"]:\s*['"]([^"^']+?)['"]''')[0]
-                    list.append({'title':title, 'url':url, 'icon':icon, 'desc':desc})
+                    list.append({'title': title, 'url': url, 'icon': icon, 'desc': desc})
                 except Exception:
                     printExc()
         except Exception:

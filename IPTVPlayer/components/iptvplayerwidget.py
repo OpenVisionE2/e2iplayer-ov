@@ -561,7 +561,7 @@ class E2iPlayerWidget(Screen):
         asynccall.gMainFunctionsQueueTab[0].addToQueue("selectResolvedVideoLinks", [thread, ret])
         
     def callbackGetList(self, addParam, thread, ret):
-        asynccall.gMainFunctionsQueueTab[0].addToQueue("reloadList", [thread, {'add_param':addParam, 'ret':ret}])
+        asynccall.gMainFunctionsQueueTab[0].addToQueue("reloadList", [thread, {'add_param': addParam, 'ret': ret}])
         
     # method called from IconMenager when a new icon has been dowlnoaded
     def checkIconCallBack(self, ret):
@@ -598,7 +598,7 @@ class E2iPlayerWidget(Screen):
         # For subtitles test
         if False:
             from Plugins.Extensions.IPTVPlayer.components.iptvsubdownloader import IPTVSubDownloaderWidget
-            self.session.open(IPTVSubDownloaderWidget, params={'movie_title':'elementary s02e03'})
+            self.session.open(IPTVSubDownloaderWidget, params={'movie_title': 'elementary s02e03'})
             return
         
         self.stopAutoPlaySequencer()
@@ -709,15 +709,15 @@ class E2iPlayerWidget(Screen):
                 TextMSG += _("E-mail: ") + "\n\t- iptvplayere2@gmail.com\n"
                 TextMSG += _("www: ") + "\n\t- http://iptvplayer.vline.pl/" + '\n\t- http://www.iptvplayer.gitlab.io/\n'
                 TextMSG += _("Developers: ") 
-                developersTab = [{'nick':'zdzislaw22',},
-                                 {'nick':'mamrot',},
-                                 {'nick':'MarcinO',},
-                                 {'nick':'skalita',},
-                                 {'nick':'atilaks',},
-                                 {'nick':'huball',},
-                                 {'nick':'matzg',},
-                                 {'nick':'tomashj291',},
-                                 {'nick':'a4tech',},
+                developersTab = [{'nick': 'zdzislaw22', },
+                                 {'nick': 'mamrot', },
+                                 {'nick': 'MarcinO', },
+                                 {'nick': 'skalita', },
+                                 {'nick': 'atilaks', },
+                                 {'nick': 'huball', },
+                                 {'nick': 'matzg', },
+                                 {'nick': 'tomashj291', },
+                                 {'nick': 'a4tech', },
                                 ]
                 # present alphabetically, the order does not mean validity
                 sortedList = sorted(developersTab, key=lambda k: k['nick'].upper())
@@ -735,13 +735,13 @@ class E2iPlayerWidget(Screen):
                 options.append(IPTVChoiceBoxItem(_("Auto selection based on the settings"), "", {}))
                 player = self.getMoviePlayer(True, False)
                 printDBG("SetActiveMoviePlayer [%r]" % dir(player))
-                options.append(IPTVChoiceBoxItem(_("[%s] with buffering") % player.getText(), "", {'buffering':True, 'player':player}))
+                options.append(IPTVChoiceBoxItem(_("[%s] with buffering") % player.getText(), "", {'buffering': True, 'player': player}))
                 player = self.getMoviePlayer(True, True) 
-                options.append(IPTVChoiceBoxItem(_("[%s] with buffering") % player.getText(), "", {'buffering':True, 'player':player}))
+                options.append(IPTVChoiceBoxItem(_("[%s] with buffering") % player.getText(), "", {'buffering': True, 'player': player}))
                 player = self.getMoviePlayer(False, False) 
-                options.append(IPTVChoiceBoxItem(_("[%s] without buffering") % player.getText(), "", {'buffering':False, 'player':player}))
+                options.append(IPTVChoiceBoxItem(_("[%s] without buffering") % player.getText(), "", {'buffering': False, 'player': player}))
                 player = self.getMoviePlayer(False, True) 
-                options.append(IPTVChoiceBoxItem(_("[%s] without buffering") % player.getText(), "", {'buffering':False, 'player':player}))
+                options.append(IPTVChoiceBoxItem(_("[%s] without buffering") % player.getText(), "", {'buffering': False, 'player': player}))
                 
                 currIdx = -1
                 for idx in range(len(options)):
@@ -764,7 +764,7 @@ class E2iPlayerWidget(Screen):
                 else:
                     width = 400
                 
-                self.session.openWithCallback(self.setActiveMoviePlayer, IPTVChoiceBoxWidget, {'width':width, 'height':250, 'current_idx':currIdx, 'title': _("Select movie player"), 'options':options})
+                self.session.openWithCallback(self.setActiveMoviePlayer, IPTVChoiceBoxWidget, {'width': width, 'height': 250, 'current_idx': currIdx, 'title': _("Select movie player"), 'options': options})
             elif ret[1] == 'ADD_FAV':
                 currSelIndex = self.canByAddedToFavourites()[0]
                 self.requestListFromHost('ForFavItem', currSelIndex, '')
@@ -865,7 +865,7 @@ class E2iPlayerWidget(Screen):
         selItem = self.getSelItem()
         if selItem and selItem.description != '':
             data = selItem.description
-            sData = data.replace('\n','')
+            sData = data.replace('\n', '')
             sData = data.replace('[/br]', '\n')
             self["console"].setText(sData)
         else:
@@ -923,22 +923,22 @@ class E2iPlayerWidget(Screen):
 
     def ok_pressed1(self):
         player = self.getMoviePlayer(True, False)
-        self.activePlayer.set({'buffering':True, 'player':player}) 
+        self.activePlayer.set({'buffering': True, 'player': player}) 
         self.ok_pressed(useAlternativePlayer=True)
 
     def ok_pressed2(self):
         player = self.getMoviePlayer(True, True)
-        self.activePlayer.set({'buffering':True, 'player':player}) 
+        self.activePlayer.set({'buffering': True, 'player': player}) 
         self.ok_pressed(useAlternativePlayer=True)
 
     def ok_pressed3(self):
         player = self.getMoviePlayer(False, False)
-        self.activePlayer.set({'buffering':False, 'player':player}) 
+        self.activePlayer.set({'buffering': False, 'player': player}) 
         self.ok_pressed(useAlternativePlayer=False)
         
     def ok_pressed4(self):
         player = self.getMoviePlayer(False, True)
-        self.activePlayer.set({'buffering':False, 'player':player}) 
+        self.activePlayer.set({'buffering': False, 'player': player}) 
         self.ok_pressed(useAlternativePlayer=True)
     
     def ok_pressed(self, eventFrom='remote', useAlternativePlayer=False):
@@ -1042,12 +1042,12 @@ class E2iPlayerWidget(Screen):
         if ret.status != RetHost.OK or 0 == len(ret.value):
             item = self.currList[self.currSelIndex]
             if len(item.description):
-                artItem = ArticleContent(title=item.name, text=item.description, images=[{'title':'Fot.', 'url':item.iconimage}]) #richDescParams={"alternate_title":"***alternate_title", "year":"year", "rating":"rating",  "duration":"duration",  "genre":"genre",  "director":"director",  "actors":"actors",  "awards":"awards"}
+                artItem = ArticleContent(title=item.name, text=item.description, images=[{'title': 'Fot.', 'url': item.iconimage}]) #richDescParams={"alternate_title":"***alternate_title", "year":"year", "rating":"rating",  "duration":"duration",  "genre":"genre",  "director":"director",  "actors":"actors",  "awards":"awards"}
         else:
             artItem = ret.value[0]
         if None != artItem:
             if len(artItem.images) and artItem.images[0]['url'].startswith('http'):
-                self.session.openWithCallback(self.leaveArticleView, IPTVArticleRichVisualizer, artItem, {'buffering_path':config.plugins.iptvplayer.bufferingPath.value})
+                self.session.openWithCallback(self.leaveArticleView, IPTVArticleRichVisualizer, artItem, {'buffering_path': config.plugins.iptvplayer.bufferingPath.value})
             else:
                 self.session.openWithCallback(self.leaveArticleView, ArticleView, artItem)
             
@@ -1314,7 +1314,7 @@ class E2iPlayerWidget(Screen):
                 # To simplify choiceBox usage and clearly show service is a webpage, list is build using the "<service name> (<service URL>)" schema.
                 if (config.plugins.iptvplayer.ListaGraficzna.value == False or 0 == GetAvailableIconSize()) and title[:4] == 'http':
                     try:
-                        title = ('%s   (%s)') % ('.'.join(title.replace('://','.').replace('www.','').split('.')[1:-1]), title)
+                        title = ('%s   (%s)') % ('.'.join(title.replace('://', '.').replace('www.', '').split('.')[1:-1]), title)
                     except Exception:
                         pass
                 self.displayHostsList.append((title, hostName))
@@ -1460,7 +1460,7 @@ class E2iPlayerWidget(Screen):
         
     def askForUpdateCallback(self, arg1=None):
         if arg1:
-            self.session.openWithCallback(self.selectHost, IPTVUpdateWindow,UpdateMainAppImpl(self.session, allowTheSameVersion=True))
+            self.session.openWithCallback(self.selectHost, IPTVUpdateWindow, UpdateMainAppImpl(self.session, allowTheSameVersion=True))
         elif self.group != None:
             self.selectHostFromGroup()
         else:
@@ -1718,7 +1718,7 @@ class E2iPlayerWidget(Screen):
         self["list"].show()
         
         if url != '' and CDisplayListItem.TYPE_PICTURE == self.currItem.type:
-            self.session.openWithCallback(self.leavePicturePlayer, IPTVPicturePlayerWidget, url, config.plugins.iptvplayer.bufferingPath.value, self.currItem.name, {'seq_mode':self.autoPlaySeqStarted})
+            self.session.openWithCallback(self.leavePicturePlayer, IPTVPicturePlayerWidget, url, config.plugins.iptvplayer.bufferingPath.value, self.currItem.name, {'seq_mode': self.autoPlaySeqStarted})
         elif url != '' and self.isDownloadableType(self.currItem.type):
             printDBG("playVideo url[%s]" % url)
             if self.currItem.type == CDisplayListItem.TYPE_DATA:
@@ -1726,7 +1726,7 @@ class E2iPlayerWidget(Screen):
             else:
                 recorderMode = self.recorderMode
             url = urlparser.decorateUrl(url)
-            titleOfMovie = self.currItem.name.replace('/','-').replace(':','-').replace('*','-').replace('?','-').replace('"','-').replace('<','-').replace('>','-').replace('|','-')
+            titleOfMovie = self.currItem.name.replace('/', '-').replace(':', '-').replace('*', '-').replace('?', '-').replace('"', '-').replace('<', '-').replace('>', '-').replace('|', '-')
             fileExtension = self.getFileExt(url, self.currItem.type)
                         
             blocked, reaseon = self.isUrlBlocked(url, self.currItem.type)
@@ -1784,7 +1784,7 @@ class E2iPlayerWidget(Screen):
             else:
                 self.prevVideoMode = GetE2VideoMode()
                 printDBG("Current video mode [%s]" % self.prevVideoMode)
-                gstAdditionalParams = {'defaul_videomode':self.prevVideoMode, 'host_name':self.hostName, 'external_sub_tracks':url.meta.get('external_sub_tracks', []), 'iptv_refresh_cmd':url.meta.get('iptv_refresh_cmd', '')} #default_player_videooptions
+                gstAdditionalParams = {'defaul_videomode': self.prevVideoMode, 'host_name': self.hostName, 'external_sub_tracks': url.meta.get('external_sub_tracks', []), 'iptv_refresh_cmd': url.meta.get('iptv_refresh_cmd', '')} #default_player_videooptions
                 if self.currItem.type == CDisplayListItem.TYPE_AUDIO:
                     gstAdditionalParams['show_iframe'] = config.plugins.iptvplayer.show_iframe.value
                     gstAdditionalParams['iframe_file_start'] = config.plugins.iptvplayer.iframe_file.value
@@ -1893,10 +1893,10 @@ class E2iPlayerWidget(Screen):
             try:
                 if type == 'Refresh':
                     self.setStatusTex(IDS_REFRESHING)
-                    self.workThread = asynccall.AsyncMethod(self.host.getCurrentList, boundFunction(self.callbackGetList, {'refresh':1, 'selIndex':currSelIndex}), True)(1)
+                    self.workThread = asynccall.AsyncMethod(self.host.getCurrentList, boundFunction(self.callbackGetList, {'refresh': 1, 'selIndex': currSelIndex}), True)(1)
                 elif type == 'ForMore':
                     self.setStatusTex(IDS_DOWNLOADING)
-                    self.workThread = asynccall.AsyncMethod(self.host.getMoreForItem, boundFunction(self.callbackGetList, {'refresh':2, 'selIndex':currSelIndex}), True)(currSelIndex)
+                    self.workThread = asynccall.AsyncMethod(self.host.getMoreForItem, boundFunction(self.callbackGetList, {'refresh': 2, 'selIndex': currSelIndex}), True)(currSelIndex)
                 elif type == 'Initial':
                     self.setStatusTex(IDS_DOWNLOADING)
                     self.workThread = asynccall.AsyncMethod(self.host.getInitList, boundFunction(self.callbackGetList, {}), True)()
@@ -2230,7 +2230,7 @@ class E2iPlayerWidget(Screen):
                             options.append(item)
             if len(options):
                 self.stopAutoPlaySequencer()
-                self.session.openWithCallback(self.requestCustomActionFromHost, IPTVChoiceBoxWidget, {'width':600, 'current_idx':0, 'title':_("Select action"), 'options':options})
+                self.session.openWithCallback(self.requestCustomActionFromHost, IPTVChoiceBoxWidget, {'width': 600, 'current_idx': 0, 'title': _("Select action"), 'options': options})
         except Exception:
             printExc()
             

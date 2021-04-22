@@ -62,7 +62,7 @@ class CYTSignAlgoExtractor:
         ]
         
         for reg in patterns:
-            tmp = re.findall(reg,data)                    
+            tmp = re.findall(reg, data)                    
             for name in tmp:
                 if name and not any((c in name) for c in ''', '"'''):
                     printDBG('pattern: ' + reg)
@@ -155,8 +155,8 @@ class CYTSignAlgoExtractor:
         else:
             printDBG("USE ALGO FROM CACHE: %s" % jshash)
 
-        js_params = [{'code':'e2i_enc = %s;' % json_dumps(encSignatures)}]
-        js_params.append({'name':jsname, 'code':code, 'hash':jshash})
+        js_params = [{'code': 'e2i_enc = %s;' % json_dumps(encSignatures)}]
+        js_params.append({'name': jsname, 'code': code, 'hash': jshash})
         ret = js_execute_ext(js_params)
         if ret['sts'] and 0 == ret['code']:
             try:
@@ -204,7 +204,7 @@ class YoutubeIE(object):
                           '85', '84', '102', '83', '101', '82', '100',
                           # Dash video
                           '138', '137', '248', '136', '247', '135', '246',
-                          '245', '244', '134', '243', '133', '242', '160','298','299',
+                          '245', '244', '134', '243', '133', '242', '160', '298', '299',
                           '313', '271',
                           # Dash audio
                           '141', '172', '140', '171', '139',
@@ -216,7 +216,7 @@ class YoutubeIE(object):
                                       '85', '102', '84', '101', '83', '100', '82',
                                       # Dash video
                                       '138', '248', '137', '247', '136', '246', '245',
-                                      '244', '135', '243', '134', '242', '133', '160','298','299',
+                                      '244', '135', '243', '134', '242', '133', '160', '298', '299',
                                       # Dash audio
                                       '172', '141', '171', '140', '139'
                                       ]
@@ -224,7 +224,7 @@ class YoutubeIE(object):
     _supported_formats = ['18', '22', '37', '38', # mp4
                           '82', '83', '84', '85', # mp4 3D
                           '92', '93', '94', '95', '96', '132', '151', # Apple HTTP Live Streaming
-                          '133', '134', '135', '136', '137', '138', '160','298','299', # Dash mp4
+                          '133', '134', '135', '136', '137', '138', '160', '298', '299', # Dash mp4
                           '139', '140', '141', # Dash mp4 audio
                           ]
     
@@ -472,7 +472,7 @@ class YoutubeIE(object):
                 })
                 sub_url = urlunparse(parsed_caption_url._replace(
                     query=urllib.urlencode(caption_qs, True)))
-                sub_tracks.append({'title':lang_qs['n'][0].encode('utf-8'), 'url':sub_url, 'lang':sub_lang.encode('utf-8'), 'ytid':len(sub_tracks), 'format':'vtt'})
+                sub_tracks.append({'title': lang_qs['n'][0].encode('utf-8'), 'url': sub_url, 'lang': sub_lang.encode('utf-8'), 'ytid': len(sub_tracks), 'format': 'vtt'})
         except Exception:
             printExc()
         return sub_tracks
@@ -502,9 +502,9 @@ class YoutubeIE(object):
                 lang_translated = getArg(item, 'lang_translated')
 
                 title = (name + ' ' + lang_translated).strip()
-                params = {'lang':lang_code, 'v':video_id, 'fmt':'vtt', 'name':name}
+                params = {'lang': lang_code, 'v': video_id, 'fmt': 'vtt', 'name': name}
                 url = 'https://www.youtube.com/api/timedtext?' + urllib.urlencode(params)
-                sub_tracks.append({'title':title, 'url':url, 'lang':lang_code, 'ytid':id, 'format':'vtt'})
+                sub_tracks.append({'title': title, 'url': url, 'lang': lang_code, 'ytid': id, 'format': 'vtt'})
         except Exception:
             printExc()
         printDBG(sub_tracks)
@@ -525,7 +525,7 @@ class YoutubeIE(object):
             videoKey = 'docid'
             videoInfoBase = 'https://docs.google.com/get_video_info?docid=%s' % video_id
             COOKIE_FILE = GetCookieDir('docs.google.com.cookie')
-            videoInfoparams = {'cookiefile':COOKIE_FILE, 'use_cookie': True, 'load_cookie':False, 'save_cookie':True}
+            videoInfoparams = {'cookiefile': COOKIE_FILE, 'use_cookie': True, 'load_cookie': False, 'save_cookie': True}
         else:
             url = 'http://www.youtube.com/watch?v=%s&' % video_id
             isGoogleDoc = False
@@ -549,7 +549,7 @@ class YoutubeIE(object):
                                                   'hl': 'en',
                                                   'eurl': 'https://youtube.googleapis.com/v/' + video_id,
                                                   'asv': 3,
-                                                  'sts':'1588',
+                                                  'sts': '1588',
                                                   })
             video_info_url = videoInfoBase + data
             sts, video_info = self.cm.getPage(video_info_url, videoInfoparams)
@@ -636,7 +636,7 @@ class YoutubeIE(object):
         video_url_list = {}
 
         if len(video_info.get('url_encoded_fmt_stream_map', [])) >= 1 or len(video_info.get('adaptive_fmts', [])) >= 1:
-            encoded_url_map = video_info.get('url_encoded_fmt_stream_map', [''])[0] + ',' + video_info.get('adaptive_fmts',[''])[0]
+            encoded_url_map = video_info.get('url_encoded_fmt_stream_map', [''])[0] + ',' + video_info.get('adaptive_fmts', [''])[0]
             _supported_formats = self._supported_formats
             if allowVP9:
                 _supported_formats.extend(['313', '271'])
@@ -664,7 +664,7 @@ class YoutubeIE(object):
                     if not supported:
                         continue
 
-                    url_item = {'url':_unquote(url_data['url'], None)}
+                    url_item = {'url': _unquote(url_data['url'], None)}
                     if 'sig' in url_data:
                         signature = url_data['sig']
                         url_item['url'] += '&signature=' + signature
@@ -711,7 +711,7 @@ class YoutubeIE(object):
                     if 'url' in url_data:
                         url_item = {'url': url_data['url']}
                     else:
-                        cipher = url_data.get('cipher','') + url_data.get('signatureCipher','')
+                        cipher = url_data.get('cipher', '') + url_data.get('signatureCipher', '')
                         printDBG(cipher)
                         
                         cipher = cipher.split('&')
@@ -720,13 +720,13 @@ class YoutubeIE(object):
                             #s_item = ''
                             #sp_item = ''
                             if 'url=' in item:
-                                url_item = {'url':_unquote(item.replace('url=',''), None)}
+                                url_item = {'url': _unquote(item.replace('url=', ''), None)}
                             if 'sig=' in item:
-                                sig_item = item.replace('sig=','')
+                                sig_item = item.replace('sig=', '')
                             if 's=' in item:
-                                s_item = item.replace('s=','')
+                                s_item = item.replace('s=', '')
                             if 'sp=' in item:
-                                sp_item = item.replace('sp=','')
+                                sp_item = item.replace('sp=', '')
                         if 'sig' in cipher:
                             signature = sig_item
                             url_item['url'] += '&signature=' + signature
@@ -751,7 +751,7 @@ class YoutubeIE(object):
             sign = ph.search(dashmpd, r'/s/([a-fA-F0-9\.]+)')[0]
             if sign:
                 dashmpd = dashmpd.replace(sign, '{0}')
-            video_url_list.append(('mpd', {'url':dashmpd}))
+            video_url_list.append(('mpd', {'url': dashmpd}))
             if sign:
                 video_url_list[-1][1]['esign'] = sign
 
@@ -801,9 +801,9 @@ class YoutubeIE(object):
             video_format = self._video_dimensions.get(format_param, '???')
             video_real_url = url_item['url']
             if len(sub_tracks):
-                video_real_url = strwithmeta(video_real_url, {'external_sub_tracks':sub_tracks})
+                video_real_url = strwithmeta(video_real_url, {'external_sub_tracks': sub_tracks})
             if isGoogleDoc:
-                video_real_url = strwithmeta(video_real_url, {'Cookie':cookieHeader})
+                video_real_url = strwithmeta(video_real_url, {'Cookie': cookieHeader})
 
             results.append({
                 'id': video_id,
@@ -831,7 +831,7 @@ class YoutubeIE(object):
         formats_urls = _get_urls(manifest)
         for format_url in formats_urls:
             itag = self._search_regex(r'itag/(\d+?)/', format_url, 'itag')
-            url_map[itag] = {'url':format_url}
+            url_map[itag] = {'url': format_url}
         return url_map
 
     def _search_regex(self, pattern, string, name, default=None, fatal=True, flags=0):

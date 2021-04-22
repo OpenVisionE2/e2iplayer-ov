@@ -48,13 +48,13 @@ def gettytul():
 class BBCSport(CBaseHostClass):
  
     def __init__(self):
-        CBaseHostClass.__init__(self, {'history':'bbc.com.sport', 'cookie':'bbc.com.sport.cookie'})
+        CBaseHostClass.__init__(self, {'history': 'bbc.com.sport', 'cookie': 'bbc.com.sport.cookie'})
         self.MAIN_URL = 'https://www.bbc.co.uk/'
         self.DEFAULT_ICON_URL = 'https://pbs.twimg.com/profile_images/878266143571443712/goIG59xP_400x400.jpg'
-        self.HEADER = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0', 'DNT':'1', 'Accept': 'text/html', 'Accept-Encoding':'gzip, deflate'}
+        self.HEADER = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0', 'DNT': '1', 'Accept': 'text/html', 'Accept-Encoding': 'gzip, deflate'}
         self.AJAX_HEADER = dict(self.HEADER)
         self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest'})
-        self.defaultParams = {'with_metadata':True, 'ignore_http_code_ranges':[], 'header':self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
+        self.defaultParams = {'with_metadata': True, 'ignore_http_code_ranges': [], 'header': self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
         
         self.loggedIn = None
         self.login = ''
@@ -81,7 +81,7 @@ class BBCSport(CBaseHostClass):
         utc_date = self._str2date(txt)
         utc_date = utc_date + self.OFFSET
         if utc_date.time().second == 59:
-            utc_date = utc_date + timedelta(0,1)
+            utc_date = utc_date + timedelta(0, 1)
         return utc_date
     
     def _absTimeDelta(self, d1, d2, div=60):
@@ -121,7 +121,7 @@ class BBCSport(CBaseHostClass):
             desc = self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(liveguideData, ('<p', '>', 'summary'), ('</p', '>'), False)[1])
             
             params = dict(cItem)
-            params.update({'good_for_fav':True, 'category':'live_guide', 'title':title, 'url':url, 'icon':icon, 'desc':desc})
+            params.update({'good_for_fav': True, 'category': 'live_guide', 'title': title, 'url': url, 'icon': icon, 'desc': desc})
             self.addDir(params)
         
         data = self.cm.ph.getDataBeetwenNodes(data, ('<nav', '>', 'primary-nav'), ('</nav', '>'), False)[1]
@@ -140,7 +140,7 @@ class BBCSport(CBaseHostClass):
                 category = nextCategory1
             
             params = dict(cItem)
-            params.update({'good_for_fav':True, 'category':category, 'title':title, 'url':url})
+            params.update({'good_for_fav': True, 'category': category, 'title': title, 'url': url})
             self.addDir(params)
         
         #MAIN_CAT_TAB = [{'category':'list_items', 'title': 'Start',    'url':self.getFullUrl('/sport')},
@@ -160,7 +160,7 @@ class BBCSport(CBaseHostClass):
                 continue
             title = self.cleanHtmlStr(item)
             params = dict(cItem)
-            params.update({'good_for_fav':True, 'category':nextCategory, 'title':title, 'url':url})
+            params.update({'good_for_fav': True, 'category': nextCategory, 'title': title, 'url': url})
             self.addDir(params)
         
     def listLiveGuideMenu(self, cItem, nextCategory):
@@ -183,12 +183,12 @@ class BBCSport(CBaseHostClass):
         mediaData = self.cm.ph.getDataBeetwenMarkers(mediaData, '"body":{', '});', False)[1].strip()[:-1]
         try:
             mediaData = byteify(json.loads('{%s}' % mediaData), '', True)
-            for item in [{'key':'promoted', 'title':_('Promoted')}, {'key':'live', 'title':_('Live')}, {'key':'coming_up', 'title':_('Coming up')}, {'key':'catch_up', 'title':_('Catch up')}]:
+            for item in [{'key': 'promoted', 'title': _('Promoted')}, {'key': 'live', 'title': _('Live')}, {'key': 'coming_up', 'title': _('Coming up')}, {'key': 'catch_up', 'title': _('Catch up')}]:
                 try:
                     if isinstance(mediaData[item['key']], list) and len(mediaData[item['key']]):
                         self.liveGuideItemsCache[item['key']] = mediaData[item['key']]
                         params = dict(cItem)
-                        params.update({'good_for_fav':False, 'category':nextCategory, 'title':item['title'], 'f_key':item['key']})
+                        params.update({'good_for_fav': False, 'category': nextCategory, 'title': item['title'], 'f_key': item['key']})
                         self.addDir(params)
                 except Exception:
                     printExc()
@@ -232,7 +232,7 @@ class BBCSport(CBaseHostClass):
                         desc.append(self.cleanHtmlStr(item['summary']))
                         
                         params = dict(cItem)
-                        params = {'good_for_fav': True, 'title':title, 'url':url, 'icon':icon, 'desc':'[/br]'.join(desc)}
+                        params = {'good_for_fav': True, 'title': title, 'url': url, 'icon': icon, 'desc': '[/br]'.join(desc)}
                         if mediaType == 'video':
                             self.addVideo(params)
                         elif mediaType == 'audio':
@@ -261,7 +261,7 @@ class BBCSport(CBaseHostClass):
                     desc = [' | '.join(desc)]
                     desc.append(self.cleanHtmlStr(datItem['summary']))
                     params = dict(cItem)
-                    params = {'good_for_fav': True, 'category':nextCategory, 'title':title, 'url':url, 'icon':icon, 'desc':'[/br]'.join(desc)}
+                    params = {'good_for_fav': True, 'category': nextCategory, 'title': title, 'url': url, 'icon': icon, 'desc': '[/br]'.join(desc)}
                     self.addDir(params)
         except Exception:
             printExc()
@@ -273,7 +273,7 @@ class BBCSport(CBaseHostClass):
             return
         
         cItem = dict(cItem)
-        cItem.update({'category':nextCategory1})
+        cItem.update({'category': nextCategory1})
         self.listItems(cItem, nextCategory2, data)
     
     def listItems(self, cItem, nextCategory, data=None):
@@ -320,7 +320,7 @@ class BBCSport(CBaseHostClass):
                 desc.append(self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(item, ('<p', '>', 'summary'), ('</p', '>'), False)[1]))
                 
                 params = dict(cItem)
-                params = {'good_for_fav': True, 'title':title, 'url':url, 'icon':icon, 'desc':'[/br]'.join(desc)}
+                params = {'good_for_fav': True, 'title': title, 'url': url, 'icon': icon, 'desc': '[/br]'.join(desc)}
                 if 'gelicon--listen' in item:
                     params['type'] = 'audio'
                     maediaList.append(params)
@@ -328,7 +328,7 @@ class BBCSport(CBaseHostClass):
                     params['type'] = 'video'
                     maediaList.append(params)
                 else:
-                    params.update({'type':'category', 'category':nextCategory})
+                    params.update({'type': 'category', 'category': nextCategory})
                     if 'gelicon--live' in item:
                         liveItemList.append(params)
                     else:
@@ -395,7 +395,7 @@ class BBCSport(CBaseHostClass):
                 desc.append(self.cleanHtmlStr(item['summary']))
                 
                 params = dict(cItem)
-                params = {'good_for_fav': True, 'title':title, 'url':url, 'icon':icon, 'desc':'[/br]'.join(desc)}
+                params = {'good_for_fav': True, 'title': title, 'url': url, 'icon': icon, 'desc': '[/br]'.join(desc)}
                 if mediaType == 'video':
                     self.addVideo(params)
                 elif mediaType == 'audio':
@@ -419,7 +419,7 @@ class BBCSport(CBaseHostClass):
             url = self.getFullUrl('/iplayer/vpid/%s/' % vpid)
             
             params = dict(cItem)
-            params = {'good_for_fav': True, 'title':title, 'url':url, 'icon':icon, 'desc':duration}
+            params = {'good_for_fav': True, 'title': title, 'url': url, 'icon': icon, 'desc': duration}
             if mediaType == 'video':
                 self.addVideo(params)
             elif mediaType == 'audio':
@@ -493,7 +493,7 @@ class BBCSport(CBaseHostClass):
                     value = self.cm.ph.getSearchGroups(item, '''value=['"]([^'^"]+?)['"]''')[0]
                     post_data[name] = value
                 
-                post_data.update({'username':self.login, 'password':self.password})
+                post_data.update({'username': self.login, 'password': self.password})
                 
                 httpParams = dict(self.defaultParams)
                 httpParams['header'] = dict(httpParams['header'])
@@ -527,7 +527,7 @@ class BBCSport(CBaseHostClass):
         urlTab = []
         
         if '/vpid/' in cItem['url']:
-            urlTab.append({'name':cItem['title'], 'url':cItem['url'], 'need_resolve':1})
+            urlTab.append({'name': cItem['title'], 'url': cItem['url'], 'need_resolve': 1})
         else:
             sts, data = self.getPage(cItem['url'])
             if not sts:
@@ -540,7 +540,7 @@ class BBCSport(CBaseHostClass):
                     mediaData = byteify(json.loads('{%s}' % mediaData), '', True)
                     if mediaData['media'] and mediaData['media']['mediaType'].lower() == 'video' and '' != mediaData['media']['pid']:
                         url = self.getFullUrl('/iplayer/vpid/%s/' % mediaData['media']['pid'])
-                        urlTab.append({'name':mediaData['media']['entityType'], 'url':url, 'need_resolve':1})
+                        urlTab.append({'name': mediaData['media']['entityType'], 'url': url, 'need_resolve': 1})
                 except Exception:
                     printExc()
                 
@@ -557,7 +557,7 @@ class BBCSport(CBaseHostClass):
                                 continue
                             uniqueTab.append(url)
                             name = item['kind'].title()
-                            urlTab.append({'name':'[%s] %s' % (name, title), 'url':url, 'need_resolve':1})
+                            urlTab.append({'name': '[%s] %s' % (name, title), 'url': url, 'need_resolve': 1})
                 except Exception:
                     printExc()
         
@@ -586,7 +586,7 @@ class BBCSport(CBaseHostClass):
         
     #MAIN MENU
         if name == None:
-            self.listMainMenu({'name':'category'}, 'sub_menu', 'all_items')
+            self.listMainMenu({'name': 'category'}, 'sub_menu', 'all_items')
         elif category == 'all_items':
             self.listAllItems(self.currItem, 'sub_menu')
         elif category == 'live_guide':

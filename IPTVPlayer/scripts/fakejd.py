@@ -26,7 +26,7 @@ LAST_HTTP_ERROR_CODE = -1
 LAST_HTTP_ERROR_DATA = ''
 
 def updateStatus(type, data, code=None):
-    obj = {'type':type, 'data':data, 'code':code}
+    obj = {'type': type, 'data': data, 'code': code}
     sys.stderr.write('\n%s\n' % json.dumps(obj).encode('utf-8'))
 
 DEBUGE = False 
@@ -81,7 +81,7 @@ def getPage(url, headers={}, post_data=None):
     return sts, data 
 
 def _fromhex(hex):
-    if sys.version_info < (2,7,0):
+    if sys.version_info < (2, 7, 0):
         return hex.decode('hex')
     else:
         return bytearray.fromhex(hex)
@@ -176,7 +176,7 @@ class Myjdapi:
         new_token.update(self._device_secret + _fromhex(self._session_token))
         self._device_encryption_token = new_token.digest()
 
-    def _signature_create(self,key,data):
+    def _signature_create(self, key, data):
         signature = hmac.new(key, data.encode('utf-8'), hashlib.sha256)
         return signature.hexdigest()
     
@@ -192,7 +192,7 @@ class Myjdapi:
     def connect(self, email, password):
         self._login_secret = self.__secret_create(email, password, "server")
         self._device_secret = self.__secret_create(email, password, "device")
-        response = self.request_api("/my/connect", "GET",[("email", email), ("appkey", self._app_key)])
+        response = self.request_api("/my/connect", "GET", [("email", email), ("appkey", self._app_key)])
         self._connected = True
         self.update_request_id()
         self._session_token = response["sessiontoken"]
@@ -200,7 +200,7 @@ class Myjdapi:
         self._update_encryption_tokens()
 
     def reconnect(self):
-        response = self.request_api("/my/reconnect", "GET",[("sessiontoken", self._session_token), ("regaintoken", self._regain_token)])
+        response = self.request_api("/my/reconnect", "GET", [("sessiontoken", self._session_token), ("regaintoken", self._regain_token)])
         self.update_request_id()
         self._session_token = response["sessiontoken"]
         self._regain_token = response["regaintoken"]
@@ -219,11 +219,11 @@ class Myjdapi:
         self._connected = False
 
     def update_devices(self):
-        response = self.request_api("/my/listdevices", "GET",[("sessiontoken",self._session_token)])
+        response = self.request_api("/my/listdevices", "GET", [("sessiontoken", self._session_token)])
         self.update_request_id()
         self._devices = response["list"]
 
-    def request_api(self, path, http_method="GET",params=None, action=None):
+    def request_api(self, path, http_method="GET", params=None, action=None):
         data = None
         if not self.is_connected() and path != "/my/connect":
             raise(MYJDException("No connection established\n"))
@@ -246,14 +246,14 @@ class Myjdapi:
         else:
             params_request = []
             for param in params:
-                if not isinstance(param,list):
+                if not isinstance(param, list):
                     # params_request+=[str(param).replace("'",'\"').replace("True","true").replace("False","false").replace('None',"null")]
                     params_request += [json.dumps(param)]
                 else:
                     params_request += [param]
-            params_request = {"apiVer": self._api_version, "url": path, "params":params_request, "rid":self._request_id}
-            data = json.dumps(params_request).replace('"null"',"null").replace("'null'","null")
-            encrypted_data = self._encrypt(self._device_encryption_token,data)
+            params_request = {"apiVer": self._api_version, "url": path, "params": params_request, "rid": self._request_id}
+            data = json.dumps(params_request).replace('"null"', "null").replace("'null'", "null")
+            encrypted_data = self._encrypt(self._device_encryption_token, data)
             if action is not None:
                 request_url = self._api_url + action + path
             else:
@@ -503,11 +503,11 @@ if __name__ == "__main__":
         printDBG(response)
         jd.update_request_id()
 
-        response = jd.request_api("/my/captchas/isEnabled", "GET",[("sessiontoken", jd.get_session_token())])
+        response = jd.request_api("/my/captchas/isEnabled", "GET", [("sessiontoken", jd.get_session_token())])
         printDBG(response)
         jd.update_request_id()
 
-        response = jd.request_api("/notify/list", "GET",[("sessiontoken", jd.get_session_token())])
+        response = jd.request_api("/notify/list", "GET", [("sessiontoken", jd.get_session_token())])
         printDBG(response)
         jd.update_request_id()
         parameters.device_secret = jd.get_device_secret()
@@ -517,14 +517,14 @@ if __name__ == "__main__":
         if True:
             threads = [None, None, None] #None, None, None
             for i in range(len(threads)):
-                threads[i] = threading.Thread(target=PoolConnection, name='PoolConnection %d' % i, kwargs={'params':parameters})
+                threads[i] = threading.Thread(target=PoolConnection, name='PoolConnection %d' % i, kwargs={'params': parameters})
                 threads[i].daemon = True 
                 threads[i].start()
         
         while not parameters.captcha_finished:
             # send keep alive to server
             time.sleep(2)
-            response = jd.request_api("/my/keepalive", "GET",[("sessiontoken", jd.get_session_token())])
+            response = jd.request_api("/my/keepalive", "GET", [("sessiontoken", jd.get_session_token())])
             printDBG(response)
             printDBG(response['rid'])
             jd.update_request_id()

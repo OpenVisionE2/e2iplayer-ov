@@ -55,7 +55,7 @@ class WizjaTvApi(CBaseHostClass):
         self.COOKIE_FILE = GetCookieDir('wizjatv.cookie')
         
         self.http_params = {}
-        self.http_params.update({'header':self.HTTP_HEADER, 'save_cookie': True, 'load_cookie': True, 'cookiefile': self.COOKIE_FILE})
+        self.http_params.update({'header': self.HTTP_HEADER, 'save_cookie': True, 'load_cookie': True, 'cookiefile': self.COOKIE_FILE})
         self.loggedIn = False
         
     def doLogin(self, login, password):
@@ -69,7 +69,7 @@ class WizjaTvApi(CBaseHostClass):
             return False, False
         
         HTTP_HEADER = dict(self.HTTP_HEADER)
-        HTTP_HEADER.update({'Referer':loginUrl})
+        HTTP_HEADER.update({'Referer': loginUrl})
         params = dict(self.http_params)
         params['header'] = HTTP_HEADER
         
@@ -107,7 +107,7 @@ class WizjaTvApi(CBaseHostClass):
                 self.sessionEx.open(MessageBox, ('Problem z zalogowanie użytkownika "%s". Sprawdź dane do logowania w konfiguracji hosta.') % login, type=MessageBox.TYPE_INFO, timeout=10)
                 self.loggedIn = False
         else:
-            self.sessionEx.open(MessageBox,'Serwis ten wymaga zalogowania. Wprowadź swój login i hasło w konfiguracji hosta dostępnej po naciśnięciu niebieskiego klawisza.', type=MessageBox.TYPE_ERROR, timeout=10)
+            self.sessionEx.open(MessageBox, 'Serwis ten wymaga zalogowania. Wprowadź swój login i hasło w konfiguracji hosta dostępnej po naciśnięciu niebieskiego klawisza.', type=MessageBox.TYPE_ERROR, timeout=10)
             return []
         
         channelsTab = []
@@ -127,7 +127,7 @@ class WizjaTvApi(CBaseHostClass):
             if title == '':
                 title = icon.split('/')[-1][:-4].upper()
             
-            params = {'name':'wizja.tv', 'type':'video', 'title':title, 'url':url, 'icon':icon}
+            params = {'name': 'wizja.tv', 'type': 'video', 'title': title, 'url': url, 'icon': icon}
             channelsTab.append(params)
         
         return channelsTab
@@ -147,7 +147,7 @@ class WizjaTvApi(CBaseHostClass):
             if not self.cm.isValidUrl(url):
                 continue
             HTTP_HEADER = dict(self.HTTP_HEADER)
-            HTTP_HEADER.update({'Referer':cItem['url']})
+            HTTP_HEADER.update({'Referer': cItem['url']})
             params = dict(self.http_params)
             params['header'] = HTTP_HEADER
             
@@ -168,7 +168,7 @@ class WizjaTvApi(CBaseHostClass):
                                ' playpath=' + urlTab[2] + '?' + urlTab[3] + \
                                ' app=' + urlTab[1] + '?' + urlTab[3] + \
                                ' swfVfy=1 flashVer=WIN\\2020,0,0,306 swfUrl=http://wizja.tv/player/StrobeMediaPlayback_v3.swf live=1 token=fake pageUrl=' + cItem['url']
-                        urlsTab.append({'name':'rtmp', 'url':rtmp})
+                        urlsTab.append({'name': 'rtmp', 'url': rtmp})
                     elif self.cm.isValidUrl(killUrl):
                         sts, tmp = self.cm.getPage(killUrl, params)
                         continue

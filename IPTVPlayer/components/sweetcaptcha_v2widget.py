@@ -94,7 +94,7 @@ class UnCaptchaSweetCaptchaWidget(Screen):
         offset = x - cx
         cx, cy = self["cover_%d" % self.selIdx].getPosition()
         x = cx + offset
-        self["marker"].instance.move(ePoint(x,y))
+        self["marker"].instance.move(ePoint(x, y))
     
     def keyRight(self):
         self.moveMarker(1)
@@ -108,5 +108,5 @@ class UnCaptchaSweetCaptchaWidget(Screen):
         return
 
     def keyOK(self):
-        self.close({'resp_idx':self.selIdx})
+        self.close({'resp_idx': self.selIdx})
         return

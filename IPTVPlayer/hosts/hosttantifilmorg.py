@@ -26,20 +26,20 @@ def gettytul():
 class TantiFilmOrg(CBaseHostClass):
     REMOVE_COOKIE = True
     def __init__(self):
-        CBaseHostClass.__init__(self, {'history':'TantiFilmOrg.tv', 'cookie':'tantifilmorg.cookie'})
+        CBaseHostClass.__init__(self, {'history': 'TantiFilmOrg.tv', 'cookie': 'tantifilmorg.cookie'})
         self.USER_AGENT = 'Mozilla/5.0'
-        self.HEADER = {'User-Agent':self.USER_AGENT, 'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'Accept-Encoding':'gzip, deflate'}
+        self.HEADER = {'User-Agent': self.USER_AGENT, 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'Accept-Encoding': 'gzip, deflate'}
         self.AJAX_HEADER = dict(self.HEADER)
         self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest'})
         self.cm.HEADER = self.HEADER # default header
-        self.defaultParams = {'header':self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
+        self.defaultParams = {'header': self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
         
         self.MAIN_URL = 'https://tantifilm.eu/'
         self.DEFAULT_ICON_URL = 'https://raw.githubusercontent.com/Zanzibar82/images/master/posters/tantifilm.png'
         
-        self.MAIN_CAT_TAB = [{'category':'list_categories', 'title': _('Categories'), 'url':self.MAIN_URL},
-                             {'category':'search', 'title': _('Search'), 'search_item':True,},
-                             {'category':'search_history', 'title': _('Search history'),} 
+        self.MAIN_CAT_TAB = [{'category': 'list_categories', 'title': _('Categories'), 'url': self.MAIN_URL},
+                             {'category': 'search', 'title': _('Search'), 'search_item': True, },
+                             {'category': 'search_history', 'title': _('Search history'), } 
                             ]
         
         self.cacheCollections = {}
@@ -55,7 +55,7 @@ class TantiFilmOrg(CBaseHostClass):
         origBaseUrl = baseUrl
         baseUrl = self.cm.iriToUri(baseUrl)
         
-        addParams['cloudflare_params'] = {'cookie_file':self.COOKIE_FILE, 'User-Agent':self.USER_AGENT}
+        addParams['cloudflare_params'] = {'cookie_file': self.COOKIE_FILE, 'User-Agent': self.USER_AGENT}
         sts, data = self.cm.getPageCFProtection(baseUrl, addParams, post_data)
         if sts and 'aes.min.js' in data:
             jscode = ['var document={};document.location={};']
@@ -71,12 +71,12 @@ class TantiFilmOrg(CBaseHostClass):
                     if item != '':
                         jscode.append(item)
             jscode.append('print(JSON.stringify(document));')
-            ret = ret = js_execute('\n'.join(jscode), {'timeout_sec':15})
+            ret = ret = js_execute('\n'.join(jscode), {'timeout_sec': 15})
             if ret['sts'] and 0 == ret['code']:
                 try:
                     tmp = byteify(json.loads(ret['data']))
                     item = tmp['cookie'].split(';', 1)[0].split('=', 1)
-                    self.defaultParams['cookie_items'] = {item[0]:item[1]}
+                    self.defaultParams['cookie_items'] = {item[0]: item[1]}
                     addParams['cookie_items'] = self.defaultParams['cookie_items']
                     sts, data = self.cm.getPage(baseUrl, addParams, post_data)
                 except Exception:
@@ -92,7 +92,7 @@ class TantiFilmOrg(CBaseHostClass):
             return ''
         if refreshCookieHeader:
             self.refreshCookieHeader()
-        return strwithmeta(url, {'Cookie':self.cookieHeader, 'User-Agent':self.USER_AGENT})
+        return strwithmeta(url, {'Cookie': self.cookieHeader, 'User-Agent': self.USER_AGENT})
 
     def listMainMenu(self, cItem, nextCategory):
         printDBG("TantiFilmOrg.listMainMenu")
@@ -118,10 +118,10 @@ class TantiFilmOrg(CBaseHostClass):
                 continue
             params = dict(cItem)
             if 'elenco-saghe' not in url:
-                params.update({'category':nextCategory, 'title':title, 'url':url})
+                params.update({'category': nextCategory, 'title': title, 'url': url})
                 self.addDir(params)
             else:
-                params.update({'category':'list_collections', 'title':title, 'url':url})
+                params.update({'category': 'list_collections', 'title': title, 'url': url})
                 self.addDir(params)
                 break
                 
@@ -137,7 +137,7 @@ class TantiFilmOrg(CBaseHostClass):
             title = self.cleanHtmlStr(item)
             url = self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0]
             params = dict(cItem)
-            params.update({'category':nextCategory, 'title':title, 'url':self.getFullUrl(url)})
+            params.update({'category': nextCategory, 'title': title, 'url': self.getFullUrl(url)})
             self.addDir(params)
             
     def listCollections(self, cItem, nextCategory):
@@ -159,20 +159,20 @@ class TantiFilmOrg(CBaseHostClass):
             for tmpItem in tmp:
                 url = self.cm.ph.getSearchGroups(tmpItem, '''href=['"]([^'^"]+?)['"]''')[0]
                 title = self.cleanHtmlStr(tmpItem)
-                params = {'good_for_fav': True, 'title':title, 'url':self.getFullUrl(url), 'icon':self.getFullIconUrl(icon)}
+                params = {'good_for_fav': True, 'title': title, 'url': self.getFullUrl(url), 'icon': self.getFullIconUrl(icon)}
                 tmpTab.append(params)
             
             if len(tmpTab):
                 self.cacheCollections[icon] = tmpTab
                 title = icon.split('/')[-1].replace('png-', '').replace('.png', '').replace('-', ' ').title()
                 params = dict(cItem)
-                params.update({'category':nextCategory, 'title':title, 'icon':self.getFullIconUrl(icon)})
+                params.update({'category': nextCategory, 'title': title, 'icon': self.getFullIconUrl(icon)})
                 self.addDir(params)
             
     def listColectionItems(self, cItem, nextCategory):
         printDBG("TantiFilmOrg.listColectionItems")
         tab = self.cacheCollections.get(cItem.get('icon', ''), [])
-        self.listsTab(tab, {'category':nextCategory})
+        self.listsTab(tab, {'category': nextCategory})
     
     def listItems(self, cItem, nextCategory):
         printDBG("TantiFilmOrg.listItems")
@@ -228,12 +228,12 @@ class TantiFilmOrg(CBaseHostClass):
             except Exception:
                 pass
             
-            params = {'good_for_fav': True, 'category':nextCategory, 'title':title, 'url':self.getFullUrl(url), 'icon':self.getFullIconUrl(icon), 'desc':desc}
+            params = {'good_for_fav': True, 'category': nextCategory, 'title': title, 'url': self.getFullUrl(url), 'icon': self.getFullIconUrl(icon), 'desc': desc}
             self.addDir(params)
         
         if nextPage:
             params = dict(cItem)
-            params.update({'good_for_fav': False, 'title':_('Next page'), 'page':page + 1})
+            params.update({'good_for_fav': False, 'title': _('Next page'), 'page': page + 1})
             self.addDir(params)
             
             
@@ -254,7 +254,7 @@ class TantiFilmOrg(CBaseHostClass):
                 params.pop('category', None)
                 trailerUrls.append(url)
                 title = cItem['title'] + ' - ' + self.cleanHtmlStr(item)
-                self.addVideo({'good_for_fav': True, 'title':title, 'url':url, 'video_type':'trailer', 'icon':cItem.get('icon', '')})
+                self.addVideo({'good_for_fav': True, 'title': title, 'url': url, 'video_type': 'trailer', 'icon': cItem.get('icon', '')})
         
         # desc
         desc = []
@@ -280,7 +280,7 @@ class TantiFilmOrg(CBaseHostClass):
             # add this item as video item
             params = dict(cItem)
             params.pop('category', None)
-            params.update({'good_for_fav': True, 'video_type':'movie', 'desc':desc})
+            params.update({'good_for_fav': True, 'video_type': 'movie', 'desc': desc})
             self.addVideo(params)
             
     def listSeasons(self, cItem, nextCategory):
@@ -306,7 +306,7 @@ class TantiFilmOrg(CBaseHostClass):
                 continue
             seasonTitle = self.cleanHtmlStr(item)
             params = dict(cItem)
-            params.update({'good_for_fav': False, 'category':nextCategory, 'title': '%s %s' % (seasonName, seasonTitle), 'season_id':seasonTitle, 'series_title':cItem['title'], 'url':url})
+            params.update({'good_for_fav': False, 'category': nextCategory, 'title': '%s %s' % (seasonName, seasonTitle), 'season_id': seasonTitle, 'series_title': cItem['title'], 'url': url})
             self.addDir(params)
         
     def listEpisodes(self, cItem):
@@ -347,7 +347,7 @@ class TantiFilmOrg(CBaseHostClass):
             else: 
                 title = seriesTitle + ' - ' + cItem['title'] + ' ' + '%s %s' % (episodeName, episodeTitle)
            
-            params = {'good_for_fav': False, 'title': title, 'video_type':'episode', 'url':url, 'icon':cItem.get('icon', ''), 'desc':cItem.get('desc', '')}
+            params = {'good_for_fav': False, 'title': title, 'video_type': 'episode', 'url': url, 'icon': cItem.get('icon', ''), 'desc': cItem.get('desc', '')}
             self.addVideo(params)
 
     def listSearchResult(self, cItem, searchPattern, searchType):
@@ -388,7 +388,7 @@ class TantiFilmOrg(CBaseHostClass):
                 title = self.cleanHtmlStr(title)
                 if title == '':
                     title = self.up.getDomain(url)
-                urlTab.append({'name':title, 'url':strwithmeta(url, {'url':cItem['url']}), 'need_resolve':1})
+                urlTab.append({'name': title, 'url': strwithmeta(url, {'url': cItem['url']}), 'need_resolve': 1})
         elif type == 'episode':
             data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<nav class="', '</select>')
             if len(data) < 3: 
@@ -406,7 +406,7 @@ class TantiFilmOrg(CBaseHostClass):
                 title = self.cleanHtmlStr(item)
                 if title == '':
                     continue
-                urlTab.append({'name':title, 'url':strwithmeta(url, {'url':cItem['url']}), 'need_resolve':1})
+                urlTab.append({'name': title, 'url': strwithmeta(url, {'url': cItem['url']}), 'need_resolve': 1})
         
         self.cacheLinks[cItem['url']] = urlTab
         return urlTab
@@ -480,8 +480,8 @@ class TantiFilmOrg(CBaseHostClass):
             if TantiFilmOrg.REMOVE_COOKIE:
                 TantiFilmOrg.REMOVE_COOKIE = False
                 rm(self.COOKIE_FILE)
-            self.listMainMenu({'name':'category', 'url':self.MAIN_URL}, 'list_items')
-            self.listsTab(self.MAIN_CAT_TAB, {'name':'category'})
+            self.listMainMenu({'name': 'category', 'url': self.MAIN_URL}, 'list_items')
+            self.listsTab(self.MAIN_CAT_TAB, {'name': 'category'})
         elif 'list_categories' == category:
             self.listCategories(self.currItem, 'list_items')
         elif 'list_collections' == category:
@@ -499,11 +499,11 @@ class TantiFilmOrg(CBaseHostClass):
     #SEARCH
         elif category in ["search", "search_next_page"]:
             cItem = dict(self.currItem)
-            cItem.update({'search_item':False, 'name':'category'}) 
+            cItem.update({'search_item': False, 'name': 'category'}) 
             self.listSearchResult(cItem, searchPattern, searchType)
     #HISTORIA SEARCH
         elif category == "search_history":
-            self.listsHistory({'name':'history', 'category': 'search'}, 'desc', _("Type: "))
+            self.listsHistory({'name': 'history', 'category': 'search'}, 'desc', _("Type: "))
         else:
             printExc()
         

@@ -29,23 +29,23 @@ def gettytul():
 class ShahiidAnime(CBaseHostClass):
     
     def __init__(self):
-        CBaseHostClass.__init__(self, {'history':'shahiid-anime.net.to', 'cookie':'shahiid-anime.net.cookie'})
+        CBaseHostClass.__init__(self, {'history': 'shahiid-anime.net.to', 'cookie': 'shahiid-anime.net.cookie'})
         self.DEFAULT_ICON_URL = 'https://www.shahiid-anime.net/wp-content/uploads/shahiid-anime-1.png'
         self.USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0'
         self.MAIN_URL = 'https://www.shahiid-anime.net/'
-        self.HEADER = {'User-Agent': self.USER_AGENT, 'DNT':'1', 'Accept': 'text/html', 'Accept-Encoding':'gzip, deflate', 'Referer':self.getMainUrl(), 'Origin':self.getMainUrl()}
+        self.HEADER = {'User-Agent': self.USER_AGENT, 'DNT': '1', 'Accept': 'text/html', 'Accept-Encoding': 'gzip, deflate', 'Referer': self.getMainUrl(), 'Origin': self.getMainUrl()}
         self.AJAX_HEADER = dict(self.HEADER)
-        self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest', 'Accept-Encoding':'gzip, deflate', 'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8', 'Accept':'application/json, text/javascript, */*; q=0.01'})
+        self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest', 'Accept-Encoding': 'gzip, deflate', 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'Accept': 'application/json, text/javascript, */*; q=0.01'})
         
         self.cacheLinks = {}
         self.cacheFilters = {}
         self.cacheFiltersKeys = []
-        self.defaultParams = {'header':self.HEADER, 'raw_post_data':True, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
+        self.defaultParams = {'header': self.HEADER, 'raw_post_data': True, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
         
         self.MAIN_CAT_TAB = [
-                             {'category':'list_filters', 'title': _('Anime list'), 'url':self.getFullUrl('/filter'), },
-                             {'category':'search', 'title': _('Search'), 'search_item':True, }, 
-                             {'category':'search_history', 'title': _('Search history'),} 
+                             {'category': 'list_filters', 'title': _('Anime list'), 'url': self.getFullUrl('/filter'), },
+                             {'category': 'search', 'title': _('Search'), 'search_item': True, }, 
+                             {'category': 'search_history', 'title': _('Search history'), } 
                             ]
         
     def getPage(self, baseUrl, addParams={}, post_data=None):
@@ -61,7 +61,7 @@ class ShahiidAnime(CBaseHostClass):
             else:
                 return urlparse.urljoin(baseUrl, url)
             
-        addParams['cloudflare_params'] = {'domain':self.up.getDomain(baseUrl), 'cookie_file':self.COOKIE_FILE, 'User-Agent':self.USER_AGENT, 'full_url_handle':_getFullUrl}
+        addParams['cloudflare_params'] = {'domain': self.up.getDomain(baseUrl), 'cookie_file': self.COOKIE_FILE, 'User-Agent': self.USER_AGENT, 'full_url_handle': _getFullUrl}
         return self.cm.getPageCFProtection(baseUrl, addParams, post_data)
         
     def fillCacheFilters(self, cItem):
@@ -83,11 +83,11 @@ class ShahiidAnime(CBaseHostClass):
                 title = self.cleanHtmlStr(item)
                 if title.lower() in ['all', 'default', 'any']:
                     addAll = False
-                self.cacheFilters[key].append({'title':title.title(), key:value})
+                self.cacheFilters[key].append({'title': title.title(), key: value})
                 
             if len(self.cacheFilters[key]):
                 if addAll:
-                    self.cacheFilters[key].insert(0, {'title':_('All')})
+                    self.cacheFilters[key].insert(0, {'title': _('All')})
                 self.cacheFiltersKeys.append(key)
         
         data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<select', '>', 'Select2'), ('</', 'select>'))
@@ -173,12 +173,12 @@ class ShahiidAnime(CBaseHostClass):
                 desc = ' | '.join(descTab) + '[/br]' + desc
                 params = dict(cItem)
                 params.pop('page', None)
-                params.update({'good_for_fav':True, 'category':nextCategory, 'title':title, 'url':url, 'icon':icon, 'desc':desc})
+                params.update({'good_for_fav': True, 'category': nextCategory, 'title': title, 'url': url, 'icon': icon, 'desc': desc})
                 self.addDir(params)
         
         if nextPage:
             params = dict(cItem)
-            params.update({'good_for_fav':False, 'title':_("Next page"), 'page':page + 1})
+            params.update({'good_for_fav': False, 'title': _("Next page"), 'page': page + 1})
             self.addDir(params)
         
     def exploreItem(self, cItem):
@@ -212,7 +212,7 @@ class ShahiidAnime(CBaseHostClass):
                 title = cItem['title'] + (' [%s]' % title)
                 if 1 == self.up.checkHostSupport(url):
                     params = dict(cItem)
-                    params.update({'good_for_fav':True, 'title':title, 'url':url})
+                    params.update({'good_for_fav': True, 'title': title, 'url': url})
                     self.addVideo(params)
         
         data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<div ', '>', 'online-block'), ('</a', '>'), False)
@@ -229,12 +229,12 @@ class ShahiidAnime(CBaseHostClass):
                 pass
             
             params = dict(cItem)
-            params.update({'good_for_fav':True, 'title':title, 'url':url, 'icon':icon})
+            params.update({'good_for_fav': True, 'title': title, 'url': url, 'icon': icon})
             self.addVideo(params)
             
         if nextPage:
             params = dict(cItem)
-            params.update({'good_for_fav':False, 'title':_("Next page"), 'page':page + 1})
+            params.update({'good_for_fav': False, 'title': _("Next page"), 'page': page + 1})
             self.addDir(params)
         
     def listSearchResult(self, cItem, searchPattern, searchType):
@@ -272,7 +272,7 @@ class ShahiidAnime(CBaseHostClass):
                 id = self.cm.ph.getSearchGroups(item, '''\sid=['"]([^'^"]+?)['"]''')[0]
                 name = self.cleanHtmlStr(item)
                 url = '%s|%s|%s|%s' % (dataId, dataType, dataCode, id)
-                retTab.append({'name':name, 'url':url, 'need_resolve':1})
+                retTab.append({'name': name, 'url': url, 'need_resolve': 1})
         
         if len(retTab):
             self.cacheLinks[cacheKey] = retTab
@@ -293,7 +293,7 @@ class ShahiidAnime(CBaseHostClass):
                             self.cacheLinks[key][idx]['name'] = '*' + self.cacheLinks[key][idx]['name']
                         break
         data = videoUrl.split('|')
-        query = {'action':'play_video', 'code':data[2], 'type':data[1], '_':str(int(time.time() * 1000))}
+        query = {'action': 'play_video', 'code': data[2], 'type': data[1], '_': str(int(time.time() * 1000))}
         query = urllib.urlencode(query)
         url = self.getFullUrl('?' + query)
         
@@ -328,13 +328,13 @@ class ShahiidAnime(CBaseHostClass):
         desc = self.cleanHtmlStr(tmp)
         icon = self.getFullIconUrl(self.cm.ph.getSearchGroups(tmp, '''src=['"]([^'^"]+?)['"]''')[0])
         
-        keysMap = {'الأسم بالعربى':'alternate_title',
-                   'عدد الحلقات':'episodes',
-                   'النوع':'type',
-                   'المنتج':'production',
-                   'تاريخ الأنتاج':'released',
-                   'الحالة':'status',
-                   'التصنيف':'genres',}
+        keysMap = {'الأسم بالعربى': 'alternate_title',
+                   'عدد الحلقات': 'episodes',
+                   'النوع': 'type',
+                   'المنتج': 'production',
+                   'تاريخ الأنتاج': 'released',
+                   'الحالة': 'status',
+                   'التصنيف': 'genres', }
         
         data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<span', '>', 'class="name"'), ('</div', '>'))
         for item in data:
@@ -354,7 +354,7 @@ class ShahiidAnime(CBaseHostClass):
         if icon == '':
             icon = cItem.get('icon', self.DEFAULT_ICON_URL)
         
-        return [{'title':self.cleanHtmlStr(title), 'text': self.cleanHtmlStr(desc), 'images':[{'title':'', 'url':self.getFullUrl(icon)}], 'other_info':otherInfo}]
+        return [{'title': self.cleanHtmlStr(title), 'text': self.cleanHtmlStr(desc), 'images': [{'title': '', 'url': self.getFullUrl(icon)}], 'other_info': otherInfo}]
     
     def handleService(self, index, refresh=0, searchPattern='', searchType=''):
         printDBG('handleService start')
@@ -370,7 +370,7 @@ class ShahiidAnime(CBaseHostClass):
         
     #MAIN MENU
         if name == None:
-            self.listMainMenu({'name':'category'}, 'list_genres')
+            self.listMainMenu({'name': 'category'}, 'list_genres')
         elif category == 'list_filters':
             self.listFilters(self.currItem, 'list_items')
         elif category == 'list_items':
@@ -380,11 +380,11 @@ class ShahiidAnime(CBaseHostClass):
     #SEARCH
         elif category in ["search", "search_next_page"]:
             cItem = dict(self.currItem)
-            cItem.update({'search_item':False, 'name':'category'}) 
+            cItem.update({'search_item': False, 'name': 'category'}) 
             self.listSearchResult(cItem, searchPattern, searchType)
     #HISTORIA SEARCH
         elif category == "search_history":
-            self.listsHistory({'name':'history', 'category': 'search'}, 'desc', _("Type: "))
+            self.listsHistory({'name': 'history', 'category': 'search'}, 'desc', _("Type: "))
         else:
             printExc()
         

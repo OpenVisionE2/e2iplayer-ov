@@ -34,19 +34,19 @@ class OurmatchNet(CBaseHostClass):
     
     DEFAULT_ICON = "http://ourmatch.net/wp-content/themes/OurMatch/images/logo.png"
     
-    MAIN_CAT_TAB = [{'category':'list_items', 'title': _('Home'), 'url':MAIN_URL, 'icon':DEFAULT_ICON},
-                    {'category':'trending', 'title': _('Trending'), 'url':MAIN_URL, 'icon':DEFAULT_ICON},
-                    {'category':'popular', 'title': _('Popular'), 'url':MAIN_URL, 'icon':DEFAULT_ICON},
-                    {'category':'allleagues', 'title': _('All Leagues'), 'url':MAIN_URL, 'icon':DEFAULT_ICON},
-                    {'category':'seasons', 'title': _('Previous Seasons'), 'url':MAIN_URL + 'previous-seasons/', 'icon':DEFAULT_ICON},
-                    {'category':'video', 'title': _('Goal Of The Month'), 'url':MAIN_URL + 'goal-of-the-month/','icon':DEFAULT_ICON, 'type': 'video'},                    
-                    {'category':'search', 'title': _('Search'), 'search_item':True, 'icon':DEFAULT_ICON},
-                    {'category':'search_history', 'title': _('Search history'), 'icon':DEFAULT_ICON}]
+    MAIN_CAT_TAB = [{'category': 'list_items', 'title': _('Home'), 'url': MAIN_URL, 'icon': DEFAULT_ICON},
+                    {'category': 'trending', 'title': _('Trending'), 'url': MAIN_URL, 'icon': DEFAULT_ICON},
+                    {'category': 'popular', 'title': _('Popular'), 'url': MAIN_URL, 'icon': DEFAULT_ICON},
+                    {'category': 'allleagues', 'title': _('All Leagues'), 'url': MAIN_URL, 'icon': DEFAULT_ICON},
+                    {'category': 'seasons', 'title': _('Previous Seasons'), 'url': MAIN_URL + 'previous-seasons/', 'icon': DEFAULT_ICON},
+                    {'category': 'video', 'title': _('Goal Of The Month'), 'url': MAIN_URL + 'goal-of-the-month/', 'icon': DEFAULT_ICON, 'type': 'video'},                    
+                    {'category': 'search', 'title': _('Search'), 'search_item': True, 'icon': DEFAULT_ICON},
+                    {'category': 'search_history', 'title': _('Search history'), 'icon': DEFAULT_ICON}]
  
     def __init__(self):
-        CBaseHostClass.__init__(self, {'history':'ourmatch.net', 'cookie':'ourmatchnet.cookie'})
+        CBaseHostClass.__init__(self, {'history': 'ourmatch.net', 'cookie': 'ourmatchnet.cookie'})
         self.defaultParams = {'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
-        self.cache = {'popular':[], 'trending':[], 'allleagues':[]}
+        self.cache = {'popular': [], 'trending': [], 'allleagues': []}
         self.cache2 = {}
         
     def _getFullUrl(self, url):
@@ -69,7 +69,7 @@ class OurmatchNet(CBaseHostClass):
             
     def fillCache(self, cItem):
         printDBG("OurmatchNet.fillCache [%s]" % cItem)
-        self.cache = {'popular':[], 'trending':[], 'allleagues':[]}
+        self.cache = {'popular': [], 'trending': [], 'allleagues': []}
         sts, data = self.cm.getPage(cItem['url'])
         if not sts:
             return
@@ -82,7 +82,7 @@ class OurmatchNet(CBaseHostClass):
                 if '' == url:
                     continue
                 title = self.cleanHtmlStr(item)
-                self.cache[marker[2]].append({'title':title, 'url':url})
+                self.cache[marker[2]].append({'title': title, 'url': url})
             
         tmp = self.cm.ph.getAllItemsBeetwenMarkers(data, '<li class="header">', '</ul>')
         for division in tmp:
@@ -97,9 +97,9 @@ class OurmatchNet(CBaseHostClass):
                 if '' == url:
                     continue
                 title = self.cleanHtmlStr(region)
-                regionsTab.append({'title':title, 'url':url})
+                regionsTab.append({'title': title, 'url': url})
             if len(regionsTab):
-                self.cache['allleagues'].append({'title':divisionTitle, 'regions_tab':regionsTab})
+                self.cache['allleagues'].append({'title': divisionTitle, 'regions_tab': regionsTab})
             
     def listPopulars(self, cItem, category):
         printDBG("OurmatchNet.listPopulars [%s]" % cItem)
@@ -131,7 +131,7 @@ class OurmatchNet(CBaseHostClass):
         for idx in range(len(tab)):
             item = tab[idx]
             params = dict(cItem)
-            params.update({'category':category, 'title':_(item['title']), 'idx':idx})
+            params.update({'category': category, 'title': _(item['title']), 'idx': idx})
             self.addDir(params)
             
     def listLeagueItems(self, cItem, category):
@@ -159,7 +159,7 @@ class OurmatchNet(CBaseHostClass):
         for tab in tmp:
             tabId = self.cm.ph.getSearchGroups(tab, '''href=['"]#([^'^"]+?)['"]''')[0]
             tabTitle = self.cleanHtmlStr(tab)
-            tabs.append({'title':tabTitle, 'id':tabId})
+            tabs.append({'title': tabTitle, 'id': tabId})
             
         data = data.split('<div class="tab_content" ')
         if len(data):
@@ -175,13 +175,13 @@ class OurmatchNet(CBaseHostClass):
                 regionsTab = []
                 regions = re.compile('<a[^>]+?href="([^"]+?)"[^>]*?>([^<]+?)</a>').findall(division)
                 for item in regions:
-                    regionsTab.append({'title':self.cleanHtmlStr(item[1]), 'url':self._getFullUrl(item[0])})
+                    regionsTab.append({'title': self.cleanHtmlStr(item[1]), 'url': self._getFullUrl(item[0])})
                 if len(regionsTab):
-                    divisionsTab.append({'title':divisionsTitle, 'regions_tab':regionsTab})
+                    divisionsTab.append({'title': divisionsTitle, 'regions_tab': regionsTab})
             if len(divisionsTab):
                 self.cache2[tab['id']] = divisionsTab
                 params = dict(cItem)
-                params.update({'category':category, 'title':tab['title'], 'tab':tab['id']})
+                params.update({'category': category, 'title': tab['title'], 'tab': tab['id']})
                 self.addDir(params)
                     
     def listLeagues2(self, cItem, category):
@@ -190,7 +190,7 @@ class OurmatchNet(CBaseHostClass):
         for idx in range(len(tab)):
             item = tab[idx]
             params = dict(cItem)
-            params.update({'category':category, 'title':_(item['title']), 'idx':idx})
+            params.update({'category': category, 'title': _(item['title']), 'idx': idx})
             self.addDir(params)
             
     def listLeagueItems2(self, cItem, category):
@@ -234,12 +234,12 @@ class OurmatchNet(CBaseHostClass):
                 title = _(team1) + " vs " + _(team2)
             
             params = dict(cItem)
-            params.update({'title':title, 'url':url, 'icon':icon, 'desc':desc})
+            params.update({'title': title, 'url': url, 'icon': icon, 'desc': desc})
             self.addVideo(params)
         
         if nextPage:
             params = dict(cItem)
-            params.update({'title':_('Next page'), 'page':page + 1})
+            params.update({'title': _('Next page'), 'page': page + 1})
             self.addMore(params)
         
     def getLinksForVideo(self, cItem):
@@ -255,7 +255,7 @@ class OurmatchNet(CBaseHostClass):
             name = self.cleanHtmlStr(item)
             url = self.cm.ph.getDataBeetwenMarkers(item, 'data-config=&quot;', '&quot;', False)[1]
             if url != '':
-                urlTab.append({'name':name, 'url': self._getFullUrl(url), 'need_resolve':1})
+                urlTab.append({'name': name, 'url': self._getFullUrl(url), 'need_resolve': 1})
         
         videoContents = self.cm.ph.getDataBeetwenMarkers(data, 'var video_contents', '</script>', False)[1]
         tmp = self.cm.ph.getAllItemsBeetwenMarkers(videoContents, '{embed:', '}')
@@ -273,7 +273,7 @@ class OurmatchNet(CBaseHostClass):
                 needResolve = 0
             url = self._getFullUrl(url)
             if url != '':
-                urlTab.append({'name':', '.join(nameTab), 'url':self._getFullUrl(url), 'need_resolve':needResolve})
+                urlTab.append({'name': ', '.join(nameTab), 'url': self._getFullUrl(url), 'need_resolve': needResolve})
         
         tmp = self.cm.ph.getDataBeetwenMarkers(data, '<div id="details" class="section-box">', '</div>', False)[1]
         tmp = self.cm.ph.getAllItemsBeetwenMarkers(tmp, '<p>', '</p>')
@@ -285,13 +285,13 @@ class OurmatchNet(CBaseHostClass):
             url = self._getFullUrl(url)
             if not url.startswith('http'):
                 continue
-            urlTab.append({'name':name, 'url':url, 'need_resolve':1})
+            urlTab.append({'name': name, 'url': url, 'need_resolve': 1})
         
         if 0 == len(urlTab):
             tmp = self.cm.ph.getAllItemsBeetwenMarkers(data, '//config.playwire.com/', '.json')
             for item in tmp:
                 name = 'playwire.com'
-                urlTab.append({'name':name, 'url':self._getFullUrl(item), 'need_resolve':1})
+                urlTab.append({'name': name, 'url': self._getFullUrl(item), 'need_resolve': 1})
         
         if 0 == len(urlTab):
             data = re.compile('<iframe[^>]+?src="([^"]+?)"', re.IGNORECASE).findall(data)
@@ -304,7 +304,7 @@ class OurmatchNet(CBaseHostClass):
                 if 1 != self.up.checkHostSupport(link):
                     continue
                 name = self.up.getHostName(link, True)
-                urlTab.append({'name':name, 'url':link, 'need_resolve':1})
+                urlTab.append({'name': name, 'url': link, 'need_resolve': 1})
   
         return urlTab
         
@@ -336,7 +336,7 @@ class OurmatchNet(CBaseHostClass):
                             hlsTab = getDirectM3U8Playlist(url)
                             urlTab.extend(hlsTab)
                         else:
-                            urlTab.append({'name':name, 'url':url})
+                            urlTab.append({'name': name, 'url': url})
             except Exception:
                 printExc()
         elif videoUrl.startswith('http'):
@@ -350,14 +350,14 @@ class OurmatchNet(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("OurmatchNet.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         cItem = dict(cItem)
-        cItem.update({'url':self.MAIN_URL, 's':urllib.quote(searchPattern)})
+        cItem.update({'url': self.MAIN_URL, 's': urllib.quote(searchPattern)})
         self.listItems(cItem)
 
     def getFavouriteData(self, cItem):
         return cItem['url']
         
     def getLinksForFavourite(self, fav_data):
-        return self.getLinksForVideo({'url':fav_data})
+        return self.getLinksForVideo({'url': fav_data})
     
     def handleService(self, index, refresh=0, searchPattern='', searchType=''):
         printDBG('handleService start')
@@ -373,7 +373,7 @@ class OurmatchNet(CBaseHostClass):
         
     #MAIN MENU
         if name == None:
-            self.listsTab(self.MAIN_CAT_TAB, {'name':'category'})
+            self.listsTab(self.MAIN_CAT_TAB, {'name': 'category'})
         elif category == 'trending':
             self.listTrending(self.currItem)
         elif category == 'popular':
@@ -393,11 +393,11 @@ class OurmatchNet(CBaseHostClass):
     #SEARCH
         elif category in ["search", "search_next_page"]:
             cItem = dict(self.currItem)
-            cItem.update({'search_item':False, 'name':'category'}) 
+            cItem.update({'search_item': False, 'name': 'category'}) 
             self.listSearchResult(cItem, searchPattern, searchType)
     #HISTORIA SEARCH
         elif category == "search_history":
-            self.listsHistory({'name':'history', 'category': 'search'}, 'desc', _("Type: "))
+            self.listsHistory({'name': 'history', 'category': 'search'}, 'desc', _("Type: "))
         else:
             printExc()
         

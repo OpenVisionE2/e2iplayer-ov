@@ -72,7 +72,7 @@ def _updateOtherInfo(otherInfo, item):
 class RtlMostHU(CBaseHostClass):
 
     def __init__(self):
-        CBaseHostClass.__init__(self, {'history':'rtlmost.hu', 'cookie':'rtlmosthu.cookie'})
+        CBaseHostClass.__init__(self, {'history': 'rtlmost.hu', 'cookie': 'rtlmosthu.cookie'})
 
         self.SEARCH_TYPES = [
             (_("Program"), "Program"),
@@ -129,13 +129,13 @@ class RtlMostHU(CBaseHostClass):
             'Ag7uzKC2XugHkZ+sfpTWEhlYHBRBnt1O+bE4F2V5/XuQ9GLJ4oaJdcDqMNk2dcA4JElYixTSaB3F'
             'uxTeF2ZLTA=='))
         self.queryParams = {'header': self.HEADER, 'raw_post_data': True}
-        self.apiParams = {'header':self.API_HEADER}
-        self.loginParams = {'header':self.HEADER}
+        self.apiParams = {'header': self.API_HEADER}
+        self.loginParams = {'header': self.HEADER}
         self.loggedIn = False
 
         self.login = config.plugins.iptvplayer.rtlmosthu_login.value
         self.password = config.plugins.iptvplayer.rtlmosthu_password.value
-        self.defaultParams = {'header':self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
+        self.defaultParams = {'header': self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
 
     def getFullIconUrl(self, url):
         if not url:
@@ -153,7 +153,7 @@ class RtlMostHU(CBaseHostClass):
             format = 'png'
         else:
             format = 'jpeg'
-        path = self.ICON_PATH.format(url[2:],width,height,'scale_crop',60,format,1)
+        path = self.ICON_PATH.format(url[2:], width, height, 'scale_crop', 60, format, 1)
         return self.ICON_URL.format(path, sha1(path + self.ICON_HASH).hexdigest())
 
     def getPage(self, url, addParams={}, post_data=None):
@@ -173,12 +173,12 @@ class RtlMostHU(CBaseHostClass):
                 title = i['name']
                 url = str(i['id'])
                 params = dict(cItem)
-                params.update({'category':'list_programs', 'title': title, 'url': url})
+                params.update({'category': 'list_programs', 'title': title, 'url': url})
                 self.addDir(params)
         except Exception:
             printExc()
-        MAIN_CAT_TAB = [{'category':'search', 'title': _('Search'), 'search_item':True},
-                        {'category':'search_history', 'title': _('Search history'),}]
+        MAIN_CAT_TAB = [{'category': 'search', 'title': _('Search'), 'search_item': True},
+                        {'category': 'search_history', 'title': _('Search history'), }]
         self.listsTab(MAIN_CAT_TAB, cItem)
 
     def listPrograms(self, cItem):
@@ -192,12 +192,12 @@ class RtlMostHU(CBaseHostClass):
             for i in data:
                 title = i['title']
                 url = str(i['id'])
-                desc = i.get('description','')
+                desc = i.get('description', '')
                 icon = _getImageExtKey(i['images'], 'totem')
                 params = dict(cItem)
                 if icon:
                     params['icon'] = 'tj' + icon
-                params.update({'good_for_fav': True, 'category':'list_subcategories', 'title': title, 'url': url, 'desc':desc, 'other_info':{}})
+                params.update({'good_for_fav': True, 'category': 'list_subcategories', 'title': title, 'url': url, 'desc': desc, 'other_info': {}})
                 self.addDir(params)
         except Exception:
             printExc()
@@ -213,7 +213,7 @@ class RtlMostHU(CBaseHostClass):
             for c in data['clips']:
                 title = c['title']
                 otherInfo = dict(cItem['other_info'])
-                _updateOtherInfo(otherInfo,c)
+                _updateOtherInfo(otherInfo, c)
                 desc = c.get('description')
                 icon = _getImageExtKey(c['images'], 'vignette')
                 params = dict(cItem)
@@ -247,12 +247,12 @@ class RtlMostHU(CBaseHostClass):
                     c = i
                     isVideo = False
                     url = c['id']
-                _updateOtherInfo(otherInfo,c)
+                _updateOtherInfo(otherInfo, c)
                 title = c['title']
                 desc = c.get('description')
                 icon = _getImageExtKey(c['images'], 'vignette')
                 params = dict(cItem)
-                params.pop('subcat',None)
+                params.pop('subcat', None)
                 if desc:
                     params['desc'] = desc
                 if icon:
@@ -279,13 +279,13 @@ class RtlMostHU(CBaseHostClass):
                 return
             if 1 == len(subcats):
                 i = subcats[0]
-                self.listEpisodes(cItem,str(i['id']))
+                self.listEpisodes(cItem, str(i['id']))
                 return
             for i in subcats:
                 title = i['title']
                 subcat = str(i['id'])
                 params = dict(cItem)
-                params.update({'good_for_fav': True, 'category':'list_episodes', 'title': title, 'url': url, 'subcat': subcat})
+                params.update({'good_for_fav': True, 'category': 'list_episodes', 'title': title, 'url': url, 'subcat': subcat})
                 self.addDir(params)
         except Exception:
             printExc()
@@ -316,7 +316,7 @@ class RtlMostHU(CBaseHostClass):
             query = self.queryFiltered
         else:
             return
-        page = cItem.get('page',0)
+        page = cItem.get('page', 0)
         sts, data = self.cm.getPage(self.QUERY_URL.format(queryType), self.queryParams,
           query.format(urllib.quote(searchPattern), page, 50))
         if not sts:
@@ -327,10 +327,10 @@ class RtlMostHU(CBaseHostClass):
             nbPages = data.get('nbPages')
             for i in hits:
                 otherInfo = {}
-                _updateOtherInfo(otherInfo,i)
+                _updateOtherInfo(otherInfo, i)
                 title = i['title']
                 params = dict(cItem)
-                params.pop('page',None)
+                params.pop('page', None)
                 icon = _getImageExtKey(i['images'], role)
                 if icon:
                     params['icon'] = role[:1] + 'j' + icon
@@ -338,7 +338,7 @@ class RtlMostHU(CBaseHostClass):
                     icon = _getImageExtKey(i['program']['images'], 'totem')
                     if icon:
                         params['icon'] = 'tj' + icon
-                params.update({'good_for_fav': True, 'title': title, 'url': i['id'], 'desc': i.get('description',''), 'other_info': otherInfo})
+                params.update({'good_for_fav': True, 'title': title, 'url': i['id'], 'desc': i.get('description', ''), 'other_info': otherInfo})
                 if isVideo:
                     self.addVideo(params)
                 else:
@@ -347,7 +347,7 @@ class RtlMostHU(CBaseHostClass):
             page += 1
             if page < nbPages and len(self.currList) > 0:
                 params = dict(cItem)
-                params.update({'title':_("Next page"), 'page':page})
+                params.update({'title': _("Next page"), 'page': page})
                 self.addDir(params)
 
         except Exception:
@@ -383,12 +383,12 @@ class RtlMostHU(CBaseHostClass):
             retTab = getMPDLinksWithMeta(uri, False)
             videoUrls.extend(retTab)
         else:
-            videoUrls.append({'name':'direct link', 'url':uri})
+            videoUrls.append({'name': 'direct link', 'url': uri})
         return videoUrls
 
     def getFavouriteData(self, cItem):
         printDBG('RtlMostHU.getFavouriteData')
-        params = {'type':cItem['type'], 'category':cItem.get('category', ''), 'title':cItem['title'], 'url':cItem['url'], 'desc':cItem['desc'], 'icon':cItem['icon']}
+        params = {'type': cItem['type'], 'category': cItem.get('category', ''), 'title': cItem['title'], 'url': cItem['url'], 'desc': cItem['desc'], 'icon': cItem['icon']}
         if 'subcat' in cItem:
             params['subcat'] = cItem['subcat']
         if 'other_info' in cItem:
@@ -397,7 +397,7 @@ class RtlMostHU(CBaseHostClass):
 
     def getArticleContent(self, cItem):
         printDBG("RtlMostHU.getArticleContent [%s]" % cItem)
-        retTab = {'title':cItem['title'], 'text': cItem['desc'], 'images':[{'title':'', 'url':self.getFullIconUrl(cItem.get('icon'))}]}
+        retTab = {'title': cItem['title'], 'text': cItem['desc'], 'images': [{'title': '', 'url': self.getFullIconUrl(cItem.get('icon'))}]}
         if 'other_info' in cItem:
             retTab['other_info'] = cItem['other_info']
         return [retTab]
@@ -496,23 +496,23 @@ class RtlMostHU(CBaseHostClass):
         if self.tryTologin():
     #MAIN MENU
             if name == None:
-                self.listMainMenu({'name':'category'})
+                self.listMainMenu({'name': 'category'})
             elif category == 'list_programs':
                 self.listPrograms(self.currItem)
             elif category == 'list_subcategories':
                 self.listSubcategories(self.currItem)
             elif category == 'list_episodes':
-                self.listEpisodes(self.currItem,self.currItem['subcat'])
+                self.listEpisodes(self.currItem, self.currItem['subcat'])
             elif category == 'list_playlist':
                 self.listPlaylist(self.currItem)
     #SEARCH
             elif category in ["search", "search_next_page"]:
                 cItem = dict(self.currItem)
-                cItem.update({'search_item':False, 'name':'category'})
+                cItem.update({'search_item': False, 'name': 'category'})
                 self.listSearchResult(cItem, searchPattern, searchType)
     #HISTORIA SEARCH
             elif category == "search_history":
-                self.listsHistory({'name':'history', 'category': 'search'}, 'desc', _("Type: "))
+                self.listsHistory({'name': 'history', 'category': 'search'}, 'desc', _("Type: "))
             else:
                 printExc()
 
@@ -528,7 +528,7 @@ class IPTVHost(CHostBase):
         return self.host.SEARCH_TYPES
 
     def withArticleContent(self, cItem):
-        if (cItem['type'] != 'video' and cItem['category'] not in ['list_playlist','list_episodes','list_subcategories']):
+        if (cItem['type'] != 'video' and cItem['category'] not in ['list_playlist', 'list_episodes', 'list_subcategories']):
             return False
         return True
 

@@ -79,7 +79,7 @@ def IncludeMENU(MenuStatusMSG='', ShowCancelButton=False):
   </div>
 """ % (_('Information'), _('Selected hosts'), _('Search'), _('Download manager'), _('Settings'), _('Logs'), _('Reset State'), _('version'), IPTV_VERSION, _('Web interface version'), settings.WebInterfaceVersion)
 	if MenuStatusMSG != '' and ShowCancelButton == True:
-		tempText += '<div class="main">%s<br></div>\n' % formSUBMITvalue([('cmd','stopThread')], _('Cancel'), input_text=MenuStatusMSG + '... ')
+		tempText += '<div class="main">%s<br></div>\n' % formSUBMITvalue([('cmd', 'stopThread')], _('Cancel'), input_text=MenuStatusMSG + '... ')
 	elif MenuStatusMSG != '':
 		tempText += '<div class="main">%s<br></div>\n' % MenuStatusMSG
 	return tempText
@@ -109,7 +109,7 @@ class Body():
 			tempText += '<p align="center"><b><font color="#FFE4C4">%s</font></b></p>' % _('Error during deletion of the debug file.')
 		elif htmlError == 'deleteLogNO':
 			tempText += '<p align="center"><b><font color="#ccE4C4">%s</font></b></p>' % _('Debug file does not exist - nothing to delete')
-		elif getDebugMode() not in ['console','debugfile']:
+		elif getDebugMode() not in ['console', 'debugfile']:
 			tempText += '<p align="center"><b><font color="#FFE4C4">%s</font></b></p>' % _('Debug option is disabled - nothing to display')
 		elif getDebugMode() == 'console':
 			tempText += '<p align="center"><b><font color="#FFE4C4">%s</font></b></p>' % _('Debug option set to console - nothing to display')
@@ -166,7 +166,7 @@ class Body():
 						ConfDesc = itemL1[0]
 					CFGtype = getCFGType(itemL1[1])
 					#print ConfName, '=' , CFGtype
-					if CFGtype in ['ConfigYesNo','ConfigOnOff', 'ConfigEnableDisable', 'ConfigBoolean']:
+					if CFGtype in ['ConfigYesNo', 'ConfigOnOff', 'ConfigEnableDisable', 'ConfigBoolean']:
 						if int(confKey[1].getValue()) == 0:
 							CFGElements = '<input type="radio" name="cmd" value="ON:%s">%s</input>' % (ConfName, _('Yes'))
 							CFGElements += '<input type="radio" name="cmd" value="OFF:%s" checked="checked">%s</input>' % (ConfName, _('No'))
@@ -215,7 +215,7 @@ class Body():
 		displayHostsList = SortHostsList(GetHostsList())
 		if 0 == len(GetHostsOrderList()):
 			try:
-				displayHostsList.sort(key=lambda t: tuple('.'.join(str(t[0]).replace('://','.').replace('www.','').split('.')[1:-1]).lower()))
+				displayHostsList.sort(key=lambda t: tuple('.'.join(str(t[0]).replace('://', '.').replace('www.', '').split('.')[1:-1]).lower()))
 			except Exception, e:
 				print "Exception during sorting displayHostsList", str(e)
 		for hostName in displayHostsList:
@@ -240,7 +240,7 @@ class Body():
 		if webDM is None:
 			tempText += '<table border="0" cellspacing="15px"><tbody>\n'
 			tempText += '<td><b><font color="#FFE4C4">%s</font></b></td>' % _('Download manager is not initialized')
-			tempText += '<td>' + formSUBMITvalue([('cmd','initDM')], _("Initialize Download Manager")) + '</td>'
+			tempText += '<td>' + formSUBMITvalue([('cmd', 'initDM')], _("Initialize Download Manager")) + '</td>'
 			tempText += '</tbody></table>\n'
 		else:
 			tempText += '<table border="0" cellspacing="15px"><tbody><tr>\n'
@@ -308,8 +308,8 @@ class Body():
 					icon = '<img border="0" src="./icons/icondone.png" width="64" height="64">'
 					info = info1
 					buttons = '<table><tbody><tr><td>%s</td><td>%s</td></tr></tbody></table>' % (
-							formSUBMITvalue([('cmd', 'arvchiveDM'),('cmd', 'watchMovie'),('cmd', item.fileName)], _("Watch")),
-							formSUBMITvalue([('cmd', 'arvchiveDM'),('cmd', 'deleteMovie'),('cmd', item.fileName)], _("Delete")))
+							formSUBMITvalue([('cmd', 'arvchiveDM'), ('cmd', 'watchMovie'), ('cmd', item.fileName)], _("Watch")),
+							formSUBMITvalue([('cmd', 'arvchiveDM'), ('cmd', 'deleteMovie'), ('cmd', item.fileName)], _("Delete")))
 				
 				elif DMHelper.STS.DOWNLOADED == item.status:
 					status = _("DOWNLOADED")
@@ -345,9 +345,9 @@ class Body():
 					info = ''
 					buttons = ''
 				tempText += tableHorizontalRedLine(colspan=3)
-				tempText += '<tr><td rowspan="4" align="center">%s</td><td colspan="2"><b>%s</b></td></tr>\n' % (icon,fileName)
+				tempText += '<tr><td rowspan="4" align="center">%s</td><td colspan="2"><b>%s</b></td></tr>\n' % (icon, fileName)
 				tempText += '<tr><td><div style="text-indent: 20px">%s</div></td></tr>\n' % item.url
-				tempText += '<tr><td>%s</td><td align="right">%s</td></tr>\n' % (info,status)
+				tempText += '<tr><td>%s</td><td align="right">%s</td></tr>\n' % (info, status)
 				tempText += '<tr><td colspan="3" align="right">%s</td></tr>\n' % (buttons)
 			tempText += tableHorizontalRedLine(colspan=3)
 			tempText += '</tbody></table>\n'
@@ -362,15 +362,15 @@ class Body():
 			txt += txtWarning
 		txt += '<tr><td><br></td>'
 		if isCurrentItemSelected():
-			txt += '<tr><td align="right">%s</td>' % formSUBMITvalue([('cmd','RefreshList')], _('Previous list'))
+			txt += '<tr><td align="right">%s</td>' % formSUBMITvalue([('cmd', 'RefreshList')], _('Previous list'))
 		else:
 			if settings.activeHost['PathLevel'] <= 1:
-				txt += '<tr><td align="right">%s</td>' % formSUBMITvalue([('cmd','PreviousList')], _('Previous list'), 'disabled')
+				txt += '<tr><td align="right">%s</td>' % formSUBMITvalue([('cmd', 'PreviousList')], _('Previous list'), 'disabled')
 			else:
-				txt += '<tr><td align="right">%s</td>' % formSUBMITvalue([('cmd','PreviousList')], _('Previous list'))
-			txt += '<td style="width:10px" align="right">%s</td>' % formSUBMITvalue([('cmd','RefreshList')], _('Reload list'))
-		txt += '<td style="width:10px" align="right">%s</td>' % formSUBMITvalue([('cmd','InitList')], _('Initial list'))
-		txt += '<td style="width:10px" align="right">%s</td></tr>' % formSUBMITvalue([('cmd','hosts')], _('Return to hosts list'))
+				txt += '<tr><td align="right">%s</td>' % formSUBMITvalue([('cmd', 'PreviousList')], _('Previous list'))
+			txt += '<td style="width:10px" align="right">%s</td>' % formSUBMITvalue([('cmd', 'RefreshList')], _('Reload list'))
+		txt += '<td style="width:10px" align="right">%s</td>' % formSUBMITvalue([('cmd', 'InitList')], _('Initial list'))
+		txt += '<td style="width:10px" align="right">%s</td></tr>' % formSUBMITvalue([('cmd', 'hosts')], _('Return to hosts list'))
 		if not isTop:
 			txt += txtWarning
 		txt += '</tbody></table><br>\n'
@@ -416,7 +416,7 @@ class Body():
 		iUrl = item.url #.replace("ext://url/","") #to chyba sss zrobil do wymuszenia extplayera przyklad pierwszatv
 		iurlNeedsResolve = int(item.urlNeedsResolve)
 		txt = tableHorizontalRedLine(colspan=3)
-		if iUrl in ['', 'fake','fakeUrl']:
+		if iUrl in ['', 'fake', 'fakeUrl']:
 			txt += '<td colspan="2" align="center">%s</td></tr>' % (iName)
 		else:
 			if int(item.urlNeedsResolve) == 1:
@@ -484,9 +484,9 @@ class Body():
 										   'GlobalSearch',
 										   'style="color: #DBA901;background: none;border: none;text-decoration: underline"',
 										   settings.GlobalSearchQuery,
-										   [('ALL','',_('All materials')),
-										    ('VIDEO','checked',_('Only videos')),
-										    ('AUDIO','',_('Only music'))]
+										   [('ALL', '', _('All materials')),
+										    ('VIDEO', 'checked', _('Only videos')),
+										    ('AUDIO', '', _('Only music'))]
 										   )
 		if len(settings.GlobalSearchResults.keys()) > 0:
 			tempText += '<table border="0" width="800px" cellspacing="5px"><tbody>\n'
@@ -495,7 +495,7 @@ class Body():
 				_tempBody = ''
 	      			index = 0
 				try:
-		      			for item in settings.GlobalSearchResults.get(key,None)[1]:
+		      			for item in settings.GlobalSearchResults.get(key, None)[1]:
 						Totest = removeSpecialChars(item.name + item.description).lower()
 						if Totest.find(settings.GlobalSearchQuery.lower()) != -1:
 							_tempBody += self.buildItemsListTable(item, index, allowedCategories=settings.GlobalSearchTypes,
