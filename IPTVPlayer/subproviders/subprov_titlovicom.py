@@ -61,7 +61,7 @@ class TitlovicomProvider(CBaseSubProviderClass):
         params['cookie'] = 'titlovicom.cookie'
         CBaseSubProviderClass.__init__(self, params)
         
-        self.LANGUAGE_CACHE = ['hr', 'ba' , 'mk', 'si', 'rs']
+        self.LANGUAGE_CACHE = ['hr', 'ba', 'mk', 'si', 'rs']
         self.BASE_URL_CACHE = {'hr':'titlovi', 'ba':'prijevodi', 'mk':'prevodi', 'si':'podnapisi', 'rs':'prevodi'}
         self.pageLang = 'hr'
         self.USER_AGENT    = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.168 Safari/537.36'
@@ -252,7 +252,7 @@ class TitlovicomProvider(CBaseSubProviderClass):
         
         imdbid = self.cm.ph.getSearchGroups(data, '/title/(tt[0-9]+?)[^0-9]')[0]
         subId  = self.cm.ph.getSearchGroups(data, 'mediaid=([0-9]+?)[^0-9]')[0]
-        url    = self.getFullUrl( self.cm.ph.getSearchGroups(data, 'href="([^"]*?/download[^"]+?mediaid=[^"]+?)"')[0] )
+        url    = self.getFullUrl(self.cm.ph.getSearchGroups(data, 'href="([^"]*?/download[^"]+?mediaid=[^"]+?)"')[0])
         
         try:
             fps = float(self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(data, 'class="fps">', 'FPS', False)[1].upper()))
@@ -313,7 +313,7 @@ class TitlovicomProvider(CBaseSubProviderClass):
         name     = self.currItem.get("name", '')
         category = self.currItem.get("category", '')
         
-        printDBG( "handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category) )
+        printDBG("handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category))
         self.currList = []
         
     #MAIN MENU

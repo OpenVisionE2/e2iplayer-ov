@@ -52,7 +52,7 @@ class EgyBest(CBaseHostClass):
         self.MAIN_URL = 'http://egy.best/'
         self.HEADER = {'User-Agent': self.USER_AGENT, 'DNT':'1', 'Accept': 'text/html', 'Accept-Encoding':'gzip, deflate', 'Referer':self.getMainUrl(), 'Origin':self.getMainUrl()}
         self.AJAX_HEADER = dict(self.HEADER)
-        self.AJAX_HEADER.update( {'X-Requested-With': 'XMLHttpRequest', 'Accept-Encoding':'gzip, deflate', 'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8', 'Accept':'application/json, text/javascript, */*; q=0.01'} )
+        self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest', 'Accept-Encoding':'gzip, deflate', 'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8', 'Accept':'application/json, text/javascript, */*; q=0.01'})
         
         self.cacheLinks    = {}
         self.cacheFilters  = {}
@@ -116,7 +116,7 @@ class EgyBest(CBaseHostClass):
             addFilter(tmp, 'href', 'sort')
         
         keyMap = {0:'year', 1:'language', 2:'country', 3:'genre', 4:'category', 5:'quality', 6:'resolution'}
-        data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<div', '>', 'dropdown'), ('</div' , '>'))
+        data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<div', '>', 'dropdown'), ('</div', '>'))
         for idx in range(len(data)):
             tmp = data[idx]
             key = keyMap.get(idx, '')
@@ -421,13 +421,13 @@ class EgyBest(CBaseHostClass):
         icon  = self.getFullIconUrl(self.cm.ph.getSearchGroups(icon, '''src=['"]([^'^"]+?)['"]''')[0])
         title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(tmp, ('<div', '>', 'movie_title'), ('</div', '>'), False)[1])
         
-        keysMap = {'اللغة • البلد'            :'country',
-                   'التصنيف'                  :'type',
-                   'النوع'                    :'genres',
-                   'التقييم العالمي'          :'rating',
-                   'المدة'                    :'duration',
-                   'الجودة'                   :'quality',
-                   'الترجمة'                  :'translation'}
+        keysMap = {'اللغة • البلد':'country',
+                   'التصنيف':'type',
+                   'النوع':'genres',
+                   'التقييم العالمي':'rating',
+                   'المدة':'duration',
+                   'الجودة':'quality',
+                   'الترجمة':'translation'}
         
         tmp = self.cm.ph.getAllItemsBeetwenMarkers(tmp, '<tr>', '</tr>')
         for item in tmp:
@@ -458,7 +458,7 @@ class EgyBest(CBaseHostClass):
         if icon == '':
             icon = cItem.get('icon', self.DEFAULT_ICON_URL)
         
-        return [{'title':self.cleanHtmlStr( title ), 'text': self.cleanHtmlStr( desc ), 'images':[{'title':'', 'url':self.getFullUrl(icon)}], 'other_info':otherInfo}]
+        return [{'title':self.cleanHtmlStr(title), 'text': self.cleanHtmlStr(desc), 'images':[{'title':'', 'url':self.getFullUrl(icon)}], 'other_info':otherInfo}]
     
     def tryTologin(self):
         printDBG('tryTologin start')
@@ -522,7 +522,7 @@ class EgyBest(CBaseHostClass):
         category = self.currItem.get("category", '')
         mode     = self.currItem.get("mode", '')
         
-        printDBG( "handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category) )
+        printDBG("handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category))
         self.currList = []
         
     #MAIN MENU

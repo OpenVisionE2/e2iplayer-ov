@@ -41,10 +41,10 @@ class UnCaptchaSweetCaptchaWidget(Screen):
 
         self["actions"] = ActionMap(["WizardActions", "DirectionActions", "ColorActions"],
         {
-            "left"  : self.keyLeft,
-            "right" : self.keyRight,
-            "ok"    : self.keyOK,
-            "back"  : self.keyCancel,
+            "left": self.keyLeft,
+            "right": self.keyRight,
+            "ok": self.keyOK,
+            "back": self.keyCancel,
         }, -1)
         
         self["statustext"] = Label(params.get('challenge', ''))
@@ -70,10 +70,10 @@ class UnCaptchaSweetCaptchaWidget(Screen):
         
         for idx in range(4):
             strIndx = "cover_%d" % idx
-            self[strIndx].updateIcon( self.iconList[idx] )
+            self[strIndx].updateIcon(self.iconList[idx])
             self[strIndx].show()
         
-        self['cover'].updateIcon( self.iconList[-1] )
+        self['cover'].updateIcon(self.iconList[-1])
         self['cover'].show()
         
         self['marker'].setPixmap(self.markerPixmap)

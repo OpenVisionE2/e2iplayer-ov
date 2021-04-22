@@ -24,11 +24,11 @@ from datetime import timedelta
 ###################################################
 
 class IPTVDownloadManagerList(IPTVListComponentBase):
-    ICONS_FILESNAMES = {DMHelper.STS.WAITING     : 'iconwait1.png', 
-                        DMHelper.STS.DOWNLOADING : 'iconwait2.png',
-                        DMHelper.STS.DOWNLOADED  : 'icondone.png',
-                        DMHelper.STS.INTERRUPTED : 'iconerror.png',
-                        DMHelper.STS.ERROR       : 'iconwarning.png',
+    ICONS_FILESNAMES = {DMHelper.STS.WAITING: 'iconwait1.png', 
+                        DMHelper.STS.DOWNLOADING: 'iconwait2.png',
+                        DMHelper.STS.DOWNLOADED: 'icondone.png',
+                        DMHelper.STS.INTERRUPTED: 'iconerror.png',
+                        DMHelper.STS.ERROR: 'iconwarning.png',
                         }
     
     def __init__(self):
@@ -60,7 +60,7 @@ class IPTVDownloadManagerList(IPTVListComponentBase):
         
     def _nullPIX(self):
         for key in self.ICONS_FILESNAMES:
-            self.dictPIX[ key ] = None
+            self.dictPIX[key] = None
 
     def onCreate(self):
         self._nullPIX()
@@ -78,7 +78,7 @@ class IPTVDownloadManagerList(IPTVListComponentBase):
     def buildEntry(self, item):
         width  = self.l.getItemSize().width()
         height = self.l.getItemSize().height()
-        res = [ None ]
+        res = [None]
         
         # Downloaded Size
         info1 = formatBytes(item.downloadedSize)

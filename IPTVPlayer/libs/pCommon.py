@@ -71,7 +71,7 @@ class MultipartPostHandler(urllib2.BaseHandler):
     def http_request(self, request):
         data = request.get_data()
         if data is not None and type(data) != str:
-            content_type, data = self.encode_multipart_formdata( data )
+            content_type, data = self.encode_multipart_formdata(data)
             request.add_unredirected_header('Content-Type', content_type)
             request.add_data(data)
         return request
@@ -130,9 +130,9 @@ class CParsingHelper:
             return False, ''
         
         if withMarkers:
-            return True, data[match1.start(0): (match1.end(0) + match2.end(0)) ]
+            return True, data[match1.start(0): (match1.end(0) + match2.end(0))]
         else:
-            return True, data[match1.end(0): (match1.end(0) + match2.start(0)) ]
+            return True, data[match1.end(0): (match1.end(0) + match2.start(0))]
 
     @staticmethod
     def getDataBeetwenMarkers(data, marker1, marker2, withMarkers=True, caseSensitive=True):
@@ -275,7 +275,7 @@ class common:
         else:
             ua = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'
         
-        HTTP_HEADER = { 'User-Agent':ua,
+        HTTP_HEADER = {'User-Agent':ua,
                         'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
                         'Accept-Encoding':'gzip, deflate',
                         'DNT':1 
@@ -307,7 +307,7 @@ class common:
         
     @staticmethod
     def getBaseUrl(url, domainOnly=False):
-        parsed_uri = urlparse( url )
+        parsed_uri = urlparse(url)
         if domainOnly:
             domain = '{uri.netloc}'.format(uri=parsed_uri)
         else:
@@ -634,7 +634,7 @@ class common:
             elif None != self.HEADER:
                 headers = self.HEADER
             else:
-                headers = { 'User-Agent' : host }
+                headers = {'User-Agent': host}
                 
             if 'User-Agent' not in headers:
                 headers['User-Agent'] = host
@@ -792,8 +792,8 @@ class common:
                 
                 # reset will cause lost all cookies, so we force to saved them in the file
                 if params.get('use_cookie', False) and params.get('save_cookie', False):
-                    curlSession.setopt(pycurl.COOKIELIST , 'FLUSH')
-                    curlSession.setopt(pycurl.COOKIELIST , 'ALL')
+                    curlSession.setopt(pycurl.COOKIELIST, 'FLUSH')
+                    curlSession.setopt(pycurl.COOKIELIST, 'ALL')
                 
                 curlSession.reset()
                 # to be re-used in next request
@@ -1020,7 +1020,7 @@ class common:
                         
                         url = self.ph.getSearchGroups(tmp, 'action="([^"]+?)"')[0]
                         if url != '':
-                            url = _getFullUrl( url, domain )
+                            url = _getFullUrl(url, domain)
                         else:
                             url = data.meta['url']
                         actionType = self.ph.getSearchGroups(tmp, 'method="([^"]+?)"', 1, True)[0].lower()
@@ -1072,14 +1072,14 @@ class common:
                         except Exception:
                             printExc()
                         js_params.append({'code': "function setInterval(func, delay) { return 1 };var navigator={cookieEnabled:1}; var ELEMS_TEXT = %s; var location = {hash:''}; var iptv_domain='%s';\n%s\niptv_fun();" % (json_dumps(elemsText), domain, dat)})
-                        ret = js_execute_ext( js_params )
+                        ret = js_execute_ext(js_params)
                         decoded = json_loads(ret['data'].strip())
                         
                         verData = ph.find(verData, ('<form', '>', 'id="challenge-form"'), '</form>')[1]
                         printDBG(">>")
                         printDBG(verData)
                         printDBG("<<")
-                        verUrl =  _getFullUrl( ph.getattr(verData, 'action'), domain)
+                        verUrl =  _getFullUrl(ph.getattr(verData, 'action'), domain)
                         get_data = {}
                         verData = re.findall(r'(<input[^>]*)>', re.sub("<!--.*?-->", "<!-- -->", verData))
                         for item in verData:
@@ -1089,7 +1089,7 @@ class common:
 #                        get_data = dict(re.findall(r'<input[^>]*name="([^"]*)"[^>]*value="([^"]*)"[^>]*>', verData))
                         get_data['jschl_answer'] = decoded['answer']
                         post_data = 'r=%s&jschl_vc=%s&pass=%s&jschl_answer=%s' % (urllib.quote(get_data['r'],safe=''), urllib.quote(get_data['jschl_vc'],safe=''), urllib.quote(get_data['pass'],safe=''), get_data['jschl_answer'])
-                        verUrl = _getFullUrl2( verUrl, domain).replace('&amp;','&')
+                        verUrl = _getFullUrl2(verUrl, domain).replace('&amp;','&')
                         params2 = dict(params)
                         params2['load_cookie'] = True
                         params2['save_cookie'] = True
@@ -1207,7 +1207,7 @@ class common:
                     bRet = True
         except Exception:
             printExc("common.getFile download file exception")
-        dictRet.update( {'sts': bRet, 'fsize': downDataSize} )
+        dictRet.update({'sts': bRet, 'fsize': downDataSize})
         return dictRet
         
     def getUrllibSSLProtocolVersion(self, protocolName):
@@ -1234,7 +1234,7 @@ class common:
         
         def urlOpen(req, customOpeners, timeout):
             if len(customOpeners) > 0:
-                opener = urllib2.build_opener( *customOpeners )
+                opener = urllib2.build_opener(*customOpeners)
                 if timeout != None:
                     response = opener.open(req, timeout=timeout)
                 else:
@@ -1275,7 +1275,7 @@ class common:
         elif None != self.HEADER:
             headers = self.HEADER
         else:
-            headers = { 'User-Agent' : host }
+            headers = {'User-Agent': host}
             
         if 'User-Agent' not in headers:
             headers['User-Agent'] = host
@@ -1303,10 +1303,10 @@ class common:
                     cj.set_cookie(cookieItem)
             except Exception:
                 printExc()
-            customOpeners.append( urllib2.HTTPCookieProcessor(cj) )
+            customOpeners.append(urllib2.HTTPCookieProcessor(cj))
             
         if params.get('no_redirection', False):
-            customOpeners.append( NoRedirection() )
+            customOpeners.append(NoRedirection())
         
         if None != params.get('ssl_protocol', None):
             sslProtoVer = self.getUrllibSSLProtocolVersion(params['ssl_protocol'])
@@ -1318,14 +1318,14 @@ class common:
         if not IsHttpsCertValidationEnabled():
             try:
                 if sslProtoVer != None:
-                    ctx = ssl._create_unverified_context( sslProtoVer )
+                    ctx = ssl._create_unverified_context(sslProtoVer)
                 else:
                     ctx = ssl._create_unverified_context()
                 customOpeners.append(urllib2.HTTPSHandler(context=ctx))
             except Exception:
                 pass
         elif sslProtoVer != None:
-            ctx = ssl.SSLContext( sslProtoVer )
+            ctx = ssl.SSLContext(sslProtoVer)
             customOpeners.append(urllib2.HTTPSHandler(context=ctx))
         
         #proxy support
@@ -1338,8 +1338,8 @@ class common:
             http_proxy = params['http_proxy']
         if '' != http_proxy:
             printDBG('getURLRequestData USE PROXY')
-            customOpeners.append( urllib2.ProxyHandler({"http":http_proxy}) )
-            customOpeners.append( urllib2.ProxyHandler({"https":http_proxy}) )
+            customOpeners.append(urllib2.ProxyHandler({"http":http_proxy}))
+            customOpeners.append(urllib2.ProxyHandler({"https":http_proxy}))
         
         pageUrl = params['url']
         proxy_gateway = params.get('proxy_gateway', '')
@@ -1352,7 +1352,7 @@ class common:
             if params.get('raw_post_data', False):
                 dataPost = post_data
             elif params.get('multipart_post_data', False):
-                customOpeners.append( MultipartPostHandler() )
+                customOpeners.append(MultipartPostHandler())
                 dataPost = post_data
             else:
                 dataPost = urllib.urlencode(post_data)
@@ -1441,7 +1441,7 @@ class common:
         
     def handleCharset(self, params, data, metadata):
         try:
-            if params.get('return_data', False) and params.get('convert_charset', True) :
+            if params.get('return_data', False) and params.get('convert_charset', True):
                 encoding = ''
                 if 'content-type' in metadata:
                     encoding = self.ph.getSearchGroups(metadata['content-type'], '''charset=([A-Za-z0-9\-]+)''', 1, True)[0].strip().upper()

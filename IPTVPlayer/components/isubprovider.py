@@ -25,7 +25,7 @@ class CSubItem:
                        name="",
                        lang="",
                        imdbid="",
-                       subId="" ):
+                       subId=""):
         self.path = path
         self.name = name
         self.lang = lang
@@ -78,7 +78,7 @@ CSubProviderBase implements some typical methods
           from ISubProvider interface
 '''
 class CSubProviderBase(ISubProvider):
-    def __init__( self, subProvider):
+    def __init__(self, subProvider):
         self.subProvider = subProvider
 
         self.currIndex = -1
@@ -88,10 +88,10 @@ class CSubProviderBase(ISubProvider):
     def isValidIndex(self, Index, validTypes=None):
         listLen = len(self.subProvider.currList)
         if listLen <= Index or Index < 0:
-            printDBG( "ERROR getLinksForVideo - current list is to short len: %d, Index: %d" % (listLen, Index) )
+            printDBG("ERROR getLinksForVideo - current list is to short len: %d, Index: %d" % (listLen, Index))
             return False
         if None != validTypes and self.converItem(self.subProvider.currList[Index]).type not in validTypes:
-            printDBG( "ERROR getLinksForVideo - current item has wrong type" )
+            printDBG("ERROR getLinksForVideo - current item has wrong type")
             return False
         return True
     # end getFavouriteItem
@@ -304,7 +304,7 @@ class CBaseSubProviderClass:
             if len(self.currList) <= index:
                 return
             if -1 == index:
-                self.currItem = { "name": None }
+                self.currItem = {"name": None}
             else:
                 self.currItem = self.currList[index]
         if 2 == refresh: # refresh for more items
@@ -314,7 +314,7 @@ class CBaseSubProviderClass:
             self.afterMoreItemList = self.currList[index+1:]
             self.moreMode = True
             if -1 == index:
-                self.currItem = { "name": None }
+                self.currItem = {"name": None}
             else:
                 self.currItem = self.currList[index]
     
@@ -397,7 +397,7 @@ class CBaseSubProviderClass:
             if '(Video Game)' in item:
                 continue
             imdbid = self.cm.ph.getSearchGroups(item, '/tt([0-9]+?)/')[0]
-            baseTtitle = ' '.join( self.cm.ph.getAllItemsBeetwenMarkers(item, '<a ', '</a>') )
+            baseTtitle = ' '.join(self.cm.ph.getAllItemsBeetwenMarkers(item, '<a ', '</a>'))
             #title = title.split('<br/>')[0]
             title = self.cleanHtmlStr(item)
             year = self.cm.ph.getSearchGroups(item, '\((20[0-9]{2})\)')[0]
@@ -454,7 +454,7 @@ class CBaseSubProviderClass:
             SetIPTVPlayerLastHostError(_('Unknown file extension "%s".') % ext)
             return None
             
-        tmpFile = GetTmpDir( self.TMP_FILE_NAME )
+        tmpFile = GetTmpDir(self.TMP_FILE_NAME)
         tmpArchFile = tmpFile + '.' + ext
         tmpDIR = ''
         if unpackToSubDir:

@@ -64,7 +64,7 @@ def getPage(url, headers={}, post_data=None):
         printDBG(req.headers)
         printDBG("++++HEADERS END++++")
         
-        opener = urllib2.build_opener( *customOpeners )
+        opener = urllib2.build_opener(*customOpeners)
         response = opener.open(req)
         data = response.read()
         sts = response.getcode()
@@ -251,7 +251,7 @@ class Myjdapi:
                     params_request+=[json.dumps(param)]
                 else:
                     params_request+=[param]
-            params_request = {"apiVer": self._api_version, "url" : path, "params":params_request, "rid":self._request_id}
+            params_request = {"apiVer": self._api_version, "url": path, "params":params_request, "rid":self._request_id}
             data = json.dumps(params_request).replace('"null"',"null").replace("'null'","null")
             encrypted_data = self._encrypt(self._device_encryption_token,data)
             if action is not None:
@@ -279,7 +279,7 @@ class Myjdapi:
             if params is not None:
                 response = self._decrypt(self._device_encryption_token, encrypted_response_text)
             else:
-                return {"data" : response}
+                return {"data": response}
         jsondata = json.loads(response.decode('utf-8'))
         if jsondata['rid'] != self._request_id:
             self.update_request_id()
@@ -348,7 +348,7 @@ class MyjdRequestHandler(BaseHTTPRequestHandler):
         
         if data['url'] == '/device/getDirectConnectionInfos':
             updateStatus('status', "Client connected")
-            return_data = { "infos" : [ ], "rebindProtectionDetected" : False, "mode" : "NONE"}
+            return_data = {"infos": [], "rebindProtectionDetected": False, "mode": "NONE"}
         elif data['url'] == '/update/isUpdateAvailable':
             return_data = False
         elif data['url'] == '/config/get':
@@ -365,7 +365,7 @@ class MyjdRequestHandler(BaseHTTPRequestHandler):
             else:
                 return_data = []
         elif data['url'] == '/events/subscribe':
-            return_data = {"subscriptionid" : jd.subscription_id, "subscribed" : True, "subscriptions" : None,  "exclusions" : None,  "maxPolltimeout" : 25000, "maxKeepalive" : 120000}
+            return_data = {"subscriptionid": jd.subscription_id, "subscribed": True, "subscriptions": None,  "exclusions": None,  "maxPolltimeout": 25000, "maxKeepalive": 120000}
             jd.captcha_notified = False
         elif data['url'] == '/events/setsubscription':
             #'^downloads', '^extraction', '^linkcrawler', '^dialogs', '^downloadwatchdog'
@@ -387,7 +387,7 @@ class MyjdRequestHandler(BaseHTTPRequestHandler):
                 jd.captcha_notified = True
             #elif jd.captcha_result !=  None:
             else:
-                return_data = [{"eventid" : "DONE", "eventData" : jd.captcha_data['id'], "publisher" : "captchas"}]
+                return_data = [{"eventid": "DONE", "eventData": jd.captcha_data['id'], "publisher": "captchas"}]
                 jd.captcha_finished = True
 
         elif data['url'] == '/captcha/getCaptchaJob':

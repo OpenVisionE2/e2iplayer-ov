@@ -26,8 +26,8 @@ config.plugins.iptvplayer.wpUseDF = ConfigYesNo(default=False)
 
 def GetConfigList():
     optionList = []
-    optionList.append( getConfigListEntry( "Domyślny jakość video:", config.plugins.iptvplayer.wpDefaultformat ) )
-    optionList.append( getConfigListEntry( "Używaj domyślnej jakości video:", config.plugins.iptvplayer.wpUseDF ) )
+    optionList.append(getConfigListEntry("Domyślny jakość video:", config.plugins.iptvplayer.wpDefaultformat))
+    optionList.append(getConfigListEntry("Używaj domyślnej jakości video:", config.plugins.iptvplayer.wpUseDF))
     return optionList
 ###################################################
 
@@ -42,7 +42,7 @@ class WpTV(CBaseHostClass):
         CBaseHostClass.__init__(self, {'history':'WpTV.tv', 'cookie':'WpTV.cookie'})
         self.HEADER = {'User-Agent':'Mozilla/5.0', 'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'Accept-Encoding':'gzip, deflate'}
         self.AJAX_HEADER = dict(self.HEADER)
-        self.AJAX_HEADER.update( {'X-Requested-With': 'XMLHttpRequest'} )
+        self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest'})
         self.cm.HEADER = self.HEADER # default header
         self.defaultParams = {'header':self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
         
@@ -53,8 +53,8 @@ class WpTV(CBaseHostClass):
                              {'category':'list_sections',      'title': _('Series'),                     'url':self.getFullUrl('seriale')},
                              {'category':'list_sections',      'title': _('Programs'),                   'url':self.getFullUrl('programy')},
                              {'category':'list_groups',        'title': _('Others'),                     'url':self.getFullUrl('inne')},
-                             {'category':'search',             'title': _('Search'), 'search_item':True         },
-                             {'category':'search_history',     'title': _('Search history')                     } 
+                             {'category':'search',             'title': _('Search'), 'search_item':True},
+                             {'category':'search_history',     'title': _('Search history')} 
                             ]
         
         self.cacheSections = {}
@@ -202,7 +202,7 @@ class WpTV(CBaseHostClass):
             return
         
         nextPage = self.getFullUrl(self.cm.ph.getSearchGroups(data, '''href=['"]([^'^"]+?\,page\,%d\,[^'^"]+?)['"]''' % (page+1))[0])
-        mainDesc = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(data, '<main class="main-content"' ,'</p>')[1])
+        mainDesc = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(data, '<main class="main-content"','</p>')[1])
         
         if page == 1:
             trailerData  = self.cm.ph.getDataBeetwenMarkers(data, '<a class="see-trailer"', '</a>', withMarkers=True)[1]
@@ -262,7 +262,7 @@ class WpTV(CBaseHostClass):
                 
             if 0 < len(urlTab):
                 max_bitrate = int(config.plugins.iptvplayer.wpDefaultformat.value)
-                def __getLinkQuality( itemLink ):
+                def __getLinkQuality(itemLink):
                     if 'mobile' in itemLink['name']:
                         return 0
                     return int(itemLink['quality'])
@@ -306,7 +306,7 @@ class WpTV(CBaseHostClass):
         category = self.currItem.get("category", '')
         mode     = self.currItem.get("mode", '')
         
-        printDBG( "handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category) )
+        printDBG("handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category))
         self.currList = []
         
     #MAIN MENU

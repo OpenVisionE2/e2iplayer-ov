@@ -152,8 +152,8 @@ class KKisteAG(CBaseHostClass):
             pass
             # ToDo
 
-        MAIN_CAT_TAB = [{'category':'search',         'title': _('Search'),       'search_item':True       },
-                        {'category':'search_history', 'title': _('Search history'),                        }]
+        MAIN_CAT_TAB = [{'category':'search',         'title': _('Search'),       'search_item':True},
+                        {'category':'search_history', 'title': _('Search history'),}]
         self.listsTab(MAIN_CAT_TAB, cItem)
 
     def listFilters(self, cItem, nextCategory):
@@ -222,8 +222,8 @@ class KKisteAG(CBaseHostClass):
     def doListItems(self, cItem, data):
         data = ph.rfindall(data, '</div>', ('<div', '>', 'post-'))
         for item in data:
-            url = self.getFullUrl( ph.search(item, ph.A)[1] )
-            icon = self.getFullIconUrl( ph.search(item, self.reIMG)[1] )
+            url = self.getFullUrl(ph.search(item, ph.A)[1])
+            icon = self.getFullIconUrl(ph.search(item, self.reIMG)[1])
             title = ph.clean_html(ph.find(item, ('<h2', '>'), '</h2>', flags=0)[1])
 
             desc = []
@@ -426,7 +426,7 @@ class KKisteAG(CBaseHostClass):
         if desc == '':
             desc = cItem.get('desc', '')
         
-        return [{'title':ph.clean_html( title ), 'text': ph.clean_html( desc ), 'images':[{'title':'', 'url':self.getFullUrl(icon)}], 'other_info':{'custom_items_list':itemsList}}]
+        return [{'title':ph.clean_html(title), 'text': ph.clean_html(desc), 'images':[{'title':'', 'url':self.getFullUrl(icon)}], 'other_info':{'custom_items_list':itemsList}}]
 
     def handleService(self, index, refresh=0, searchPattern='', searchType=''):
         printDBG('handleService start')
@@ -435,7 +435,7 @@ class KKisteAG(CBaseHostClass):
 
         name     = self.currItem.get("name", '')
         category = self.currItem.get("category", '')
-        printDBG( "handleService: ||| name[%s], category[%s] " % (name, category) )
+        printDBG("handleService: ||| name[%s], category[%s] " % (name, category))
         self.currList = []
 
     #MAIN MENU

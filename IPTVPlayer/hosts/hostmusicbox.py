@@ -179,7 +179,7 @@ class MusicBox(CBaseHostClass):
             title_primary = self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(item, ('<span', '>', 'primary-title'), ('</span', '>'), False)[1])
             remixed = self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(item, ('<span', '>', 'remixed'), ('</span', '>'), False)[1])
             track_name = title_primary + ' ' + remixed
-            artist = self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(item, ('<p', '>', 'track-artists'), ('</p', '>'), False)[1] )
+            artist = self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(item, ('<p', '>', 'track-artists'), ('</p', '>'), False)[1])
             icon = self.cm.getFullUrl(self.cm.ph.getSearchGroups(item, '''<img[^>]+?data\-src=['"]([^'^"]+?)['"]''')[0], self.cm.meta['url'])
             search_string = urllib.quote(artist + ' ' + track_name + ' music video')
             params = {'good_for_fav':True, 'title': track_number + '. ' + artist + '- ' + track_name, 'page': search_string, 'icon': icon}
@@ -317,7 +317,7 @@ class MusicBox(CBaseHostClass):
     def getLinksForVideo(self, cItem):
         printDBG("getLinksForVideo cItem[%s]" % cItem)
         
-        search_list = YouTubeParser().getSearchResult(cItem.get('page', ''), "music", 1 , '')
+        search_list = YouTubeParser().getSearchResult(cItem.get('page', ''), "music", 1, '')
         if not search_list:
             return []
 
@@ -329,7 +329,7 @@ class MusicBox(CBaseHostClass):
     def _getLinksForVideo(self, url):
         printDBG("_getLinksForVideo url[%s]" % url)
 
-        if not url.startswith("http://") and not url.startswith("https://") :
+        if not url.startswith("http://") and not url.startswith("https://"):
             url = 'http://www.youtube.com/' + url
 
         return self.up.getVideoLinkExt(url)
@@ -346,7 +346,7 @@ class MusicBox(CBaseHostClass):
         album = self.currItem.get("album", '')
         country = self.currItem.get("country", '')
         artist = self.currItem.get("artist", '')
-        printDBG( "handleService: |||||||||||||||||||||||||||||||||||| [%s] " % name )
+        printDBG("handleService: |||||||||||||||||||||||||||||||||||| [%s] " % name)
         self.currList = []
 
         if str(page)=='None' or page=='':

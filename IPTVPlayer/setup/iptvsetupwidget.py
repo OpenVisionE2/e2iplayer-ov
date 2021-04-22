@@ -38,7 +38,7 @@ class IPTVSetupMainWidget(Screen):
             <widget name="spinner_2" zPosition="1" position="479,200" size="16,16" transparent="1" alphatest="blend" />
             <widget name="spinner_3" zPosition="1" position="495,200" size="16,16" transparent="1" alphatest="blend" />
             <widget name="spinner_4" zPosition="1" position="511,200" size="16,16" transparent="1" alphatest="blend" />
-    </screen>""" %( IPTV_VERSION)
+    </screen>""" %(IPTV_VERSION)
 
     def __init__(self, session, autoStart=False):
         printDBG("IPTVUpdateMainWindow.__init__ -------------------------------")
@@ -48,8 +48,8 @@ class IPTVSetupMainWidget(Screen):
         
         self["actions"] = ActionMap(["SetupActions", "ColorActions"],
             {
-                "cancel"  :  self.cancelPressed,
-                "ok"      :  self.startPressed,
+                "cancel":  self.cancelPressed,
+                "ok":  self.startPressed,
             }, -1)
         try:
             for idx in range(5):

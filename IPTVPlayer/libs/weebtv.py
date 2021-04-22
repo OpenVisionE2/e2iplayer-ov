@@ -42,7 +42,7 @@ def GetConfigList():
 
 class WeebTvApi:
     HOST        = 'XBMC'
-    HEADER      = { 'User-Agent': HOST, 'ContentType': 'application/x-www-form-urlencoded' }
+    HEADER      = {'User-Agent': HOST, 'ContentType': 'application/x-www-form-urlencoded'}
     DEFPARAMS   = {'header':HEADER}
     MAINURL     = 'http://weeb.tv'
     checkUrl    = MAINURL + '/api/checkPluginVersionXBMC'
@@ -54,7 +54,7 @@ class WeebTvApi:
                  {'category':'main', 'url':JSONURL + '&option=online-now-viewed',   'title':_('Sorted most viewed channels now [live]')},
                  {'category':'main', 'url':JSONURL + '&option=online-most-viewed',  'title':_('Sorted most viewed channels general [live]')},
                  {'category':'main', 'url':JSONURL + '&option=offline-ranking',     'title':_('Offline channels')},
-                 {'category':'main', 'url':JSONURL + '&option=all-ranking',         'title':_('Show all channels')} ]
+                 {'category':'main', 'url':JSONURL + '&option=all-ranking',         'title':_('Show all channels')}]
 
     def __init__(self):
         self.cm = common()
@@ -71,7 +71,7 @@ class WeebTvApi:
         return outTab
     
     def _getJsonFromAPI(self, url):
-        ret = { '0': 'Null' }
+        ret = {'0': 'Null'}
         try:
             if config.plugins.iptvplayer.weebtv_premium.value:
                 username = config.plugins.iptvplayer.weebtv_login.value
@@ -79,7 +79,7 @@ class WeebTvApi:
             else:
                 username = ''
                 password = '' 
-            postdata = { 'username': username, 'userpassword': password } 
+            postdata = {'username': username, 'userpassword': password} 
             sts, data = self.cm.getPage(url, WeebTvApi.DEFPARAMS, postdata)
             if sts:
                 ret = json_loads(data)
@@ -104,7 +104,7 @@ class WeebTvApi:
         return retTab
 
     def getChannelsList(self, url):
-        printDBG("WeebTvApi.getChannelsList url[%s]" % url )
+        printDBG("WeebTvApi.getChannelsList url[%s]" % url)
         channelsList = []
         channelsArray = self._jsonToSortedTab(self._getJsonFromAPI(url))
         if len(channelsArray) > 0:
@@ -150,9 +150,9 @@ class WeebTvApi:
             if config.plugins.iptvplayer.weebtv_premium.value:
                 username = config.plugins.iptvplayer.weebtv_login.value
                 password = config.plugins.iptvplayer.weebtv_password.value
-                postdata = { 'username': username, 'userpassword': password }
+                postdata = {'username': username, 'userpassword': password}
             else:
-                postdata = { 'username': '', 'userpassword': '' }
+                postdata = {'username': '', 'userpassword': ''}
             postdata['channel'] = channel
             postdata['platform'] = WeebTvApi.HOST
             
@@ -204,14 +204,14 @@ class UrlParser:
         except Exception:
             return None
     
-    def getIntParam (self, params, name):
+    def getIntParam(self, params, name):
         try:
             param = self.getParam(params, name)
             return int(param)
         except Exception:
             return None
     
-    def getBoolParam (self, params, name):
+    def getBoolParam(self, params, name):
         try:
             param = self.getParam(params,name)
             return 'True' == param

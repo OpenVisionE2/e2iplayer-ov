@@ -43,7 +43,7 @@ class ArconaitvME(CBaseHostClass):
 
         self.HEADER = {'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html'}
         self.AJAX_HEADER = dict(self.HEADER)
-        self.AJAX_HEADER.update( {'X-Requested-With': 'XMLHttpRequest'} )
+        self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest'})
         
         self.MAIN_URL      = 'https://www.arconaitv.us/'
         self.DEFAULT_ICON_URL  = "https://raw.githubusercontent.com/piplongrun/arconaitv.bundle/master/Contents/Resources/icon-default.jpg"
@@ -54,7 +54,7 @@ class ArconaitvME(CBaseHostClass):
                              {'category':'list_movies',    'title': _('Movies'),    'url':self.MAIN_URL},
                              
                              {'category':'search',            'title': _('Search'), 'search_item':True,},
-                             {'category':'search_history',    'title': _('Search history'),            } 
+                             {'category':'search_history',    'title': _('Search history'),} 
                             ]
         self.proxyUrl = 'http://myproxysite.ga/browse.php?u={0}&b=4&f=norefer'
         
@@ -69,7 +69,7 @@ class ArconaitvME(CBaseHostClass):
         if post_data != None:
             HTTP_HEADER['Content-Type'] = 'application/x-www-form-urlencoded'
         params.update({'header':HTTP_HEADER})
-        if self.isProxyNeeded( url ):
+        if self.isProxyNeeded(url):
             proxy = self.proxyUrl.format(urllib.quote(url, ''))
             params['header']['Referer'] = proxy
             #params['header']['Cookie'] = 'flags=2e5;'
@@ -81,7 +81,7 @@ class ArconaitvME(CBaseHostClass):
     
     def getFullIconUrl(self, url):
         url = self.getFullUrl(url)
-        if self.isProxyNeeded( url ):
+        if self.isProxyNeeded(url):
             proxy = self.proxyUrl.format(urllib.quote(url, ''))
             params = {}
             params['User-Agent'] = self.HEADER['User-Agent'],
@@ -92,7 +92,7 @@ class ArconaitvME(CBaseHostClass):
         
     def getFullUrl(self, url):
         if self.up.getDomain(self.proxyUrl) in url:
-            url = urllib.unquote( self.cm.ph.getSearchGroups(url+'&', '''\?u=(http[^&]+?)&''')[0] )
+            url = urllib.unquote(self.cm.ph.getSearchGroups(url+'&', '''\?u=(http[^&]+?)&''')[0])
         return CBaseHostClass.getFullUrl(self, url)
     
     def listItems(self, cItem, m1, m2, post_data=None):
@@ -106,13 +106,13 @@ class ArconaitvME(CBaseHostClass):
         
         for item in data:
             icon  = self.cm.ph.getSearchGroups(item, '''src=['"]([^'^"]+?)['"]''')[0]
-            url = self.getFullUrl( self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0] )
+            url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0])
             if url == '':
                 continue
-            title = self.cleanHtmlStr( self.cm.ph.getSearchGroups(item, '''title=['"]([^'^"]+?)['"]''')[0] )
+            title = self.cleanHtmlStr(self.cm.ph.getSearchGroups(item, '''title=['"]([^'^"]+?)['"]''')[0])
             
             params = dict(cItem)
-            params.update({'title':title, 'url':url, 'icon':self.getFullIconUrl( icon )})
+            params.update({'title':title, 'url':url, 'icon':self.getFullIconUrl(icon)})
             self.addVideo(params)
         
     def listMain(self, cItem):
@@ -172,7 +172,7 @@ class ArconaitvME(CBaseHostClass):
                 scripts.append(item.strip())
             try:
                 jscode = base64.b64decode('''dmFyIGRvY3VtZW50PXt9LHdpbmRvdz10aGlzLGVsZW1lbnQ9ZnVuY3Rpb24oZSl7dGhpcy5fbmFtZT1lLHRoaXMuc2V0QXR0cmlidXRlPWZ1bmN0aW9uKGUsdCl7InNyYyI9PWUmJih0aGlzLnNyYz10KX0sT2JqZWN0LmRlZmluZVByb3BlcnR5KHRoaXMsInNyYyIse2dldDpmdW5jdGlvbigpe3JldHVybiB0aGlzLl9zcmN9LHNldDpmdW5jdGlvbihlKXt0aGlzLl9zcmM9ZSxwcmludChlKX19KX0sJD1mdW5jdGlvbihlKXtyZXR1cm4gbmV3IGVsZW1lbnQoZSl9O2RvY3VtZW50LmdldEVsZW1lbnRCeUlkPWZ1bmN0aW9uKGUpe3JldHVybiBuZXcgZWxlbWVudChlKX0sZG9jdW1lbnQuZ2V0RWxlbWVudHNCeVRhZ05hbWU9ZnVuY3Rpb24oZSl7cmV0dXJuW25ldyBlbGVtZW50KGUpXX07''')
-                ret = js_execute( jscode + '\nvar videojs={Hls:{xhr:{}}};function eval(data){print(data);}\n' + '\n'.join(scripts))
+                ret = js_execute(jscode + '\nvar videojs={Hls:{xhr:{}}};function eval(data){print(data);}\n' + '\n'.join(scripts))
                 decoded = self.cm.ph.getSearchGroups(ret['data'], '''['"]([^'^"]+?\.m3u8(?:\?[^'^"]*?)?)['"]''')[0].replace('\\/', '/')
                 decoded = self.cm.getFullUrl(decoded, self.cm.meta['url'])
                 if decoded.split('?', 1)[0].endswith('.m3u8'):
@@ -204,7 +204,7 @@ class ArconaitvME(CBaseHostClass):
         mode     = self.currItem.get("mode", '')
         filter   = self.currItem.get("filter", '')
         
-        printDBG( "handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category) )
+        printDBG("handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category))
         self.currList = []
         
     #MAIN MENU

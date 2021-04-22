@@ -25,7 +25,7 @@ def gettytul():
 class MovizlandCom(CBaseHostClass):
     HEADER = {'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html'}
     AJAX_HEADER = dict(HEADER)
-    AJAX_HEADER.update( {'X-Requested-With': 'XMLHttpRequest'} )
+    AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest'})
     
     MAIN_URL      = 'http://m.movizland.com/'
     SEARCH_URL    = MAIN_URL + '?s='
@@ -33,7 +33,7 @@ class MovizlandCom(CBaseHostClass):
     
     MAIN_CAT_TAB = [{'category':'categories',      'title': _('Categories'), 'url':MAIN_URL,},
                     {'category':'search',          'title': _('Search'), 'search_item':True,},
-                    {'category':'search_history',  'title': _('Search history'),            } ]
+                    {'category':'search_history',  'title': _('Search history'),}]
  
     def __init__(self):
         CBaseHostClass.__init__(self, {'history':'  MovizlandCom.tv', 'cookie':'movizlandcom.cookie'})
@@ -99,7 +99,7 @@ class MovizlandCom(CBaseHostClass):
         
         for item in data:
             url = self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''', 1)[0]
-            url = self._getFullUrl( url )
+            url = self._getFullUrl(url)
             if not url.startswith('http'):
                 continue
             title = self.cleanHtmlStr(item)
@@ -149,8 +149,8 @@ class MovizlandCom(CBaseHostClass):
             title = self.cleanHtmlStr(item)
             icon  = self.cm.ph.getSearchGroups(item, '''src=['"]([^'^"]+?)['"]''', 1)[0]
             
-            url = self._getFullUrl( url )
-            url = self._getFullUrl( url )
+            url = self._getFullUrl(url)
+            url = self._getFullUrl(url)
             
             params = dict(cItem)
             params.update({'category':nextCategory, 'title':title, 'url':self._getFullUrl(url), 'icon':self._getFullUrl(icon)})
@@ -183,7 +183,7 @@ class MovizlandCom(CBaseHostClass):
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<a', '</a>')
         for item in data:
             url = self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''', 1)[0]
-            url = self._getFullUrl( url )
+            url = self._getFullUrl(url)
             if not self.cm.isValidUrl(url):
                 continue
             title = self.cleanHtmlStr(item)
@@ -272,7 +272,7 @@ class MovizlandCom(CBaseHostClass):
         if desc == '':
             desc = cItem.get('desc', '')
         
-        return [{'title':self.cleanHtmlStr( title ), 'text': self.cleanHtmlStr( desc ), 'images':[{'title':'', 'url':self.getFullUrl(icon)}], 'other_info':{'custom_items_list':itemsList}}]
+        return [{'title':self.cleanHtmlStr(title), 'text': self.cleanHtmlStr(desc), 'images':[{'title':'', 'url':self.getFullUrl(icon)}], 'other_info':{'custom_items_list':itemsList}}]
 
     def handleService(self, index, refresh=0, searchPattern='', searchType=''):
         printDBG('handleService start')
@@ -283,7 +283,7 @@ class MovizlandCom(CBaseHostClass):
         category = self.currItem.get("category", '')
         mode     = self.currItem.get("mode", '')
         
-        printDBG( "handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category) )
+        printDBG("handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category))
         self.currList = []
         
     #MAIN MENU

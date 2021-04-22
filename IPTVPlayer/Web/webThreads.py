@@ -77,7 +77,7 @@ class buildActiveHostsHTML(threading.Thread):
 					print str(e)
 					hostNameWithURLandLOGO = '<a href="%s" target="_blank">%s</a><br><a href="%s" target="_blank"><font size="2" color="#58D3F7">%s</font></a>' % (title, logo, title, _('visit site'))
 			elif title[:4] != 'http' and logo != "":
-				hostNameWithURLandLOGO = '<a href="./usehost?activeHost=%s">%s</a><br><a href="%s" target="_blank"><font size="2" color="#58D3F7">%s</font></a>' % (hostName, logo, title, title )
+				hostNameWithURLandLOGO = '<a href="./usehost?activeHost=%s">%s</a><br><a href="%s" target="_blank"><font size="2" color="#58D3F7">%s</font></a>' % (hostName, logo, title, title)
 			else:
 				hostNameWithURLandLOGO = '<br><a>%s</a>' % (title)
 			# Column 2 TBD
@@ -87,7 +87,7 @@ class buildActiveHostsHTML(threading.Thread):
 			settings.activeHostsHTML[hostName] = hostHTML
 ########################################################
 class buildtempLogsHTML(threading.Thread):
-	def __init__(self, DebugFileName ):
+	def __init__(self, DebugFileName):
 		''' Constructor. '''
 		threading.Thread.__init__(self)
 		self.name = 'buildtempLogsHTML'
@@ -141,7 +141,7 @@ class buildConfigsHTML(threading.Thread):
 			tmpList = None
 		tableCFG = []
 		for itemL1 in List1:
-			if itemL1[0] in exclList or itemL1[0] in settings.excludedCFGs :
+			if itemL1[0] in exclList or itemL1[0] in settings.excludedCFGs:
 				continue
 			for itemL2 in List2:
 				if itemL2[1] == itemL1[1]:
@@ -156,14 +156,14 @@ class buildConfigsHTML(threading.Thread):
 					CFGtype = getCFGType(itemL1[1])
 					#print ConfName, '=' , CFGtype
 					if CFGtype in ['ConfigYesNo','ConfigOnOff', 'ConfigEnableDisable', 'ConfigBoolean']:
-						if int(confKey[1].getValue()) == 0 :
+						if int(confKey[1].getValue()) == 0:
 							CFGElements =  '<input type="radio" name="cmd" value="ON:%s">%s</input>' % (ConfName, _('Yes'))
 							CFGElements += '<input type="radio" name="cmd" value="OFF:%s" checked="checked">%s</input>' % (ConfName, _('No'))
 						else:
 							CFGElements =  '<input type="radio" name="cmd" value="ON:%s" checked="checked">%s</input>' % (ConfName, _('Yes'))
 							CFGElements += '<input type="radio" name="cmd" value="OFF:%s">%s</input>' % (ConfName, _('No'))
 					elif CFGtype in ['ConfigInteger']:
-						CFGElements = '<input type="number" name="%s" value="%d" />' %('INT:' + ConfName , int(confKey[1].getValue()))
+						CFGElements = '<input type="number" name="%s" value="%d" />' %('INT:' + ConfName, int(confKey[1].getValue()))
 					else:
 						try:
 							CFGElements = confKey[1].getHTML('CFG:' + ConfName)
@@ -182,7 +182,7 @@ class buildConfigsHTML(threading.Thread):
 				title = _temp.gettytul()
 			except Exception:
 				continue # we do NOT use broken hosts!!!
-			usedCFG.append("host%s" % hostName )
+			usedCFG.append("host%s" % hostName)
 			
 			logo = getHostLogo(hostName)
 			if logo == "":
@@ -196,9 +196,9 @@ class buildConfigsHTML(threading.Thread):
 	
 			# Column 3 enable/disable host in GUI
 			if IsHostEnabled(hostName):
-				OnOffState = formSUBMITvalue( [('cmd','OFF:host'+ hostName)], _('Disable'))
+				OnOffState = formSUBMITvalue([('cmd','OFF:host'+ hostName)], _('Disable'))
 			else:
-				OnOffState = formSUBMITvalue( [('cmd', 'ON:host'+ hostName)],  _('Enable'))
+				OnOffState = formSUBMITvalue([('cmd', 'ON:host'+ hostName)],  _('Enable'))
 
 			# Column 4 host configuration options
 			try:
@@ -268,7 +268,7 @@ class doUseHostAction(threading.Thread):
 				if None == Plugins.Extensions.IPTVPlayer.components.iptvplayerwidget.gDownloadManager:
 					printDBG('============webThreads.py Initialize Download Manager============')
 					Plugins.Extensions.IPTVPlayer.components.iptvplayerwidget.gDownloadManager = IPTVDMApi(2, int(config.plugins.iptvplayer.IPTVDMMaxDownloadItem.value))
-				ret = Plugins.Extensions.IPTVPlayer.components.iptvplayerwidget.gDownloadManager.addToDQueue( DMItem(url, fullFilePath))
+				ret = Plugins.Extensions.IPTVPlayer.components.iptvplayerwidget.gDownloadManager.addToDQueue(DMItem(url, fullFilePath))
 				#print ret
 		elif self.key == 'ResolveURL' and self.arg.isdigit():
 			myID = int(self.arg)
@@ -397,7 +397,7 @@ class doGlobalSearch(threading.Thread):
 				for SearchType in searchTypes:
 					ret = self.host.getSearchResults(settings.GlobalSearchQuery, SearchType[1])
 					self.stopIfRequested()
-					print SearchType[1] ,' searched ' , ret.value
+					print SearchType[1],' searched ', ret.value
 					
 		settings.searchingInHost = None
 		

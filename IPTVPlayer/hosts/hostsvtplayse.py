@@ -61,7 +61,7 @@ class SVTPlaySE(CBaseHostClass):
         CBaseHostClass.__init__(self, {'history':'SVTPlaySE.tv', 'cookie':'svtplayse.cookie'})
         self.HEADER = {'User-Agent':'Mozilla/5.0', 'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'Accept-Encoding':'gzip, deflate'}
         self.AJAX_HEADER = dict(self.HEADER)
-        self.AJAX_HEADER.update( {'X-Requested-With': 'XMLHttpRequest'} )
+        self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest'})
         self.cm.HEADER = self.HEADER # default header
         self.defaultParams = {'header':self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
         
@@ -74,17 +74,17 @@ class SVTPlaySE(CBaseHostClass):
                              #{'category':'list_items2',        'title': 'SISTA CHANSEN',                       'url':'/sista-chansen'   },
                              #{'category':'list_items2',        'title': 'LIVESÄNDNINGAR',                      'url':'/live'            },
         
-                             {'category':'list_items',        'title': _('Popular'),                            'url':'/popular'         },
-                             {'category':'list_items',        'title': _('Latest programs'),                    'url':'/latest'          },
+                             {'category':'list_items',        'title': _('Popular'),                            'url':'/popular'},
+                             {'category':'list_items',        'title': _('Latest programs'),                    'url':'/latest'},
                              {'category':'list_items',        'title': _('Latest news broadcast'),              'url':'/cluster_latest?cluster=nyheter'},
-                             {'category':'list_items',        'title': _('Last chance'),                        'url':'/last_chance'     },
-                             {'category':'list_items',        'title': _('Live broadcasts'),                    'url':'/live'            },
-                             {'category':'list_channels',     'title': _('Channels'),                           'url':'/kanaler'          },   
-                             {'category':'list_az_menu',      'title': _('Programs A-Ö'),                       'url':'/program'         },   #/all_titles
-                             {'category':'list_items',        'title': _('Categories'),                         'url':'/active_clusters' },  
+                             {'category':'list_items',        'title': _('Last chance'),                        'url':'/last_chance'},
+                             {'category':'list_items',        'title': _('Live broadcasts'),                    'url':'/live'},
+                             {'category':'list_channels',     'title': _('Channels'),                           'url':'/kanaler'},   
+                             {'category':'list_az_menu',      'title': _('Programs A-Ö'),                       'url':'/program'},   #/all_titles
+                             {'category':'list_items',        'title': _('Categories'),                         'url':'/active_clusters'},  
                              
                              {'category':'search',             'title': _('Search'), 'search_item':True,           'icon':'https://raw.githubusercontent.com/vonH/plugin.video.iplayerwww/master/media/search.png'},
-                             {'category':'search_history',     'title': _('Search history'),                     }]
+                             {'category':'search_history',     'title': _('Search history'),}]
         self.itemsPerPage = 48
         self.programsAZCache = {'keys':[], 'dict':{}}
         
@@ -248,13 +248,13 @@ class SVTPlaySE(CBaseHostClass):
                 data = data['data']
             
             for item in data:
-                title = self.cleanHtmlStr( item.get('programTitle', ''))
-                url   = self.getFullUrl( item['contentUrl'] )
+                title = self.cleanHtmlStr(item.get('programTitle', ''))
+                url   = self.getFullUrl(item['contentUrl'])
                 desc  = item.get('description', '')
                 if desc == None:
                     desc = ''
                 else:
-                    self.cleanHtmlStr( desc )
+                    self.cleanHtmlStr(desc)
                 icon  = self.getIcon(item)
                 
                 descTab = []
@@ -263,7 +263,7 @@ class SVTPlaySE(CBaseHostClass):
                 descTab.append(desc)
                 
                 if str(item.get('titleType')) == 'SERIES_OR_TV_SHOW':
-                    title += ' ' + self.cleanHtmlStr( item.get('title', ''))
+                    title += ' ' + self.cleanHtmlStr(item.get('title', ''))
                     
                 if title == '':
                     title = item.get('name', '')
@@ -509,7 +509,7 @@ class SVTPlaySE(CBaseHostClass):
                 continue
             
             if len(item):
-                def __getLinkQuality( itemLink ):
+                def __getLinkQuality(itemLink):
                     try:
                         return int(itemLink['height'])
                     except Exception:
@@ -566,7 +566,7 @@ class SVTPlaySE(CBaseHostClass):
         category = self.currItem.get("category", '')
         mode     = self.currItem.get("mode", '')
         
-        printDBG( "handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category) )
+        printDBG("handleService: |||||||||||||||||||||||||||||||||||| name[%s], category[%s] " % (name, category))
         self.currList = []
         
     #MAIN MENU

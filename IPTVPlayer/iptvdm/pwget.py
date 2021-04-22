@@ -30,7 +30,7 @@ def download(url, file):
         (tmpfile, headers) = urllib.urlretrieve(url, file)
         return 0,str(headers)
     except Exception:
-        return 2,str( formatExceptionInfo() )
+        return 2,str(formatExceptionInfo())
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:

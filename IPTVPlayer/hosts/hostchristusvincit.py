@@ -301,7 +301,7 @@ class Christusvincit(CBaseHostClass):
                 self.currList.append(item)
 
         MAIN_CAT_TAB = [{'category':'search',         'title': _('Search'),       'search_item':True},
-                        {'category':'search_history', 'title': _('Search history'),                 }]
+                        {'category':'search_history', 'title': _('Search history'),}]
         self.listsTab(MAIN_CAT_TAB, cItem)
 
     def handleSection(self, cItem, nextCategory, section):
@@ -312,7 +312,7 @@ class Christusvincit(CBaseHostClass):
         sTitle = self.cleanHtmlStr(tmp[0])
         if sTitle.lower() in ('linki',): #'kategorie'
             return
-        sIcon = self.getFullUrl( ph.search(section, ph.IMAGE_SRC_URI_RE)[1] )
+        sIcon = self.getFullUrl(ph.search(section, ph.IMAGE_SRC_URI_RE)[1])
 
         subItems = []
         uniques = set()
@@ -338,8 +338,8 @@ class Christusvincit(CBaseHostClass):
                 subItems.append(MergeDicts(cItem, {'category':nextCategory, 'title':sTitle, 'url':iframe}))
         section = ph.findall(section, ('<a', '>', ph.check(ph.any, ('articles.php', 'readarticle.php'))), '</a>')
         for item in section:
-            url = self.getFullUrl( ph.search(item, ph.A_HREF_URI_RE)[1] )
-            icon = self.getFullUrl( ph.search(item, self.reImgObj)[1] )
+            url = self.getFullUrl(ph.search(item, ph.A_HREF_URI_RE)[1])
+            icon = self.getFullUrl(ph.search(item, self.reImgObj)[1])
             title = self.cleanHtmlStr(item)
             if not title: 
                 title = icon.rsplit('/', 1)[-1].rsplit('.', 1)[0]
@@ -440,8 +440,8 @@ class Christusvincit(CBaseHostClass):
 
         data = ph.findall(data[0], ('<a', '>', ph.check(ph.any, ('articles.php', 'readarticle.php'))), '</span>')
         for item in data:
-            url = self.getFullUrl( ph.search(item, ph.A_HREF_URI_RE)[1] )
-            icon = self.getFullUrl( ph.search(item, self.reImgObj)[1] )
+            url = self.getFullUrl(ph.search(item, ph.A_HREF_URI_RE)[1])
+            icon = self.getFullUrl(ph.search(item, self.reImgObj)[1])
             item = item.split('</a>', 1)
             title = self.cleanHtmlStr(item[0])
             desc = self.cleanHtmlStr(item[-1])
@@ -492,7 +492,7 @@ class Christusvincit(CBaseHostClass):
 
         name     = self.currItem.get("name", '')
         category = self.currItem.get("category", '')
-        printDBG( "handleService: ||| name[%s], category[%s] " % (name, category) )
+        printDBG("handleService: ||| name[%s], category[%s] " % (name, category))
         self.currList = []
 
     #MAIN MENU
