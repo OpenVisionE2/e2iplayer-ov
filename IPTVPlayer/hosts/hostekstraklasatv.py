@@ -17,7 +17,8 @@ from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Play
 ###################################################
 import re
 import urllib
-import time, datetime
+import time
+import datetime
 import random
 from Components.config import config, ConfigText, ConfigSelection, ConfigYesNo, getConfigListEntry
 

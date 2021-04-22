@@ -5160,5 +5160,6 @@ Infsign = (Inf, negInf)
 
 
 if __name__ == '__main__':
-    import doctest, sys
+    import doctest
+    import sys
     doctest.testmod(sys.modules[__name__])

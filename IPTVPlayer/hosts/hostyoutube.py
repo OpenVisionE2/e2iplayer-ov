@@ -17,7 +17,8 @@ from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT
 ###################################################
 try:    import json
 except Exception: import simplejson as json
-import  re, urllib
+import  re
+import urllib
 from Components.config import config, ConfigDirectory, getConfigListEntry
 ###################################################
 

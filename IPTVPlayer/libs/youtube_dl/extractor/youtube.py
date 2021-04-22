@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import urllib, urllib2, re, time
+import urllib
+import urllib2
+import re
+import time
 from urlparse import urlparse, urlunparse
 from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT as _, SetIPTVPlayerLastHostError
 from Plugins.Extensions.IPTVPlayer.libs.youtube_dl.utils import *
