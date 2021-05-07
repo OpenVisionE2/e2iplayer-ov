@@ -629,6 +629,7 @@ class urlparser:
                        'userload.co': self.pp.parserUSERLOADCO,
                        'fastshare.cz': self.pp.parserFASTSHARECZ,
                        'voe.sx': self.pp.parserMATCHATONLINE,
+                       'streamzz.to': self.pp.parserSTREAMZZ,
                     }
         return
 
@@ -14010,5 +14011,40 @@ class pageParser(CaptchaHelper):
         if self.cm.isValidUrl(url):
             url = strwithmeta(url, {'Origin':"https://" + urlparser.getDomain(baseUrl), 'Referer':baseUrl})
             urlTab.append({'name':'mp4', 'url':url})
+
+        return urlTab
+
+    def parserSTREAMZZ(self, baseUrl):
+        printDBG("parserSTREAMZZ baseUrl[%r]" % baseUrl)
+        HTTP_HEADER = self.cm.getDefaultHeader(browser='chrome')
+        referer = baseUrl.meta.get('Referer')
+        if referer:
+            HTTP_HEADER['Referer'] = referer
+        urlParams = {'header': HTTP_HEADER}
+        sts, data = self.cm.getPage(baseUrl, urlParams)
+        if not sts:
+            return False
+
+        urlTab = []
+        if "eval(function(p,a,c,k,e,d)" in data:
+            printDBG('Host resolveUrl packed')
+            scripts = re.findall(r"(eval\s?\(function\(p,a,c,k,e,d.*?)</script>", data, re.S)
+            for packed in scripts:
+                data2 = packed
+                printDBG('Host pack: [%s]' % data2)
+                try:
+                    data = unpackJSPlayerParams(data2, TEAMCASTPL_decryptPlayerParams, 0, True, True)
+                    printDBG('OK unpack: [%s]' % data)
+                except Exception:
+                    pass
+                name = self.cm.ph.getSearchGroups(data, '''var\s([^=]+?)=''', ignoreCase=True)[0]
+                name = name + ' - ' + self.cm.ph.getSearchGroups(data, '''type:['"]([^"^']+?)['"]''')[0]
+                url = self.cm.ph.getSearchGroups(data, '''["'](https?://[^'^"]+?\.dll)["']''', ignoreCase=True)[0]
+                urlParams['max_data_size'] = 0
+                urlParams['no_redirection'] = True
+                sts, data = self.cm.getPage(url, urlParams)
+                if sts:
+                    url = self.cm.meta.get('location', '')
+                    urlTab.append({'name': name, 'url': url})
 
         return urlTab
