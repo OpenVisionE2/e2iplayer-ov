@@ -942,7 +942,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
             tmp = ph.findall(tmp, ('<a', '>'), '</a>')
             for item in tmp:
                 title = ph.clean_html(item)
-                url = self.getFullUrl(ph.getattr(item, 'href'),  cUrl)
+                url = self.getFullUrl(ph.getattr(item, 'href'), cUrl)
                 if '{title},{id}' in url:
                     url = cUrl + self.cm.ph.getSearchGroups(item, '''href=['"][^?]+?(\?[^'^"]+?)['"]''')[0]
                 self.addDir(MergeDicts(cItem, {'good_for_fav':False, 'allow_sort':False, 'title':title, 'url':url}))
