@@ -14009,8 +14009,8 @@ class pageParser(CaptchaHelper):
         urlTab = []
         url = self.cm.meta.get('location', '')
         if self.cm.isValidUrl(url):
-            url = strwithmeta(url, {'Origin':"https://" + urlparser.getDomain(baseUrl), 'Referer':baseUrl})
-            urlTab.append({'name':'mp4', 'url':url})
+            url = strwithmeta(url, {'Origin': "https://" + urlparser.getDomain(baseUrl), 'Referer': baseUrl})
+            urlTab.append({'name': 'mp4', 'url': url})
 
         return urlTab
 
