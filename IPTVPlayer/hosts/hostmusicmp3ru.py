@@ -196,7 +196,7 @@ class MusicMp3Ru(CBaseHostClass):
                 t = self.cleanHtmlStr(it)
                 if t == '':
                     continue
-                if '_name'in it:
+                if '_name' in it:
                     title = t
                 else:
                     descTab.append(t)
@@ -230,7 +230,7 @@ class MusicMp3Ru(CBaseHostClass):
                 t = self.cleanHtmlStr(it)
                 if t == '':
                     continue
-                if '_name'in it:
+                if '_name' in it:
                     title = t
                 else:
                     desc.append(t)

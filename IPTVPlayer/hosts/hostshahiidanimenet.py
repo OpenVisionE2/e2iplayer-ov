@@ -166,7 +166,7 @@ class ShahiidAnime(CBaseHostClass):
                     if val != '':
                         if '"title' in it or 'title"' in it:
                             continue
-                        elif '"story"'in it:
+                        elif '"story"' in it:
                             desc = val
                         else:
                             descTab.append(val)

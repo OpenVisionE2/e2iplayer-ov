@@ -531,7 +531,7 @@ class MRPiracyGQ(CBaseHostClass, CaptchaHelper):
         else:
             subUrl = 'https://cdn.mrpiracy.xyz/subs/%s.srt' % imdbId
             sts, data = self.getPage(subUrl)
-            if sts and '00:'in data:
+            if sts and '00:' in data:
                 for idx in range(len(urlTab)):
                     urlTab[idx]['url'] = strwithmeta(urlTab[idx]['url'])
                     if 'external_sub_tracks' not in urlTab[idx]['url'].meta:
