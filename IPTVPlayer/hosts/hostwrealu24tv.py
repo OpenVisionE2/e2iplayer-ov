@@ -24,7 +24,7 @@ class WRealu24TV(CBaseHostClass):
 
     def __init__(self):
         CBaseHostClass.__init__(self, {'history': 'wrealu24.tv', 'cookie': 'wrealu24.tv.cookie'})
-        self.DEFAULT_ICON_URL = 'https://wrealu24.tv/images/screen_stream2.jpg'
+        self.DEFAULT_ICON_URL = 'https://wrealu24.tv/storage/2021/03/wrealu-temp-logo.png'
         self.USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0'
         self.MAIN_URL = 'https://wrealu24.tv/'
         self.HTTP_HEADER = {'User-Agent': self.USER_AGENT, 'DNT': '1', 'Accept': 'text/html', 'Accept-Encoding': 'gzip, deflate', 'Referer': self.getMainUrl(), 'Origin': self.getMainUrl()}
@@ -44,8 +44,8 @@ class WRealu24TV(CBaseHostClass):
     def listMainMenu(self, cItem):
         printDBG("WRealu24TV.listMainMenu")
 
-        MAIN_CAT_TAB = [{'category': 'list_items', 'title': _('Main'), 'url': self.getMainUrl()},
-                        {'category': 'list_items', 'title': _('Videos'), 'url': self.getFullUrl('/filmy')},
+        MAIN_CAT_TAB = [#{'category': 'list_items', 'title': _('Main'), 'url': self.getMainUrl()},
+                        {'category': 'list_items', 'title': _('Videos'), 'url': self.getFullUrl('/materialy-wideo/')},
                        ]
 
         self.listsTab(MAIN_CAT_TAB, cItem)
@@ -55,40 +55,30 @@ class WRealu24TV(CBaseHostClass):
 
         page = cItem.get('page', 1)
         if page > 1:
-            url += '/%s' % page
+            url += '/page/%s' % page
 
         sts, data = self.getPage(url)
         if not sts:
             return
 
-        nextPage = self.cm.ph.getDataBeetwenNodes(data, ('<nav', '>', 'pagination'), ('</nav', '>'))[1]
+        nextPage = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'pagination'), ('</div', '>'))[1]
         printDBG("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ " + nextPage)
-        nextPage = self.cm.ph.getSearchGroups(nextPage, '''href=['"][^'^"]+?/(%s)[^0-9]''' % (page + 1))[0]
+        nextPage = self.cm.ph.getSearchGroups(nextPage, '''href=['"][^'^"]+?=(%s)[^0-9]''' % (page + 1))[0]
         if nextPage != '':
             nextPage = True
         else:
             nextPage = False
 
-        data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<a', '>',), ('</a', '>'))
+        data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<span', '>', 'video'), ('</span', '>'))
         for item in data:
-            url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0])
-            if '/na-zywo/' not in url and '/film/' not in url:
-                continue
-            icon = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''src=['"]([^'^"]+?)['"]''')[0])
-            title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(item, ('<div', '>', 'title'), ('</div', '>'))[1])
-            if title == '':
-                title = self.cleanHtmlStr(item)
-            if title == '':
-                title = self.cleanHtmlStr(url.split('/')[-1].replace('-', ' '))
-            if title == '':
-                continue
-            desc = []
-            for marker in ['released', 'views', 'length']:
-                t = self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(item, ('<div', '>', marker), ('</div', '>'))[1])
-                desc.append(t)
+            url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''['"]embedURL['"] content=['"]([^'^"]+?)['"]''')[0])
+            icon = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''['"]thumbnailURL['"] content=['"]([^'^"]+?)['"]''')[0])
+            title = self.cm.ph.getSearchGroups(item, '''['"]name['"] content=['"]([^'^"]+?)['"]''')[0].replace('&#8220;', '"').replace('&#8221;', '"').replace('&#8211;', '-')
+            desc = self.cm.ph.getSearchGroups(item, '''['"]description['"] content=['"]([^'^"]+?)['"]''')[0]
+            time = self.cm.ph.getSearchGroups(item, '''['"]uploadDate['"] content=['"]([^'^"]+?)['"]''')[0]
 
             params = dict(cItem)
-            params.update({'good_for_fav': True, 'title': title, 'url': url, 'icon': icon, 'desc': ' | '.join(desc)})
+            params.update({'good_for_fav': True, 'title': title, 'url': url, 'icon': icon, 'desc': time + '[/br]' + desc})
             self.addVideo(params)
 
         if nextPage:
@@ -99,59 +89,7 @@ class WRealu24TV(CBaseHostClass):
 
     def getLinksForVideo(self, cItem):
         printDBG("WRealu24TV.getLinksForVideo [%s]" % cItem)
-        retTab = []
-        hlsTab = []
-
-        sts, data = self.getPage(cItem['url'])
-        if not sts:
-            return
-
-        data = re.sub("<!--[\s\S]*?-->", "", data)
-        cookieHeader = self.cm.getCookieHeader(self.COOKIE_FILE)
-
-        data = self.cm.ph.getDataBeetwenMarkers(data, '<video', '</video>')[1]
-        if 'document.write(' in data:
-            jscode = ['var document = {};document.write=function(txt){print(txt);}']
-            tmp = self.cm.ph.getAllItemsBeetwenNodes(data, ('<script', '>'), ('</script', '>'), False)
-            for item in tmp:
-                jscode.append(item)
-            jscode = '\n'.join(jscode)
-            ret = js_execute(jscode)
-            if ret['sts'] and 0 == ret['code']:
-                data = ret['data'].strip()
-
-        data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<source', '>')
-        printDBG(data)
-        for item in data:
-            url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''src=['"]([^'^"]+?)['"]''')[0])
-            if not self.cm.isValidUrl(url):
-                continue
-            type = self.cm.ph.getSearchGroups(item, '''type=['"]([^'^"]+?)['"]''')[0].lower()
-            label = self.cm.ph.getSearchGroups(item, '''label=['"]([^'^"]+?)['"]''')[0]
-            res = self.cm.ph.getSearchGroups(item, '''res=['"]([^'^"]+?)['"]''')[0]
-            if label == '':
-                label = res
-
-            if 'mp4' in type:
-                url = self.up.decorateUrl(url, {'Cookie': cookieHeader, 'User-Agent': self.USER_AGENT, 'Referer': cItem['url']})
-                retTab.append({'name': label, 'url': url, 'res': res, 'need_resolve': 0})
-            elif 'mpegurl' in type:
-                url = self.up.decorateUrl(url, {'iptv_proto': 'm3u8', 'Origin': self.up.getDomain(cItem['url'], False), 'Cookie': cookieHeader, 'User-Agent': self.USER_AGENT, 'Referer': cItem['url']})
-                hlsTab.extend(getDirectM3U8Playlist(url, checkContent=True, sortWithMaxBitrate=999999999))
-            else:
-                printDBG("Unknown source: [%s]" % item)
-
-        if 1 < len(retTab):
-            def __getLinkQuality(itemLink):
-                try:
-                    return int(itemLink['res'])
-                except Exception:
-                    return 0
-            oneLink = CSelOneLink(retTab, __getLinkQuality, 999999999)
-            retTab = oneLink.getSortedLinks()
-
-        retTab.extend(hlsTab)
-        return retTab
+        return self.up.getVideoLinkExt(cItem['url'])
 
     def getArticleContent(self, cItem, data=None):
         printDBG("WRealu24TV.getArticleContent [%s]" % cItem)
