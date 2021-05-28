@@ -44,7 +44,7 @@ class WRealu24TV(CBaseHostClass):
     def listMainMenu(self, cItem):
         printDBG("WRealu24TV.listMainMenu")
 
-        MAIN_CAT_TAB = [#{'category': 'list_items', 'title': _('Main'), 'url': self.getMainUrl()},
+        MAIN_CAT_TAB = [{'category': 'list_live', 'title': _('Live'), 'url': self.getMainUrl()},
                         {'category': 'list_items', 'title': _('Videos'), 'url': self.getFullUrl('/materialy-wideo/')},
                        ]
 
@@ -86,6 +86,28 @@ class WRealu24TV(CBaseHostClass):
             params = dict(cItem)
             params.update({'good_for_fav': False, 'title': _('Next page'), 'page': page + 1})
             self.addDir(params)
+
+    def listLive(self, cItem):
+        url = cItem['url']
+
+        sts, data = self.getPage(url)
+        if not sts:
+            return
+
+        titleLive = self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(data, ('<h2', '>', 'tablepress-1'), ('</h2', '>'))[1])
+        desc = self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(data, ('<table', '>', 'tablepress-1'), ('</tr', '>'))[1].replace('"<br />', '"[/br]'))
+
+        data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<iframe', '>'), ('</iframe', '>'))
+        for item in data:
+            url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''src=['"]([^'^"]+?)['"]''')[0])
+            title = self.cm.ph.getSearchGroups(item, '''title=['"]([^'^"]+?)['"]''')[0].replace('&#8220;', '"').replace('&#8221;', '"').replace('&#8211;', '-')
+
+            params = dict(cItem)
+            params.update({'good_for_fav': True, 'title': title, 'url': url, 'desc': desc})
+            self.addVideo(params)
+
+        if not data:
+            self.addMarker({'title':titleLive, 'desc':desc})
 
     def getLinksForVideo(self, cItem):
         printDBG("WRealu24TV.getLinksForVideo [%s]" % cItem)
@@ -152,6 +174,8 @@ class WRealu24TV(CBaseHostClass):
             self.listMainMenu({'name': 'category'})
         elif category == 'list_items':
             self.listItems(self.currItem)
+        elif category == 'list_live':
+            self.listLive(self.currItem)
         else:
             printExc()
 
