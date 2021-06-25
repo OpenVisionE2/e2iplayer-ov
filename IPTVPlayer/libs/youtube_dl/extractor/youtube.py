@@ -532,7 +532,7 @@ class YoutubeIE(object):
             url = 'http://www.youtube.com/watch?v=%s&' % video_id
             isGoogleDoc = False
             videoKey = 'video_id'
-            videoInfoBase = 'https://www.youtube.com/get_video_info?html5=1&video_id=%s&' % video_id
+            videoInfoBase = 'https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&cver=6.20180913&video_id=%s&' % video_id
             videoInfoparams = {}
 
         sts, video_webpage = self.cm.getPage(url)
