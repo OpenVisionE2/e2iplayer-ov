@@ -46,7 +46,7 @@ def GetConfigList():
 
 
 def gettytul():
-    return 'http://ustvgo.tv/'
+    return 'https://ustvgo.tv/'
 
 
 class ustvgo(CBaseHostClass):
@@ -117,7 +117,7 @@ class ustvgo(CBaseHostClass):
         return self.cm.getPageCFProtection(baseUrl, addParams, post_data)
 
     def selectDomain(self):
-        domains = ['http://ustvgo.tv/', 'http://ustv247.tv/']
+        domains = ['https://ustvgo.tv/', 'https://ustv247.tv/']
         domain = config.plugins.iptvplayer.ustvgo_alt_domain.value.strip()
         if self.cm.isValidUrl(domain):
             if domain[-1] != '/':
@@ -127,7 +127,7 @@ class ustvgo(CBaseHostClass):
         for domain in domains:
             sts, data = self.getPage(domain)
             if sts:
-                if '<meta charset="UTF-8">' in data:
+                if '<meta charset' in data:
                     self.setMainUrl(self.cm.meta['url'])
                     break
                 else:
@@ -142,12 +142,11 @@ class ustvgo(CBaseHostClass):
     def listMainMenu(self, cItem):
         if self.MAIN_URL == None:
             self.selectDomain()
-        MAIN_CAT_TAB = [{'category': 'list_category', 'title': 'Home', 'url': self.getFullUrl('/')},
+        MAIN_CAT_TAB = [{'category': 'list_items', 'title': 'Home', 'url': self.getFullUrl('/')},
                         {'category': 'list_category', 'title': 'Entertainment', 'url': self.getFullUrl('/category/entertainment/')},
                         {'category': 'list_category', 'title': 'News', 'url': self.getFullUrl('/category/news/')},
                         {'category': 'list_category', 'title': 'Sports', 'url': self.getFullUrl('/category/sports/')},
-                        {'category': 'list_category', 'title': 'Kids', 'url': self.getFullUrl('/category/kids/')},
-                        {'category': 'list_items', 'title': _('All'), 'url': self.getFullUrl('/')}, ]
+                        {'category': 'list_category', 'title': 'Kids', 'url': self.getFullUrl('/category/kids/')},]
         self.listsTab(MAIN_CAT_TAB, cItem)
 
     def listItems(self, cItem):
@@ -157,8 +156,8 @@ class ustvgo(CBaseHostClass):
         if not sts:
             return
 
-        data = self.cm.ph.getDataBeetwenNodes(data, ('<ul', '>', 'ul_pis_posts_in_sidebar-2'), ('</ul', '>'))[1]
-        data = self.cm.ph.rgetAllItemsBeetwenNodes(data, ('</li', '>'), ('<li', '>', 'pis-li'))
+        data = self.cm.ph.getDataBeetwenNodes(data, ('<article', '>', 'post-'), ('</article', '>'), False)[1]
+        data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<a', '>'), ('</a', '>'))
         for item in data:
             url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''\shref=['"]([^"^']+?)['"]''')[0])
             title = self.cleanHtmlStr(item)
@@ -175,15 +174,13 @@ class ustvgo(CBaseHostClass):
         if not sts:
             return
 
-        nextPage = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'nav-links'), ('</div', '>'), False)[1]
-        nextPage = self.cm.ph.getDataBeetwenNodes(nextPage, ('<span', '>', 'aria-current'), ('</a', '>'), False)[1]
+        nextPage = self.cm.ph.getDataBeetwenNodes(data, ('<li', '>', 'previous'), ('</li', '>'), False)[1]
         nextPage = self.cm.ph.getSearchGroups(nextPage, '''href=['"]([^"^']+?)['"]''')[0]
 
-        data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<article', '>', 'mh-posts'), ('</article', '>'))
+        data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<article', '>', 'post-'), ('</article', '>'))
         for item in data:
-            tmp = self.cm.ph.getDataBeetwenNodes(item, ('<h3', '>'), ('</h3', '>'))[1]
-            url = self.getFullUrl(self.cm.ph.getSearchGroups(tmp, '''\shref=['"]([^"^']+?)['"]''')[0])
-            title = self.cleanHtmlStr(tmp)
+            url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''\shref=['"]([^"^']+?)['"]''')[0])
+            title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenNodes(item, ('<h2', '>'), ('</h2', '>'))[1])
             if not self.cm.isValidUrl(url):
                 continue
             icon = self.getFullIconUrl(self.cm.ph.getSearchGroups(item, '''\sdata-lazy-src=['"]([^"^']+?)['"]''')[0])
@@ -203,39 +200,16 @@ class ustvgo(CBaseHostClass):
         if not sts:
             return
 
-        if 'player.setup' not in data:
-            url = self.getFullUrl(self.cm.ph.getSearchGroups(data, '''src=['"]([^"^']+?player2?\.php[^"^']*?)['"]''', 1, True)[0])
-            sts, data = self.getPage(url)
-            if not sts:
-                return
+        data = self.cm.ph.getDataBeetwenNodes(data, ('<iframe', '>', 'allowfullscreen'), ('</iframe', '>'))[1]
+        post_data = self.cm.ph.getSearchGroups(data, '''\?([^"^']+?)['"]''')[0]
+        params = dict(self.defaultParams)
+        params['raw_post_data'] = True
+        sts, data = self.getPage(self.getFullUrl('/data.php'), params, post_data)
+        if not sts:
+            return
 
-#        jsfunc = self.cm.ph.getDataBeetwenMarkers(data, 'var setup', '}', False)[1]
-        jsfunc = self.cm.ph.getSearchGroups(data, '''source:\s([^,]+?),''', 1, True)[0]
-        if jsfunc == '':
-            jsfunc = self.cm.ph.getSearchGroups(data, '''file:\s([^,]+?),''', 1, True)[0]
-        jscode = [base64.b64decode('''dmFyIHBsYXllcj17fTtmdW5jdGlvbiBzZXR1cChlKXt0aGlzLm9iaj1lfWZ1bmN0aW9uIGp3cGxheWVyKCl7cmV0dXJuIHBsYXllcn1wbGF5ZXIuc2V0dXA9c2V0dXAsZG9jdW1lbnQ9e30sZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQ9ZnVuY3Rpb24oZSl7cmV0dXJue2lubmVySFRNTDppbnRlckh0bWxFbGVtZW50c1tlXX19Ow==''')]
-        interHtmlElements = {}
-        tmp = ph.findall(data, ('<span', '>', 'display:none'), '</span>', flags=ph.START_S)
-        for idx in range(1, len(tmp), 2):
-            elemId = self.cm.ph.getSearchGroups(tmp[idx - 1], '''id=([^>]+?)>''', 1, True)[0]
-            interHtmlElements[elemId] = tmp[idx].strip()
-        jscode.append('var interHtmlElements=%s;' % json_dumps(interHtmlElements))
-        data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<script', '>'), ('</script', '>'), False)
-        for item in data:
-            if jsfunc in item:
-                data = item
-        tmp = re.compile('''(var\s.+?\s\[.+?\];)''').findall(data)
-        jscode.append('\n'.join(tmp))
-        tmp = self.cm.ph.getDataBeetwenNodes(data, ('function', '{', jsfunc), '}')[1]
-        jscode.append(tmp)
-        jscode.append('print(%s);' % jsfunc)
-        ret = js_execute('\n'.join(jscode))
-        if ret['sts'] and 0 == ret['code']:
-            url = "".join(ret['data'].split())
-            url = strwithmeta(url, {'User-Agent': self.USER_AGENT, 'Origin': self.MAIN_URL, 'Referer': cItem['url']})
-            return getDirectM3U8Playlist(url)
-        else:
-            return []
+        url = strwithmeta(data, {'User-Agent': self.USER_AGENT, 'Origin': self.MAIN_URL, 'Referer': cItem['url']})
+        return getDirectM3U8Playlist(url)
 
     def handleService(self, index, refresh=0, searchPattern='', searchType=''):
         printDBG('handleService start')
