@@ -512,6 +512,15 @@ class YoutubeIE(object):
         printDBG(sub_tracks)
         return sub_tracks
 
+    _YT_INITIAL_DATA_RE = r'(?:window\s*\[\s*["\']ytInitialData["\']\s*\]|ytInitialData)\s*=\s*({.+?})\s*;'
+    _YT_INITIAL_PLAYER_RESPONSE_RE = r'ytInitialPlayerResponse\s*=\s*({.+?})\s*;'
+    _YT_INITIAL_BOUNDARY_RE = r'(?:var\s+meta|</script|\n)'
+
+    def _extract_yt_initial_variable(self, webpage, regex, video_id, name):
+        return json_loads(self._search_regex(
+            (r'%s\s*%s' % (regex, self._YT_INITIAL_BOUNDARY_RE),
+             regex), webpage, name, default='{}'))
+
     def _real_extract(self, url, allowVP9=False, allowAgeGate=False):
         # Extract original video URL from URL with redirection, like age verification, using next_url parameter
 
@@ -525,237 +534,92 @@ class YoutubeIE(object):
             isGoogleDoc = True
             url = url
             videoKey = 'docid'
-            videoInfoBase = 'https://docs.google.com/get_video_info?docid=%s' % video_id
             COOKIE_FILE = GetCookieDir('docs.google.com.cookie')
             videoInfoparams = {'cookiefile': COOKIE_FILE, 'use_cookie': True, 'load_cookie': False, 'save_cookie': True}
         else:
-            url = 'http://www.youtube.com/watch?v=%s&' % video_id
+            url = 'http://www.youtube.com/watch?v=%s&bpctr=9999999999&has_verified=1&' % video_id
             isGoogleDoc = False
             videoKey = 'video_id'
-            videoInfoBase = 'https://www.youtube.com/get_video_info?html5=1&c=TVHTML5&cver=6.20180913&video_id=%s&' % video_id
             videoInfoparams = {}
 
         sts, video_webpage = self.cm.getPage(url)
         if not sts:
             raise ExtractorError('Unable to download video webpage')
 
-        # Get video info
-        #if re.search(r'player-age-gate-content">', video_webpage) is not None:
-        if allowAgeGate and re.search(r'"LOGIN_REQUIRED"', video_webpage) is not None:
-            #self.report_age_confirmation()
-            age_gate = True
-            # We simulate the access to the video from www.youtube.com/v/{video_id}
-            # this can be viewed without login into Youtube
-            data = compat_urllib_parse.urlencode({'el': 'embedded',
-                                                  'gl': 'US',
-                                                  'hl': 'en',
-                                                  'eurl': 'https://youtube.googleapis.com/v/' + video_id,
-                                                  'asv': 3,
-                                                  'sts': '1588',
-                                                  })
-            video_info_url = videoInfoBase + data
-            sts, video_info = self.cm.getPage(video_info_url, videoInfoparams)
-            if not sts:
-                raise ExtractorError('Faile to get "%s"' % video_info_url)
-        else:
-            age_gate = False
-            tries = 0
-            tokenFound = False
+        player_response = None
+        if video_webpage:
+            player_response = self._extract_yt_initial_variable(
+                video_webpage, self._YT_INITIAL_PLAYER_RESPONSE_RE,
+                video_id, 'initial player response')
+        if not player_response:
+            raise ExtractorError('Unable to get player response')
 
-            while (tries < 5) and (not tokenFound):
-                for el_type in ['&el=detailpage', '&el=embedded', '&el=vevo', '']:
-                    #https
-                    video_info_url = videoInfoBase + ('%s&ps=default&eurl=&gl=US&hl=en' % (el_type))
-                    sts, video_info = self.cm.getPage(video_info_url, videoInfoparams)
-                    if not sts:
-                        continue
-                    if 'token' in video_info or 'Token' in video_info:
-                        if 'channel_creation_token' in video_info:
-                            printDBG("channel_creation_token found!")
-                        elif 'account_playback_token' in video_info:
-                            printDBG("account_playback_token found!")
-                        else:
-                            printDBG("different token found!")
-                        printDBG("token found after %s tries!" % (tries + 1))
-                        tokenFound = True
-                        break
-
-                tries = tries + 1
-
-        if not tokenFound:
-            raise ExtractorError('"token" parameter not in video info')
-
-        # Check for "rental" videos
-        if 'ypc_video_rental_bar_text' in video_info and 'author' not in video_info:
-            raise ExtractorError('"rental" videos not supported')
-
-        # Start extracting information
-
-        video_info = video_info.split('&')
-        video_info2 = {}
-        for item in video_info:
-            item = item.split('=')
-            if len(item) < 2:
-                continue
-            video_info2[item[0].strip()] = item[1].strip()
-        video_info = video_info2
-        del video_info2
-        dashmpd = str(_unquote(str(video_info.get('dashmpd', '')), None))
+        video_info = player_response['videoDetails']
         # subtitles
-        if 'length_seconds' not in video_info:
+        if 'lengthSeconds' not in video_info:
             video_duration = ''
         else:
-            video_duration = video_info['length_seconds']
-
-        if 'url_encoded_fmt_stream_map' in video_info:
-            video_info['url_encoded_fmt_stream_map'] = [_unquote(video_info['url_encoded_fmt_stream_map'], None)]
-        if 'adaptive_fmts' in video_info:
-            video_info['adaptive_fmts'] = [_unquote(video_info['adaptive_fmts'], None)]
-
-        try:
-            mobj = re.search(r';ytplayer.config = ({.*?});', video_webpage)
-            if not mobj:
-                raise ValueError('Could not find vevo ID')
-            ytplayer_config = json_loads(mobj.group(1))
-            args = ytplayer_config['args']
-            # Easy way to know if the 's' value is in url_encoded_fmt_stream_map
-            # this signatures are encrypted
-            if 'url_encoded_fmt_stream_map' not in args:
-                raise ValueError('No stream_map present') # caught below
-            re_signature = re.compile(r'[&,]s=')
-            m_s = re_signature.search(args['url_encoded_fmt_stream_map'])
-            if m_s is not None:
-                printDBG('%s: Encrypted signatures detected.' % video_id)
-                video_info['url_encoded_fmt_stream_map'] = [args['url_encoded_fmt_stream_map']]
-            m_s = re_signature.search(args.get('adaptive_fmts', ''))
-        except ValueError:
-            pass
-
-        # Decide which formats to download
+            video_duration = video_info['lengthSeconds']
 
         is_m3u8 = 'no'
         url_map = {}
         video_url_list = {}
 
-        if len(video_info.get('url_encoded_fmt_stream_map', [])) >= 1 or len(video_info.get('adaptive_fmts', [])) >= 1:
-            encoded_url_map = video_info.get('url_encoded_fmt_stream_map', [''])[0] + ',' + video_info.get('adaptive_fmts', [''])[0]
-            _supported_formats = self._supported_formats
-            if allowVP9:
-                _supported_formats.extend(['313', '271'])
-            for url_data_str in encoded_url_map.split(','):
-                if 'index=' in url_data_str and 'index=0-0&' in url_data_str:
-                    continue
+        try:
+            is_m3u8 = 'no'
+            cipher = {}
+            url_data_str = []
+            try:
+                url_data_str = player_response['streamingData']['formats']
+            except Exception:
+                printExc()
+            try:
+                url_data_str += player_response['streamingData']['adaptiveFormats']
+            except Exception:
+                printExc()
 
-                if 'itag=' in url_data_str and 'url=' in url_data_str:
-                    url_data_str = url_data_str.split('&')
-                    url_data = {}
+            for url_data in url_data_str:
 
-                    supported = False
-                    for item in url_data_str:
-                        item = item.split('=')
-                        if len(item) < 2:
-                            continue
-                        key = item[1].strip()
-                        if item[0] == 'itag':
-                            if key in self._supported_formats:
-                                supported = True
-                            else:
-                                break
-                        url_data[item[0]] = key
+                printDBG(str(url_data))
 
-                    if not supported:
-                        continue
+                if 'url' in url_data:
+                    url_item = {'url': url_data['url']}
+                else:
+                    cipher = url_data.get('cipher', '') + url_data.get('signatureCipher', '')
+                    printDBG(cipher)
 
-                    url_item = {'url': _unquote(url_data['url'], None)}
-                    if 'sig' in url_data:
-                        signature = url_data['sig']
+                    cipher = cipher.split('&')
+                    for item in cipher:
+                        #sig_item = ''
+                        #s_item = ''
+                        #sp_item = ''
+                        if 'url=' in item:
+                            url_item = {'url': _unquote(item.replace('url=', ''), None)}
+                        if 'sig=' in item:
+                            sig_item = item.replace('sig=', '')
+                        if 's=' in item:
+                            s_item = item.replace('s=', '')
+                        if 'sp=' in item:
+                            sp_item = item.replace('sp=', '')
+                    if 'sig' in cipher:
+                        signature = sig_item
                         url_item['url'] += '&signature=' + signature
-                    elif 's' in url_data:
-                        url_item['esign'] = _unquote(url_data['s'])
-                        if 'sp' in url_data:
-                            url_item['url'] += '&%s={0}' % url_data['sp']
+                    elif len(s_item):
+                        url_item['esign'] = _unquote(s_item)
+                        if len(sp_item):
+                            url_item['url'] += '&%s={0}' % sp_item
                         else:
                             url_item['url'] += '&signature={0}'
                     if not 'ratebypass' in url_item['url']:
                         url_item['url'] += '&ratebypass=yes'
-                    url_map[url_data['itag']] = url_item
-                video_url_list = self._get_video_url_list(url_map, allowVP9)
 
-        if video_info.get('hlsvp') and not video_url_list:
-            is_m3u8 = 'yes'
-            manifest_url = _unquote(video_info['hlsvp'], None)
-            url_map = self._extract_from_m3u8(manifest_url, video_id)
+                url_map[str(url_data['itag'])] = url_item
             video_url_list = self._get_video_url_list(url_map, allowVP9)
-
-        if video_info.get('player_response') and not video_url_list:
-            is_m3u8 = 'yes'
-            manifest_url = _unquote(video_info['player_response'], None)
-            manifest = re.search('"hlsManifestUrl":"(.*?)"', manifest_url)
-            if manifest:
-                manifest_url = manifest.group(1)
-                url_map = self._extract_from_m3u8(manifest_url, video_id)
-                video_url_list = self._get_video_url_list(url_map, allowVP9)
-
-        if video_info.get('player_response') and not video_url_list:
-            try:
-                is_m3u8 = 'no'
-                cipher = {}
-                url_data_str = json_loads(_unquote(video_info['player_response'], None))['streamingData']['formats']
-                try:
-                    url_data_str += json_loads(_unquote(video_info['player_response'], None))['streamingData']['adaptiveFormats']
-                except Exception:
-                    printExc()
-
-                for url_data in url_data_str:
-
-                    printDBG(str(url_data))
-
-                    if 'url' in url_data:
-                        url_item = {'url': url_data['url']}
-                    else:
-                        cipher = url_data.get('cipher', '') + url_data.get('signatureCipher', '')
-                        printDBG(cipher)
-
-                        cipher = cipher.split('&')
-                        for item in cipher:
-                            #sig_item = ''
-                            #s_item = ''
-                            #sp_item = ''
-                            if 'url=' in item:
-                                url_item = {'url': _unquote(item.replace('url=', ''), None)}
-                            if 'sig=' in item:
-                                sig_item = item.replace('sig=', '')
-                            if 's=' in item:
-                                s_item = item.replace('s=', '')
-                            if 'sp=' in item:
-                                sp_item = item.replace('sp=', '')
-                        if 'sig' in cipher:
-                            signature = sig_item
-                            url_item['url'] += '&signature=' + signature
-                        elif len(s_item):
-                            url_item['esign'] = _unquote(s_item)
-                            if len(sp_item):
-                                url_item['url'] += '&%s={0}' % sp_item
-                            else:
-                                url_item['url'] += '&signature={0}'
-                        if not 'ratebypass' in url_item['url']:
-                            url_item['url'] += '&ratebypass=yes'
-
-                    url_map[str(url_data['itag'])] = url_item
-                video_url_list = self._get_video_url_list(url_map, allowVP9)
-            except Exception:
-                printExc()
+        except Exception:
+            printExc()
 
         if not video_url_list:
             return []
-
-        if self.cm.isValidUrl(dashmpd):
-            sign = ph.search(dashmpd, r'/s/([a-fA-F0-9\.]+)')[0]
-            if sign:
-                dashmpd = dashmpd.replace(sign, '{0}')
-            video_url_list.append(('mpd', {'url': dashmpd}))
-            if sign:
-                video_url_list[-1][1]['esign'] = sign
 
         signItems = []
         signatures = []
