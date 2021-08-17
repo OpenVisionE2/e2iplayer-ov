@@ -561,7 +561,6 @@ class YoutubeIE(object):
         else:
             video_duration = video_info['lengthSeconds']
 
-        is_m3u8 = 'no'
         url_map = {}
         video_url_list = {}
 
@@ -569,10 +568,7 @@ class YoutubeIE(object):
             is_m3u8 = 'no'
             cipher = {}
             url_data_str = []
-            try:
-                url_data_str = player_response['streamingData']['formats']
-            except Exception:
-                printExc()
+            url_data_str = player_response['streamingData']['formats']
             try:
                 url_data_str += player_response['streamingData']['adaptiveFormats']
             except Exception:
@@ -617,6 +613,12 @@ class YoutubeIE(object):
             video_url_list = self._get_video_url_list(url_map, allowVP9)
         except Exception:
             printExc()
+
+        if video_info.get('isLive') and not video_url_list:
+            is_m3u8 = 'yes'
+            manifest_url = _unquote(player_response['streamingData']['hlsManifestUrl'], None)
+            url_map = self._extract_from_m3u8(manifest_url, video_id)
+            video_url_list = self._get_video_url_list(url_map, allowVP9)
 
         if not video_url_list:
             return []
