@@ -62,7 +62,7 @@ class Youtube(CBaseHostClass):
         self.DEFAULT_ICON_URL = 'https://www.vippng.com/png/full/85-853653_patreon-logo-png-transparent-background-youtube-logo.png'
         self.MAIN_GROUPED_TAB = [{'category': 'from_file', 'title': _("User links"), 'desc': _("User links stored in the ytlist.txt file.")},
                                  {'category': 'search', 'title': _("Search"), 'desc': _("Search youtube materials "), 'search_item': True},
-                                 {'category': 'feeds', 'title': _("Trending Feeds"), 'desc': _("Browse youtube trending feeds")},
+                                 {'category': 'feeds', 'title': _("Trending"), 'desc': _("Browse youtube trending feeds")},
                                  {'category': 'search_history', 'title': _("Search history"), 'desc': _("History of searched phrases.")}]
 
         self.SEARCH_TYPES = [(_("Video"), "video"),
@@ -83,7 +83,7 @@ class Youtube(CBaseHostClass):
             category = 'playlists'
         elif None != re.search('/watch\?v=[^\&]+?\&list=', url):
             category = 'traylist'
-        elif 'user/' in url or ('channel/' in url and not url.endswith('/live')):
+        elif 'user/' in url or (('channel/' in url or '/c/' in url) and not url.endswith('/live')):
             category = 'channel'
         else:
             category = 'video'
@@ -163,30 +163,33 @@ class Youtube(CBaseHostClass):
 
     def listFeeds(self, cItem):
         printDBG('Youtube.listFeeds cItem[%s]' % (cItem))
-
-        category = cItem.get("category", "")
-
-        if category == "feeds":
-            url = "https://www.youtube.com/feed/trending"
-            tmpList = self.ytp.getFeedsList(url)
-            for item in tmpList:
-                self.addDir(item)
-
-        elif category.startswith("feeds_"):
-            topic = category[6:]
-            url = cItem.get('url', '')
-            tmpList = self.ytp.getVideoFromFeed(url)
-
-            for item in tmpList:
-                item.update({'name': 'category'})
-                if 'video' == item['type']:
-                    self.addVideo(item)
-                elif 'more' == item['type']:
-                    self.addMore(item)
-                else:
-                    if item['category'] in ["channel", "playlist", "movie", "traylist"] or item['category'].startswith("feeds"):
-                        item['good_for_fav'] = True
-                    self.addDir(item)
+        if cItem['category'] == "feeds_video":
+            sts, data = self.cm.getPage(cItem['url'])
+            data2 = self.cm.ph.getAllItemsBeetwenMarkers(data, "videoRenderer", "watchEndpoint")
+            for item in data2:
+                url = "https://www.youtube.com/watch?v=" + self.cm.ph.getDataBeetwenMarkers(item, 'videoId":"', '","thumbnail":', False) [1]
+                icon = self.cm.ph.getDataBeetwenMarkers(item, '},{"url":"', '==', False) [1]
+                title = self.cm.ph.getDataBeetwenMarkers(item, '"title":{"runs":[{"text":"', '"}]', False) [1]
+                desc = _("Channel") + ': ' + self.cm.ph.getDataBeetwenMarkers(item, 'longBylineText":{"runs":[{"text":"', '","navigationEndpoint"', False) [1] + "\n" + _("Release:") + ' ' + self.cm.ph.getDataBeetwenMarkers(item, '"publishedTimeText":{"simpleText":"', '"},"lengthText":', False) [1] + "\n" + _("Duration:") + ' ' + self.cm.ph.getDataBeetwenMarkers(item, '"lengthText":{"accessibility":{"accessibilityData":{"label":"', '"}},"simpleText":', False) [1] + "\n" + self.cm.ph.getDataBeetwenMarkers(item, '"viewCountText":{"simpleText":"', '"},"navigationEndpoint":', False) [1]
+                params = {'title':title, 'url': url, 'icon': icon, 'desc': desc}
+                self.addVideo(params)
+        else:
+           title = _("Trending")
+           url = "https://www.youtube.com/feed/trending"
+           params = {'category':'feeds_video','title':title, 'url': url}
+           self.addDir(params)
+           title = _("Music")
+           url = "https://www.youtube.com/feed/trending?bp=4gINGgt5dG1hX2NoYXJ0cw%3D%3D"
+           params = {'category':'feeds_video','title':title, 'url': url}
+           self.addDir(params)
+           title = _("Games")
+           url = "https://www.youtube.com/feed/trending?bp=4gIcGhpnYW1pbmdfY29ycHVzX21vc3RfcG9wdWxhcg%3D%3D"
+           params = {'category':'feeds_video','title':title, 'url': url}
+           self.addDir(params)
+           title = _("Movies")
+           url = "https://www.youtube.com/feed/trending?bp=4gIKGgh0cmFpbGVycw%3D%3D"
+           params = {'category':'feeds_video','title':title, 'url': url}
+           self.addDir(params)
 
     def getVideos(self, cItem):
         printDBG('Youtube.getVideos cItem[%s]' % (cItem))
