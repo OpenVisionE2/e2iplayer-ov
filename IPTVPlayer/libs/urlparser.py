@@ -630,6 +630,8 @@ class urlparser:
                        'fastshare.cz': self.pp.parserFASTSHARECZ,
                        'voe.sx': self.pp.parserMATCHATONLINE,
                        'streamzz.to': self.pp.parserSTREAMZZ,
+                       'rumble.com': self.pp.parserRUMBLECOM,
+                       'hexupload.net': self.pp.parserJAWCLOUDCO,
                     }
         return
 
@@ -13813,8 +13815,9 @@ class pageParser(CaptchaHelper):
 #            printDBG("---------")
 
             #search url in tag like <div id="videolink" style="display:none;">//streamtape.com/get_video?id=27Lbk7KlQBCZg02&expires=1589450415&ip=DxWsE0qnDS9X&token=Og-Vxdpku4x8</div>
-            t = eval(self.cm.ph.getSearchGroups(data, '''innerHTML = ([^;]+?);''')[0])
+            t = self.cm.ph.getSearchGroups(data, '''innerHTML = ([^;]+?);''')[0] + ';'
             printDBG("parserSTREAMTAPE t[%s]" % t)
+            t = eval(t.replace('.substring(', '[').replace(');', ':]'))
             if t.startswith('//'):
                 t = "https:" + t
             if self.cm.isValidUrl(t):
@@ -14038,5 +14041,29 @@ class pageParser(CaptchaHelper):
                 if sts:
                     url = self.cm.meta.get('location', '')
                     urlTab.append({'name': name, 'url': url})
+
+        return urlTab
+
+    def parserRUMBLECOM(self, baseUrl):
+        printDBG("parserRUMBLECOM baseUrl[%s]" % baseUrl)
+
+        HTTP_HEADER = self.cm.getDefaultHeader(browser='chrome')
+        referer = baseUrl.meta.get('Referer')
+        if referer:
+            HTTP_HEADER['Referer'] = referer
+        urlParams = {'header': HTTP_HEADER}
+        sts, data = self.cm.getPage(baseUrl, urlParams)
+        if not sts:
+            return False
+
+        urlTab = []
+        data = self.cm.ph.getAllItemsBeetwenMarkers(data, '"url":', '}', withMarkers=True)
+        for item in data:
+            printDBG("parserRUMBLECOM item[%s]" % item)
+            url = self.cm.ph.getSearchGroups(item, '''['"]url['"]:['"]([^"^']+?)['"]''')[0].replace('\/', '/')
+            if 'mp4' not in url:
+                continue
+            name = self.cm.ph.getSearchGroups(item, '''['"]w['"]:(\d+)''')[0] + 'x' + self.cm.ph.getSearchGroups(item, '''['"]h['"]:(\d+)''')[0]
+            urlTab.append({'name': name, 'url': url})
 
         return urlTab
