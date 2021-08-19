@@ -140,7 +140,7 @@ class YouTubeParser():
 
         for item in list:
             printDBG(">>>>>>>>>>>>>>>>>>>>>")
-            printDBG(item)
+            printDBG(str(item))
             printDBG("<<<<<<<<<<<<<<<<<<<<<")
             if -1 < formats.find(item['ext']):
                 if 'yes' == item['m3u8']:
@@ -799,23 +799,26 @@ class YouTubeParser():
     def getVideosApiPlayList(self, url, category, page, cItem):
         printDBG('YouTubeParser.getVideosApiPlayList url[%s]' % url)
         playlistID = self.cm.ph.getSearchGroups(url + '&', 'list=([^&]+?)&')[0]
-        baseUrl = 'https://www.youtube.com/list_ajax?style=json&action_get_list=1&list=%s' % playlistID
+        baseUrl = 'https://www.youtube.com/playlist?list=%s' % playlistID
 
         currList = []
         if baseUrl != '':
             sts, data = self.cm.getPage(baseUrl, self.http_params)
+            data = self.cm.ph.getDataBeetwenMarkers(data, "var ytInitialData =", "};", False)[1]
             try:
-                data = json_loads(data)['video']
+                data = json_loads(data + '}')['contents']
+                data = data['twoColumnBrowseResultsRenderer']['tabs'][0]['tabRenderer']['content']['sectionListRenderer']['contents'][0]['itemSectionRenderer']['contents'][0]['playlistVideoListRenderer']['contents']
                 for item in data:
-                    url = 'http://www.youtube.com/watch?v=' + item['encrypted_id']
-                    title = item['title']
-                    img = item['thumbnail']
-                    time = item['length_seconds']
+                    item = item.get('playlistVideoRenderer')
+                    url = 'http://www.youtube.com/watch?v=' + item['videoId']
+                    title = item['title']['runs'][0]['text']
+                    img = self.getThumbnailUrl(item)
+                    time = item['lengthSeconds']
                     if '' != time:
                         time = str(timedelta(seconds=int(time)))
                     if time.startswith("0:"):
                         time = time[2:]
-                    desc = item['description']
+                    desc = item['title']['accessibility']['accessibilityData']['label']
                     params = {'type': 'video', 'category': 'video', 'title': title, 'url': url, 'icon': img, 'time': time, 'desc': desc}
                     currList.append(params)
             except Exception:
