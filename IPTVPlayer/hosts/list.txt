@@ -143,7 +143,6 @@ hostredbull
 hostrtbfbe
 hostrteieplayer
 hostrtlmost
-hosts01pl
 hostserialeco
 hostserienstreamto
 hostseriesonline
