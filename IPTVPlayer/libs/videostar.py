@@ -139,7 +139,8 @@ class VideoStarApi(CBaseHostClass, CaptchaHelper):
                 self.sessionEx.open(MessageBox, '%s\nProblem z zalogowanie użytkownika "%s". Sprawdź dane do logowania w konfiguracji hosta.' % (msg, login), type=MessageBox.TYPE_INFO, timeout=10)
                 self.loggedIn = False
         else:
-            self.doLogin('guest', 'guest')
+#            self.doLogin('guest', 'guest')
+            self.loggedIn = False
 
         self.cacheChannelList = []
         channelsTab = []
@@ -212,7 +213,7 @@ class VideoStarApi(CBaseHostClass, CaptchaHelper):
                 printDBG(data)
                 if not sts and not self.loggedIn and tries == 1:
                     rm(self.COOKIE_FILE)
-                    self.doLogin('guest', 'guest')
+#                    self.doLogin('guest', 'guest')
                     sts, data = self.cm.getPage(self.getFullUrl('/static/guest/channels/list/web.json', 'static'), self.defaultParams)
                     if sts:
                         continue
