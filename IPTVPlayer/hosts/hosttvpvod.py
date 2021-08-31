@@ -715,12 +715,12 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
         asset_id = str(cItem.get('object_id', ''))
         url = self._getFullUrl(cItem.get('url', ''))
 
-        if 'tvpstream.tvp.pl' in url:
+        if 'tvpstream.tvp.pl' in url or '/sess/' in url:
             sts, data = self.cm.getPage(url)
             if not sts:
                 return []
 
-            hlsUrl = self.cm.ph.getSearchGroups(data, '''['"](http[^'^"]*?\.m3u8[^'^"]*?)['"]''')[0]
+            hlsUrl = self.cm.ph.getSearchGroups(data, '''['"](http[^'^"]*?\.m3u8[^'^"]*?)['"]''')[0].replace('\/', '/')
             if '' != hlsUrl:
                 videoTab = getDirectM3U8Playlist(hlsUrl, checkExt=False, variantCheck=False)
                 if 1 < len(videoTab):

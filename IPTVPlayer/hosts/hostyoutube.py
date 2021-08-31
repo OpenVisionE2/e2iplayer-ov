@@ -167,28 +167,28 @@ class Youtube(CBaseHostClass):
             sts, data = self.cm.getPage(cItem['url'])
             data2 = self.cm.ph.getAllItemsBeetwenMarkers(data, "videoRenderer", "watchEndpoint")
             for item in data2:
-                url = "https://www.youtube.com/watch?v=" + self.cm.ph.getDataBeetwenMarkers(item, 'videoId":"', '","thumbnail":', False) [1]
-                icon = self.cm.ph.getDataBeetwenMarkers(item, '},{"url":"', '==', False) [1]
-                title = self.cm.ph.getDataBeetwenMarkers(item, '"title":{"runs":[{"text":"', '"}]', False) [1]
-                desc = _("Channel") + ': ' + self.cm.ph.getDataBeetwenMarkers(item, 'longBylineText":{"runs":[{"text":"', '","navigationEndpoint"', False) [1] + "\n" + _("Release:") + ' ' + self.cm.ph.getDataBeetwenMarkers(item, '"publishedTimeText":{"simpleText":"', '"},"lengthText":', False) [1] + "\n" + _("Duration:") + ' ' + self.cm.ph.getDataBeetwenMarkers(item, '"lengthText":{"accessibility":{"accessibilityData":{"label":"', '"}},"simpleText":', False) [1] + "\n" + self.cm.ph.getDataBeetwenMarkers(item, '"viewCountText":{"simpleText":"', '"},"navigationEndpoint":', False) [1]
-                params = {'title':title, 'url': url, 'icon': icon, 'desc': desc}
+                url = "https://www.youtube.com/watch?v=" + self.cm.ph.getDataBeetwenMarkers(item, 'videoId":"', '","thumbnail":', False)[1]
+                icon = self.cm.ph.getDataBeetwenMarkers(item, '},{"url":"', '==', False)[1]
+                title = self.cm.ph.getDataBeetwenMarkers(item, '"title":{"runs":[{"text":"', '"}]', False)[1]
+                desc = _("Channel") + ': ' + self.cm.ph.getDataBeetwenMarkers(item, 'longBylineText":{"runs":[{"text":"', '","navigationEndpoint"', False)[1] + "\n" + _("Release:") + ' ' + self.cm.ph.getDataBeetwenMarkers(item, '"publishedTimeText":{"simpleText":"', '"},"lengthText":', False)[1] + "\n" + _("Duration:") + ' ' + self.cm.ph.getDataBeetwenMarkers(item, '"lengthText":{"accessibility":{"accessibilityData":{"label":"', '"}},"simpleText":', False)[1] + "\n" + self.cm.ph.getDataBeetwenMarkers(item, '"viewCountText":{"simpleText":"', '"},"navigationEndpoint":', False)[1]
+                params = {'title': title, 'url': url, 'icon': icon, 'desc': desc}
                 self.addVideo(params)
         else:
            title = _("Trending")
            url = "https://www.youtube.com/feed/trending"
-           params = {'category':'feeds_video','title':title, 'url': url}
+           params = {'category': 'feeds_video', 'title': title, 'url': url}
            self.addDir(params)
            title = _("Music")
            url = "https://www.youtube.com/feed/trending?bp=4gINGgt5dG1hX2NoYXJ0cw%3D%3D"
-           params = {'category':'feeds_video','title':title, 'url': url}
+           params = {'category': 'feeds_video', 'title': title, 'url': url}
            self.addDir(params)
            title = _("Games")
            url = "https://www.youtube.com/feed/trending?bp=4gIcGhpnYW1pbmdfY29ycHVzX21vc3RfcG9wdWxhcg%3D%3D"
-           params = {'category':'feeds_video','title':title, 'url': url}
+           params = {'category': 'feeds_video', 'title': title, 'url': url}
            self.addDir(params)
            title = _("Movies")
            url = "https://www.youtube.com/feed/trending?bp=4gIKGgh0cmFpbGVycw%3D%3D"
-           params = {'category':'feeds_video','title':title, 'url': url}
+           params = {'category': 'feeds_video', 'title': title, 'url': url}
            self.addDir(params)
 
     def getVideos(self, cItem):

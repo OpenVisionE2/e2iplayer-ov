@@ -884,9 +884,9 @@ class common:
         return sts, data
 
     def fillHeaderItems(self, metadata, responseHeaders, camelCase=False, collectAllHeaders=False):
-        returnKeys = ['content-type', 'content-disposition', 'content-length', 'location']
+        returnKeys = ['content-type', 'content-disposition', 'content-length', 'location', 'last-modified']
         if camelCase:
-            sourceKeys = ['Content-Type', 'Content-Disposition', 'Content-Length', 'Location']
+            sourceKeys = ['Content-Type', 'Content-Disposition', 'Content-Length', 'Location', 'Last-Modified']
         else:
             sourceKeys = returnKeys
         for idx in range(len(returnKeys)):

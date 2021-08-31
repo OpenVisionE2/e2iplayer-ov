@@ -304,21 +304,31 @@ class Key(BasePathMixin):
 
     '''
 
-    def __init__(self, method, uri, base_uri, iv=None):
+    tag = '#EXT-X-KEY'
+
+    def __init__(self, method, base_uri, uri=None, iv=None, keyformat=None, keyformatversions=None, **kwargs):
         self.method = method
         self.uri = uri
         self.iv = iv
+        self.keyformat = keyformat
+        self.keyformatversions = keyformatversions
         self.base_uri = base_uri
+        self._extra_params = kwargs
 
     def __str__(self):
         output = [
             'METHOD=%s' % self.method,
-            'URI="%s"' % self.uri,
-            ]
+        ]
+        if self.uri:
+            output.append('URI="%s"' % self.uri)
         if self.iv:
             output.append('IV=%s' % self.iv)
+        if self.keyformat:
+            output.append('KEYFORMAT="%s"' % self.keyformat)
+        if self.keyformatversions:
+            output.append('KEYFORMATVERSIONS="%s"' % self.keyformatversions)
 
-        return '#EXT-X-KEY:' + ','.join(output)
+        return self.tag + ':' + ','.join(output)
 
 
 class AudioStream(BasePathMixin):

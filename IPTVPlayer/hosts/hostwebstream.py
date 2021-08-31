@@ -184,24 +184,25 @@ class HasBahCa(CBaseHostClass):
                         {'alias_id': 'ustvnow.com', 'name': 'ustvnow', 'title': 'https://ustvnow.com/', 'url': 'https://www.ustvnow.com/', 'icon': 'http://2.bp.blogspot.com/-SVJ4uZ2-zPc/UBAZGxREYRI/AAAAAAAAAKo/lpbo8OFLISU/s1600/ustvnow.png'}, \
                         {'alias_id': 'showsport-tv.com', 'name': 'showsport-tv.com', 'title': 'http://showsport-tv.com/', 'url': 'http://showsport-tv.com/', 'icon': 'http://showsport-tv.com/images/sstv-logo.png'}, \
                         {'alias_id': 'sport365.live', 'name': 'sport365.live', 'title': 'http://sport365.live/', 'url': 'http://www.sport365.live/', 'icon': 'http://s1.medianetworkinternational.com/images/icons/48x48px.png'}, \
-                        {'alias_id': 'sportstream365.com', 'name': 'sportstream365.com', 'title': 'http://sportstream365.com/', 'url': 'http://sportstream365.com/', 'icon': 'http://sportstream365.com/img/logo.png'}, \
+#                        {'alias_id': 'sportstream365.com', 'name': 'sportstream365.com', 'title': 'http://sportstream365.com/', 'url': 'http://sportstream365.com/', 'icon': 'http://sportstream365.com/img/logo.png'}, \
                         {'alias_id': 'bilasport.com', 'name': 'bilasport.com', 'title': 'http://bilasport.com/', 'url': '', 'icon': 'https://projects.fivethirtyeight.com/2016-mlb-predictions/images/logos.png'}, \
                         {'alias_id': 'mlbstream.tv', 'name': 'mlbstream.tv', 'title': 'http://mlbstream.tv/ && http://nhlstream.tv/', 'url': '', 'icon': 'http://mlbstream.tv/wp-content/uploads/2018/03/mlb-network-291x300.png'}, \
 #                        {'alias_id':'livetvhd.net',            'name': 'livetvhd.net',        'title': 'https://livetvhd.net/',             'url': 'https://livetvhd.net/',                                              'icon': 'https://livetvhd.net/images/logo.png'}, \
                         {'alias_id': 'karwan.tv', 'name': 'karwan.tv', 'title': 'http://karwan.tv/', 'url': 'http://karwan.tv/', 'icon': 'http://karwan.tv//logo/karwan-tv/karwan-tv-1.png'}, \
                         {'alias_id': 'canlitvlive.io', 'name': 'canlitvlive.io', 'title': 'http://canlitvlive.io/', 'url': 'http://www.canlitvlive.io/', 'icon': 'http://www.canlitvlive.io/images/footer_simge.png'}, \
                         {'alias_id': 'beinmatch.com', 'name': 'beinmatch.com', 'title': 'http://beinmatch.com/', 'url': '', 'icon': 'http://www.beinmatch.com/assets/images/bim/logo.png'}, \
-                        {'alias_id': 'wiz1.net', 'name': 'wiz1.net', 'title': 'http://wiz1.net/', 'url': '', 'icon': 'http://i.imgur.com/yBX7fZA.jpg'}, \
+#                        {'alias_id': 'wiz1.net', 'name': 'wiz1.net', 'title': 'http://wiz1.net/', 'url': '', 'icon': 'http://i.imgur.com/yBX7fZA.jpg'}, \
                         {'alias_id': 'wiziwig1.eu', 'name': 'wiziwig1.eu', 'title': 'http://wiziwig1.eu/', 'url': '', 'icon': 'http://i.imgur.com/yBX7fZA.jpg'},\
 #                        {'alias_id':'wagasworld',              'name': 'wagasworld.com',      'title': 'http://wagasworld.com/',            'url': 'http://www.wagasworld.com/channels.php',                             'icon': 'http://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/1000px-Flag_of_Germany.svg.png'}, \
                         {'alias_id': 'djing.com', 'name': 'djing.com', 'title': 'https://djing.com/', 'url': 'https://djing.com/', 'icon': 'https://www.djing.com/newimages/content/c01.jpg'}, \
                         {'alias_id': 'live_stream_tv', 'name': 'live-stream.tv', 'title': 'http://live-stream.tv/', 'url': 'http://www.live-stream.tv/', 'icon': 'http://www.live-stream.tv/images/lstv-logo.png'}, \
-                        {'alias_id': 'edem_tv', 'name': 'edem.tv', 'title': 'https://edem.tv/', 'url': 'https://edem.tv/', 'icon': 'https://edem.tv/public/images/logo_edem.png'}, \
+#                        {'alias_id': 'edem_tv', 'name': 'edem.tv', 'title': 'https://edem.tv/', 'url': 'https://edem.tv/', 'icon': 'https://edem.tv/public/images/logo_edem.png'}, \
                         {'alias_id': 'goldvod.tv', 'name': 'goldvod.tv', 'title': 'http://goldvod.tv/', 'url': '', 'icon': 'http://goldvod.tv/assets/images/logo.png'}, \
                         {'alias_id': 'livemass.net', 'name': 'livemass.net', 'title': 'http://livemass.net/', 'url': 'http://www.livemass.net/', 'icon': 'http://s3.amazonaws.com/livemass/warrington/images/warrington/iconclr.png'}, \
 #                        {'alias_id':'wizja.tv',                'name': 'wizja.tv',            'title': 'http://wizja.tv/',                  'url': 'http://wizja.tv/',                                                   'icon': 'http://wizja.tv/logo.png'}, \
                         {'alias_id': 'crackstreams.net', 'name': 'crackstreams.net', 'title': 'http://crackstreams.net/', 'url': 'http://crackstreams.net/', 'icon': ''}, \
                         {'alias_id': 'nhl66.ir', 'name': 'nhl66.ir', 'title': 'https://nhl66.ir', 'url': 'https://api.nhl66.ir/api/sport/schedule', 'icon': 'https://nhl66.ir/cassets/logo.png'}, \
+                        {'alias_id': 'strims.world', 'name': 'strims.world', 'title': 'http://strims.world/', 'url': 'http://strims.world/', 'icon': ''}, \
                        ]
 
     def __init__(self):
@@ -1144,6 +1145,76 @@ class HasBahCa(CBaseHostClass):
         except Exception:
             printExc()
 
+    def getStrimsWorldList(self, url):
+        printDBG("StreamsWorldList start")
+        sts, data = self.cm.getPage(url)
+        if not sts:
+            return
+        data = CParsingHelper.getDataBeetwenNodes(data, ('<table', '>', 'ramowka'), ('</table', '>'))[1]
+        data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<td', '>'), ('</td', '>'))
+        for item in data:
+            params = {'name': "strims_world"}
+            linkVideo = self.cm.ph.getSearchGroups(item, '''\shref=['"]([^"^']+?)['"]''')[0]
+            if len(linkVideo) and not linkVideo.startswith('http'):
+                linkVideo = 'http://strims.world' + linkVideo
+            params['url'] = urlparser.decorateUrl(linkVideo, {'Referer': url})
+#            params['icon'] = self.cm.ph.getSearchGroups(item, '''\ssrc=['"]([^"^']+?)['"]''')[0]
+            params['title'] = self.cleanHtmlStr(item)
+#            if len(params['icon']) and not params['icon'].startswith('http'):
+#                params['icon'] = 'http://crackstreams.net/' + params['icon']
+            self.addDir(params)
+
+    def getStrimsWorldDir(self, url):
+        printDBG("StreamsWorldDir start")
+        sts, data = self.cm.getPage(url)
+        if not sts:
+            return []
+        data = CParsingHelper.getDataBeetwenNodes(data, ('<iframe', '>', 'src'), ('</script', '>'))[1]
+        data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<a', '>'), ('</a', '>'))
+
+        for item in data:
+            _url = self.cm.ph.getSearchGroups(item, '''\shref=['"]([^"^']+?)['"]''')[0]
+            if _url.startswith('?'):
+                _url = url + _url
+            sts, tmp = self.cm.getPage(_url)
+            if sts:
+                tmp = CParsingHelper.getDataBeetwenNodes(tmp, ('<iframe', '>', 'src'), ('</iframe', '>'))[1]
+                linkVideo = self.cm.ph.getSearchGroups(tmp, '''src=['"]([^"^']+?)['"]''')[0]
+                linkVideo = linkVideo.strip(' \n\t\r')
+                if len(linkVideo) and linkVideo.startswith('//'):
+                    linkVideo = 'http:' + linkVideo
+                if len(linkVideo) and not linkVideo.startswith('http'):
+                    linkVideo = self.up.getDomain(url, False) + linkVideo
+                    sts, tmp = self.cm.getPage(linkVideo)
+                    tmp = CParsingHelper.getDataBeetwenNodes(tmp, ('<iframe', '>', 'src'), ('</iframe', '>'))[1]
+                    linkVideo = self.cm.ph.getSearchGroups(tmp, '''src=['"]([^"^']+?)['"]''')[0]
+                    linkVideo = linkVideo.strip(' \n\t\r')
+                    if len(linkVideo) and linkVideo.startswith('//'):
+                        linkVideo = 'http:' + linkVideo
+                linkVideo = linkVideo.replace('https://href.li/', '')
+                if '' == linkVideo:
+                    continue
+                params = {'name': "strims.world"}
+                params['url'] = urlparser.decorateUrl(linkVideo, {'Referer': url})
+                params['title'] = self.cleanHtmlStr(item) + ' - ' + self.up.getDomain(linkVideo)
+                self.addVideo(params)
+
+    def getStrimsWorldLink(self, url):
+        printDBG("StreamsWorldLink url[%r]" % url)
+#        sts, data = self.getPage(url, {'use_cookie': True, 'cookie_items': {'challenge': 'BitMitigate.com'}})
+        urlsTab = []
+
+#        sts,data = self.cm.getPage(_url)
+#        if sts:
+#            _url = self.cm.ph.getSearchGroups(data, '''src=['"]([^"^']+?)['"]''')[0]
+#            printDBG(_url)
+#            printDBG('-------------------------------------')
+#            _url = _url.strip(' \n\t\r')
+#            printDBG(_url)
+#            printDBG('-------------------------------------')
+        urlsTab.extend(self.up.getVideoLinkExt(url))
+        return urlsTab
+
     def handleService(self, index, refresh=0, searchPattern='', searchType=''):
         printDBG('handleService start')
 
@@ -1231,6 +1302,10 @@ class HasBahCa(CBaseHostClass):
             self.getCrackstreamsGroups(url)
         elif name == 'nhl66.ir':
             self.getNhl66List(url)
+        elif name == 'strims.world':
+            self.getStrimsWorldList(url)
+        elif name == 'strims_world':
+            self.getStrimsWorldDir(url)
 
         CBaseHostClass.endHandleService(self, index, refresh)
 
@@ -1325,6 +1400,8 @@ class IPTVHost(CHostBase):
             urlList = self.host.getWiziwig1Link(cItem)
         elif name == "crackstreams.net":
             urlList = self.host.getCrackstreamsLink(url)
+        elif name == "strims.world":
+            urlList = self.host.getStrimsWorldLink(url)
 
         if isinstance(urlList, list):
             for item in urlList:

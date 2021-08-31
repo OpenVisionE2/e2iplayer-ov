@@ -146,7 +146,7 @@ class ustvgo(CBaseHostClass):
                         {'category': 'list_category', 'title': 'Entertainment', 'url': self.getFullUrl('/category/entertainment/')},
                         {'category': 'list_category', 'title': 'News', 'url': self.getFullUrl('/category/news/')},
                         {'category': 'list_category', 'title': 'Sports', 'url': self.getFullUrl('/category/sports/')},
-                        {'category': 'list_category', 'title': 'Kids', 'url': self.getFullUrl('/category/kids/')},]
+                        {'category': 'list_category', 'title': 'Kids', 'url': self.getFullUrl('/category/kids/')}, ]
         self.listsTab(MAIN_CAT_TAB, cItem)
 
     def listItems(self, cItem):
