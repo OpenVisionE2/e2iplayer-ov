@@ -643,6 +643,7 @@ class urlparser:
                        'f1livegp.me': self.pp.parserF1LIVEGPME,
                        'bestnhl.com': self.pp.parserF1LIVEGPME,
                        'highload.to': self.pp.parserHIGHLOADTO,
+                       'liveonscore.to': self.pp.parserLIVEONSCORETV,
                     }
         return
 
@@ -14262,15 +14263,18 @@ class pageParser(CaptchaHelper):
         sts, data = self.cm.getPage(baseUrl, urlParams)
         if not sts:
             return []
+        cUrl = self.cm.meta['url']
 
         data = self.cm.ph.getDataBeetwenMarkers(data, 'var player', ('</script', '>'), False)[1]
         url = self.cm.ph.getSearchGroups(data, '''url:\s*['"]([^"^']+?)['"]''')[0]
         UrlID = self.cm.ph.getSearchGroups(data, '''var\svidgstream\s?=\s?['"]([^"^']+?)['"]''')[0]
-        url = url + '?idgstream=' + UrlID
-
+        url = url + '?idgstream=' + urllib.quote(UrlID)
+        HTTP_HEADER['Referer'] = cUrl
+        urlParams = {'header': HTTP_HEADER}
         sts, data = self.cm.getPage(url, urlParams)
         if not sts:
             return []
+        data = data.replace('\/', '/')
 
         urlTab = []
         url = self.cm.ph.getSearchGroups(data, '''["'](https?://[^'^"]+?\.mp4(?:\?[^"^']+?)?)["']''', ignoreCase=True)[0]
@@ -14464,6 +14468,7 @@ class pageParser(CaptchaHelper):
         if referer:
             HTTP_HEADER['Referer'] = referer
         urlParams = {'header': HTTP_HEADER}
+        domain = urlparser.getDomain(baseUrl, False)
         sts, data = self.cm.getPage(baseUrl, urlParams)
         if not sts:
             return []
@@ -14497,9 +14502,9 @@ class pageParser(CaptchaHelper):
 
         url = self.cm.ph.getDataBeetwenMarkers(script, 'var %s="' % jsvar, '";', False)[1]
         url = eval(jscode.replace(jsvar, 'url'))
-        url = urlparser.getDomain(baseUrl, False) + base64.b64decode(url)
+        url = domain + base64.b64decode(url)
         urlTab = []
-        if url != '':
+        if url != domain:
             urlTab.append({'name': 'mp4', 'url': strwithmeta(url, {'Referer': baseUrl})})
 
         return urlTab
