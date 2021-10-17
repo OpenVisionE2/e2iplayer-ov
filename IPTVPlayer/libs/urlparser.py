@@ -644,6 +644,7 @@ class urlparser:
                        'bestnhl.com': self.pp.parserF1LIVEGPME,
                        'highload.to': self.pp.parserHIGHLOADTO,
                        'liveonscore.to': self.pp.parserLIVEONSCORETV,
+                       'nba-streams.online': self.pp.parserSHOWSPORTXYZ,
                     }
         return
 
@@ -14416,7 +14417,7 @@ class pageParser(CaptchaHelper):
         realResp = re.findall('"(.+?)"', realResp)[spech]
         url = 'https:' + urln + realResp[::-1]
         urlTab = []
-        url = strwithmeta(url, {'Origin': burl, 'Referer': baseUrl, 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:56.0) Gecko/20100101 Firefox/56.0 Waterfox/56.5', 'Connection': 'keep-alive'})
+        url = strwithmeta(url, {'Origin': burl, 'Referer': baseUrl, 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0', 'Connection': 'keep-alive'})
         if url != '':
             urlTab.extend(getDirectM3U8Playlist(url, checkContent=True, sortWithMaxBitrate=999999999))
 

@@ -202,7 +202,7 @@ class HasBahCa(CBaseHostClass):
 #                        {'alias_id':'wizja.tv',                'name': 'wizja.tv',            'title': 'http://wizja.tv/',                  'url': 'http://wizja.tv/',                                                   'icon': 'http://wizja.tv/logo.png'}, \
                         {'alias_id': 'crackstreams.net', 'name': 'crackstreams.net', 'title': 'http://crackstreams.net/', 'url': 'http://crackstreams.net/', 'icon': ''}, \
                         {'alias_id': 'nhl66.ir', 'name': 'nhl66.ir', 'title': 'https://nhl66.ir', 'url': 'https://api.nhl66.ir/api/sport/schedule', 'icon': 'https://nhl66.ir/cassets/logo.png'}, \
-                        {'alias_id': 'strims.world', 'name': 'strims.world', 'title': 'http://strims.world/', 'url': 'http://strims.world/', 'icon': ''}, \
+                        {'alias_id': 'strumyk.tv', 'name': 'strumyk.tv', 'title': 'http://strumyk.tv/', 'url': 'http://strumyk.tv/', 'icon': ''}, \
                        ]
 
     def __init__(self):
@@ -1153,15 +1153,13 @@ class HasBahCa(CBaseHostClass):
         data = CParsingHelper.getDataBeetwenNodes(data, ('<table', '>', 'ramowka'), ('</table', '>'))[1]
         data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<td', '>'), ('</td', '>'))
         for item in data:
-            params = {'name': "strims_world"}
+            params = {'name': "strumyk_tv"}
             linkVideo = self.cm.ph.getSearchGroups(item, '''\shref=['"]([^"^']+?)['"]''')[0]
             if len(linkVideo) and not linkVideo.startswith('http'):
-                linkVideo = 'http://strims.world' + linkVideo
+                linkVideo = 'http://strumyk.tv' + linkVideo
             params['url'] = urlparser.decorateUrl(linkVideo, {'Referer': url})
 #            params['icon'] = self.cm.ph.getSearchGroups(item, '''\ssrc=['"]([^"^']+?)['"]''')[0]
             params['title'] = self.cleanHtmlStr(item)
-#            if len(params['icon']) and not params['icon'].startswith('http'):
-#                params['icon'] = 'http://crackstreams.net/' + params['icon']
             self.addDir(params)
 
     def getStrimsWorldDir(self, url):
@@ -1194,24 +1192,15 @@ class HasBahCa(CBaseHostClass):
                 linkVideo = linkVideo.replace('https://href.li/', '')
                 if '' == linkVideo:
                     continue
-                params = {'name': "strims.world"}
+                params = {'name': "strumyk.tv"}
                 params['url'] = urlparser.decorateUrl(linkVideo, {'Referer': url})
                 params['title'] = self.cleanHtmlStr(item) + ' - ' + self.up.getDomain(linkVideo)
                 self.addVideo(params)
 
     def getStrimsWorldLink(self, url):
         printDBG("StreamsWorldLink url[%r]" % url)
-#        sts, data = self.getPage(url, {'use_cookie': True, 'cookie_items': {'challenge': 'BitMitigate.com'}})
         urlsTab = []
 
-#        sts,data = self.cm.getPage(_url)
-#        if sts:
-#            _url = self.cm.ph.getSearchGroups(data, '''src=['"]([^"^']+?)['"]''')[0]
-#            printDBG(_url)
-#            printDBG('-------------------------------------')
-#            _url = _url.strip(' \n\t\r')
-#            printDBG(_url)
-#            printDBG('-------------------------------------')
         urlsTab.extend(self.up.getVideoLinkExt(url))
         return urlsTab
 
@@ -1302,9 +1291,9 @@ class HasBahCa(CBaseHostClass):
             self.getCrackstreamsGroups(url)
         elif name == 'nhl66.ir':
             self.getNhl66List(url)
-        elif name == 'strims.world':
+        elif name == 'strumyk.tv':
             self.getStrimsWorldList(url)
-        elif name == 'strims_world':
+        elif name == 'strumyk_tv':
             self.getStrimsWorldDir(url)
 
         CBaseHostClass.endHandleService(self, index, refresh)
@@ -1400,7 +1389,7 @@ class IPTVHost(CHostBase):
             urlList = self.host.getWiziwig1Link(cItem)
         elif name == "crackstreams.net":
             urlList = self.host.getCrackstreamsLink(url)
-        elif name == "strims.world":
+        elif name == "strumyk.tv":
             urlList = self.host.getStrimsWorldLink(url)
 
         if isinstance(urlList, list):
