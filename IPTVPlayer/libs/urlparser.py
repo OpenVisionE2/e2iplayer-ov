@@ -1720,9 +1720,9 @@ class pageParser(CaptchaHelper):
             if not sts:
                 return ''
 
-            jscode = self.cm.ph.getSearchGroups(jsdata, '''var\s([a-z]+?,[a-z]+?,.*?);''')[0]
+            jscode = self.cm.ph.getSearchGroups(jsdata, '''var\s([a-z]+?,[a-z]+?,[a-z]+?,.*?);''')[0]
             tmp = jscode.split(',')
-            jscode = self.cm.ph.getSearchGroups(jsdata, '''(var\s[a-z]+?,[a-z]+?,.*?;)''')[0]
+            jscode = self.cm.ph.getSearchGroups(jsdata, '''(var\s[a-z]+?,[a-z]+?,[a-z]+?,.*?;)''')[0]
             for item in tmp:
                 jscode += self.cm.ph.getSearchGroups(jsdata, '(%s=function\(.*?};)' % item)[0]
             jscode += "file = '%s';" % dat
