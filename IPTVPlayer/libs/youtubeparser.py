@@ -263,8 +263,8 @@ class YouTubeParser():
                 i = i + 1
 
             if hq or (not config.plugins.iptvplayer.allowedcoverformats.value) or config.plugins.iptvplayer.allowedcoverformats.value != 'all':
-                if 'hqdefault' in url:
-                    url = url.replace('hqdefault', 'hq720')
+#                if 'hqdefault' in url:
+#                    url = url.replace('hqdefault', 'hq720')
                 if '?' in url:
                     url = url.split('?')[0]
         except Exception:
@@ -670,7 +670,14 @@ class YouTubeParser():
 
             if url:
                 # next page search
-                sts, data = self.cm.getPage(url, self.http_params, self.postdata)
+                url = strwithmeta(url)
+                if 'post_data' in url.meta:
+                    http_params = dict(self.http_params)
+                    http_params['header']['Content-Type'] = 'application/json'
+                    http_params['raw_post_data'] = True
+                    sts, data = self.cm.getPage(url, http_params, url.meta['post_data'])
+                else:
+                    sts, data = self.cm.getPage(url, self.http_params, self.post_data)
 
                 if sts:
                     response = json_loads(data)
@@ -704,9 +711,9 @@ class YouTubeParser():
             if not sts:
                 return []
 
-            #printDBG("--------------------")
-            #printDBG(json_dumps(response))
-            #printDBG("--------------------")
+#            printDBG("-------- response ------------")
+#            printDBG(json_dumps(response))
+#            printDBG("------------------------------")
 
             # search videos
             r2 = list(self.findKeys(response, 'videoRenderer'))
@@ -757,9 +764,9 @@ class YouTubeParser():
 
             if nP:
                 nextPage = nP[0]
-                #printDBG("-------------------------------------------------")
-                #printDBG(json_dumps(nextPage))
-                #printDBG("-------------------------------------------------")
+#                printDBG("-------------- nextPage -------------------------")
+#                printDBG(json_dumps(nextPage))
+#                printDBG("-------------------------------------------------")
 
                 ctoken = nextPage["continuation"]
                 itct = nextPage["clickTrackingParams"]
@@ -783,7 +790,12 @@ class YouTubeParser():
                 itct = nextPage["clickTrackingParams"]
                 label = _("Next Page")
 
-                urlNextPage = self.updateQueryUrl(url, {'pbj': '1', 'ctoken': ctoken, 'continuation': ctoken, 'itct': itct})
+                urlNextPage = "https://www.youtube.com/youtubei/v1/search?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8"
+                post_data = {'context': {'client': {'clientName': 'WEB', 'clientVersion': '2.20201021.03.00', }}, }
+                post_data['continuation'] = ctoken
+                post_data['context']['clickTracking'] = {'clickTrackingParams': itct}
+                post_data = json_dumps(post_data).encode('utf-8')
+                urlNextPage = strwithmeta(urlNextPage, {'post_data': post_data})
                 params = {'type': 'more', 'category': "search_next_page", 'title': label, 'page': str(int(page) + 1), 'url': urlNextPage}
                 printDBG(str(params))
                 currList.append(params)

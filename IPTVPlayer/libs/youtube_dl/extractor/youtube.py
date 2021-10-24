@@ -529,6 +529,8 @@ class YoutubeIE(object):
             #https
             url = 'http://www.youtube.com/' + compat_urllib_parse.unquote(mobj.group(1)).lstrip('/')
         video_id = self._extract_id(url)
+
+        player_response = None
         if 'yt-video-id' == video_id:
             video_id = self.cm.ph.getSearchGroups(url + '&', '[\?&]docid=([^\?^&]+)[\?&]')[0]
             isGoogleDoc = True
@@ -536,21 +538,32 @@ class YoutubeIE(object):
             videoKey = 'docid'
             COOKIE_FILE = GetCookieDir('docs.google.com.cookie')
             videoInfoparams = {'cookiefile': COOKIE_FILE, 'use_cookie': True, 'load_cookie': False, 'save_cookie': True}
+            sts, video_webpage = self.cm.getPage(url)
         else:
-            url = 'http://www.youtube.com/watch?v=%s&bpctr=9999999999&has_verified=1&' % video_id
+            url = 'https://www.youtube.com/youtubei/v1/player?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8'
             isGoogleDoc = False
             videoKey = 'video_id'
             videoInfoparams = {}
+            http_params = {'header': {'Content-Type': 'application/json', 'Origin': 'https://www.youtube.com', 'X-YouTube-Client-Name': '3', 'X-YouTube-Client-Version': '16.20'}}
+            http_params['raw_post_data'] = True
+            post_data = "{'videoId': '%s', 'context': {'client': {'hl': 'en', 'clientVersion': '16.20', 'clientName': 'ANDROID'}}}" % video_id
+            sts, video_webpage = self.cm.getPage(url, http_params, post_data)
+            if sts:
+                if allowAgeGate and 'LOGIN_REQUIRED' in video_webpage:
+                    post_data = "{'videoId': '%s', 'thirdParty': 'https://google.com', 'context': {'client': {'hl': 'en', 'clientScreen': 'EMBED', 'clientVersion': '16.20', 'clientName': 'ANDROID'}}}" % video_id
+                    sts, video_webpage = self.cm.getPage(url, http_params, post_data)
+                player_response = json_loads(video_webpage)
+            else:
+                url = 'http://www.youtube.com/watch?v=%s&bpctr=9999999999&has_verified=1&' % video_id
+                sts, video_webpage = self.cm.getPage(url)
+                if sts:
+                    player_response = self._extract_yt_initial_variable(
+                        video_webpage, self._YT_INITIAL_PLAYER_RESPONSE_RE,
+                        video_id, 'initial player response')
 
-        sts, video_webpage = self.cm.getPage(url)
         if not sts:
             raise ExtractorError('Unable to download video webpage')
 
-        player_response = None
-        if video_webpage:
-            player_response = self._extract_yt_initial_variable(
-                video_webpage, self._YT_INITIAL_PLAYER_RESPONSE_RE,
-                video_id, 'initial player response')
         if not player_response:
             raise ExtractorError('Unable to get player response')
 
