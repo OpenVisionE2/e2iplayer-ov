@@ -677,7 +677,7 @@ class YouTubeParser():
                     http_params['raw_post_data'] = True
                     sts, data = self.cm.getPage(url, http_params, url.meta['post_data'])
                 else:
-                    sts, data = self.cm.getPage(url, self.http_params, self.post_data)
+                    sts, data = self.cm.getPage(url, self.http_params, self.postdata)
 
                 if sts:
                     response = json_loads(data)
