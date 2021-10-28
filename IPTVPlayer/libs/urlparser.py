@@ -645,6 +645,14 @@ class urlparser:
                        'highload.to': self.pp.parserHIGHLOADTO,
                        'liveonscore.to': self.pp.parserLIVEONSCORETV,
                        'nba-streams.online': self.pp.parserSHOWSPORTXYZ,
+                       'playersb.com': self.pp.parserSTREAMSB,
+                       'streamsb.net': self.pp.parserSTREAMSB,
+                       'sbplay.one': self.pp.parserSTREAMSB,
+                       'embedsb.com': self.pp.parserSTREAMSB,
+                       'sbembed.com': self.pp.parserSTREAMSB,
+                       'cloudemb.com': self.pp.parserSTREAMSB,
+                       'sbplay.org': self.pp.parserSTREAMSB,
+                       'sbvideo.net': self.pp.parserSTREAMSB,
                     }
         return
 
@@ -1621,7 +1629,8 @@ class pageParser(CaptchaHelper):
 
         #HEADER = {'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html'}
 #        HTTP_HEADER = self.cm.getDefaultHeader(browser='chrome') #iphone_3_0
-        HTTP_HEADER = {"User-Agent": "Mozilla/5.0 (PlayStation 4 4.71) AppleWebKit/601.2 (KHTML, like Gecko)"}
+#        HTTP_HEADER = {"User-Agent": "Mozilla/5.0 (PlayStation 4 4.71) AppleWebKit/601.2 (KHTML, like Gecko)"}
+        HTTP_HEADER = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0'}
         defaultParams = {'header': HTTP_HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': COOKIE_FILE}
 
         def _decorateUrl(inUrl, host, referer):
@@ -1663,11 +1672,19 @@ class pageParser(CaptchaHelper):
         # extract qualities
         sts, data = self.cm.getPage(inUrl, defaultParams)
         if sts:
-            sts, data = self.cm.ph.getDataBeetwenMarkers(data, 'Jakość:', '</div>', False)
-            if sts:
-                data = re.findall('<a[^>]+?href="([^"]+?)"[^>]*?>([^<]+?)</a>', data)
-                for urlItem in data:
-                    tmpUrls.append({'name': 'cda.pl ' + urlItem[1], 'url': urlItem[0]})
+            tmp = self.cm.ph.getDataBeetwenMarkers(data, "player_data='", "'", False)[1].strip()
+            if tmp == '':
+                tmp = self.cm.ph.getDataBeetwenMarkers(data, 'player_data="', '"', False)[1].strip()
+            try:
+                if tmp != '':
+                    data = json_loads(tmp)
+                    qualities = data['video']['qualities']
+            except Exception:
+                qualities = ''
+                printExc()
+            printDBG("parserCDA qualities[%r]" % qualities)
+            for item in qualities:
+                tmpUrls.append({'name': 'cda.pl ' + item, 'url': inUrl + '/vfilm?wersja=' + item + '&a=1&t=0'})
 
         if 0 == len(tmpUrls):
             tmpUrls.append({'name': 'cda.pl', 'url': inUrl})
@@ -14507,5 +14524,38 @@ class pageParser(CaptchaHelper):
         urlTab = []
         if url != domain:
             urlTab.append({'name': 'mp4', 'url': strwithmeta(url, {'Referer': baseUrl})})
+
+        return urlTab
+
+    def parserSTREAMSB(self, baseUrl):
+        printDBG("parserSTREAMSB baseUrl[%s]" % baseUrl)
+        urlTab = []
+        HTTP_HEADER = self.cm.getDefaultHeader(browser='chrome')
+        urlParams = {'header': HTTP_HEADER}
+        baseUrl = baseUrl.replace("embed-", "d/").replace("/e/", "/d/").replace("/play/", "/d/")
+        if '/d/' not in baseUrl:
+            baseUrl = baseUrl.replace(urlparser.getDomain(baseUrl), urlparser.getDomain(baseUrl) + '/d')
+        sts, data = self.cm.getPage(baseUrl, urlParams)
+        if not sts:
+            return False
+
+        sources = re.findall(r'download_video([^"]+)[^\d]+(\d+x\d+)', data)
+#        printDBG("parserSTREAMSB sources[%s]" % str(sources))
+        if sources:
+            for item in sources:
+                code, mode, hash = eval(item[0])
+                dl_url = '{0}dl?op=download_orig&id={1}&mode={2}&hash={3}'.format(urlparser.getDomain(baseUrl, False), code, mode, hash)
+                sts, data = self.cm.getPage(dl_url, urlParams)
+                error = self.cm.ph.getDataBeetwenNodes(data, ('<b', '>', 'err'), ('<br', '>'), False)[1]
+                sleep_time = self.cm.ph.getSearchGroups(error, '([0-9]+?) seconds')[0]
+                if '' != sleep_time:
+                    GetIPTVSleep().Sleep(int(sleep_time))
+                    sts, data = self.cm.getPage(dl_url, urlParams)
+                    error = self.cm.ph.getDataBeetwenNodes(data, ('<b', '>', 'err'), ('<br', '>'), False)[1]
+                videoUrl = re.search('href="([^"]+)">Direct', data)
+                SetIPTVPlayerLastHostError(error)
+                if videoUrl:
+                    params = {'name': item[1], 'url': videoUrl.group(1)}
+                    urlTab.append(params)
 
         return urlTab
