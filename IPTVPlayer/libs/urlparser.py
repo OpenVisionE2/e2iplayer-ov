@@ -1633,6 +1633,17 @@ class pageParser(CaptchaHelper):
         HTTP_HEADER = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0'}
         defaultParams = {'header': HTTP_HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': COOKIE_FILE}
 
+        def getPage(url, params={}, post_data=None):
+            sts, data = False, None
+            sts, data = self.cm.getPage(url, defaultParams, post_data)
+            tries = 0
+            while tries < 3:
+                tries += 1
+                if 429 == self.cm.meta['status_code']:
+                    GetIPTVSleep().Sleep(int(61))
+                    sts, data = self.cm.getPage(url, defaultParams, post_data)
+            return sts, data
+
         def _decorateUrl(inUrl, host, referer):
             cookies = []
             cj = self.cm.getCookie(COOKIE_FILE)
@@ -1656,7 +1667,7 @@ class pageParser(CaptchaHelper):
         uniqUrls = []
         tmpUrls = []
         if vidMarker not in inUrl:
-            sts, data = self.cm.getPage(inUrl, defaultParams)
+            sts, data = getPage(inUrl, defaultParams)
             if sts:
                 sts, match = self.cm.ph.getDataBeetwenMarkers(data, "Link do tego video:", '</a>', False)
                 if sts:
@@ -1670,7 +1681,7 @@ class pageParser(CaptchaHelper):
             inUrl = 'http://ebd.cda.pl/620x368/' + vid
 
         # extract qualities
-        sts, data = self.cm.getPage(inUrl, defaultParams)
+        sts, data = getPage(inUrl, defaultParams)
         if sts:
             tmp = self.cm.ph.getDataBeetwenMarkers(data, "player_data='", "'", False)[1].strip()
             if tmp == '':
@@ -1733,10 +1744,12 @@ class pageParser(CaptchaHelper):
             return str(dat)
 
         def __jsplayer(dat):
-            sts, jsdata = self.cm.getPage('https://ebd.cda.pl/js/player.js', defaultParams)
-            if not sts:
-                return ''
+            if self.jscode.get('data', '') == '':
+                sts, self.jscode['data'] = getPage('https://ebd.cda.pl/js/player.js', defaultParams)
+                if not sts:
+                    return ''
 
+            jsdata = self.jscode.get('data', '')
             jscode = self.cm.ph.getSearchGroups(jsdata, '''var\s([a-z]+?,[a-z]+?,[a-z]+?,.*?);''')[0]
             tmp = jscode.split(',')
             jscode = self.cm.ph.getSearchGroups(jsdata, '''(var\s[a-z]+?,[a-z]+?,[a-z]+?,.*?;)''')[0]
@@ -1757,7 +1770,7 @@ class pageParser(CaptchaHelper):
                 inUrl = 'http://www.cda.pl/' + urlItem['url']
             else:
                 inUrl = urlItem['url']
-            sts, pageData = self.cm.getPage(inUrl, defaultParams)
+            sts, pageData = getPage(inUrl, defaultParams)
             if not sts:
                 continue
 
@@ -1784,7 +1797,7 @@ class pageParser(CaptchaHelper):
                 if tmp != '':
                     _tmp = json_loads(tmp)
                     tmp = __jsplayer(_tmp['video']['file'])
-                    if 'cda.pl' not in tmp:
+                    if 'cda.pl' not in tmp and _tmp['video']['file']:
                         tmp = __ca(_tmp['video']['file'])
             except Exception:
                 tmp = ''
@@ -1807,6 +1820,8 @@ class pageParser(CaptchaHelper):
                     if '.mp4' in data:
                         type = ' mp4 '
                     __appendVideoUrl({'name': urlItem['name'] + type, 'url': _decorateUrl(data, 'cda.pl', urlItem['url'])})
+
+        self.jscode['data'] = ''
         return videoUrls[::-1]
 
     def parserDWN(self, url):
