@@ -13850,7 +13850,21 @@ class pageParser(CaptchaHelper):
     def parserSTREAMTAPE(self, baseUrl):
         printDBG("parserSTREAMTAPE baseUrl[%s]" % baseUrl)
 
-        sts, data = self.cm.getPage(baseUrl)
+        COOKIE_FILE = GetCookieDir("streamtape.cookie")
+        httpParams = {
+            'header': {
+                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36',
+                'Accept': '*/*',
+                'Accept-Encoding': 'gzip',
+                'Referer': baseUrl.meta.get('Referer', baseUrl)
+            },
+            'use_cookie': True,
+            'load_cookie': True,
+            'save_cookie': True,
+            'cookiefile': COOKIE_FILE
+        }
+
+        sts, data = self.cm.getPage(baseUrl, httpParams)
 
         urlTabs = []
 
@@ -13862,11 +13876,13 @@ class pageParser(CaptchaHelper):
             #search url in tag like <div id="videolink" style="display:none;">//streamtape.com/get_video?id=27Lbk7KlQBCZg02&expires=1589450415&ip=DxWsE0qnDS9X&token=Og-Vxdpku4x8</div>
             t = self.cm.ph.getSearchGroups(data, '''innerHTML = ([^;]+?);''')[0] + ';'
             printDBG("parserSTREAMTAPE t[%s]" % t)
-            t = eval(t.replace('.substring(', '[').replace(');', ':]'))
-            if t.startswith('//'):
-                t = "https:" + t
+            t = t.replace('.substring(', '[', 1).replace(').substring(', ':][').replace(');', ':]') + '[1:]'
+            t = eval(t)
+            if t.startswith('/'):
+                t = "https:/" + t
             if self.cm.isValidUrl(t):
-                t = urlparser.decorateUrl(t, {'Referer': baseUrl})
+                cookieHeader = self.cm.getCookieHeader(COOKIE_FILE, unquote=False)
+                t = urlparser.decorateUrl(t, {'Cookie': cookieHeader, 'Referer': httpParams['header']['Referer'], 'User-Agent': httpParams['header']['User-Agent']})
                 params = {'name': 'link', 'url': t}
                 printDBG(params)
                 urlTabs.append(params)
@@ -14064,6 +14080,7 @@ class pageParser(CaptchaHelper):
         sts, data = self.cm.getPage(baseUrl, urlParams)
         if not sts:
             return False
+        cUrl = self.cm.meta['url']
 
         urlTab = []
         if "eval(function(p,a,c,k,e,d)" in data:
@@ -14085,6 +14102,7 @@ class pageParser(CaptchaHelper):
                 sts, data = self.cm.getPage(url, urlParams)
                 if sts:
                     url = self.cm.meta.get('location', '')
+                    url = strwithmeta(url, {'Referer': cUrl})
                     urlTab.append({'name': name, 'url': url})
 
         return urlTab
@@ -14240,18 +14258,15 @@ class pageParser(CaptchaHelper):
                     "Accept": "application/json, text/javascript, */*; q=0.01",
                 }
                 urlParams = {'header': headers}
-                kurl = 'https://key.seckeyserv.me/?stream=%s&scode=%s&expires=%s' % (strName, scode, expires)
-                sts, data = self.cm.getPage(kurl, urlParams)
-                printDBG("parserEMBEDSTREAMME key.seckeyserv.me[%s]" % data)# cloudflare protection?
 
                 if url != '':
                     url = strwithmeta(url, {'Origin': qbc, 'Referer': urlk, 'Accept-Language': 'en'})
                     urlTab.extend(getDirectM3U8Playlist(url, checkContent=True, sortWithMaxBitrate=999999999))
-                    urlParams['header']['Referer'] = urlk
-                    urlParams['header']['Origin'] = qbc
-                    urlParams['header']['Accept-Language'] = 'en'
-                    sts, data = self.cm.getPage(url, urlParams)
-                    printDBG("parserEMBEDSTREAMME m3u8[%s]" % data)
+                    sts, m3u8_data = self.cm.getPage(url, urlParams)
+                    kurl = self.cm.ph.getSearchGroups(m3u8_data, '''URI=['"]([^"^']+?)['"]''')[0]
+                    sts, data = self.cm.getPage(kurl, urlParams)
+                    printDBG("parserEMBEDSTREAMME key.seckeyserv.me[%s]" % data)# cloudflare protection?
+                    printDBG("parserEMBEDSTREAMME m3u8[%s]" % m3u8_data)
 
         return urlTab
 
