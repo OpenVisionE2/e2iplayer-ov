@@ -637,6 +637,7 @@ class urlparser:
                        'assia.org': self.pp.parserASSIAORG,
                        'assia2.com': self.pp.parserASSIAORG,
                        'freefeds.click': self.pp.parserASSIAORG,
+                       'givemenbastreams.com': self.pp.parserASSIAORG,
                        'embedstream.me': self.pp.parserEMBEDSTREAMME,
                        'daddylive.me': self.pp.parserDADDYLIVE,
                        'daddylive.club': self.pp.parserDADDYLIVE,
@@ -645,6 +646,7 @@ class urlparser:
                        'bestnhl.com': self.pp.parserF1LIVEGPME,
                        'highload.to': self.pp.parserHIGHLOADTO,
                        'liveonscore.to': self.pp.parserLIVEONSCORETV,
+                       'weakstreams.com': self.pp.parserLIVEONSCORETV,
                        'nba-streams.online': self.pp.parserSHOWSPORTXYZ,
                        'playersb.com': self.pp.parserSTREAMSB,
                        'streamsb.net': self.pp.parserSTREAMSB,
@@ -655,6 +657,7 @@ class urlparser:
                        'sbplay.org': self.pp.parserSTREAMSB,
                        'sbvideo.net': self.pp.parserSTREAMSB,
                        'watchsb.com': self.pp.parserSTREAMSB,
+                       'sportsonline.to': self.pp.parserSPORTSONLINETO,
                     }
         return
 
@@ -1631,8 +1634,8 @@ class pageParser(CaptchaHelper):
 
         #HEADER = {'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html'}
 #        HTTP_HEADER = self.cm.getDefaultHeader(browser='chrome') #iphone_3_0
-#        HTTP_HEADER = {"User-Agent": "Mozilla/5.0 (PlayStation 4 4.71) AppleWebKit/601.2 (KHTML, like Gecko)"}
-        HTTP_HEADER = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0'}
+        HTTP_HEADER = {"User-Agent": "Mozilla/5.0 (PlayStation 4 4.71) AppleWebKit/601.2 (KHTML, like Gecko)"}
+#        HTTP_HEADER = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0'}
         defaultParams = {'header': HTTP_HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': COOKIE_FILE}
 
         def getPage(url, params={}, post_data=None):
@@ -14589,5 +14592,48 @@ class pageParser(CaptchaHelper):
                 if videoUrl:
                     params = {'name': item[1], 'url': videoUrl.group(1)}
                     urlTab.append(params)
+
+        return urlTab
+
+    def parserSPORTSONLINETO(self, baseUrl):
+        printDBG("parserSPORTSONLINETO baseUrl[%r]" % baseUrl)
+        HTTP_HEADER = self.cm.getDefaultHeader(browser='chrome')
+        referer = baseUrl.meta.get('Referer')
+        if referer:
+            HTTP_HEADER['Referer'] = referer
+        urlParams = {'header': HTTP_HEADER}
+        sts, data = self.cm.getPage(baseUrl, urlParams)
+        if not sts:
+            return False
+        cUrl = self.cm.meta['url']
+
+        url = self.cm.ph.getSearchGroups(data, '''<iframe[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0]
+        HTTP_HEADER['Referer'] = cUrl
+        urlParams = {'header': HTTP_HEADER}
+        sts, data = self.cm.getPage(url, urlParams)
+        if not sts:
+            return False
+
+        urlTab = []
+        if "eval(function(p,a,c,k,e,d)" in data:
+            printDBG('Host resolveUrl packed')
+            scripts = re.findall(r"(eval\s?\(function\(p,a,c,k,e,d.*?)</script>", data, re.S)
+            for packed in scripts:
+                data2 = packed
+                printDBG('Host pack: [%s]' % data2)
+                try:
+                    data = unpackJSPlayerParams(data2, TEAMCASTPL_decryptPlayerParams, 0, True, True)
+                    printDBG('OK unpack: [%s]' % data)
+                except Exception:
+                    pass
+
+                url = self.cm.ph.getSearchGroups(data, '''["'](https?://[^'^"]+?\.mp4(?:\?[^"^']+?)?)["']''', ignoreCase=True)[0]
+                if url != '':
+                    url = strwithmeta(url, {'Origin': "https://" + urlparser.getDomain(baseUrl), 'Referer': baseUrl})
+                    urlTab.append({'name': 'mp4', 'url': url})
+                hlsUrl = self.cm.ph.getSearchGroups(data, '''["'](https?://[^'^"]+?\.m3u8(?:\?[^"^']+?)?)["']''', ignoreCase=True)[0]
+                if hlsUrl != '':
+                    hlsUrl = strwithmeta(hlsUrl, {'Origin': "https://" + urlparser.getDomain(baseUrl), 'Referer': baseUrl})
+                    urlTab.extend(getDirectM3U8Playlist(hlsUrl, checkExt=False, variantCheck=True, checkContent=True, sortWithMaxBitrate=99999999))
 
         return urlTab
