@@ -196,20 +196,12 @@ class MusicBox(CBaseHostClass):
         if not sts:
             return
 
-        data = ph.find(data, ('<div', '>', 'chart-number-one'), ('<div', '>', 'chart-list__expanded-header'))[1]
-        data = re.compile('<div[^>]*?data\-has\-content[^>]*?>').split(data)
-        for item in data:
-            name = ph.clean_html(ph.find(item, ('<div', '>', '__title'), '</div>', flags=0)[1])
-            artist = ph.clean_html(ph.find(item, ('<div', '>', '__artist'), '</div>', flags=0)[1])
-
-            icon = self.cm.getFullUrl(ph.search(item, '\s(https?://[^\s]+?\-174x174\.jpg)\s')[0], self.cm.meta['url'])
-            tmp = ph.clean_html(ph.getattr(item, 'data-brightcove-data'))
-            if not icon and tmp:
-                try:
-                    tmp = json_loads(tmp)
-                    icon = self.cm.getFullUrl(tmp['video_image'], self.cm.meta['url'])
-                except Exception:
-                    printExc()
+        data = re.compile('<div[^>]*?o\-chart\-results\-list\-row\-container[^>]*?>').split(data)
+        for item in data[1:]:
+            name = ph.clean_html(ph.find(item, ('<h3', '>', 'c-title'), '</h3>', flags=0)[1])
+            artist = ph.find(item, ('<h3', '>', 'c-title'), '</li>', flags=0)[1]
+            artist = ph.clean_html(ph.find(artist, ('<span', '>', 'c-label'), '</span>', flags=0)[1])
+            icon = self.getFullIconUrl(self.cm.ph.getSearchGroups(item, '''\sdata-lazy-src=['"]([^"^']+?)['"]''')[0])
             track_name = name
             search_string = urllib.quote(artist + ' ' + track_name + ' music video')
             params = {'good_for_fav': True, 'title': name + ' - ' + artist, 'page': search_string, 'icon': icon}
@@ -220,17 +212,12 @@ class MusicBox(CBaseHostClass):
         if not sts:
             return
 
-        data = ph.find(data, ('<div', '>', 'chart-number-one'), ('<div', '>', 'chart-list__expanded-header'))[1]
-        data = re.compile('<div[^>]*?data\-has\-content[^>]*?>').split(data)
-        for item in data:
-            name = ph.clean_html(ph.find(item, ('<div', '>', '__title'), '</div>', flags=0)[1])
-            artist = ph.clean_html(ph.find(item, ('<div', '>', '__artist'), '</div>', flags=0)[1])
-
-            icon = ph.search(item, '\s(https?://[^\s]+?\-174x174\.jpg)\s')[0]
-            if not icon:
-                icon = ph.getattr(item, 'data-srcset').split(' ', 1)[0]
-            if not icon:
-                icon = ph.getattr(item, 'srcset').split(' ', 1)[0]
+        data = re.compile('<div[^>]*?o\-chart\-results\-list\-row\-container[^>]*?>').split(data)
+        for item in data[1:]:
+            name = ph.clean_html(ph.find(item, ('<h3', '>', 'c-title'), '</h3>', flags=0)[1])
+            artist = ph.find(item, ('<h3', '>', 'c-title'), '</li>', flags=0)[1]
+            artist = ph.clean_html(ph.find(artist, ('<span', '>', 'c-label'), '</span>', flags=0)[1])
+            icon = self.getFullIconUrl(self.cm.ph.getSearchGroups(item, '''\sdata-lazy-src=['"]([^"^']+?)['"]''')[0])
             album_name = name
             params = {'good_for_fav': True, 'name': 'List_album_tracks', 'title': name + ' - ' + artist, 'page': 0, 'artist': artist, 'album': album_name, 'icon': self.cm.getFullUrl(icon, self.cm.meta['url'])}
             self.addDir(params)
