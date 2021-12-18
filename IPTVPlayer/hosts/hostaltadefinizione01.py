@@ -20,7 +20,7 @@ except Exception:
 
 
 def gettytul():
-    return 'https://altadefinizione01.film/'
+    return 'https://altadefinizione01.builders/'
 
 
 class Altadefinizione(CBaseHostClass):
@@ -33,8 +33,8 @@ class Altadefinizione(CBaseHostClass):
         self.AJAX_HEADER = dict(self.HEADER)
         self.AJAX_HEADER.update({'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'})
 
-        self.MAIN_URL = 'https://www.altadefinizione01.film/'
-        self.DEFAULT_ICON_URL = 'https://previews.123rf.com/images/yusufsangdes89/yusufsangdes891507/yusufsangdes89150700042/42557652-cinema-camera-icon-movie-lover-series-icon.jpg'
+        self.MAIN_URL = 'https://www.altadefinizione01.builders/'
+        self.DEFAULT_ICON_URL = 'http://www.sabinacornovac.ro/wp-content/uploads/2017/04/42557652-Cinema-Camera-icon-Movie-Lover-Series-Icon-Stock-Vector-585x355.jpg'
 
         self.defaultParams = {'header': self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
 
@@ -249,15 +249,26 @@ class Altadefinizione(CBaseHostClass):
             self.addVideo(params)
 
         urlTab = []
-        data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<ul', '>', 'host'), ('</ul', '>'), False)
-        for idx in range(len(data)):
-            data[idx] = self.cm.ph.getAllItemsBeetwenMarkers(data[idx], '<a', '</a>')
-            for item in data[idx]:
-                url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''data\-link=['"]([^"^']+?)['"]''', 1, True)[0])
-                if 1 == self.up.checkHostSupport(url):
-                    name = self.cleanHtmlStr(item)
-                    url = strwithmeta(url, {'Referer': cItem['url']})
-                    urlTab.append({'name': name, 'url': url, 'need_resolve': 1})
+        tmp = self.cm.ph.getAllItemsBeetwenMarkers(data, '<iframe', '</iframe>')
+        data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<a', '>', 'data-link'), ('</a', '>'))
+        for item in tmp:
+            url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''src=['"]([^"^']+?)['"]''', 1, True)[0])
+            if 'http' not in url:
+                continue
+            sts, data = self.getPage(url)
+            if not sts:
+                return
+            data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<li', '>', 'data-link'), ('</li', '>'))
+
+        for item in data:
+            printDBG("Altadefinizione.exploreItem item [%s]" % item)
+            url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''data\-link=['"]([^"^']+?)['"]''', 1, True)[0])
+            if url.startswith('//'):
+                url = 'https:' + url
+            if 1 == self.up.checkHostSupport(url):
+                name = self.cleanHtmlStr(item)
+                url = strwithmeta(url, {'Referer': cItem['url']})
+                urlTab.append({'name': name, 'url': url, 'need_resolve': 1})
 
         if len(urlTab):
             params = dict(cItem)
