@@ -64,12 +64,12 @@ class Zaluknij(CBaseHostClass):
     def listMainMenu(self, cItem):
         printDBG("Zaluknij.listMainMenu")
 
-        MAIN_CAT_TAB = [{'category': 'list_items', 'title': _('Movies') + ' PL', 'url': self.getFullUrl('/quality/filmy-w-wersji-pl/')},
-                        {'category': 'list_items', 'title': _('Movies') + ' ENG', 'url': self.getFullUrl('/quality/filmy-w-wersji-eng/')},
-                        {'category': 'list_items', 'title': _('Children'), 'url': self.getFullUrl('/genre/anime-bajki/')},
+        MAIN_CAT_TAB = [{'category': 'list_sort', 'title': _('Movies'), 'url': self.MAIN_URL},
+#                        {'category': 'list_items', 'title': _('Movies') + ' ENG', 'url': self.getFullUrl('/quality/filmy-w-wersji-eng/')},
+#                        {'category': 'list_items', 'title': _('Children'), 'url': self.getFullUrl('/genre/anime-bajki/')},
                         {'category': 'list_items', 'title': _('Series'), 'url': self.getFullUrl('/tvshows/')},
                         {'category': 'list_years', 'title': _('Filter By Year'), 'url': self.MAIN_URL},
-#                        {'category':'list_cats',       'title': _('Movies genres'),  'url':self.getFullUrl('/filmy-online-pl/')},
+                        {'category': 'list_cats',  'title': _('Movies genres'), 'url': self.MAIN_URL},
 #                        {'category':'list_az',        'title': _('Alphabetically'),    'url':self.MAIN_URL},
                         {'category': 'search', 'title': _('Search'), 'search_item': True},
                         {'category': 'search_history', 'title': _('Search history')}, ]
@@ -84,19 +84,19 @@ class Zaluknij(CBaseHostClass):
             return
 
         # fill sort
-#        dat = self.cm.ph.getDataBeetwenMarkers(data, '<ul id="filter-sort"', '</ul>', False)[1]
-#        dat = re.compile('<li[^>]+?data-sort="([^"]+?)".*?<a[^>]*?>(.+?)</a>').findall(dat)
-#        for item in dat:
-#            self.cacheMovieFilters['sort'].append({'title': self.cleanHtmlStr(item[1]), 'sort': item[0]})
+        dat = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'menu-gora-container'), ('<div', '>'))[1]
+        dat = re.compile('<a[^>]+?href="([^"]+?quality[^"]+?)"[^>]*?>(.+?)</a>').findall(dat)
+        for item in dat:
+            self.cacheMovieFilters['sort'].append({'title': self.cleanHtmlStr(item[1]), 'url': self.getFullUrl(item[0])})
 
 #        sts, data = self.getPage(self.MAIN_URL)
 #        if not sts: return
 
         # fill cats
-#        dat = self.cm.ph.getDataBeetwenMarkers(data, '<ul id="filter-category"', '</ul>', False)[1]
-#        dat = re.compile('<li[^>]+?data-id="([^"]+?)".*?<a[^>]*?>(.+?)</a>').findall(dat)
-#        for item in dat:
-#            self.cacheMovieFilters['cats'].append({'title': self.cleanHtmlStr(item[1]), 'url': cItem['url']+'category:%s/' % item[0]})
+        dat = self.cm.ph.getDataBeetwenMarkers(data, '<ul class="genres falsescroll"', '</ul>', False)[1]
+        dat = re.compile('<a[^>]+?href="([^"]+?)"[^>]*?>(.+?)</a>').findall(dat)
+        for item in dat:
+            self.cacheMovieFilters['cats'].append({'title': self.cleanHtmlStr(item[1]), 'url': self.getFullUrl(item[0])})
 
         # fill years
         dat = self.cm.ph.getDataBeetwenMarkers(data, '<ul class="releases falsescroll"', '</ul>', False)[1]
