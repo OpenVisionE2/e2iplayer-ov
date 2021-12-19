@@ -159,7 +159,7 @@ class Zaluknij(CBaseHostClass):
             data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<article', '>', 'item'), ('</article', '>'))
 
         for item in data:
-            printDBG("Zaluknij.listItems item %s" % item)
+#            printDBG("Zaluknij.listItems item %s" % item)
             url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^"^']+?)['"]''')[0])
             if url == '':
                 continue
@@ -179,7 +179,7 @@ class Zaluknij(CBaseHostClass):
             self.addDir(params)
 
     def listSeriesSeasons(self, cItem, nextCategory):
-#        printDBG("Zaluknij.listSeriesSeasons")
+        printDBG("Zaluknij.listSeriesSeasons")
         sts, data = self.getPage(cItem['url'])
         if not sts:
             return
