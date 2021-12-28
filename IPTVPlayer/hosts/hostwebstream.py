@@ -1145,7 +1145,7 @@ class HasBahCa(CBaseHostClass):
         except Exception:
             printExc()
 
-    def getStrimsWorldList(self, url):
+    def getStrumykTvList(self, url):
         printDBG("StreamsWorldList start")
         sts, data = self.cm.getPage(url)
         if not sts:
@@ -1162,12 +1162,12 @@ class HasBahCa(CBaseHostClass):
             params['title'] = self.cleanHtmlStr(item)
             self.addDir(params)
 
-    def getStrimsWorldDir(self, url):
+    def getStrumykTvDir(self, url):
         printDBG("StreamsWorldDir start")
         sts, data = self.cm.getPage(url)
         if not sts:
             return []
-        data = CParsingHelper.getDataBeetwenNodes(data, ('<iframe', '>', 'src'), ('</script', '>'))[1]
+        data = CParsingHelper.getDataBeetwenNodes(data, ('<iframe', '>', 'src'), ('</style', '>'))[1]
         data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<a', '>'), ('</a', '>'))
 
         for item in data:
@@ -1197,7 +1197,7 @@ class HasBahCa(CBaseHostClass):
                 params['title'] = self.cleanHtmlStr(item) + ' - ' + self.up.getDomain(linkVideo)
                 self.addVideo(params)
 
-    def getStrimsWorldLink(self, url):
+    def getStrumykTvLink(self, url):
         printDBG("StreamsWorldLink url[%r]" % url)
         urlsTab = []
 
@@ -1292,9 +1292,9 @@ class HasBahCa(CBaseHostClass):
         elif name == 'nhl66.ir':
             self.getNhl66List(url)
         elif name == 'strumyk.tv':
-            self.getStrimsWorldList(url)
+            self.getStrumykTvList(url)
         elif name == 'strumyk_tv':
-            self.getStrimsWorldDir(url)
+            self.getStrumykTvDir(url)
 
         CBaseHostClass.endHandleService(self, index, refresh)
 
@@ -1390,7 +1390,7 @@ class IPTVHost(CHostBase):
         elif name == "crackstreams.net":
             urlList = self.host.getCrackstreamsLink(url)
         elif name == "strumyk.tv":
-            urlList = self.host.getStrimsWorldLink(url)
+            urlList = self.host.getStrumykTvLink(url)
 
         if isinstance(urlList, list):
             for item in urlList:

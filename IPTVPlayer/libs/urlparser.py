@@ -638,6 +638,8 @@ class urlparser:
                        'assia.org': self.pp.parserASSIAORG,
                        'assia2.com': self.pp.parserASSIAORG,
                        'freefeds.click': self.pp.parserASSIAORG,
+                       'castfree.me': self.pp.parserASSIAORG,
+                       'cricplay2.xyz': self.pp.parserASSIAORG,
                        'givemenbastreams.com': self.pp.parserASSIAORG,
                        'embedstream.me': self.pp.parserEMBEDSTREAMME,
                        'daddylive.me': self.pp.parserDADDYLIVE,
