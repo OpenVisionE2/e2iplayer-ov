@@ -13822,6 +13822,7 @@ class pageParser(CaptchaHelper):
         url = self.cm.meta.get('location', '')
         if url != '':
             baseUrl = url
+            httpParams['header']['Referer'] = baseUrl
         del httpParams['max_data_size']
         del httpParams['no_redirection']
         sts, data = self.cm.getPage(baseUrl, httpParams)
