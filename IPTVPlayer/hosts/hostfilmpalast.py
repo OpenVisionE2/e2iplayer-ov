@@ -264,14 +264,7 @@ class FilmPalastTo(CBaseHostClass):
         data = ph.findall(data, ('<ul', '>', 'currentStreamLinks'), '</ul>', flags=0)
         for item in data:
             printDBG("FilmPalastTo.getLinksForVideo item [%s]" % item)
-            data_id = ph.getattr(item, 'data-id')
-            data_stamp = ph.getattr(item, 'data-stamp')
-            if data_id and data_stamp:
-                url = strwithmeta('%s|%s' % (data_id, data_stamp), {'data_id': data_id, 'data_stamp': data_stamp, 'links_key': cItem['url']})
-            else:
-                url = strwithmeta(self.getFullUrl(self.cm.ph.getSearchGroups(item, '''url=['"]([^'^"]+?)['"]''')[0]), {'links_key': cItem['url']})
-            if url == '':
-                continue
+            url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^"^']+?)['"]''')[0])
             title = ph.clean_html(ph.find(item, ('<p', '>'), '</p>', flags=0)[1])
             if title == '':
                 title = ph.clean_html(item)
