@@ -663,6 +663,7 @@ class urlparser:
                        'sportsonline.to': self.pp.parserSPORTSONLINETO,
                        'videovard.sx': self.pp.parserVIDEOVARDSX,
                        'streamcrypt.net': self.pp.parserSTREAMCRYPTNET,
+                       'evoload.io': self.pp.parserEVOLOADIO,
                     }
         return
 
@@ -14985,3 +14986,32 @@ class pageParser(CaptchaHelper):
 
         return urlparser().getVideoLinkExt(red_url)
 
+    def parserEVOLOADIO(self, baseUrl):
+        printDBG("parserEVOLOADIO baseUrl[%s]" % baseUrl)
+        urlTab = []
+        HTTP_HEADER = self.cm.getDefaultHeader(browser='chrome')
+        urlParams = {'header': HTTP_HEADER}
+
+        media_id = self.cm.ph.getSearchGroups(baseUrl + '/', '(?:e|f|v)[/-]([A-Za-z0-9]+)[^A-Za-z0-9]')[0]
+        sts, data = self.cm.getPage(baseUrl, urlParams)
+        if not sts:
+            return False
+
+        passe = re.search('<div id="captcha_pass" value="(.+?)"></div>', data).group(1)
+        sts, crsv = self.cm.getPage('https://csrv.evosrv.com/captcha?m412548', urlParams)
+        if not sts:
+            return False
+
+        post_data = {"code": media_id, "csrv_token": crsv, "pass": passe, "token": "ok"}
+        sts, data = self.cm.getPage('https://evoload.io/SecurePlayer', urlParams, post_data)
+        if not sts:
+            return False
+
+        r = json_loads(data).get('stream')
+        if r:
+            surl = r.get('backup') if r.get('backup') else r.get('src')
+            if surl:
+                params = {'name': 'mp4', 'url': surl}
+                urlTab.append(params)
+
+        return urlTab
