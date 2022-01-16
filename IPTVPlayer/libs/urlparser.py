@@ -14621,7 +14621,24 @@ class pageParser(CaptchaHelper):
         urlTab = []
         HTTP_HEADER = self.cm.getDefaultHeader(browser='chrome')
         urlParams = {'header': HTTP_HEADER}
-        baseUrl = baseUrl.replace("embed-", "d/").replace("/e/", "/d/").replace("/play/", "/d/")
+
+        media_id = self.cm.ph.getSearchGroups(baseUrl + '/', '(?:embed|e|play|d|sup)[/-]([A-Za-z0-9]+)[^A-Za-z0-9]')[0]
+        printDBG("parserSTREAMSB media_id[%s]" % media_id)
+
+        baseUrl = baseUrl.replace("embed-", "d/").replace("/e/", "/d/").replace("/play/", "/d/").replace("/sup/", "/d/")
+
+        def get_embedurl(media_id):
+            def makeid(length):
+                return ''.join([random_choice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789") for i in range(length)])
+
+            x = '{0}||{1}||{2}||streamsb'.format(makeid(12), media_id, makeid(12))
+            c1 = hexlify(x.encode('utf8')).decode('utf8')
+            x = '{0}||{1}||{2}||streamsb'.format(makeid(12), makeid(12), makeid(12))
+            c2 = hexlify(x.encode('utf8')).decode('utf8')
+            x = '{0}||{1}||{2}||streamsb'.format(makeid(12), c2, makeid(12))
+            c3 = hexlify(x.encode('utf8')).decode('utf8')
+            return 'https://{0}/sourcessx36/{1}/{2}'.format(urlparser.getDomain(baseUrl), c1, c3)
+
         if '/d/' not in baseUrl:
             baseUrl = baseUrl.replace(urlparser.getDomain(baseUrl), urlparser.getDomain(baseUrl) + '/d')
         sts, data = self.cm.getPage(baseUrl, urlParams)
@@ -14646,6 +14663,17 @@ class pageParser(CaptchaHelper):
                 if videoUrl:
                     params = {'name': item[1], 'url': videoUrl.group(1)}
                     urlTab.append(params)
+        else:
+            eurl = get_embedurl(media_id)
+            urlParams['header']['watchsb'] = 'streamsb'
+            sts, data = self.cm.getPage(eurl, urlParams)
+            if not sts:
+                return False
+            data = json_loads(data).get("stream_data", {})
+            videoUrl = data.get('file') or data.get('backup')
+            if videoUrl:
+                params = {'name': 'eurl', 'url': videoUrl}
+                urlTab.append(params)
 
         return urlTab
 
