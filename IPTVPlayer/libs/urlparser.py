@@ -660,6 +660,10 @@ class urlparser:
                        'sbplay.org': self.pp.parserSTREAMSB,
                        'sbvideo.net': self.pp.parserSTREAMSB,
                        'watchsb.com': self.pp.parserSTREAMSB,
+                       'sbembed1.com': self.pp.parserSTREAMSB,
+                       'tubesb.com': self.pp.parserSTREAMSB,
+                       'sbplay1.com': self.pp.parserSTREAMSB,
+                       'sbplay2.com': self.pp.parserSTREAMSB,
                        'sportsonline.to': self.pp.parserSPORTSONLINETO,
                        'videovard.sx': self.pp.parserVIDEOVARDSX,
                        'streamcrypt.net': self.pp.parserSTREAMCRYPTNET,
@@ -14625,8 +14629,6 @@ class pageParser(CaptchaHelper):
         media_id = self.cm.ph.getSearchGroups(baseUrl + '/', '(?:embed|e|play|d|sup)[/-]([A-Za-z0-9]+)[^A-Za-z0-9]')[0]
         printDBG("parserSTREAMSB media_id[%s]" % media_id)
 
-        baseUrl = baseUrl.replace("embed-", "d/").replace("/e/", "/d/").replace("/play/", "/d/").replace("/sup/", "/d/")
-
         def get_embedurl(media_id):
             def makeid(length):
                 return ''.join([random_choice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789") for i in range(length)])
@@ -14639,41 +14641,16 @@ class pageParser(CaptchaHelper):
             c3 = hexlify(x.encode('utf8')).decode('utf8')
             return 'https://{0}/sourcessx36/{1}/{2}'.format(urlparser.getDomain(baseUrl), c1, c3)
 
-        if '/d/' not in baseUrl:
-            baseUrl = baseUrl.replace(urlparser.getDomain(baseUrl), urlparser.getDomain(baseUrl) + '/d')
-        sts, data = self.cm.getPage(baseUrl, urlParams)
+        eurl = get_embedurl(media_id)
+        urlParams['header']['watchsb'] = 'streamsb'
+        sts, data = self.cm.getPage(eurl, urlParams)
         if not sts:
             return False
-
-        sources = re.findall(r'download_video([^"]+)[^\d]+(\d+x\d+)', data)
-#        printDBG("parserSTREAMSB sources[%s]" % str(sources))
-        if sources:
-            for item in sources:
-                code, mode, hash = eval(item[0])
-                dl_url = '{0}dl?op=download_orig&id={1}&mode={2}&hash={3}'.format(urlparser.getDomain(baseUrl, False), code, mode, hash)
-                sts, data = self.cm.getPage(dl_url, urlParams)
-                error = self.cm.ph.getDataBeetwenNodes(data, ('<b', '>', 'err'), ('<br', '>'), False)[1]
-                sleep_time = self.cm.ph.getSearchGroups(error, '([0-9]+?) seconds')[0]
-                if '' != sleep_time:
-                    GetIPTVSleep().Sleep(int(sleep_time))
-                    sts, data = self.cm.getPage(dl_url, urlParams)
-                    error = self.cm.ph.getDataBeetwenNodes(data, ('<b', '>', 'err'), ('<br', '>'), False)[1]
-                videoUrl = re.search('href="([^"]+)">Direct', data)
-                SetIPTVPlayerLastHostError(error)
-                if videoUrl:
-                    params = {'name': item[1], 'url': videoUrl.group(1)}
-                    urlTab.append(params)
-        else:
-            eurl = get_embedurl(media_id)
-            urlParams['header']['watchsb'] = 'streamsb'
-            sts, data = self.cm.getPage(eurl, urlParams)
-            if not sts:
-                return False
-            data = json_loads(data).get("stream_data", {})
-            videoUrl = data.get('file') or data.get('backup')
-            if videoUrl:
-                params = {'name': 'eurl', 'url': videoUrl}
-                urlTab.append(params)
+        data = json_loads(data).get("stream_data", {})
+        videoUrl = data.get('file') or data.get('backup')
+        if videoUrl:
+            params = {'name': 'eurl', 'url': videoUrl}
+            urlTab.append(params)
 
         return urlTab
 
