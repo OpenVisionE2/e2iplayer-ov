@@ -664,6 +664,7 @@ class urlparser:
                        'tubesb.com': self.pp.parserSTREAMSB,
                        'sbplay1.com': self.pp.parserSTREAMSB,
                        'sbplay2.com': self.pp.parserSTREAMSB,
+                       'viewsb.com': self.pp.parserSTREAMSB,
                        'sportsonline.to': self.pp.parserSPORTSONLINETO,
                        'videovard.sx': self.pp.parserVIDEOVARDSX,
                        'streamcrypt.net': self.pp.parserSTREAMCRYPTNET,
@@ -14639,7 +14640,7 @@ class pageParser(CaptchaHelper):
             c2 = hexlify(x.encode('utf8')).decode('utf8')
             x = '{0}||{1}||{2}||streamsb'.format(makeid(12), c2, makeid(12))
             c3 = hexlify(x.encode('utf8')).decode('utf8')
-            return 'https://{0}/sourcessx36/{1}/{2}'.format(urlparser.getDomain(baseUrl), c1, c3)
+            return 'https://{0}/sources37/{1}/{2}'.format(urlparser.getDomain(baseUrl), c1, c3)
 
         eurl = get_embedurl(media_id)
         urlParams['header']['watchsb'] = 'streamsb'
