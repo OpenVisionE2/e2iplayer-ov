@@ -14629,7 +14629,7 @@ class pageParser(CaptchaHelper):
 
         media_id = self.cm.ph.getSearchGroups(baseUrl + '/', '(?:embed|e|play|d|sup)[/-]([A-Za-z0-9]+)[^A-Za-z0-9]')[0]
         if not media_id:
-            media_id = self.cm.ph.getSearchGroups(baseUrl + '/', '/([A-Za-z0-9]+)[/.]')[0]
+            media_id = self.cm.ph.getSearchGroups(baseUrl + '/', urlparser.getDomain(baseUrl) + '/([A-Za-z0-9]+)[/.]')[0]
         printDBG("parserSTREAMSB media_id[%s]" % media_id)
 
         def get_embedurl(media_id):
@@ -14649,11 +14649,11 @@ class pageParser(CaptchaHelper):
         sts, data = self.cm.getPage(eurl, urlParams)
         if not sts:
             return False
+
         data = json_loads(data).get("stream_data", {})
         videoUrl = data.get('file') or data.get('backup')
         if videoUrl:
-            params = {'name': 'eurl', 'url': videoUrl}
-            urlTab.append(params)
+            urlTab.extend(getDirectM3U8Playlist(videoUrl, checkExt=False, variantCheck=True, checkContent=True, sortWithMaxBitrate=99999999))
 
         return urlTab
 
