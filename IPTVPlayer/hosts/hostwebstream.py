@@ -1146,7 +1146,7 @@ class HasBahCa(CBaseHostClass):
             printExc()
 
     def getStrumykTvList(self, url):
-        printDBG("StreamsWorldList start")
+        printDBG("StrumykTvList start")
         sts, data = self.cm.getPage(url)
         if not sts:
             return
@@ -1163,11 +1163,12 @@ class HasBahCa(CBaseHostClass):
             self.addDir(params)
 
     def getStrumykTvDir(self, url):
-        printDBG("StreamsWorldDir start")
+        printDBG("StrumykTvDir start")
         sts, data = self.cm.getPage(url)
         if not sts:
             return []
-        data = CParsingHelper.getDataBeetwenNodes(data, ('<iframe', '>', 'src'), ('</style', '>'))[1]
+
+        data = CParsingHelper.getDataBeetwenNodes(data, ('<iframe', '>', 'src'), ('<script', '>'))[1]
         data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<a', '>'), ('</a', '>'))
 
         for item in data:
