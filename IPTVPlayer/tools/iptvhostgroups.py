@@ -26,7 +26,7 @@ class IPTVHostsGroups:
 
         # groups
         self.PREDEFINED_GROUPS = ["userdefined", "moviesandseries", "cartoonsandanime", "music", "sport", "live", "documentary", "science",
-                                  "polish", "english", "german", "french", "russian", "hungarian", "arabic", "greek", "latino", "italian", "swedish", "balkans", "others"]
+                                  "polish", "english", "german", "french", "hungarian", "arabic", "greek", "latino", "italian", "swedish", "balkans", "others"]
         self.PREDEFINED_GROUPS_TITLES = {"userdefined": "User defined",
                                          "moviesandseries": "Movies and series",
                                          "cartoonsandanime": "Cartoons and anime",
@@ -39,7 +39,6 @@ class IPTVHostsGroups:
                                          "english": "English",
                                          "german": "German",
                                          "french": "French",
-                                         "russian": "Russian",
                                          "hungarian": "Hungarian",
                                          "arabic": "Arabic",
                                          "greek": "Greek",
@@ -61,14 +60,14 @@ class IPTVHostsGroups:
         self.PREDEFINED_HOSTS['userdefined'] = ['favourites', 'localmedia']
         self.PREDEFINED_HOSTS['moviesandseries'] = ['appletrailers', 'efilmytv', 'ekinotv', 'cdapl', 'vizjerpl', 'zaluknijcc', 'filman', 'hdseanspl', 'ogladajto', 'govodtv', 'filmynadzis', 'freediscpl',
                                                      'movienightws', 'yifytv', 'hdpopcornscom', 'losmovies',
-                                                     'solarmovie', 'mythewatchseries', 'thewatchseriesto', 'classiccinemaonline', 'seriesonline', 'vumooch', 'movie4kto', 'dardarkomcom', 'movs4ucom', 'movizlandcom',
-                                                     'sovdub', 'kinopokaz', 'cinemay', 'icefilmsinfo', 'hdkinomir', 'kinotan', 'egybest', 'dpstreamingcx', 'librestream', 'streamcomplet', 'skstream', 'filmstreamvkcom',
-                                                     'filmpalast', 'hdstreams', 'serienstreamto', 'bsto', 'hdfilmetv', 'cineto', 'treetv', 'mozicsillag', 'filmezz', 'rtlmost', 'gamatocom', 'xrysoise', 'gamatotvme', 'mooviecc', 'mrpiracy',
+                                                     'solarmovie', 'mythewatchseries', 'thewatchseriesto', 'classiccinemaonline', 'seriesonline', 'vumooch', 'dardarkomcom', 'movs4ucom', 'movizlandcom',
+                                                     'cinemay', 'icefilmsinfo', 'egybest', 'dpstreamingcx', 'librestream', 'streamcomplet', 'skstream', 'filmstreamvkcom',
+                                                     'filmpalast', 'hdstreams', 'serienstreamto', 'bsto', 'hdfilmetv', 'cineto', 'mozicsillag', 'filmezz', 'rtlmost', 'gamatocom', 'xrysoise', 'gamatotvme', 'mooviecc', 'mrpiracy',
                                                      'filmativa', 'filmovizijastudio', 'filma24hdcom', 'serijeonline', 'kinox', 'szenestreamz', 'cartoonhd', 'worldfree4u', 'tantifilmorg', 'forjatn', 'serialeco', 'faselhdcom',
                                                      'darshowcom', 'yesmoviesto', 'movierulzsx', 'planetstreamingcom', 'filmeonlineto', 'tainieskaiseirestv', '3sktv', 'cimaclubcom', 'gledalica',
-                                                     'tfarjocom', 'kinogo', 'filmaoncom', 'filmstreamhdit', 'altadefinizione', 'streaminghdfun', 'putlockertvto', 'akoam', 'filmehdnet', 'oipeirates', 'filmixco', 'andrijaiandjelka',
+                                                     'tfarjocom', 'filmaoncom', 'filmstreamhdit', 'altadefinizione', 'streaminghdfun', 'putlockertvto', 'akoam', 'filmehdnet', 'oipeirates', 'andrijaiandjelka',
                                                      'altadefinizione01', '123movieshd', 'guardaserie', 'filma24io', 'officialfilmillimite', 'filmpertutti', 'hdsto', 'ddl', 'vidcorncom', 'hdfull', 'dixmax', 'plusdede', 'fenixsite',
-                                                     'cinemaxx', 'hd1080online', 'kkiste']
+                                                     'cinemaxx', 'kkiste']
         self.PREDEFINED_HOSTS['cartoonsandanime'] = ['bajeczkiorg', 'kreskowkazone', 'kreskoweczki', 'animeodcinki', '9anime', 'kisscartoonme', 'kissanimeto', 'watchcartoononline', 'shahiidanimenet',
                                                      'otakufr', 'crtankocom']
         self.PREDEFINED_HOSTS['sport'] = ['webstream', 'meczykipl', 'ekstraklasatv', 'laola1tv', 'bbcsport', 'ourmatchnet', 'hoofootcom', 'okgoals', 'ngolos', 'watchwrestlinguno', 'watchwrestling', 'fighttube', 'fightvideo',
@@ -84,14 +83,13 @@ class IPTVHostsGroups:
                                                      'christusvincit', 'joemonsterorg']
         self.PREDEFINED_HOSTS['english'] = ['youtube', 'webstream', 'liveleak', 'bbciplayer', 'bbcsport', 'tvplayercom', 'itvcom', 'uktvplay', 'appletrailers', 'classiccinemaonline', 'seriesonline', 'mythewatchseries',
                                                      'thewatchseriesto', 'icefilmsinfo', 'movienightws', 'yifytv', 'artetv',
-                                                     'hdpopcornscom', 'losmovies', 'solarmovie', 'putlockertvto', 'vumooch', 'movie4kto', 'cineto', 'cartoonhd', 'worldfree4u', '9anime', 'kisscartoonme', 'kissanimeto', 'watchcartoononline', 'dailymotion',
+                                                     'hdpopcornscom', 'losmovies', 'solarmovie', 'putlockertvto', 'vumooch', 'cineto', 'cartoonhd', 'worldfree4u', '9anime', 'kisscartoonme', 'kissanimeto', 'watchcartoononline', 'dailymotion',
                                                      'ourmatchnet', 'watchwrestlinguno', 'watchwrestling', 'laola1tv', 'hoofootcom', 'fightvideo', 'twitchtv', 'ted', 'ororotv', 'pinkbike', 'dancetrippin', 'appletrailers',
                                                      'ustreamtv', 'rteieplayer', '3player', 'questtvcouk', 'forjatn', 'yesmoviesto', 'movierulzsx', 'filmeonlineto', 'playrtsiw', '123movieshd', 'orthobulletscom', 'vumedicom', 'hdsto', 'ddl']
-        self.PREDEFINED_HOSTS['german'] = ['youtube', 'webstream', 'ardmediathek', 'zdfmediathek', 'artetv', 'tvnowde', 'spiegeltv', '7tvde', 'ddl', 'hdstreams', 'serienstreamto', 'bsto', 'hdfilmetv', 'cineto', 'filmpalast', 'kinox', 'szenestreamz', 'arconaitvme', 'movie4kto', 'tata',
+        self.PREDEFINED_HOSTS['german'] = ['youtube', 'webstream', 'ardmediathek', 'zdfmediathek', 'artetv', 'tvnowde', 'spiegeltv', '7tvde', 'ddl', 'hdstreams', 'serienstreamto', 'bsto', 'hdfilmetv', 'cineto', 'filmpalast', 'kinox', 'szenestreamz', 'arconaitvme', 'tata',
                                                      'dailymotion', 'vimeo', 'laola1tv', 'sportdeutschland', 'twitchtv', 'playrtsiw', 'del', 'cinemaxx', 'kkiste']
-        self.PREDEFINED_HOSTS['french'] = ['youtube', 'tfarjocom', 'skstream', 'filmstreamvkcom', 'streamcomplet', 'dpstreamingcx', 'librestream', 'cinemay', 'otakufr', 'rtbfbe', 'artetv', 'movie4kto', 'dailymotion',
+        self.PREDEFINED_HOSTS['french'] = ['youtube', 'tfarjocom', 'skstream', 'filmstreamvkcom', 'streamcomplet', 'dpstreamingcx', 'librestream', 'cinemay', 'otakufr', 'rtbfbe', 'artetv', 'dailymotion',
                                                      'vimeo', 'twitchtv', 'forjatn', 'planetstreamingcom', 'playrtsiw', 'officialfilmillimite', 'hdsto']
-        self.PREDEFINED_HOSTS['russian'] = ['youtube', 'hd1080online', 'treetv', 'kinogo', 'kinotan', 'hdkinomir', 'sovdub', 'filmixco', 'kinopokaz', 'movie4kto', 'dailymotion', 'vimeo', 'twitchtv']
         self.PREDEFINED_HOSTS['hungarian'] = ['youtube', 'mooviecc', 'filmezz', 'mozicsillag', 'rtlmost', 'dailymotion', 'vimeo', 'twitchtv']
         self.PREDEFINED_HOSTS['arabic'] = ['youtube', 'webstream', 'akoam', 'egybest', 'dardarkomcom', 'movs4ucom', 'movizlandcom', 'shahiidanimenet', 'dailymotion', 'vimeo', 'twitchtv', 'forjatn', 'faselhdcom', 'darshowcom', 'movierulzsx', '3sktv', 'cimaclubcom', 'hdsto']
         self.PREDEFINED_HOSTS['greek'] = ['youtube', 'gamatotvme', 'xrysoise', 'tainieskaiseirestv', 'gamatocom', 'greekdocumentaries3', 'dailymotion', 'vimeo', 'twitchtv', 'oipeirates']
