@@ -1168,22 +1168,30 @@ class HasBahCa(CBaseHostClass):
         if not sts:
             return []
 
-        data = CParsingHelper.getDataBeetwenNodes(data, ('<iframe', '>', 'src'), ('<script', '>'))[1]
-        data = self.cm.ph.getAllItemsBeetwenNodes(data, ('<a', '>'), ('</a', '>'))
+        tmp = CParsingHelper.getDataBeetwenNodes(data, ('<iframe', '>', 'src'), ('<script', '>'))[1]
+        if not tmp:
+            tmp = CParsingHelper.getDataBeetwenNodes(data, ('<noscript', '>'), ('<script', '>'))[1]
+        printDBG("StrumykTvDir data [%s]" % tmp)
+        data = self.cm.ph.getAllItemsBeetwenNodes(tmp, ('<a', '>'), ('</a', '>'))
 
         for item in data:
             _url = self.cm.ph.getSearchGroups(item, '''\shref=['"]([^"^']+?)['"]''')[0]
             if _url.startswith('?'):
                 _url = url + _url
-            sts, tmp = self.cm.getPage(_url)
+            sts, data = self.cm.getPage(_url)
             if sts:
-                tmp = CParsingHelper.getDataBeetwenNodes(tmp, ('<iframe', '>', 'src'), ('</iframe', '>'))[1]
-                linkVideo = self.cm.ph.getSearchGroups(tmp, '''src=['"]([^"^']+?)['"]''')[0]
-                linkVideo = linkVideo.strip(' \n\t\r')
+                tmp = CParsingHelper.getDataBeetwenNodes(data, ('<iframe', '>', 'allowfullscreen'), ('</iframe', '>'))[1]
+                if len(tmp):
+                    linkVideo = self.cm.ph.getSearchGroups(tmp, '''src=['"]([^"^']+?)['"]''')[0]
+                    linkVideo = linkVideo.strip(' \n\t\r')
+                else:
+                    tmp = self.cm.ph.getSearchGroups(data, '''eval\(unescape\(['"]([^"^']+?)['"]''')[0]
+                    tmp = urllib.unquote(tmp)
+                    linkVideo = self.cm.ph.getSearchGroups(tmp, '''['"]*(http[^'^"]+?\.m3u8[^'^"]*?)['"]''')[0]
                 if len(linkVideo) and linkVideo.startswith('//'):
                     linkVideo = 'http:' + linkVideo
                 if len(linkVideo) and not linkVideo.startswith('http'):
-                    linkVideo = self.up.getDomain(url, False) + linkVideo
+                    linkVideo = 'http://strumyk.tv' + linkVideo
                     sts, tmp = self.cm.getPage(linkVideo)
                     tmp = CParsingHelper.getDataBeetwenNodes(tmp, ('<iframe', '>', 'src'), ('</iframe', '>'))[1]
                     linkVideo = self.cm.ph.getSearchGroups(tmp, '''src=['"]([^"^']+?)['"]''')[0]
@@ -1202,7 +1210,10 @@ class HasBahCa(CBaseHostClass):
         printDBG("StreamsWorldLink url[%r]" % url)
         urlsTab = []
 
-        urlsTab.extend(self.up.getVideoLinkExt(url))
+        if 'm3u8' in url:
+            urlsTab = getDirectM3U8Playlist(url, False)
+        else:
+            urlsTab.extend(self.up.getVideoLinkExt(url))
         return urlsTab
 
     def handleService(self, index, refresh=0, searchPattern='', searchType=''):
