@@ -5,7 +5,7 @@
 ###################################################
 from pCommon import common, CParsingHelper
 from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT as _, SetIPTVPlayerLastHostError, GetIPTVSleep
-from Plugins.Extensions.IPTVPlayer.components.recaptcha_v2helper import CaptchaHelper
+from Plugins.Extensions.IPTVPlayer.components.captcha_helper import CaptchaHelper
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, CSelOneLink, GetCookieDir, byteify, formatBytes, GetPyScriptCmd, GetTmpDir, rm, \
                                                           GetDefaultLang, GetFileSize, GetPluginDir, MergeDicts, GetJSScriptFile
@@ -665,6 +665,7 @@ class urlparser:
                        'tubesb.com': self.pp.parserSTREAMSB,
                        'sbplay1.com': self.pp.parserSTREAMSB,
                        'sbplay2.com': self.pp.parserSTREAMSB,
+                       'sbfull.com': self.pp.parserSTREAMSB,
                        'viewsb.com': self.pp.parserSTREAMSB,
                        'sportsonline.to': self.pp.parserSPORTSONLINETO,
                        'videovard.sx': self.pp.parserVIDEOVARDSX,
@@ -14644,7 +14645,7 @@ class pageParser(CaptchaHelper):
             c2 = hexlify(x.encode('utf8')).decode('utf8')
             x = '{0}||{1}||{2}||streamsb'.format(makeid(12), c2, makeid(12))
             c3 = hexlify(x.encode('utf8')).decode('utf8')
-            return 'https://{0}/sources41/{1}/{2}'.format(urlparser.getDomain(baseUrl), c1, c3)
+            return 'https://{0}/sources43/{1}/{2}'.format(urlparser.getDomain(baseUrl), c1, c3)
 
         eurl = get_embedurl(media_id)
         urlParams['header']['watchsb'] = 'streamsb'
