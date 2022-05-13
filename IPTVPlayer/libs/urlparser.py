@@ -642,6 +642,7 @@ class urlparser:
                        'castfree.me': self.pp.parserASSIAORG,
                        'cricplay2.xyz': self.pp.parserASSIAORG,
                        'givemenbastreams.com': self.pp.parserASSIAORG,
+                       'mazystreams.xyz': self.pp.parserASSIAORG,
                        'embedstream.me': self.pp.parserEMBEDSTREAMME,
                        'daddylive.me': self.pp.parserDADDYLIVE,
                        'daddylive.club': self.pp.parserDADDYLIVE,
@@ -668,12 +669,14 @@ class urlparser:
                        'sbfull.com': self.pp.parserSTREAMSB,
                        'viewsb.com': self.pp.parserSTREAMSB,
                        'sportsonline.to': self.pp.parserSPORTSONLINETO,
+                       'ufckhabib.com': self.pp.parserSPORTSONLINETO,
                        'videovard.sx': self.pp.parserVIDEOVARDSX,
                        'streamcrypt.net': self.pp.parserSTREAMCRYPTNET,
                        'evoload.io': self.pp.parserEVOLOADIO,
                        'vtube.to': self.pp.parserONLYSTREAMTV,
                        'tubeload.co': self.pp.parserTUBELOADCO,
                        'castfree.me': self.pp.parserCASTFREEME,
+                       'noob4cast.com': self.pp.parserCASTFREEME,
                     }
         return
 
@@ -14672,10 +14675,10 @@ class pageParser(CaptchaHelper):
             return False
         cUrl = self.cm.meta['url']
 
-        url = self.cm.ph.getSearchGroups(data, '''<iframe[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0]
+        _url = self.cm.ph.getSearchGroups(data, '''<iframe[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0]
         HTTP_HEADER['Referer'] = cUrl
         urlParams = {'header': HTTP_HEADER}
-        sts, data = self.cm.getPage(url, urlParams)
+        sts, data = self.cm.getPage(_url, urlParams)
         if not sts:
             return False
 
@@ -14694,11 +14697,11 @@ class pageParser(CaptchaHelper):
 
                 url = self.cm.ph.getSearchGroups(data, '''["'](https?://[^'^"]+?\.mp4(?:\?[^"^']+?)?)["']''', ignoreCase=True)[0]
                 if url != '':
-                    url = strwithmeta(url, {'Origin': "https://" + urlparser.getDomain(baseUrl), 'Referer': baseUrl})
+                    url = strwithmeta(url, {'Origin': "https://" + urlparser.getDomain(baseUrl), 'Referer': _url})
                     urlTab.append({'name': 'mp4', 'url': url})
                 hlsUrl = self.cm.ph.getSearchGroups(data, '''["'](https?://[^'^"]+?\.m3u8(?:\?[^"^']+?)?)["']''', ignoreCase=True)[0]
                 if hlsUrl != '':
-                    hlsUrl = strwithmeta(hlsUrl, {'Origin': "https://" + urlparser.getDomain(baseUrl), 'Referer': baseUrl})
+                    hlsUrl = strwithmeta(hlsUrl, {'Origin': "https://" + urlparser.getDomain(baseUrl), 'Referer': _url})
                     urlTab.extend(getDirectM3U8Playlist(hlsUrl, checkExt=False, variantCheck=True, checkContent=True, sortWithMaxBitrate=99999999))
 
         return urlTab
