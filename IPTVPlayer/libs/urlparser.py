@@ -677,6 +677,7 @@ class urlparser:
                        'tubeload.co': self.pp.parserTUBELOADCO,
                        'castfree.me': self.pp.parserCASTFREEME,
                        'noob4cast.com': self.pp.parserCASTFREEME,
+                       'embedo.co': self.pp.parserHIGHLOADTO,
                     }
         return
 
