@@ -678,6 +678,7 @@ class urlparser:
                        'castfree.me': self.pp.parserCASTFREEME,
                        'noob4cast.com': self.pp.parserCASTFREEME,
                        'embedo.co': self.pp.parserHIGHLOADTO,
+                       'hlsplayer.org': self.pp.parserHLSPLAYER,
                     }
         return
 
@@ -15109,3 +15110,16 @@ class pageParser(CaptchaHelper):
             urlTab.append({'name': 'mp4', 'url': url})
 
         return urlTab
+
+    def parserHLSPLAYER(self, baseUrl):
+        printDBG("parserHLSPLAYER baseUrl[%r]" % baseUrl)
+
+        url = baseUrl.split('url=')[-1]
+        url = urllib.unquote(url)
+
+        urlTab = []
+        url = strwithmeta(url, {'Origin': "https://" + urlparser.getDomain(baseUrl), 'Referer': baseUrl})
+        urlTab.extend(getDirectM3U8Playlist(url, checkExt=False, variantCheck=True, checkContent=True, sortWithMaxBitrate=99999999))
+
+        return urlTab
+
