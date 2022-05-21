@@ -68,9 +68,9 @@ class SerienStreamTo(CBaseHostClass, CaptchaHelper):
         self.defaultParams = {'header': self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
 
         self.MAIN_URL = 'https://s.to/'
-        self.DEFAULT_ICON_URL = 'https://s.to/public/img/facebook.jpg'
+        self.DEFAULT_ICON_URL = 'https://zrt5351b7er9.static-webarchive.org/img/facebook.jpg'
 
-        self.MAIN_CAT_TAB = [{'category': 'all_series', 'title': 'Alle Serien', 'url': self.getFullUrl('/serien-alphabet')},
+        self.MAIN_CAT_TAB = [{'category': 'all_series', 'title': 'Serien', 'url': self.getFullUrl('/serien)},
                              {'category': 'list_abc', 'title': _('A-Z'), 'url': self.MAIN_URL},
                              {'category': 'list_genres', 'title': _('Genres'), 'url': self.MAIN_URL},
                              {'category': 'list_items', 'title': _('New'), 'url': self.getFullUrl('/neu')},
@@ -218,7 +218,7 @@ class SerienStreamTo(CBaseHostClass, CaptchaHelper):
             url = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0])
             if not self.cm.isValidUrl(url):
                 continue
-            icon = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''src=['"]([^'^"]+?)['"]''')[0])
+            icon = self.getFullUrl(self.cm.ph.getSearchGroups(item, '''data-src=['"]([^'^"]+?)['"]''')[0])
             title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item, '<h3>', '</h3>', withMarkers=False)[1])
             if title == '':
                 title = self.cleanHtmlStr(self.cm.ph.getSearchGroups(item, '''alt=['"]([^'^"]+?)['"]''')[0])
@@ -240,7 +240,7 @@ class SerienStreamTo(CBaseHostClass, CaptchaHelper):
             return
 
         tmp = self.cm.ph.getDataBeetwenMarkers(data, '<div class="seriesContentBox"', '<div class="series-add')[1]
-        icon = self.getFullUrl(self.cm.ph.getSearchGroups(tmp, '''src=['"]([^'^"]+?)['"]''')[0])
+        icon = self.getFullUrl(self.cm.ph.getSearchGroups(tmp, '''data-src=['"]([^'^"]+?)['"]''')[0])
         if '' == icon:
             icon = cItem.get('series_title', '')
         desc = self.cleanHtmlStr(self.cm.ph.getSearchGroups(tmp, '''description=['"]([^'^"]+?)['"]''')[0])
