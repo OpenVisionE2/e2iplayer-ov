@@ -15148,20 +15148,22 @@ class pageParser(CaptchaHelper):
             return False
 
         _url = self.cm.ph.getSearchGroups(data, '''<iframe[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0]
-        if _url.startswith('//'):
-            _url = 'http:' + _url
-        HTTP_HEADER['Referer'] = url
-        urlParams = {'header': HTTP_HEADER}
-        sts, data = self.cm.getPage(_url, urlParams)
-        if not sts:
-            return False
+        if _url:
+            if _url.startswith('//'):
+                _url = 'http:' + _url
+            HTTP_HEADER['Referer'] = url
+            urlParams = {'header': HTTP_HEADER}
+            sts, data = self.cm.getPage(_url, urlParams)
+            if not sts:
+                return False
+        else:
+            _url = url
 
         urlTab = []
 
         if "eval(function(p,a,c,k,e,d)" in data:
             printDBG('Host resolveUrl packed')
             scripts = re.findall(r"(eval\s?\(function\(p,a,c,k,e,d.*?)</script>", data, re.S)
-            printDBG("parserSTARLIVEXYZ scripts[%r]" % scripts)
             for packed in scripts:
                 data2 = packed
                 printDBG('Host pack: [%s]' % data2)
