@@ -679,6 +679,7 @@ class urlparser:
                        'noob4cast.com': self.pp.parserCASTFREEME,
                        'embedo.co': self.pp.parserHIGHLOADTO,
                        'hlsplayer.org': self.pp.parserHLSPLAYER,
+                       'starlive.xyz': self.pp.parserSTARLIVEXYZ,
                     }
         return
 
@@ -15120,6 +15121,64 @@ class pageParser(CaptchaHelper):
         urlTab = []
         url = strwithmeta(url, {'Origin': "https://" + urlparser.getDomain(baseUrl), 'Referer': baseUrl})
         urlTab.extend(getDirectM3U8Playlist(url, checkExt=False, variantCheck=True, checkContent=True, sortWithMaxBitrate=99999999))
+
+        return urlTab
+
+    def parserSTARLIVEXYZ(self, baseUrl):
+        printDBG("parserSTARLIVEXYZ baseUrl[%r]" % baseUrl)
+
+        baseUrl = strwithmeta(baseUrl)
+        HTTP_HEADER = self.cm.getDefaultHeader(browser='chrome')
+        HTTP_HEADER['Referer'] = baseUrl.meta.get('Referer', baseUrl)
+        urlParams = {'header': HTTP_HEADER}
+
+        sts, data = self.cm.getPage(baseUrl, urlParams)
+        if not sts:
+            return False
+        cUrl = self.cm.meta['url']
+        domain = urlparser.getDomain(cUrl)
+
+        url = self.cm.ph.getSearchGroups(data, '''<iframe[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0]
+        if url.startswith('//'):
+            url = 'http:' + url
+        HTTP_HEADER['Referer'] = cUrl
+        urlParams = {'header': HTTP_HEADER}
+        sts, data = self.cm.getPage(url, urlParams)
+        if not sts:
+            return False
+
+        _url = self.cm.ph.getSearchGroups(data, '''<iframe[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0]
+        if _url.startswith('//'):
+            _url = 'http:' + _url
+        HTTP_HEADER['Referer'] = url
+        urlParams = {'header': HTTP_HEADER}
+        sts, data = self.cm.getPage(_url, urlParams)
+        if not sts:
+            return False
+
+        urlTab = []
+
+        if "eval(function(p,a,c,k,e,d)" in data:
+            printDBG('Host resolveUrl packed')
+            scripts = re.findall(r"(eval\s?\(function\(p,a,c,k,e,d.*?)</script>", data, re.S)
+            printDBG("parserSTARLIVEXYZ scripts[%r]" % scripts)
+            for packed in scripts:
+                data2 = packed
+                printDBG('Host pack: [%s]' % data2)
+                try:
+                    data = unpackJSPlayerParams(data2, TEAMCASTPL_decryptPlayerParams, 0, True, True)
+                    printDBG('OK unpack: [%s]' % data)
+                except Exception:
+                    pass
+
+                url = self.cm.ph.getSearchGroups(data, '''["'](https?://[^'^"]+?\.mp4(?:\?[^"^']+?)?)["']''', ignoreCase=True)[0]
+                if url != '':
+                    url = strwithmeta(url, {'Origin': "https://" + urlparser.getDomain(baseUrl), 'Referer': _url})
+                    urlTab.append({'name': 'mp4', 'url': url})
+                hlsUrl = self.cm.ph.getSearchGroups(data, '''["'](https?://[^'^"]+?\.m3u8(?:\?[^"^']+?)?)["']''', ignoreCase=True)[0]
+                if hlsUrl != '':
+                    hlsUrl = strwithmeta(hlsUrl, {'Origin': "https://" + urlparser.getDomain(baseUrl), 'Referer': _url})
+                    urlTab.extend(getDirectM3U8Playlist(hlsUrl, checkExt=False, variantCheck=True, checkContent=True, sortWithMaxBitrate=99999999))
 
         return urlTab
 

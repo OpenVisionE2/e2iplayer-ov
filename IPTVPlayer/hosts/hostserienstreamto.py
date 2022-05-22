@@ -68,9 +68,9 @@ class SerienStreamTo(CBaseHostClass, CaptchaHelper):
         self.defaultParams = {'header': self.HEADER, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
 
         self.MAIN_URL = 'https://s.to/'
-        self.DEFAULT_ICON_URL = 'https://zrt5351b7er9.static-webarchive.org/img/facebook.jpg'
+        self.DEFAULT_ICON_URL = 'https://s.to/public/img/facebook.jpg'
 
-        self.MAIN_CAT_TAB = [{'category': 'all_series', 'title': 'Serien', 'url': self.getFullUrl('/serien)},
+        self.MAIN_CAT_TAB = [{'category': 'all_series', 'title': 'Alle Serien', 'url': self.getFullUrl('/serien-alphabet')},
                              {'category': 'list_abc', 'title': _('A-Z'), 'url': self.MAIN_URL},
                              {'category': 'list_genres', 'title': _('Genres'), 'url': self.MAIN_URL},
                              {'category': 'list_items', 'title': _('New'), 'url': self.getFullUrl('/neu')},
