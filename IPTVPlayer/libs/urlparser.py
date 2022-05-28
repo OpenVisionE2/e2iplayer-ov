@@ -643,6 +643,7 @@ class urlparser:
                        'cricplay2.xyz': self.pp.parserASSIAORG,
                        'givemenbastreams.com': self.pp.parserASSIAORG,
                        'mazystreams.xyz': self.pp.parserASSIAORG,
+                       'assia22.com': self.pp.parserASSIAORG,
                        'embedstream.me': self.pp.parserEMBEDSTREAMME,
                        'daddylive.me': self.pp.parserDADDYLIVE,
                        'daddylive.club': self.pp.parserDADDYLIVE,
