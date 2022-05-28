@@ -1,10 +1,9 @@
-# -*- coding: iso-8859-1 -*-
 """ fmath.primes_to_5k
 
     All of the prime numbers below 5000
 
 
-    Copyright © (c) 2002 by Paul A. Lambert
+    Copyright (c) 2002 by Paul A. Lambert
     Read LICENSE.txt for license information.
 """
 primes_to_5k = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43,
