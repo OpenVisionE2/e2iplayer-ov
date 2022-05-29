@@ -68,7 +68,7 @@ class IPTVHostsGroups:
                                                      'tfarjocom', 'filmaoncom', 'filmstreamhdit', 'altadefinizione', 'streaminghdfun', 'putlockertvto', 'akoam', 'filmehdnet', 'oipeirates', 'andrijaiandjelka',
                                                      'altadefinizione01', '123movieshd', 'guardaserie', 'filma24io', 'officialfilmillimite', 'filmpertutti', 'hdsto', 'ddl', 'vidcorncom', 'hdfull', 'dixmax', 'plusdede', 'fenixsite',
                                                      'kkiste']
-        self.PREDEFINED_HOSTS['cartoonsandanime'] = ['bajeczkiorg', 'kreskowkazone', 'kreskoweczki', 'animeodcinki', '9anime', 'kisscartoonme', 'kissanimeto', 'watchcartoononline', 'shahiidanimenet',
+        self.PREDEFINED_HOSTS['cartoonsandanime'] = ['bajeczkiorg', 'kreskoweczki', 'animeodcinki', '9anime', 'kisscartoonme', 'kissanimeto', 'watchcartoononline', 'shahiidanimenet',
                                                      'otakufr', 'crtankocom']
         self.PREDEFINED_HOSTS['sport'] = ['webstream', 'meczykipl', 'ekstraklasatv', 'laola1tv', 'bbcsport', 'ourmatchnet', 'hoofootcom', 'okgoals', 'ngolos', 'watchwrestlinguno', 'watchwrestling', 'fighttube', 'fightvideo',
                                                      'twitchtv', 'pinkbike', 'sportdeutschland', 'eurosportplayer', 'del', 'redbull', 'fullmatchtvcom']
@@ -77,7 +77,7 @@ class IPTVHostsGroups:
         self.PREDEFINED_HOSTS['science'] = ['questtvcouk', 'dailymotion', 'ustreamtv', 'dokumentalnenet', 'orthobulletscom', 'vumedicom']
 
         self.PREDEFINED_HOSTS['polish'] = ['youtube', 'webstream', 'efilmytv', 'ekinotv', 'cdapl', 'vizjerpl', 'zaluknijcc', 'filman', 'hdseanspl', 'ogladajto', 'govodtv', 'filmynadzis', 'tvpvod', 'ipla', 'vodpl',
-                                                     'freediscpl', 'ekstraklasatv', 'kreskowkazone', 'kreskoweczki', 'bajeczkiorg', 'animeodcinki', 'playpuls', 'meczykipl', 'eskago',
+                                                     'freediscpl', 'ekstraklasatv', 'kreskoweczki', 'bajeczkiorg', 'animeodcinki', 'playpuls', 'meczykipl', 'eskago',
                                                      'tvjworg', 'artetv', 'dailymotion', 'vimeo', 'kabarety', 'twitchtv', 'tvgrypl', 'chomikuj', 'fighttube', 'spryciarze', 'wgrane', 'wolnelekturypl', 'tvn24', 'ninateka',
                                                      'maxtvgo', 'wpolscepl', 'wrealu24tv', 'wptv', 'interiatv', 'dokumentalnenet', 'serialeco', 'radiostacja', 'nuteczki', 'luxveritatis', 'tvproart', 'tvrepublika',
                                                      'christusvincit', 'joemonsterorg']
