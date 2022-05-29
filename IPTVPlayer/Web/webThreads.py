@@ -25,10 +25,10 @@ def _async_raise(tid, exctype):
 		raise TypeError("Only types can be raised (not instances)")
 	res = ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, ctypes.py_object(exctype))
 	if res == 0:
-		print 'res=%d' % res
+		print('res=%d' % res)
 		raise ValueError("invalid thread id")
 	elif res != 1:
-		print 'res=%d' % res
+		print('res=%d' % res)
 		# """if it returns a number greater than one, you're in trouble,
 		# and you should call it again with exc=NULL to revert the effect"""
 		ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, 0)
@@ -78,7 +78,7 @@ class buildActiveHostsHTML(threading.Thread):
 				try:
 					hostNameWithURLandLOGO = '<a href="./usehost?activeHost=%s">%s</a><br><a href="%s" target="_blank"><font size="2" color="#58D3F7">%s</font></a>' % (hostName, logo, title, '.'.join(title.replace('://', '.').replace('www.', '').split('.')[1:-1]))
 				except Exception as e:
-					print str(e)
+					print(str(e))
 					hostNameWithURLandLOGO = '<a href="%s" target="_blank">%s</a><br><a href="%s" target="_blank"><font size="2" color="#58D3F7">%s</font></a>' % (title, logo, title, _('visit site'))
 			elif title[:4] != 'http' and logo != "":
 				hostNameWithURLandLOGO = '<a href="./usehost?activeHost=%s">%s</a><br><a href="%s" target="_blank"><font size="2" color="#58D3F7">%s</font></a>' % (hostName, logo, title, title)
@@ -352,7 +352,7 @@ class doGlobalSearch(threading.Thread):
 		self.host = None
 		settings.GlobalSearchResults = {}
 		settings.StopThreads = False
-		print 'doGlobalSearch:init'
+		print('doGlobalSearch:init')
 
 	def raise_exc(self, exctype):
 		"""raises the given exception type in the context of this thread"""
@@ -412,6 +412,6 @@ class doGlobalSearch(threading.Thread):
 				for SearchType in searchTypes:
 					ret = self.host.getSearchResults(settings.GlobalSearchQuery, SearchType[1])
 					self.stopIfRequested()
-					print SearchType[1], ' searched ', ret.value
+					print(SearchType[1], ' searched ', ret.value)
 
 		settings.searchingInHost = None

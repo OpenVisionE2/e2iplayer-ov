@@ -474,7 +474,7 @@ class Body():
 							tempText += self.buildItemsListTable(item, index)
 						index += 1
 			except Exception as e:
-				print 'EXCEPTION in webParts:useHostPageContent - ', str(e)
+				print('EXCEPTION in webParts:useHostPageContent - ', str(e))
 				tempText += tableHorizontalRedLine(colspan=3)
 				tempText += '<td colspan="3" align="center">%s %s</td></tr>' % (_('ERROR:'), str(e))
 				tempText += tableHorizontalRedLine(colspan=3)
@@ -516,7 +516,7 @@ class Body():
 											destinationURL='/iptvplayer/usehost?activeHostSearchHistory=%s' % key)
 						index += 1
 				except Exception as e:
-					print 'EXCEPTION in webParts:useHostPageContent - ', str(e)
+					print('EXCEPTION in webParts:useHostPageContent - ', str(e))
 					tempText += tableHorizontalRedLine(colspan=3)
 					tempText += '<td colspan="2" align="left">%s %s</td></tr>' % (_('ERROR:'), str(e))
 					tempText += tableHorizontalRedLine(colspan=3)

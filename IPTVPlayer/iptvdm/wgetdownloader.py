@@ -236,7 +236,7 @@ class WgetDownloader(BaseDownloader):
             return
 
         if self.WGET_STS.DOWNLOADING == self.wgetStatus:
-            print self.outData
+            print(self.outData)
             dataLen = len(self.outData)
             for idx in range(dataLen):
                 if idx + 1 < dataLen:

@@ -27,7 +27,7 @@ def main():
         optlist, args = getopt.getopt(sys.argv[1:], 'edk:i:o:')
     except getopt.GetoptError as err:
         sys.exit("Error: %s\n%s" % (err, usage))
-    print optlist, '\n------\n', args
+    print(optlist, '\n------\n', args)
     # make a dictionary and check for one occurance of each option
     optdict = {}
     for option in optlist:
