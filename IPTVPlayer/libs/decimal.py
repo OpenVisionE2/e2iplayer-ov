@@ -4782,7 +4782,7 @@ def _rshift_nearest(x, shift):
     integer to x / 2**shift; use round-to-even in case of a tie.
 
     """
-    b, q = 1L << shift, x >> shift
+    b, q = 1 << shift, x >> shift
     return q + (2 * (x & (b - 1)) + (q & 1) > b)
 
 
