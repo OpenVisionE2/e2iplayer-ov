@@ -643,6 +643,7 @@ class urlparser:
                        'cricplay2.xyz': self.pp.parserASSIAORG,
                        'givemenbastreams.com': self.pp.parserASSIAORG,
                        'mazystreams.xyz': self.pp.parserASSIAORG,
+                       'assia22.com': self.pp.parserASSIAORG,
                        'embedstream.me': self.pp.parserEMBEDSTREAMME,
                        'daddylive.me': self.pp.parserDADDYLIVE,
                        'daddylive.club': self.pp.parserDADDYLIVE,
@@ -680,6 +681,7 @@ class urlparser:
                        'embedo.co': self.pp.parserHIGHLOADTO,
                        'hlsplayer.org': self.pp.parserHLSPLAYER,
                        'starlive.xyz': self.pp.parserSTARLIVEXYZ,
+                       'jokerswidget.org': self.pp.parserJOKERSWIDGETORG,
                     }
         return
 
@@ -14544,7 +14546,7 @@ class pageParser(CaptchaHelper):
         return urlTab
 
     def parserF1LIVEGPME(self, baseUrl):
-        printDBG("parserF1LIVEGPMEself baseUrl[%s]" % baseUrl)
+        printDBG("parserF1LIVEGPME baseUrl[%s]" % baseUrl)
 
         HTTP_HEADER = self.cm.getDefaultHeader(browser='chrome')
         referer = baseUrl.meta.get('Referer')
@@ -15184,3 +15186,58 @@ class pageParser(CaptchaHelper):
 
         return urlTab
 
+    def parserJOKERSWIDGETORG(self, baseUrl):
+        printDBG("parserJOKERSWIDGETORG baseUrl[%s]" % baseUrl)
+
+        HTTP_HEADER = self.cm.getDefaultHeader(browser='chrome')
+        referer = baseUrl.meta.get('Referer')
+        if referer:
+            HTTP_HEADER['Referer'] = referer
+        urlParams = {'header': HTTP_HEADER}
+        sts, data = self.cm.getPage(baseUrl, urlParams)
+        if not sts:
+            return []
+
+        tmp = self.cm.ph.getDataBeetwenNodes(data, ('<body', '>'), ('<div', '>'), False)[1]
+        jscode = self.cm.ph.getAllItemsBeetwenNodes(tmp, ('<script', '>'), ('</script', '>'), False)
+        jscode = '\n'.join(jscode)
+        jscode = 'var document={}; document.write=function(txt){print(txt);};' + jscode
+        url = self.cm.ph.getSearchGroups(tmp, '''src=['"]([^"^']+?)['"]''')[0]
+        sts, data = self.cm.getPage(url, urlParams)
+        if not sts:
+            return []
+        jscode = jscode + data
+
+        ret = js_execute(jscode)
+        if ret['sts'] and 0 == ret['code']:
+            tmp = ret['data'].strip()
+        url = self.cm.ph.getSearchGroups(tmp, '''<iframe[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0]
+        HTTP_HEADER['Referer'] = baseUrl
+        urlParams = {'header': HTTP_HEADER}
+        sts, data = self.cm.getPage(url, urlParams)
+        if not sts:
+            return []
+
+        HTTP_HEADER['Referer'] = url
+        urlParams = {'header': HTTP_HEADER}
+        tmp = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'player'), ('</iframe', '>'), False)[1]
+        url = self.cm.ph.getSearchGroups(tmp, '''<iframe[^>]+?src=([^\s]+?)\s''', 1, True)[0]
+        sts, data = self.cm.getPage(url, urlParams)
+        if not sts:
+            return []
+
+        HTTP_HEADER['Referer'] = url
+        urlParams = {'header': HTTP_HEADER}
+        _url = self.cm.ph.getSearchGroups(data, '''<iframe[^>]+?src=([^\s]+?)\s''', 1, True)[0]
+        url = self.cm.getFullUrl(_url, url)
+        sts, data = self.cm.getPage(url, urlParams)
+        if not sts:
+            return []
+
+        urlTab = []
+        videoUrl = self.cm.ph.getSearchGroups(data, '''source:\s?['"]([^"^']+?)['"]''')[0]
+        videoUrl = strwithmeta(videoUrl, {'Referer': url})
+        if videoUrl != '':
+            urlTab.extend(getDirectM3U8Playlist(videoUrl, checkContent=True, sortWithMaxBitrate=999999999))
+
+        return urlTab
