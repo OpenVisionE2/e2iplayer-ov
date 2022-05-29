@@ -9,7 +9,6 @@ hostaltadefinizione01
 hostandrijaiandjelka
 hostanimeodcinki
 hostappletrailers
-hostarconaitvme
 hostardmediathek
 hostartetv
 hostbajeczkiorg
@@ -24,11 +23,8 @@ hostcimaclubcom
 hostcinemay
 hostcineto
 hostclassiccinemaonline
-hostcrtankocom
 hostdailymotion
 hostdancetrippin
-hostdardarkomcom
-hostdarshowcom
 hostddl
 hostdel
 hostdixmax
