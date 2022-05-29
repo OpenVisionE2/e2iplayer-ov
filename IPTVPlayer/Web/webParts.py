@@ -148,7 +148,7 @@ class Body():
 			cfgtype = ''
 			try:
 				CFGElements = option.doException()
-			except Exception, e:
+			except Exception as e:
 				cfgtype = str(e).split("'")[1]
 			return cfgtype
 		########################################################
@@ -185,7 +185,7 @@ class Body():
 					else:
 						try:
 							CFGElements = confKey[1].getHTML('CFG:' + ConfName)
-						except Exception, e:
+						except Exception as e:
 							CFGElements = 'ERROR:%s' % str(e)
 					tableCFG.append([ConfName, ConfDesc, CFGElements])
 		return tableCFG
@@ -225,7 +225,7 @@ class Body():
 		if 0 == len(GetHostsOrderList()):
 			try:
 				displayHostsList.sort(key=lambda t: tuple('.'.join(str(t[0]).replace('://', '.').replace('www.', '').split('.')[1:-1]).lower()))
-			except Exception, e:
+			except Exception as e:
 				print("Exception during sorting displayHostsList", str(e))
 		for hostName in displayHostsList:
 			if hostName in settings.activeHostsHTML.keys():
@@ -473,7 +473,7 @@ class Body():
 						else:
 							tempText += self.buildItemsListTable(item, index)
 						index += 1
-			except Exception, e:
+			except Exception as e:
 				print 'EXCEPTION in webParts:useHostPageContent - ', str(e)
 				tempText += tableHorizontalRedLine(colspan=3)
 				tempText += '<td colspan="3" align="center">%s %s</td></tr>' % (_('ERROR:'), str(e))
@@ -515,7 +515,7 @@ class Body():
 							_tempBody += self.buildItemsListTable(item, index, allowedCategories=settings.GlobalSearchTypes,
 											destinationURL='/iptvplayer/usehost?activeHostSearchHistory=%s' % key)
 						index += 1
-				except Exception, e:
+				except Exception as e:
 					print 'EXCEPTION in webParts:useHostPageContent - ', str(e)
 					tempText += tableHorizontalRedLine(colspan=3)
 					tempText += '<td colspan="2" align="left">%s %s</td></tr>' % (_('ERROR:'), str(e))

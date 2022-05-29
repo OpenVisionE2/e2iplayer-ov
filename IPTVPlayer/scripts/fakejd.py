@@ -77,7 +77,7 @@ def getPage(url, headers={}, post_data=None):
         response = opener.open(req)
         data = response.read()
         sts = response.getcode()
-    except urllib2.HTTPError, e:
+    except urllib2.HTTPError as e:
         global LAST_HTTP_ERROR_CODE
         global LAST_HTTP_ERROR_DATA
         LAST_HTTP_ERROR_CODE = e.code

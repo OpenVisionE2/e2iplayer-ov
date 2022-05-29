@@ -145,7 +145,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                 def inner(*args):
                     try:
                         return func(*args)
-                    except httplib.IncompleteRead, e:
+                    except httplib.IncompleteRead as e:
                         return e.partial
                 return inner
             prev_read = httplib.HTTPResponse.read
