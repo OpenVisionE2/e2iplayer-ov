@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 """ crypto.cipher.trolldoll
 
     Modification to Icedoll to take advantage of the better error extension
@@ -13,7 +13,7 @@
 
     ALso ... currently just IV .... in test ..
 
-    Copyright © (c) 2002 by Paul A. Lambert
+    Copyright Â© (c) 2002 by Paul A. Lambert
     Read LICENSE.txt for license information.
 """
 

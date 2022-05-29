@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 """ crypto.entropy.prn_rijndael
 
     A Psudeo Random Number Generator based on Rijndael_256k_256b

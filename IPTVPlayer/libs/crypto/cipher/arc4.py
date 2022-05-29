@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 """ crypto.cipher.arc4
 
     A Stream Cipher Encryption Algorithm 'Arcfour'
@@ -11,7 +11,7 @@
           ftp://ietf.org/draft-kaukonen-cipher-arcfour-03.txt
     Generally munged to map to crypto.cipher calling conventions
 
-    Copyright © (c) 2002 by Paul A. Lambert
+    Copyright Â© (c) 2002 by Paul A. Lambert
     Read LICENSE.txt for license information.
 
     November 5, 2002

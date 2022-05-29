@@ -1,8 +1,8 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 """ errors
     Error classes for cryptographic modules
 
-    Copyright © (c) 2002 by Paul A. Lambert
+    Copyright Â© (c) 2002 by Paul A. Lambert
     Read LICENSE.txt for license information.
 """
 

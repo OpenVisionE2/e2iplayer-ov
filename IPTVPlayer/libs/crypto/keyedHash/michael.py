@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 """ crypto.keyedHash.michael
 
     A reference implementation of the Michael Message Integrety Chek (MIC)
@@ -6,7 +6,7 @@
 
     Michael is a 64-bit MIC, with a design strength of 20 bits.
 
-    Copyright © (c) 2002 by Paul A. Lambert
+    Copyright Â© (c) 2002 by Paul A. Lambert
     Read LICENSE.txt for license information.
 """
 from struct import pack, unpack

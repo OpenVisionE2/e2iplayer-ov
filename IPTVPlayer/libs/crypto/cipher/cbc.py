@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 """ crypto.cipher.cbc
 
     CBC mode of encryption for block ciphers.
@@ -9,7 +9,7 @@
     Note !!!! auto IV uses python default random :-(
     should not be 'too bad' (tm) for this cbc applicaiton
 
-    Copyright © (c) 2002 by Paul A. Lambert
+    Copyright Â© (c) 2002 by Paul A. Lambert
     Read LICENSE.txt for license information.
 """
 from ..cipher.base import BlockCipher, padWithPadLen, noPadding

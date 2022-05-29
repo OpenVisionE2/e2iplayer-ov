@@ -1005,7 +1005,7 @@ def rmtree(path, ignore_errors=False, onerror=None):
     names = []
     try:
         names = os.listdir(path)
-    except os.error, err:
+    except os.error as err:
         onerror(os.listdir, path)
     for name in names:
         fullname = os.path.join(path, name)
@@ -1018,7 +1018,7 @@ def rmtree(path, ignore_errors=False, onerror=None):
         else:
             try:
                 os.remove(fullname)
-            except os.error, err:
+            except os.error as err:
                 onerror(os.remove, fullname)
     try:
         os.rmdir(path)

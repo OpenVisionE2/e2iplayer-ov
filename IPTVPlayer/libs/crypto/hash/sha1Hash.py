@@ -1,9 +1,9 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 """ crypto.hash.sha1Hash
 
     Wrapper for python sha module to support crypo module standard interface
 
-    Copyright © (c) 2002 by Paul A. Lambert
+    Copyright Â© (c) 2002 by Paul A. Lambert
     Read LICENSE.txt for license information.
 """
 import hashlib

@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 """ crypto.cipher.icedoll
 
     Modification of Rijndael to provide infinite error extension.
@@ -13,7 +13,7 @@
         Fi = Ek(t,P[i-1]) ; Fi, with i=0 is nonce or a fixed value
         C[i] = Fi^Ek(N,P[i]^Fi)
 
-    Copyright © (c) 2002 by Paul A. Lambert
+    Copyright Â© (c) 2002 by Paul A. Lambert
     Read LICENSE.txt for license information.
 
     June 2002
@@ -67,7 +67,7 @@ class Icedoll(Rijndael):
             self.priorFeedBack = self._toBlock(chr(0) * (4 * self.Nb)) # <------- !!! change from Rijndael !!!
         AddRoundKey(self, self.priorFeedBack)                      # <------- !!! change from Rijndael !!!
         AddRoundKey(self, self.__expandedKey[0:self.Nb])
-        for round in range(1, self.Nr):          #for round = 1 step 1 to Nr–1
+        for round in range(1, self.Nr):          #for round = 1 step 1 to Nrâ€“1
             SubBytes(self)
             ShiftRows(self)
             MixColumns(self)

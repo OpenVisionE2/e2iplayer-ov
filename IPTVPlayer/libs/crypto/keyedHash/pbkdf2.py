@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 """ crypto.keyedHash.pbkdf2
 
 
@@ -7,7 +7,7 @@
 
 	This function is used for IEEE 802.11/WPA passphrase to key hashing
 
-	Copyright © (c) 2002 by Paul A. Lambert
+	Copyright Â© (c) 2002 by Paul A. Lambert
 	Read LICENSE.txt for license information.
 """
 from ..keyedHash.hmacHash import HMAC_SHA1

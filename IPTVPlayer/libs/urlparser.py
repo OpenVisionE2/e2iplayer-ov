@@ -483,7 +483,7 @@ class urlparser:
                        'sharevideo.pl': self.pp.parserSHAREVIDEOPL,
                        'sharing-box.cloud': self.pp.parserSHAREVIDEOPL,
                        'file-upload.com': self.pp.parserFILEUPLOADCOM,
-                       'mp4upload.com': self.pp.parserMP4UPLOAD,
+                       'mp4upload.com': self.pp.parserONLYSTREAMTV,
                        'megadrive.tv': self.pp.parserMEGADRIVETV,
                        'watchvideo17.us': self.pp.parserWATCHVIDEO17US,
                        'watchvideo.us': self.pp.parserWATCHVIDEO17US,
@@ -5751,49 +5751,6 @@ class pageParser(CaptchaHelper):
                 vidTab.append({'name': 'vidfile.net ' + res, 'url': strwithmeta(url, {'Referer': baseUrl, 'User-Agent': HTTP_HEADER['User-Agent']})}) #'Cookie':cookieHeader,
         vidTab.reverse()
         return vidTab
-
-    def parserMP4UPLOAD(self, baseUrl):
-        printDBG("parserMP4UPLOAD baseUrl[%s]" % baseUrl)
-        baseUrl = strwithmeta(baseUrl)
-        referer = baseUrl.meta.get('Referer', baseUrl)
-
-        HTTP_HEADER = self.cm.getDefaultHeader(browser='chrome')
-        if referer != '':
-            HTTP_HEADER['Referer'] = referer
-        paramsUrl = {'header': HTTP_HEADER}
-        videoUrls = []
-
-        sts, data = self.cm.getPage(baseUrl, paramsUrl)
-
-        cUrl = self.cm.getBaseUrl(self.cm.meta['url'])
-        domain = urlparser.getDomain(cUrl)
-
-        jscode = [self.jscode['jwplayer']]
-        printDBG(jscode)
-        tmp = self.cm.ph.getAllItemsBeetwenNodes(data, ('<script', '>'), ('</script', '>'), False)
-        for item in tmp:
-            if 'eval(' in item and 'setup' in item:
-                jscode.append(item)
-        urlTab = []
-        jscode = '\n'.join(jscode)
-        ret = js_execute(jscode)
-        #if ret['sts'] and 0 == ret['code']:
-        data = json_loads(ret['data'])
-        if 'sources' in data:
-            data = data['sources']
-        else:
-            data = [data]
-        for item in data:
-            url = item['file']
-            type = item.get('type', url.rsplit('.', 1)[-1].split('?', 1)[0]).lower()
-            label = item.get('label', domain)
-            if 'mp4' not in type:
-                continue
-            if url == '':
-                continue
-            url = urlparser.decorateUrl(self.cm.getFullUrl(url, cUrl), {'Referer': baseUrl, 'User-Agent': HTTP_HEADER['User-Agent']})
-            urlTab.append({'name': '{0} {1}'.format(domain, label), 'url': url})
-        return urlTab
 
     def parserYUKONS(self, baseUrl):
         printDBG("parserYUKONS url[%s]" % baseUrl)
