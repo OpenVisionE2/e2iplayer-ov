@@ -239,7 +239,7 @@ class IPTVDMWidget(Screen):
             self.tmpData = ''
             lsdirPath = GetBinDir("lsdir")
             try:
-                os_chmod(lsdirPath, 0777)
+                os_chmod(lsdirPath, 0o777)
             except Exception:
                 printExc()
             cmd = '%s "%s" rl r' % (lsdirPath, config.plugins.iptvplayer.NaszaSciezka.value)
