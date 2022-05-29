@@ -105,7 +105,7 @@ class CCM(BlockCipherWithIntegrity):
             raise EncryptError, 'wrong sized nonce'
 
         lenMessage = len(plainText)
-        if lenMessage >= 1L << (8 * self.L):
+        if lenMessage >= 1 << (8 * self.L):
             raise EncryptError, 'CCM plainText too long for given L field size'
         packedLenMessage = pack('!Q', lenMessage)[-self.L:]  # pack and truncate to L bytes
 
@@ -129,7 +129,7 @@ class CCM(BlockCipherWithIntegrity):
         for i in range(numCbcBlocks):
             cbcBlock = cbcInput[i * self.blockSize:(i + 1) * self.blockSize]
             cbcMicValue = self.baseCipher.encrypt(xor(cbcMicValue, cbcBlock))
-        counter = 0L
+        counter = 0
         # the counter mode preload with counter starting at zero
         ctrModePl = chr(self.L - 1) + nonce + pack('>Q', counter)[-self.L:]
         ccmMIC = xor(self.baseCipher.encrypt(ctrModePl), cbcMicValue)[:self.M] # first M bytes of xor
@@ -137,7 +137,7 @@ class CCM(BlockCipherWithIntegrity):
         ct = ''
         numCtrBlocks, extra = divmod(len(plainText) + self.blockSize, self.blockSize)
         while counter < numCtrBlocks:
-            counter = counter + 1L
+            counter = counter + 1
             ctrModePl = chr(self.L - 1) + nonce + pack('>Q', counter)[-self.L:]
             ct = ct + xor(self.baseCipher.encrypt(ctrModePl), plainText[(counter - 1) * 16:counter * 16])
         ct = ct + ccmMIC
@@ -160,7 +160,7 @@ class CCM(BlockCipherWithIntegrity):
             raise DecryptError, 'wrong sized nonce'
 
         lenMessage = len(cipherText) - self.M
-        if lenMessage >= 1L << (8 * self.L):
+        if lenMessage >= 1 << (8 * self.L):
             raise DecryptError, 'CCM cipherText too long for given L field size'
         if lenMessage < 0:
             raise DecryptError, 'Too small of cipherText for MIC size'
@@ -210,9 +210,9 @@ class CCM(BlockCipherWithIntegrity):
             raise EncryptError, 'CCM illegal length value'
         elif 0 <= length < 0xFF00:
             byteString = pack('!H', length)         # pack into two bytes
-        elif 0xFF00 <= length < 0x100000000L:
+        elif 0xFF00 <= length < 0x100000000:
             byteString = pack('!HI', 0xFFFE, length) # pack into 0xFFFE + four bytes
-        elif 0x100000000L <= length < 0x10000000000000000L:
+        elif 0x100000000 <= length < 0x10000000000000000:
             byteString = pack('!HQ', 0xFFFF, length) # pack into 0xFFFF + eigth bytes
         else:
             raise EncryptError, 'CCM length error'

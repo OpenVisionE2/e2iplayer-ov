@@ -1917,7 +1917,7 @@ class Decimal(object):
                 return None
 
             # compute nth root of xc using Newton's method
-            a = 1L << -(-_nbits(xc) // n) # initial estimate
+            a = 1 << -(-_nbits(xc) // n) # initial estimate
             while True:
                 q, r = divmod(xc, a**(n - 1))
                 if a <= q:
