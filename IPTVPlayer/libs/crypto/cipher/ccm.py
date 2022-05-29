@@ -41,13 +41,13 @@ class CCM(BlockCipherWithIntegrity):
             >> try:
             >>     decryptedText = aes_ccm.decrypt(cipherText, nonce)
             >> except IntegrityCheckError:
-            >>     print 'failed integrity check'
+            >>     print('failed integrity check')
             or ...
             >> cipherText = aes_ccm.encrypt(plainText, nonce, addAuthData=header)
             >> try:
             >>     decryptedText = aes_ccm.decrypt(cipherText, nonce, addAuthData=header)
             >> except IntegrityCheckError:
-            >>     print 'failed integrity check'
+            >>     print('failed integrity check')
     """
 
     def __init__(self, blockCipherInstance, autoNonce=None, macSize=8, nonceSize=13):

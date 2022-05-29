@@ -226,7 +226,7 @@ class Body():
 			try:
 				displayHostsList.sort(key=lambda t: tuple('.'.join(str(t[0]).replace('://', '.').replace('www.', '').split('.')[1:-1]).lower()))
 			except Exception, e:
-				print "Exception during sorting displayHostsList", str(e)
+				print("Exception during sorting displayHostsList", str(e))
 		for hostName in displayHostsList:
 			if hostName in settings.activeHostsHTML.keys():
 				hostHTML = settings.activeHostsHTML[hostName]

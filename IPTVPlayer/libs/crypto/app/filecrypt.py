@@ -55,7 +55,7 @@ def main():
     else:
         input = sys.stdin.read()
 
-    print "input (%d bytes): %s" % (len(input), b2a_pt(input))
+    print("input (%d bytes): %s" % (len(input), b2a_pt(input)))
     alg = Trolldoll(ivSize=160)
     alg.setPassphrase(passPhrase)
 
@@ -71,7 +71,7 @@ def main():
     else:
         sys.exit("Error: Must select encrypt or decrypt, pick either '-e' or '-d'\n%s" % usage)
 
-    print "output (%d bytes): %s" % (len(output), b2a_pt(output))
+    print("output (%d bytes): %s" % (len(output), b2a_pt(output)))
     # put output to file or stdout
     if optdict.has_key('-o'):
         outfile = open(optdict['-o'], 'wb')

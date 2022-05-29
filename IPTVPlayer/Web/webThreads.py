@@ -263,7 +263,7 @@ class doUseHostAction(threading.Thread):
 		self.raise_exc(SystemExit)
 
 	def run(self):
-		print "doUseHostAction received: '%s'='%s'" % (self.key, str(self.arg))
+		print("doUseHostAction received: '%s'='%s'" % (self.key, str(self.arg)))
 		if self.key == 'activeHost' and isActiveHostInitiated() == False:
 			initActiveHost(self.arg)
 		elif self.key == 'activeHost' and self.arg != settings.activeHost['Name']:
@@ -296,10 +296,10 @@ class doUseHostAction(threading.Thread):
 					elif isinstance(item, basestring):
 						linkList.append(CUrlItem(item, item, 0))
 					else:
-						print "selectResolvedVideoLinks: wrong resolved url type!"
+						print("selectResolvedVideoLinks: wrong resolved url type!")
 				settings.retObj = RetHost(RetHost.OK, value=linkList)
 			else:
-				print "selectResolvedVideoLinks: wrong status or value"
+				print("selectResolvedVideoLinks: wrong status or value")
 
 		elif self.key == 'ListForItem' and self.arg.isdigit():
 			myID = int(self.arg)
@@ -314,16 +314,16 @@ class doUseHostAction(threading.Thread):
 				try:
 					links = settings.retObj.value[myID].urlItems
 				except Exception, e:
-					print "ListForItem>urlItems exception:", str(e)
+					print("ListForItem>urlItems exception:", str(e))
 					links = 'NOVALIDURLS'
 				try:
 					settings.retObj = settings.activeHost['Obj'].getLinksForVideo(myID, settings.retObj.value[myID]) #returns "NOT_IMPLEMENTED" when host is using curlitem
 				except Exception, e:
-					print "ListForItem>getLinksForVideo exception:", str(e)
+					print("ListForItem>getLinksForVideo exception:", str(e))
 					settings.retObj = RetHost(RetHost.NOT_IMPLEMENTED, value=[])
 
 				if settings.retObj.status == RetHost.NOT_IMPLEMENTED and links != 'NOVALIDURLS':
-					print "getLinksForVideo not implemented, using CUrlItem"
+					print("getLinksForVideo not implemented, using CUrlItem")
 					tempUrls = []
 					iindex = 1
 					for link in links:
@@ -369,7 +369,7 @@ class doGlobalSearch(threading.Thread):
 
 	def run(self):
 		if settings.GlobalSearchQuery == '':
-			print "End settings.GlobalSearchQuery is empty"
+			print("End settings.GlobalSearchQuery is empty")
 			return
 		for hostName in SortHostsList(GetHostsList()):
 			self.stopIfRequested()
@@ -381,18 +381,18 @@ class doGlobalSearch(threading.Thread):
 				continue
 			elif not IsHostEnabled(hostName):
 				continue
-			#print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ---------------- %s ---------------- !!!!!!!!!!!!!!!!!!!!!!!!!" % hostName
+			#print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ---------------- %s ---------------- !!!!!!!!!!!!!!!!!!!!!!!!!" % hostName)
 			try:
 				_temp = __import__('Plugins.Extensions.IPTVPlayer.hosts.host' + hostName, globals(), locals(), ['IPTVHost'], -1)
 			except Exception:
-				print "doGlobalSearch: Exception importing %s" % hostName
+				print("doGlobalSearch: Exception importing %s" % hostName)
 				continue
 			try:
 				self.host = _temp.IPTVHost()
 			except Exception, e:
-				print "doGlobalSearch: Exception initializing iptvhost for %s: %s" % (hostName, str(e))
+				print("doGlobalSearch: Exception initializing iptvhost for %s: %s" % (hostName, str(e)))
 				continue
-			#print "settings.GlobalSearchQuery=",settings.GlobalSearchQuery, 'hostName=', hostName
+			#print("settings.GlobalSearchQuery=",settings.GlobalSearchQuery, 'hostName=', hostName)
 			settings.searchingInHost = hostName
 			time.sleep(0.2) #
 			try:
@@ -400,7 +400,7 @@ class doGlobalSearch(threading.Thread):
 				ret = self.host.getInitList()
 				searchTypes = self.host.getSearchTypes()
 			except Exception, e:
-				print "doGlobalSearch: Exception in getInitList for %s: %s" % (hostName, str(e))
+				print("doGlobalSearch: Exception in getInitList for %s: %s" % (hostName, str(e)))
 				settings.hostsWithNoSearchOption.append(hostName)
 				continue
 			if len(searchTypes) == 0:

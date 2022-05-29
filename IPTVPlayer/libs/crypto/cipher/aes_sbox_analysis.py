@@ -88,11 +88,11 @@ def sgv(subbytes):
 
 def main():
     cycles = grpv(sbbytes)
-    print 'The AES sbox contains ',
-    print len(cycles),
-    print 'permutation subgroups'
-    print 'The AES sbox subgroups (start, length) are:'
-    print cycles
+    print('The AES sbox contains '),
+    print(len(cycles)),
+    print('permutation subgroups')
+    print('The AES sbox subgroups (start, length) are:')
+    print(cycles)
 
 
 # Make this test module runnable from the command prompt

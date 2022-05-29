@@ -506,9 +506,9 @@ class useHostPage(resource.Resource):
             self.arg = req.args.get(self.key, None)[0]
             if len(req.args.keys()) > 1:
                 self.searchType = req.args.keys()[1]
-                print "useHostPage received: '%s'='%s' searchType='%s'" % (self.key, str(self.arg), self.searchType)
+                print("useHostPage received: '%s'='%s' searchType='%s'" % (self.key, str(self.arg), self.searchType))
             else:
-                print "useHostPage received: '%s'='%s'" % (self.key, str(self.arg))
+                print("useHostPage received: '%s'='%s'" % (self.key, str(self.arg)))
 
         if self.key is None and isActiveHostInitiated() == False:
             return util.redirectTo("/iptvplayer/hosts", req)
