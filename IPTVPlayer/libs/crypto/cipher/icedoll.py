@@ -22,8 +22,8 @@
                      These are about the same concept ....
 """
 
-from crypto.cipher.base import BlockCipherWithIntegrity, padWithPadLen, noPadding
-from crypto.cipher.rijndael import *
+from Plugins.Extensions.IPTVPlayer.libs.crypto.cipher.base import BlockCipherWithIntegrity, padWithPadLen, noPadding
+from Plugins.Extensions.IPTVPlayer.libs.crypto.cipher.rijndael import *
 from binascii_plus import b2a_hex
 from copy import deepcopy
 

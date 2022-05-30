@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import #zmiana strategii ladowanie modulow w py2 z relative na absolute dla kompatybilności z py3
 
 from Components.Language import language
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS

@@ -11,10 +11,10 @@
     Copyright © (c) 2002 by Paul A. Lambert
     Read LICENSE.txt for license information.
 """
-from crypto.cipher.base import BlockCipherWithIntegrity, noPadding
-from crypto.common import xor
+from Plugins.Extensions.IPTVPlayer.libs.crypto.cipher.base import BlockCipherWithIntegrity, noPadding
+from Plugins.Extensions.IPTVPlayer.libs.crypto.common import xor
 from struct import unpack, pack
-from crypto.errors import InitCryptoError, EncryptError, DecryptError, IntegrityCheckError
+from Plugins.Extensions.IPTVPlayer.libs.crypto.errors import InitCryptoError, EncryptError, DecryptError, IntegrityCheckError
 
 
 class CCM(BlockCipherWithIntegrity):

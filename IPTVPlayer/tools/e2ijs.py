@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 #
+from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
+if isPY2():
+    import thread
+else:
+    import _thread as thread
+
+
 from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT as _, GetIPTVNotify
 from Plugins.Extensions.IPTVPlayer.components.asynccall import iptv_execute
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, GetDukPath, CreateTmpFile, rm, getDebugMode, GetJSCacheDir, \
@@ -10,7 +17,6 @@ from Tools.Directories import fileExists
 from binascii import hexlify
 from hashlib import md5
 import time
-import thread
 
 DUKTAPE_VER = '226'
 

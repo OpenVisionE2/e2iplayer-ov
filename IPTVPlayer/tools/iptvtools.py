@@ -5,6 +5,20 @@
 #  $Id$
 #
 #
+
+import sys
+def isPY2():
+    if sys.version_info.major == 2:
+        return True
+    else:
+        return False
+
+if isPY2():
+    from urllib2 import Request, urlopen, URLError, HTTPError
+else:
+    from urllib.request import Request, urlopen
+    from urllib.error import URLError, HTTPError
+
 ###################################################
 # LOCAL import
 ###################################################
@@ -18,12 +32,9 @@ from Tools.Directories import resolveFilename, fileExists, SCOPE_PLUGINS, SCOPE_
 from enigma import eConsoleAppContainer
 from Components.Language import language
 from time import sleep as time_sleep, time
-from urllib2 import Request, urlopen, URLError, HTTPError
 import urllib
-import urllib2
 import traceback
 import re
-import sys
 import os
 import stat
 import codecs
@@ -1036,7 +1047,7 @@ def GetFileSize(filepath):
 def DownloadFile(url, filePath):
     printDBG('DownloadFile [%s] from [%s]' % (filePath, url))
     try:
-        downloadFile = urllib2.urlopen(url)
+        downloadFile = urlopen(url)
         output = open(filePath, 'wb')
         output.write(downloadFile.read())
         output.close()
@@ -1793,9 +1804,3 @@ def is_port_in_use(pIP, pPORT):
     res = sock.connect_ex((pIP, pPORT))
     sock.close()
     return res == 0
-
-def isPY2():
-    if sys.version_info.major == 2:
-        return True
-    else:
-        return False

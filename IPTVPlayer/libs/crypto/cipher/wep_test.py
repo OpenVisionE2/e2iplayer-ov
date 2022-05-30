@@ -10,7 +10,7 @@
     2002-11-05
 """
 import unittest
-from crypto.cipher.wep import WEP
+from Plugins.Extensions.IPTVPlayer.libs.crypto.cipher.wep import WEP
 from binascii_plus import a2b_p, b2a_p
 from zlib import crc32
 from struct import pack
