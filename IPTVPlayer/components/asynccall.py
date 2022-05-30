@@ -349,7 +349,7 @@ class iptv_execute(object):
             terminated = False
 
         if not terminated:
-            if isPY2()
+            if isPY2():
                 if self.Thread.isAlive():
                     try:
                         self.Thread._iptvplayer_ext['iptv_execute'] = self
