@@ -101,13 +101,12 @@ class IconMenager:
         self.lockDQ.release()
 
     def runWorkThread(self):
-        if self.workThread == None:
-            if isPY2():
-                if not self.workThread.Thread.isAlive():
-                    self.workThread = AsyncMethod(self.processDQ)()
-            else:
-                if not self.workThread.Thread.is_Alive():
-                    self.workThread = AsyncMethod(self.processDQ)()
+        if isPY2():
+            if self.workThread == None or not self.workThread.Thread.isAlive():
+                self.workThread = AsyncMethod(self.processDQ)()
+        else:
+            if self.workThread == None or not self.workThread.Thread.is_Alive():
+                self.workThread = AsyncMethod(self.processDQ)()
 
     def clearDQueue(self):
         self.lockDQ.acquire()
