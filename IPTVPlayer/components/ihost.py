@@ -1,5 +1,11 @@
 ## @file  ihost.py
 #
+from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
+if isPY2():
+    from urlparse import urljoin
+else:
+    from urllib.parse import urljoin
+    basestring = str
 
 ###################################################
 # E2 GUI COMMPONENTS
@@ -13,8 +19,6 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads, dump
 
 from Components.config import config
 from skin import parseColor
-
-from urlparse import urljoin
 
 
 class CUrlItem:

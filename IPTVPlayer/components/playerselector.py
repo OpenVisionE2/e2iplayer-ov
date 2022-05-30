@@ -327,7 +327,7 @@ class PlayerSelectorWidget(Screen):
             self.numOfLines += 1
 
         # numbers of pages
-        self.numOfPages = self.numOfLines / self.numOfRow
+        self.numOfPages = int(self.numOfLines / self.numOfRow)
         if self.numOfLines % self.numOfRow > 0:
             self.numOfPages += 1
 
@@ -429,7 +429,7 @@ class PlayerSelectorWidget(Screen):
         #x =  30 + self.dispX * 180
         #y = 130 + self.dispY * 125
         self["marker"].instance.move(ePoint(x, y))
-        self["statustext"].setText(self.currList[new_idx][0])
+        self["statustext"].setText(self.currList[int(new_idx)][0])
         return
 
     def getSelectedItem(self):

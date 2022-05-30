@@ -1,5 +1,19 @@
 # -*- coding: utf-8 -*-
-
+from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
+if isPY2():
+    from urlparse import urlparse, urlunparse, parse_qs
+    try:
+        from urlparse import urlsplit, urlunsplit, urljoin
+    except Exception:
+        from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printExc
+        printExc()
+else:
+    from urllib.parse import urlparse, urlunparse, parse_qs
+    try:
+        from urllib.parse import urlsplit, urlunsplit, urljoin
+    except Exception:
+        from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printExc
+        printExc()
 ###################################################
 # LOCAL import
 ###################################################
@@ -52,16 +66,11 @@ import math
 
 from xml.etree import cElementTree
 from random import random, randint, randrange, choice as random_choice
-from urlparse import urlparse, urlunparse, parse_qs
 from binascii import hexlify, unhexlify, a2b_hex
 from hashlib import md5, sha256
 from Components.config import config
 
 from Plugins.Extensions.IPTVPlayer.libs.youtube_dl.extractor.mtv import GametrailersIE
-try:
-    from urlparse import urlsplit, urlunsplit, urljoin
-except Exception:
-    printExc()
 ###################################################
 
 

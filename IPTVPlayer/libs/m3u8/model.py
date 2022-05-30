@@ -1,11 +1,16 @@
+from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
+if isPY2():
+    from urlparse import urlparse, urljoin
+else:
+    from urllib.parse import urlparse, urljoin
+
 from collections import namedtuple
 import os
 import errno
 import math
-import urlparse
 import re
 
-import parser
+import Plugins.Extensions.IPTVPlayer.libs.m3u8.parser
 
 
 class M3U8(object):
@@ -412,14 +417,14 @@ def _urijoin(base_uri, path):
         return path
     elif parser.is_url(base_uri):
         if path.startswith('/'):
-            return urlparse.urljoin(base_uri, path)
+            return urljoin(base_uri, path)
 
-        parsed_url = urlparse.urlparse(base_uri)
+        parsed_url = urlparse(base_uri)
         prefix = parsed_url.scheme + '://' + parsed_url.netloc
         new_path = os.path.normpath(parsed_url.path + '/' + path)
-        full_uri = urlparse.urljoin(prefix, new_path.strip('/'))
+        full_uri = urljoin(prefix, new_path.strip('/'))
         if not parser.is_url(full_uri):
-            full_uri = urlparse.urljoin(prefix, '/' + new_path.strip('/'))
+            full_uri = urljoin(prefix, '/' + new_path.strip('/'))
         return full_uri
     else:
         return os.path.normpath(os.path.join(base_uri, path.strip('/')))

@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
+from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
+if isPY2():
+    from urlparse import urlparse, urljoin
+else:
+    from urllib.parse import urlparse, urljoin
 
 ###################################################
 # LOCAL import
 ###################################################
-from asynccall import AsyncMethod
+from Plugins.Extensions.IPTVPlayer.components.asynccall import AsyncMethod
 from Plugins.Extensions.IPTVPlayer.libs.crypto.hash.md5Hash import MD5
 from Plugins.Extensions.IPTVPlayer.libs.pCommon import common
 from Plugins.Extensions.IPTVPlayer.libs.urlparser import urlparser
