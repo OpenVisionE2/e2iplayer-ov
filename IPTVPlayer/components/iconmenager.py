@@ -25,7 +25,6 @@ from Plugins.Extensions.IPTVPlayer.libs import ph
 # FOREIGN import
 ###################################################
 import threading
-from urlparse import urlparse, urljoin
 from binascii import hexlify
 from os import path as os_path, listdir, remove as removeFile, rename as os_rename, rmdir as os_rmdir
 from Components.config import config

@@ -2,4 +2,4 @@
 
 Aby zainstalować wydaj poniższą komendę z telnecie / To install run the following command in telnet:
 
-wget "https://gitlab.com/zadmario/e2iplayer/-/raw/master/install-e2iplayer.sh?inline=false" -O  - | /bin/sh
+wget -q "https://gitlab.com/zadmario/e2iplayer/-/raw/master/install-e2iplayer.sh?inline=false" -O  - | /bin/sh
