@@ -1793,3 +1793,9 @@ def is_port_in_use(pIP, pPORT):
     res = sock.connect_ex((pIP, pPORT))
     sock.close()
     return res == 0
+
+def isPY2():
+    if sys.version_info.major == 2:
+        return True
+    else:
+        return False
