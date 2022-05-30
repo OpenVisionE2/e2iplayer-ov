@@ -34,7 +34,7 @@ class WEP:
         """ Set key, key string is typically 5 or 13 octets long
         """
         if not(len(key) in (5, 13)):
-            raise BadKeySizeError, 'Key not valid size of 5 or 13 octets'
+            raise(BadKeySizeError, 'Key not valid size of 5 or 13 octets')
         if keyId != None:
             self.setCurrentKeyId(keyId)
         self.__key[self.currentKeyId] = key
@@ -47,7 +47,7 @@ class WEP:
         elif (0 <= keyId < 4):
             self.currentKeyId = keyId
         else:
-            raise 'WEP keyId must be value 0, 1, 2 or 3'
+            raise('WEP keyId must be value 0, 1, 2 or 3')
 
     def encrypt(self, plainText, iv, keyId=None):
         """ Encrypt a string and return a binary string
@@ -72,5 +72,5 @@ class WEP:
         self.arc4.setKey(iv + self.__key[self.currentKeyId])
         plainText = self.arc4.decrypt(cipherText[self.encryptHeaderSize:])
         if plainText[-self.encryptHeaderSize:] == pack('<I', crc32(plainText)):  # check data integrity
-            raise IntegrityCheckError, 'WEP Integrity Check Error'
+            raise(IntegrityCheckError, 'WEP Integrity Check Error')
         return plainText[:-4]

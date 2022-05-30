@@ -318,7 +318,7 @@ class settingsPage(resource.Resource):
         if len(req.args.keys()) > 0:
             key = req.args.keys()[0]
             arg = req.args.get(key, None)[0]
-            print 'Received: ', key, '=', arg
+            print('Received: ', key, '=', arg)
 
             try:
                 if key is None or arg is None:
@@ -396,7 +396,7 @@ class downloaderPage(resource.Resource):
                 arg3 = req.args.get(key, None)[2]
             except Exception:
                 pass
-            print 'Received: "%s"="%s","%s","%s"' % (key, arg, arg2, arg3)
+            print('Received: "%s"="%s","%s","%s"' % (key, arg, arg2, arg3))
 
         if key is None or arg is None:
             if None != Plugins.Extensions.IPTVPlayer.components.iptvplayerwidget.gDownloadManager:

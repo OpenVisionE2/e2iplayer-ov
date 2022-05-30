@@ -21,8 +21,8 @@ find $myAbsPath/IPTVPlayer -iname "*.py" |
       if [[ $? -gt 0 ]];then
         echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ERROR in PY2 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         echo "!!!!!!!!!! $F !!!!!!!!!!"
-        #exit 1
-        #break
+        exit 1
+        break
       fi
     fi
     if [ -e /usr/bin/python3 ];then
@@ -30,8 +30,8 @@ find $myAbsPath/IPTVPlayer -iname "*.py" |
       if [[ $? -gt 0 ]];then
         echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ERROR in PY3 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         echo "!!!!!!!!!! $F !!!!!!!!!!"
-        #exit 1
-        #break
+        exit 1
+        break
       fi
     fi
     if [ -e /usr/bin/python3.10 ];then
@@ -39,8 +39,8 @@ find $myAbsPath/IPTVPlayer -iname "*.py" |
       if [[ $? -gt 0 ]];then
         echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ERROR in PY3.10 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         echo "!!!!!!!!!! $F !!!!!!!!!!"
-        #exit 1
-        #break
+        exit 1
+        break
       fi
     fi
   done
