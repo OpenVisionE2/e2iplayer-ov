@@ -5,6 +5,7 @@ if isPY2():
     from urllib import quote as urllib_quote
 else:
     from urllib.parse import quote as urllib_quote
+    basestring = str
 
 ###################################################
 # LOCAL import

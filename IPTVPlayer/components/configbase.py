@@ -3,7 +3,9 @@
 #  Konfigurator dla iptv 2013
 #  autorzy: j00zek, samsamsam
 #
-
+from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
+if not isPY2():
+    basestring = str
 
 ###################################################
 # LOCAL import
