@@ -52,6 +52,7 @@ if [ -e /etc/opkg/opkg.conf ];then
   [ `opkg list-installed|grep -c duktape` -eq 0 ] && opkg install duktape > /dev/null 2>&1
   [ `opkg list-installed|grep -c python3-e2icjson` -eq 0 ] && opkg install python3-e2icjson > /dev/null 2>&1
   [ `opkg list-installed|grep -c python-e2icjson` -eq 0 ] && opkg install python-e2icjson > /dev/null 2>&1
+  [ `opkg list-installed|grep -c cmdwrap` -eq 0 ] && opkg install cmdwrap > /dev/null 2>&1
   
 fi
 [ $isPL -eq 1 ] && echo "KONIEC - przeładuj teraz E2" || echo "END - reload E2"
