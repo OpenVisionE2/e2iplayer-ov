@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 ###################################################
 # LOCAL import
 ###################################################
@@ -350,17 +350,14 @@ class iptv_execute(object):
 
         if not terminated:
             if isPY2():
-                if self.Thread.isAlive():
-                    try:
-                        self.Thread._iptvplayer_ext['iptv_execute'] = self
-                    except Exception:
-                        printExc()
+                th_is_alive = self.Thread.isAlive()
             else:
-                if self.Thread.is_Alive():
-                    try:
-                        self.Thread._iptvplayer_ext['iptv_execute'] = self
-                    except Exception:
-                        printExc()
+                th_is_alive = self.Thread.is_alive()
+            if th_is_alive:
+                try:
+                    self.Thread._iptvplayer_ext['iptv_execute'] = self
+                except Exception:
+                    printExc()
             self.iptv_system = iptv_system(cmd, self._callBack)
 
             return iptv_execute.WAIT_RET

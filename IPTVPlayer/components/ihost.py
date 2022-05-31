@@ -1,11 +1,8 @@
 ## @file  ihost.py
 #
-from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
-if isPY2():
-    from urlparse import urljoin
-else:
-    from urllib.parse import urljoin
-    basestring = str
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
+if not isPY2(): basestring = str
+from Plugins.Extensions.IPTVPlayer.p2p3.urlparse import urljoin
 
 ###################################################
 # E2 GUI COMMPONENTS

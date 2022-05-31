@@ -5,23 +5,11 @@
 #  $Id$
 #
 #
-
-import sys
-def isPY2():
-    if sys.version_info[0] == 2:
-        return True
-    else:
-        return False
-
-if isPY2():
-    from urllib2 import Request, urlopen, URLError, HTTPError
-else:
-    from urllib.request import Request, urlopen
-    from urllib.error import URLError, HTTPError
-
 ###################################################
 # LOCAL import
 ###################################################
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import strDecode
 ###################################################
 
 ###################################################
@@ -40,6 +28,7 @@ import stat
 import codecs
 import datetime
 import socket
+import sys
 
 SERVER_DOMAINS = {'vline': 'http://iptvplayer.vline.pl/', 'gitlab': 'http://zadmario.gitlab.io/', 'private': 'http://www.e2iplayer.gitlab.io/'}
 SERVER_UPDATE_PATH = {'vline': 'download/update2/', 'gitlab': 'update2/', 'private': 'update2/'}
@@ -293,10 +282,7 @@ class iptv_system:
 
     def _dataAvail(self, data):
         if None != data:
-            if isPY2():
-                self.outData += data
-            else:
-                self.outData += data.decode(encoding='utf-8', errors='strict')
+            self.outData += strDecode(data)
 
     def _cmdFinished(self, code):
         printDBG("iptv_system._cmdFinished cmd[%s] code[%r]" % (self.cmd, code))
