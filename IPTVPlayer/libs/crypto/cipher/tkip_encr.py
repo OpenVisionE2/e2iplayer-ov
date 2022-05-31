@@ -90,5 +90,5 @@ class TKIP_encr:
         self.arc4.setKey(self._makeARC4key(iv))
         plainText = self.arc4.decrypt(cipherText[self.encryptHeaderSize:])
         if plainText[-4:] != pack('<I', crc32(plainText[:-4])):  # check data integrity
-            raise IntegrityCheckError, 'WEP CRC Integrity Check Error'
+            raise IntegrityCheckError('WEP CRC Integrity Check Error')
         return plainText[:-4]
