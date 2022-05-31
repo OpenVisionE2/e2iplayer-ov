@@ -1,12 +1,11 @@
 import os
 import re
 
-from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
+from Plugins.Extensions.IPTVPlayer.p2p3.urlparse import urlparse, urljoin
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if isPY2():
-    from urlparse import urlparse, urljoin
     from urllib2 import urlopen
 else:
-    from urllib.parse import urlparse, urljoin
     from urllib.request import urlopen
 
 from Plugins.Extensions.IPTVPlayer.libs.m3u8.model import M3U8, Playlist

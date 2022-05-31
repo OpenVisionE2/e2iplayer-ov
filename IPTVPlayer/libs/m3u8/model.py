@@ -1,16 +1,11 @@
-from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
-if isPY2():
-    from urlparse import urlparse, urljoin
-else:
-    from urllib.parse import urlparse, urljoin
-
+from Plugins.Extensions.IPTVPlayer.p2p3.urlparse import urlparse, urljoin
 from collections import namedtuple
 import os
 import errno
 import math
 import re
 
-import Plugins.Extensions.IPTVPlayer.libs.m3u8.parser
+import Plugins.Extensions.IPTVPlayer.libs.m3u8.parser as parser
 
 
 class M3U8(object):
