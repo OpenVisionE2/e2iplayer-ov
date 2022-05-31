@@ -10,7 +10,7 @@ from Tools.Directories import fileExists
 from binascii import hexlify
 from hashlib import md5
 import time
-import Plugins.Extensions.IPTVPlayer.p2p3.thread
+import thread
 
 DUKTAPE_VER = '226'
 

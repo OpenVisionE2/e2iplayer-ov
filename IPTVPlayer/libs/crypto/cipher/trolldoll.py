@@ -17,8 +17,8 @@
     Read LICENSE.txt for license information.
 """
 
-from Plugins.Extensions.IPTVPlayer.libs.crypto.cipher.icedoll import Icedoll
-from Plugins.Extensions.IPTVPlayer.libs.crypto.errors import IntegrityCheckError
+from crypto.cipher.icedoll import Icedoll
+from crypto.errors import IntegrityCheckError
 from random import Random  # should change to crypto.random!!!
 
 
@@ -80,6 +80,6 @@ class Trolldoll(Icedoll):
             self.hasIV = 1
         if more == None:    # on last call to encrypt append integrity check
             if not(self._verifyIC(plainText[-self.micSize:])):
-                raise(IntegrityCheckError, 'Trolldoll MIC Failure, bad key or modified data')
+                raise IntegrityCheckError, 'Trolldoll MIC Failure, bad key or modified data'
             plainText = plainText[:-self.micSize]  # trim off the integrity check
         return plainText

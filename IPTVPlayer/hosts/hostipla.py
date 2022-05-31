@@ -12,11 +12,6 @@
 # urządzeniach lub aplikacjach innych niż przygotowane i
 # wspierane oficjalnie przez Redefine Sp. z o.o.
 ####################################################################
-from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
-if isPY2():
-    from urllib import quote_plus
-else:
-    from urllib.parse import quote_plus
 
 ###################################################
 # LOCAL import
@@ -38,7 +33,7 @@ from Plugins.Extensions.IPTVPlayer.libs.youtube_dl.utils import clean_html
 from Components.config import config, ConfigYesNo, ConfigSelection, getConfigListEntry
 from time import time
 from os import path as os_path
-
+import urllib
 import re
 
 try:
@@ -336,7 +331,7 @@ class Ipla(CBaseHostClass):
             self.getCategories(catId, refresh)
     #WYSZUKAJ
         elif category == 'Wyszukaj':
-            pattern = quote_plus(searchPattern)
+            pattern = urllib.quote_plus(searchPattern)
             self.getVideosList(Ipla.SEARCH_URL + pattern)
     #HISTORIA WYSZUKIWANIA
         elif category == "search_history":

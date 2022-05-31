@@ -5,15 +5,10 @@
 #  $Id$
 #
 #
-from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
-if isPY2():
-    from urllib import quote as urllib_quote
-else:
-    from urllib.parse import quote as urllib_quote
-    basestring = str
 
 from time import sleep as time_sleep
 from os import remove as os_remove, path as os_path
+from urllib import quote as urllib_quote
 from random import shuffle as random_shuffle
 import traceback
 
@@ -341,7 +336,7 @@ class E2iPlayerWidget(Screen):
         except Exception as e:
             SetTmpCookieDir()
             SetTmpJSCacheDir()
-            msg1 = _("Critical Error - cookie can't be saved!")
+            msg1 = _("Critical Error – cookie can't be saved!")
             msg2 = _("Last error:\n%s" % str(e))
             msg3 = _("Please make sure that the folder for cache data (set in the configuration) is writable.")
             GetIPTVNotify().push('%s\n\n%s\n\n%s' % (msg1, msg2, msg3), 'error', 20)
@@ -495,7 +490,7 @@ class E2iPlayerWidget(Screen):
                         message = _('It seems that the host "%s" has crashed. Do you want to report this problem?') % self.hostName
                         message += "\n"
                         message += _('\nMake sure you are using the latest version of the plugin.')
-                        message += _('\nYou can also report problem here: \n https://gitlab.com/zadmario/e2iplayer/issues')
+                        message += _('\nYou can also report problem here: \nhttps://gitlab.com/iptvplayer-for-e2/iptvplayer-for-e2/issues\nor here: samsamsam@o2.pl')
                         self.session.openWithCallback(self.reportHostCrash, MessageBox, text=message, type=MessageBox.TYPE_YESNO)
             self.hideSpinner()
         except Exception:
@@ -1006,7 +1001,7 @@ class E2iPlayerWidget(Screen):
                     self.stopAutoPlaySequencer()
                     self.currSelIndex = currSelIndex
                     if item.pinLocked:
-                        from Plugins.Extensions.IPTVPlayer.components.iptvpin import IPTVPinWidget
+                        from iptvpin import IPTVPinWidget
                         self.session.openWithCallback(boundFunction(self.checkDirPin, self.requestListFromHost, 'ForItem', currSelIndex, '', item.pinCode), IPTVPinWidget, title=_("Enter pin"))
                     else:
                         self.requestListFromHost('ForItem', currSelIndex, '')

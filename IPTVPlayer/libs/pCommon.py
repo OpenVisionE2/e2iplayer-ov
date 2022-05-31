@@ -1,16 +1,5 @@
 # -*- coding: utf-8 -*-
-from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
-if isPY2():
-    from urllib2 import HTTPRedirectHandler, BaseHandler, HTTPHandler, HTTPError, URLError, build_opener, urlopen, HTTPCookieProcessor, HTTPSHandler, ProxyHandler, Request
-    from urllib import addinfourl, quote_plus, unquote, urlencode, quote
-    import cookielib
-    from urlparse import urljoin, urlparse, urlunparse
-else:
-    from urllib.request import urlopen, build_opener, HTTPRedirectHandler, addinfourl, HTTPHandler, HTTPSHandler, BaseHandler, HTTPCookieProcessor, ProxyHandler, Request
-    from urllib.parse import quote_plus, unquote, urlencode, quote
-    from urllib.error import URLError, HTTPError
-    import http.cookiejar as cookielib
-    from urllib.parse import urljoin, urlparse, urlunparse
+
 ###################################################
 # LOCAL import
 ###################################################
@@ -24,6 +13,8 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads, dump
 ###################################################
 # FOREIGN import
 ###################################################
+import urllib
+import urllib2
 import base64
 try:
     import ssl
@@ -31,6 +22,7 @@ except Exception:
     pass
 import re
 import time
+import cookielib
 import unicodedata
 try:
     import pycurl
@@ -44,6 +36,7 @@ try:
     import gzip
 except Exception:
     pass
+from urlparse import urljoin, urlparse, urlunparse
 from binascii import hexlify
 ###################################################
 
@@ -64,9 +57,9 @@ def EncodeGzipped(data):
     return encoded
 
 
-class NoRedirection(HTTPRedirectHandler):
+class NoRedirection(urllib2.HTTPRedirectHandler):
     def http_error_302(self, req, fp, code, msg, headers):
-        infourl = addinfourl(fp, headers, req.get_full_url())
+        infourl = urllib.addinfourl(fp, headers, req.get_full_url())
         infourl.status = code
         infourl.code = code
         return infourl
@@ -76,8 +69,8 @@ class NoRedirection(HTTPRedirectHandler):
     http_error_307 = http_error_302
 
 
-class MultipartPostHandler(BaseHandler):
-    handler_order = HTTPHandler.handler_order - 10
+class MultipartPostHandler(urllib2.BaseHandler):
+    handler_order = urllib2.HTTPHandler.handler_order - 10
 
     def http_request(self, request):
         data = request.get_data()
@@ -516,7 +509,7 @@ class common:
                     continue
                 value = cookiesDict[name]
                 if unquote:
-                    value = unquote(value)
+                    value = urllib.unquote(value)
                 ret += '%s=%s; ' % (name, value)
         except Exception:
             printExc()
@@ -756,7 +749,7 @@ class common:
             pageUrl = url
             proxy_gateway = params.get('proxy_gateway', '')
             if proxy_gateway != '':
-                pageUrl = proxy_gateway.format(quote_plus(pageUrl, ''))
+                pageUrl = proxy_gateway.format(urllib.quote_plus(pageUrl, ''))
             printDBG("pageUrl: [%s]" % pageUrl)
 
             curlSession.setopt(pycurl.URL, pageUrl)
@@ -771,7 +764,7 @@ class common:
                     curlSession.setopt(pycurl.HTTPPOST, post_data)
                     #curlSession.setopt(pycurl.CUSTOMREQUEST, "PUT")
                 else:
-                    curlSession.setopt(pycurl.POSTFIELDS, urlencode(post_data))
+                    curlSession.setopt(pycurl.POSTFIELDS, urllib.urlencode(post_data))
 
             curlSession.setopt(pycurl.HEADERFUNCTION, _headerFunction)
 
@@ -926,7 +919,7 @@ class common:
                 addParams['return_data'] = True
             response = self.getURLRequestData(addParams, post_data)
             status = True
-        except HTTPError as e:
+        except urllib2.HTTPError as e:
             try:
                 printExc()
                 status = False
@@ -947,7 +940,7 @@ class common:
                     e.fp.close()
             except Exception:
                 printExc()
-        except URLError as e:
+        except urllib2.URLError as e:
             printExc()
             errorMsg = str(e)
             if 'ssl_protocol' not in addParams and 'TLSV1_ALERT_PROTOCOL_VERSION' in errorMsg:
@@ -1058,7 +1051,7 @@ class common:
                                 url += '&'
                             else:
                                 url += '?'
-                            url += urlencode(post_data2)
+                            url += urllib.urlencode(post_data2)
                             post_data2 = None
 
                         sts, data = self.getPage(url, params2, post_data2)
@@ -1102,7 +1095,7 @@ class common:
                             get_data[name] = value
 #                        get_data = dict(re.findall(r'<input[^>]*name="([^"]*)"[^>]*value="([^"]*)"[^>]*>', verData))
                         get_data['jschl_answer'] = decoded['answer']
-                        post_data = 'r=%s&jschl_vc=%s&pass=%s&jschl_answer=%s' % (quote(get_data['r'], safe=''), quote(get_data['jschl_vc'], safe=''), quote(get_data['pass'], safe=''), get_data['jschl_answer'])
+                        post_data = 'r=%s&jschl_vc=%s&pass=%s&jschl_answer=%s' % (urllib.quote(get_data['r'], safe=''), urllib.quote(get_data['jschl_vc'], safe=''), urllib.quote(get_data['pass'], safe=''), get_data['jschl_answer'])
                         verUrl = _getFullUrl2(verUrl, domain).replace('&amp;', '&')
                         params2 = dict(params)
                         params2['load_cookie'] = True
@@ -1248,16 +1241,16 @@ class common:
 
         def urlOpen(req, customOpeners, timeout):
             if len(customOpeners) > 0:
-                opener = build_opener(*customOpeners)
+                opener = urllib2.build_opener(*customOpeners)
                 if timeout != None:
                     response = opener.open(req, timeout=timeout)
                 else:
                     response = opener.open(req)
             else:
                 if timeout != None:
-                    response = urlopen(req, timeout=timeout)
+                    response = urllib2.urlopen(req, timeout=timeout)
                 else:
-                    response = urlopen(req)
+                    response = urllib2.urlopen(req)
             return response
 
         if IsMainThread():
@@ -1317,7 +1310,7 @@ class common:
                     cj.set_cookie(cookieItem)
             except Exception:
                 printExc()
-            customOpeners.append(HTTPCookieProcessor(cj))
+            customOpeners.append(urllib2.HTTPCookieProcessor(cj))
 
         if params.get('no_redirection', False):
             customOpeners.append(NoRedirection())
@@ -1327,20 +1320,20 @@ class common:
         else:
             sslProtoVer = None
         # debug
-        #customOpeners.append(HTTPSHandler(debuglevel=1))
-        #customOpeners.append(HTTPHandler(debuglevel=1))
+        #customOpeners.append(urllib2.HTTPSHandler(debuglevel=1))
+        #customOpeners.append(urllib2.HTTPHandler(debuglevel=1))
         if not IsHttpsCertValidationEnabled():
             try:
                 if sslProtoVer != None:
                     ctx = ssl._create_unverified_context(sslProtoVer)
                 else:
                     ctx = ssl._create_unverified_context()
-                customOpeners.append(HTTPSHandler(context=ctx))
+                customOpeners.append(urllib2.HTTPSHandler(context=ctx))
             except Exception:
                 pass
         elif sslProtoVer != None:
             ctx = ssl.SSLContext(sslProtoVer)
-            customOpeners.append(HTTPSHandler(context=ctx))
+            customOpeners.append(urllib2.HTTPSHandler(context=ctx))
 
         #proxy support
         if self.useProxy:
@@ -1352,13 +1345,13 @@ class common:
             http_proxy = params['http_proxy']
         if '' != http_proxy:
             printDBG('getURLRequestData USE PROXY')
-            customOpeners.append(ProxyHandler({"http": http_proxy}))
-            customOpeners.append(ProxyHandler({"https": http_proxy}))
+            customOpeners.append(urllib2.ProxyHandler({"http": http_proxy}))
+            customOpeners.append(urllib2.ProxyHandler({"https": http_proxy}))
 
         pageUrl = params['url']
         proxy_gateway = params.get('proxy_gateway', '')
         if proxy_gateway != '':
-            pageUrl = proxy_gateway.format(quote_plus(pageUrl, ''))
+            pageUrl = proxy_gateway.format(urllib.quote_plus(pageUrl, ''))
         printDBG("pageUrl: [%s]" % pageUrl)
 
         if None != post_data:
@@ -1369,10 +1362,10 @@ class common:
                 customOpeners.append(MultipartPostHandler())
                 dataPost = post_data
             else:
-                dataPost = urlencode(post_data)
-            req = Request(pageUrl, dataPost, headers)
+                dataPost = urllib.urlencode(post_data)
+            req = urllib2.Request(pageUrl, dataPost, headers)
         else:
-            req = Request(pageUrl, None, headers)
+            req = urllib2.Request(pageUrl, None, headers)
 
         if not params.get('return_data', False):
             out_data = urlOpen(req, customOpeners, timeout)
@@ -1391,7 +1384,7 @@ class common:
 
                 data = response.read(params.get('max_data_size', -1))
                 response.close()
-            except HTTPError as e:
+            except urllib2.HTTPError as e:
                 ignoreCodeRanges = params.get('ignore_http_code_ranges', [(404, 404), (500, 500)])
                 ignoreCode = False
                 metadata['status_code'] = e.code

@@ -13,7 +13,7 @@
     2002-06-01
 """
 
-from Plugins.Extensions.IPTVPlayer.libs.crypto.cipher.base import BlockCipher, padWithPadLen, noPadding
+from base import BlockCipher, padWithPadLen, noPadding
 
 
 class Rijndael(BlockCipher):

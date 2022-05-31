@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-#import urllib
-#import urllib2
+import urllib
+import urllib2
 import re
 from Plugins.Extensions.IPTVPlayer.libs.youtube_dl.utils import *
 from Plugins.Extensions.IPTVPlayer.libs.pCommon import common, CParsingHelper

@@ -8,8 +8,6 @@
 ###################################################
 # LOCAL import
 ###################################################
-from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
-from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import strDecode
 ###################################################
 
 ###################################################
@@ -20,15 +18,17 @@ from Tools.Directories import resolveFilename, fileExists, SCOPE_PLUGINS, SCOPE_
 from enigma import eConsoleAppContainer
 from Components.Language import language
 from time import sleep as time_sleep, time
+from urllib2 import Request, urlopen, URLError, HTTPError
 import urllib
+import urllib2
 import traceback
 import re
+import sys
 import os
 import stat
 import codecs
 import datetime
 import socket
-import sys
 
 SERVER_DOMAINS = {'vline': 'http://iptvplayer.vline.pl/', 'gitlab': 'http://zadmario.gitlab.io/', 'private': 'http://www.e2iplayer.gitlab.io/'}
 SERVER_UPDATE_PATH = {'vline': 'download/update2/', 'gitlab': 'update2/', 'private': 'update2/'}
@@ -282,7 +282,7 @@ class iptv_system:
 
     def _dataAvail(self, data):
         if None != data:
-            self.outData += strDecode(data)
+            self.outData += data
 
     def _cmdFinished(self, code):
         printDBG("iptv_system._cmdFinished cmd[%s] code[%r]" % (self.cmd, code))
@@ -1036,7 +1036,7 @@ def GetFileSize(filepath):
 def DownloadFile(url, filePath):
     printDBG('DownloadFile [%s] from [%s]' % (filePath, url))
     try:
-        downloadFile = urlopen(url)
+        downloadFile = urllib2.urlopen(url)
         output = open(filePath, 'wb')
         output.write(downloadFile.read())
         output.close()

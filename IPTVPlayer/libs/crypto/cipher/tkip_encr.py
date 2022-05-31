@@ -11,11 +11,11 @@
 
     November 2002
 """
-from Plugins.Extensions.IPTVPlayer.libs.crypto.cipher.arc4 import ARC4
+from crypto.cipher.arc4 import ARC4
 from zlib import crc32
 from struct import pack
-from Plugins.Extensions.IPTVPlayer.libs.crypto.keyedHash.tkip_key_mixing import TKIP_Mixer
-from Plugins.Extensions.IPTVPlayer.libs.crypto.errors import BadKeySizeError, IntegrityCheckError
+from crypto.keyedHash.tkip_key_mixing import TKIP_Mixer
+from crypto.errors import BadKeySizeError, IntegrityCheckError
 from binascii_plus import *
 
 
@@ -62,7 +62,7 @@ class TKIP_encr:
     def _makeARC4key(self, tscOctets, keyID=0):
         """ Make an ARC4 key from TKIP Sequence Counter Octets (little-endian) """
         if keyID != 0:
-            raise('TKIP expects keyID of zero')
+            raise 'TKIP expects keyID of zero'
         print("tscOctets in tkmixer=", b2a_p(tscOctets))
         newKey = self.keyMixer.newKey(tscOctets)
         print("newKey=", b2a_p(newKey))
@@ -90,5 +90,5 @@ class TKIP_encr:
         self.arc4.setKey(self._makeARC4key(iv))
         plainText = self.arc4.decrypt(cipherText[self.encryptHeaderSize:])
         if plainText[-4:] != pack('<I', crc32(plainText[:-4])):  # check data integrity
-            raise(IntegrityCheckError, 'WEP CRC Integrity Check Error')
+            raise IntegrityCheckError, 'WEP CRC Integrity Check Error'
         return plainText[:-4]

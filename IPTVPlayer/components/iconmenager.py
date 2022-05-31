@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
+
 ###################################################
 # LOCAL import
 ###################################################
-from Plugins.Extensions.IPTVPlayer.components.asynccall import AsyncMethod
+from asynccall import AsyncMethod
 from Plugins.Extensions.IPTVPlayer.libs.crypto.hash.md5Hash import MD5
 from Plugins.Extensions.IPTVPlayer.libs.pCommon import common
 from Plugins.Extensions.IPTVPlayer.libs.urlparser import urlparser
@@ -20,7 +20,7 @@ from Plugins.Extensions.IPTVPlayer.libs import ph
 # FOREIGN import
 ###################################################
 import threading
-from Plugins.Extensions.IPTVPlayer.p2p3.urlparse import urlparse, urljoin
+from urlparse import urlparse, urljoin
 from binascii import hexlify
 from os import path as os_path, listdir, remove as removeFile, rename as os_rename, rmdir as os_rmdir
 from Components.config import config
@@ -86,23 +86,14 @@ class IconMenager:
     def stopWorkThread(self):
         self.lockDQ.acquire()
 
-        if self.workThread != None:
-            if isPY2():
-                if self.workThread.Thread.isAlive():
-                    self.stopThread = True
-            else:
-                if self.workThread.Thread.is_alive():
-                    self.stopThread = True
+        if self.workThread != None and self.workThread.Thread.isAlive():
+            self.stopThread = True
 
         self.lockDQ.release()
 
     def runWorkThread(self):
-        if isPY2():
-            if self.workThread == None or not self.workThread.Thread.isAlive():
-                self.workThread = AsyncMethod(self.processDQ)()
-        else:
-            if self.workThread == None or not self.workThread.Thread.is_alive():
-                self.workThread = AsyncMethod(self.processDQ)()
+        if self.workThread == None or not self.workThread.Thread.isAlive():
+            self.workThread = AsyncMethod(self.processDQ)()
 
     def clearDQueue(self):
         self.lockDQ.acquire()
