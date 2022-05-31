@@ -17,7 +17,7 @@ from Plugins.Extensions.IPTVPlayer.libs import ph
 import re
 import urllib
 from datetime import timedelta
-from Plugins.Extensions.IPTVPlayer.p2p3.urlparse import urljoin
+from urlparse import urljoin
 ###################################################
 
 

@@ -14,7 +14,7 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 ###################################################
 import re
 import urllib
-from Plugins.Extensions.IPTVPlayer.p2p3.urlparse import urlparse
+from urlparse import urlparse
 ###################################################
 
 

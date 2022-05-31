@@ -48,7 +48,7 @@ from Plugins.Extensions.IPTVPlayer.libs.wiziwig1 import Wiziwig1Api
 ###################################################
 import re
 import urllib
-from Plugins.Extensions.IPTVPlayer.p2p3.urlparse import urlsplit, urlunsplit
+from urlparse import urlsplit, urlunsplit
 from Components.config import config, ConfigSelection, ConfigYesNo, getConfigListEntry
 ############################################
 
