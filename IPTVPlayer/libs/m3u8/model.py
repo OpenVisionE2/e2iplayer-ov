@@ -5,7 +5,7 @@ import math
 import urlparse
 import re
 
-import parser
+import Plugins.Extensions.IPTVPlayer.libs.m3u8.parser as parser
 
 
 class M3U8(object):
