@@ -12,7 +12,7 @@
 # urządzeniach lub aplikacjach innych niż przygotowane i
 # wspierane oficjalnie przez Redefine Sp. z o.o.
 ####################################################################
-from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if isPY2():
     from urllib import quote_plus
 else:
