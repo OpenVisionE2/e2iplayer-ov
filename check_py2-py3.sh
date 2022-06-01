@@ -16,9 +16,6 @@ find $myAbsPath/IPTVPlayer -iname "*.py" |
   do
     #removing BOM, is a garbage from windows
     sed -i '1s/^\xEF\xBB\xBF//' "$F"
-    #sed -i 's/from urlparse import /from Plugins.Extensions.IPTVPlayer.p2p3.urlparse import /' "$F"
-    #sed -i 's/import thread$/import Plugins.Extensions.IPTVPlayer.p2p3.thread as thread/' "$F"
-    #sed -i 's///' "$F"
     if [ -e /usr/bin/python2 ];then
       python2 /tmp/checker.py "$F"
       if [[ $? -gt 0 ]];then
