@@ -10,7 +10,7 @@ import SocketServer
 import SimpleHTTPServer
 import re
 import ssl
-from urlparse import urlparse, urljoin
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlparse, urljoin
 try:
     import json
 except Exception:

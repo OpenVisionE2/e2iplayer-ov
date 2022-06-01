@@ -3,7 +3,7 @@
 ###################################################
 # LOCAL import
 ###################################################
-from pCommon import common, CParsingHelper
+from Plugins.Extensions.IPTVPlayer.libs.pCommon import common, CParsingHelper
 from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT as _, SetIPTVPlayerLastHostError, GetIPTVSleep
 from Plugins.Extensions.IPTVPlayer.components.captcha_helper import CaptchaHelper
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
@@ -52,14 +52,14 @@ import math
 
 from xml.etree import cElementTree
 from random import random, randint, randrange, choice as random_choice
-from urlparse import urlparse, urlunparse, parse_qs
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlparse, urlunparse, parse_qs
 from binascii import hexlify, unhexlify, a2b_hex
 from hashlib import md5, sha256
 from Components.config import config
 
 from Plugins.Extensions.IPTVPlayer.libs.youtube_dl.extractor.mtv import GametrailersIE
 try:
-    from urlparse import urlsplit, urlunsplit, urljoin
+    from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlsplit, urlunsplit, urljoin
 except Exception:
     printExc()
 ###################################################

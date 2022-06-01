@@ -8,7 +8,7 @@
 
 from time import sleep as time_sleep
 from os import remove as os_remove, path as os_path
-from urllib import quote as urllib_quote
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote
 from random import shuffle as random_shuffle
 import traceback
 

@@ -14,7 +14,7 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads, dump
 from Components.config import config
 from skin import parseColor
 
-from urlparse import urljoin
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
 
 
 class CUrlItem:

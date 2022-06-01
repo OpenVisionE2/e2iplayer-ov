@@ -9,7 +9,7 @@ import os
 import traceback
 import urllib
 import signal
-from urlparse import urlsplit, urlparse, parse_qs, urljoin
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlsplit, urlparse, parse_qs, urljoin
 
 def signal_handler(sig, frame):
     os.kill(os.getpid(), signal.SIGTERM)

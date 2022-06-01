@@ -36,7 +36,7 @@ try:
     import gzip
 except Exception:
     pass
-from urlparse import urljoin, urlparse, urlunparse
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin, urlparse, urlunparse
 from binascii import hexlify
 ###################################################
 

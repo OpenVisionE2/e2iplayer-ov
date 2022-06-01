@@ -15,7 +15,7 @@ from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Play
 import time
 import re
 import urllib
-from urlparse import urlparse
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlparse
 try:
     import json
 except Exception:

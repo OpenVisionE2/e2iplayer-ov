@@ -17,7 +17,7 @@ import string
 import codecs
 import urllib
 try:
-    from urlparse import urlsplit, urlunsplit, urljoin
+    from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlsplit, urlunsplit, urljoin
 except Exception:
     printExc()
 ###################################################

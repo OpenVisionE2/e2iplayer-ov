@@ -12,7 +12,7 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, rm
 ###################################################
 import re
 import urllib
-from urlparse import urlparse
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlparse
 try:
     import json
 except Exception:

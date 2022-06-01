@@ -10,7 +10,7 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, by
 ###################################################
 # FOREIGN import
 ###################################################
-from urlparse import urlparse
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlparse
 import time
 import urllib
 from datetime import timedelta

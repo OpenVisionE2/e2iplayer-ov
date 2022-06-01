@@ -21,7 +21,7 @@ import urllib
 import unicodedata
 import base64
 try:
-    from urlparse import urlsplit, urlunsplit
+    from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlsplit, urlunsplit
 except Exception:
     printExc()
 from os import listdir as os_listdir, path as os_path

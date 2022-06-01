@@ -4,7 +4,7 @@ import urllib
 import urllib2
 import re
 import time
-from urlparse import urlparse, urlunparse
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlparse, urlunparse
 from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT as _, SetIPTVPlayerLastHostError
 from Plugins.Extensions.IPTVPlayer.libs.youtube_dl.utils import *
 from Plugins.Extensions.IPTVPlayer.libs.youtube_dl.utils import _unquote
