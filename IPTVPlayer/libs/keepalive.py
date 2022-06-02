@@ -107,7 +107,13 @@ EXTRA ATTRIBUTES AND METHODS
 import urllib2
 import httplib
 import socket
-import thread
+########################################################
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
+if isPY2():
+    import thread
+else:
+    import _thread as thread
+########################################################
 
 DEBUG = None
 
