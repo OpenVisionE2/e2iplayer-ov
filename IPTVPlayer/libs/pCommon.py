@@ -17,6 +17,7 @@ if isPY2():
     import cookielib
 else:
     import http.cookiejar as cookielib
+    basestring = str
 ###################################################
 # FOREIGN import
 ###################################################

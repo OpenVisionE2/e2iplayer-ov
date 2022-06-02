@@ -75,6 +75,10 @@ import Plugins.Extensions.IPTVPlayer.components.asynccall as asynccall
 from Plugins.Extensions.IPTVPlayer.components.playerselector import PlayerSelectorWidget
 from Plugins.Extensions.IPTVPlayer.components.e2ivkselector import GetVirtualKeyboard
 ######################################################
+from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
+if not isPY2():
+    basestring = str
+######################################################
 gDownloadManager = None
 
 

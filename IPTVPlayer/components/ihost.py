@@ -15,7 +15,10 @@ from Components.config import config
 from skin import parseColor
 
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
-
+from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
+if not isPY2():
+    basestring = str
+######################################################
 
 class CUrlItem:
     def __init__(self, name="", url="", urlNeedsResolve=0):

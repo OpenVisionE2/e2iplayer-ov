@@ -17,7 +17,10 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import GetHostsList, IsHostEn
 from Components.config import config
 
 ########################################################
-
+from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
+if not isPY2():
+    basestring = str
+######################################################
 
 def _async_raise(tid, exctype):
     """raises the exception, performs cleanup if needed"""

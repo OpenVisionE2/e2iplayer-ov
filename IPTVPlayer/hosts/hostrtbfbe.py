@@ -8,7 +8,9 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, by
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Playlist, getMPDLinksWithMeta
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
+if not isPY2():
+    basestring = str
 ###################################################
 # FOREIGN import
 ###################################################
