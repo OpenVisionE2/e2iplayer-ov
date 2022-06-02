@@ -15,7 +15,7 @@ from Plugins.Extensions.IPTVPlayer.components.iptvchoicebox import IPTVChoiceBox
 from Plugins.Extensions.IPTVPlayer.components.e2ivkselector import GetVirtualKeyboard
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads, dumps as json_dumps
 ###################################################
-from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if not isPY2():
     basestring = str
 ###################################################

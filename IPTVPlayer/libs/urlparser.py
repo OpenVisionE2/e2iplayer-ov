@@ -40,7 +40,7 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads, dump
 from Plugins.Extensions.IPTVPlayer.libs.aadecode import AADecoder
 from Screens.MessageBox import MessageBox
 ###################################################
-from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if not isPY2():
     basestring = str
 ###################################################

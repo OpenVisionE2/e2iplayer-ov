@@ -42,7 +42,7 @@ from Plugins.Extensions.IPTVPlayer.libs.beinmatch import BeinmatchApi
 from Plugins.Extensions.IPTVPlayer.libs.wiz1net import Wiz1NetApi
 from Plugins.Extensions.IPTVPlayer.libs.wiziwig1 import Wiziwig1Api
 ###################################################
-from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if not isPY2():
     basestring = str
 ###################################################

@@ -14,7 +14,7 @@ from Plugins.Extensions.IPTVPlayer.components.cover import Cover3, Cover2
 from Plugins.Extensions.IPTVPlayer.components.VirtualKeyBoard import IPTVVirtualKeyBoardWithCaptcha
 from Plugins.Extensions.IPTVPlayer.components.e2ivkselector import GetVirtualKeyboard
 ###################################################
-from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if not isPY2():
     basestring = str
 ###################################################
