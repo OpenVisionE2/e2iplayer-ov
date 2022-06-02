@@ -10,12 +10,20 @@ import SocketServer
 import SimpleHTTPServer
 import re
 import ssl
-from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlparse, urljoin
+###################################################
+try: #PY2
+    from urlparse import urlsplit, urlparse, parse_qs, urljoin
+except Exception: #PY3
+    from urllib.parse import urlsplit, urlparse, parse_qs, urljoin
+try: #PY2
+    import cookielib
+except Exception: #PY3
+    import http.cookiejar as cookielib
+###################################################
 try:
     import json
 except Exception:
     import simplejson as json
-import cookielib
 import time
 
 import signal
