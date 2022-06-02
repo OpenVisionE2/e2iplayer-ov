@@ -12,6 +12,12 @@ from Plugins.Extensions.IPTVPlayer.libs import ph
 from Plugins.Extensions.IPTVPlayer.tools.e2ijs import js_execute, js_execute_ext
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 ###################################################
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
+if isPY2():
+    import cookielib
+else:
+    import http.cookiejar as cookielib
+###################################################
 
 from Screens.MessageBox import MessageBox
 
@@ -24,7 +30,6 @@ import uuid
 import time
 import datetime
 import math
-import cookielib
 from datetime import timedelta
 ###################################################
 

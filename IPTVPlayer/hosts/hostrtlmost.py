@@ -11,7 +11,11 @@ from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Play
 from Plugins.Extensions.IPTVPlayer.libs.urlparser import urlparser
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads, dumps as json_dumps
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
+if isPY2():
+    import cookielib
+else:
+    import http.cookiejar as cookielib
 ###################################################
 # FOREIGN import
 ###################################################
@@ -19,7 +23,6 @@ import os
 import datetime
 import time
 import zlib
-import cookielib
 import urllib
 import base64
 from hashlib import sha1

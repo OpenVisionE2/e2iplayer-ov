@@ -11,6 +11,13 @@ from Plugins.Extensions.IPTVPlayer.tools.e2ijs import js_execute_ext
 from Plugins.Extensions.IPTVPlayer.libs import ph
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads, dumps as json_dumps
 ###################################################
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin, urlparse, urlunparse
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
+if isPY2():
+    import cookielib
+else:
+    import http.cookiejar as cookielib
+###################################################
 # FOREIGN import
 ###################################################
 import urllib
@@ -22,7 +29,6 @@ except Exception:
     pass
 import re
 import time
-import cookielib
 import unicodedata
 try:
     import pycurl
@@ -36,7 +42,6 @@ try:
     import gzip
 except Exception:
     pass
-from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin, urlparse, urlunparse
 from binascii import hexlify
 ###################################################
 
