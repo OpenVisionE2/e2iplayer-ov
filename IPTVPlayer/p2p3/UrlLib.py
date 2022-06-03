@@ -18,7 +18,7 @@ if isPY2():
                         
     from urllib import addinfourl             as urllib_addinfourl,           quote               as urllib_quote, \
                        quote_plus             as urllib_quote_plus,           unquote             as urllib_unquote, \
-                       urlencode              as urllib_urlencode 
+                       unquote_plus           as urllib_unquote_plus,         urlencode           as urllib_urlencode 
 else:
     from urllib.request import addinfourl     as urllib_addinfourl,           BaseHandler         as urllib2_BaseHandler, \
                                build_opener   as urllib2_build_opener,        HTTPCookieProcessor as urllib2_HTTPCookieProcessor, \
@@ -28,6 +28,7 @@ else:
                                install_opener as urllib2_install_opener
     
     from urllib.parse import quote            as urllib_quote,                quote_plus          as urllib_quote_plus, \
-                             unquote          as urllib_unquote,              urlencode           as urllib_urlencode
+                             unquote          as urllib_unquote,              unquote_plus        as urllib_unquote_plus, \
+                             urlencode           as urllib_urlencode
     
     from urllib.error import HTTPError        as urllib2_HTTPError,           URLError            as urllib2_URLError
