@@ -12,7 +12,8 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 # FOREIGN import
 ###################################################
 from Components.config import config, ConfigSelection, ConfigYesNo, ConfigText, getConfigListEntry
-import urllib
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_unquote_plus
+                                                      
 ############################################
 
 ###################################################
@@ -201,7 +202,7 @@ class UrlParser:
     def getParam(self, params, name):
         try:
             result = params[name]
-            result = urllib.unquote_plus(result)
+            result = urllib_unquote_plus(result)
             return result
         except Exception:
             return None

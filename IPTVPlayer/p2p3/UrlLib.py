@@ -9,24 +9,25 @@
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 
 if isPY2():
-    from urllib2 import BaseHandler         as urllib2_BaseHandler,         build_opener        as urllib2_build_opener, \
-                        HTTPCookieProcessor as urllib2_HTTPCookieProcessor, HTTPError           as urllib2_HTTPError, \
-                        HTTPHandler         as urllib2_HTTPHandler,         HTTPRedirectHandler as urllib2_HTTPRedirectHandler, \
-                        HTTPSHandler        as urllib2_HTTPSHandler,        ProxyHandler        as urllib2_ProxyHandler, \
-                        Request             as urllib2_Request,             URLError            as urllib2_URLError, \
-                        urlopen             as urllib2_urlopen
+    from urllib2 import BaseHandler          as urllib2_BaseHandler,         build_opener        as urllib2_build_opener, \
+                        HTTPCookieProcessor   as urllib2_HTTPCookieProcessor, HTTPError           as urllib2_HTTPError, \
+                        HTTPHandler           as urllib2_HTTPHandler,         HTTPRedirectHandler as urllib2_HTTPRedirectHandler, \
+                        HTTPSHandler          as urllib2_HTTPSHandler,        ProxyHandler        as urllib2_ProxyHandler, \
+                        Request               as urllib2_Request,             URLError            as urllib2_URLError, \
+                        urlopen               as urllib2_urlopen,             install_opener      as urllib2_install_opener
                         
-    from urllib import addinfourl           as urllib_addinfourl,           quote               as urllib_quote, \
-                       quote_plus           as urllib_quote_plus,           unquote             as urllib_unquote, \
-                       urlencode            as urllib_urlencode 
+    from urllib import addinfourl             as urllib_addinfourl,           quote               as urllib_quote, \
+                       quote_plus             as urllib_quote_plus,           unquote             as urllib_unquote, \
+                       urlencode              as urllib_urlencode 
 else:
-    from urllib.request import addinfourl   as urllib_addinfourl,           BaseHandler         as urllib2_BaseHandler, \
-                               build_opener as urllib2_build_opener,        HTTPCookieProcessor as urllib2_HTTPCookieProcessor, \
-                               HTTPHandler  as urllib2_HTTPHandler,         HTTPRedirectHandler as urllib2_HTTPRedirectHandler, \
-                               HTTPSHandler as urllib2_HTTPSHandler,        ProxyHandler        as urllib2_ProxyHandler, \
-                               Request      as urllib2_Request,             urlopen             as urllib2_urlopen
+    from urllib.request import addinfourl     as urllib_addinfourl,           BaseHandler         as urllib2_BaseHandler, \
+                               build_opener   as urllib2_build_opener,        HTTPCookieProcessor as urllib2_HTTPCookieProcessor, \
+                               HTTPHandler    as urllib2_HTTPHandler,         HTTPRedirectHandler as urllib2_HTTPRedirectHandler, \
+                               HTTPSHandler   as urllib2_HTTPSHandler,        ProxyHandler        as urllib2_ProxyHandler, \
+                               Request        as urllib2_Request,             urlopen             as urllib2_urlopen, \
+                               install_opener as urllib2_install_opener
     
-    from urllib.parse import quote          as urllib_quote,                quote_plus          as urllib_quote_plus, \
-                             unquote        as urllib_unquote,              urlencode           as urllib_urlencode
+    from urllib.parse import quote            as urllib_quote,                quote_plus          as urllib_quote_plus, \
+                             unquote          as urllib_unquote,              urlencode           as urllib_urlencode
     
-    from urllib.error import HTTPError      as urllib2_HTTPError,           URLError            as urllib2_URLError
+    from urllib.error import HTTPError        as urllib2_HTTPError,           URLError            as urllib2_URLError

@@ -15,7 +15,7 @@ import re
 import time
 import string
 import codecs
-import urllib
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_unquote
 try:
     from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlsplit, urlunsplit, urljoin
 except Exception:
@@ -258,7 +258,7 @@ def unpackJS(data, decryptionFun, addCode=''):
     except Exception:
         printExc('unpackJS compile algo code EXCEPTION')
         return ''
-    vGlobals = {"__builtins__": None, 'string': string, 'decodeURIComponent': urllib.unquote, 'unescape': urllib.unquote}
+    vGlobals = {"__builtins__": None, 'string': string, 'decodeURIComponent': urllib_unquote, 'unescape': urllib_unquote}
     vLocals = {'paramsTouple': None}
 
     try:

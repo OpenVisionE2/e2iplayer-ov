@@ -11,6 +11,7 @@
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if not isPY2():
     basestring = str
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib2_urlopen
 ###################################################
 
 ###################################################
@@ -21,9 +22,6 @@ from Tools.Directories import resolveFilename, fileExists, SCOPE_PLUGINS, SCOPE_
 from enigma import eConsoleAppContainer
 from Components.Language import language
 from time import sleep as time_sleep, time
-from urllib2 import Request, urlopen, URLError, HTTPError
-import urllib
-import urllib2
 import traceback
 import re
 import sys
@@ -1039,7 +1037,7 @@ def GetFileSize(filepath):
 def DownloadFile(url, filePath):
     printDBG('DownloadFile [%s] from [%s]' % (filePath, url))
     try:
-        downloadFile = urllib2.urlopen(url)
+        downloadFile = urllib2_urlopen(url)
         output = open(filePath, 'wb')
         output.write(downloadFile.read())
         output.close()

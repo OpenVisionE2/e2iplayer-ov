@@ -1,10 +1,21 @@
 # -*- encoding: utf-8 -*-
+
+###################################################
+#module run in different context then e2iplayer, must have separate version checking and assigments
+import sys
+if sys.version_info[0] == 2: #PY2
+    from urllib import quote as urllib_quote
+    from urllib2 import Request as urllib2_Request, HTTPSHandler as urllib2_HTTPSHandler, build_opener as urllib2_build_opener, HTTPError as urllib2_HTTPError
+else: #PY3
+    from urllib.parse import quote as urllib_quote
+    from urllib.request import Request as urllib2_Request, HTTPSHandler as urllib2_HTTPSHandler, build_opener as urllib2_build_opener
+    from urllib.error import HTTPError as urllib2_HTTPError
+###################################################
+
 import socket
 import hashlib
 import hmac
 import time
-import urllib
-import urllib2
 import base64
 import sys
 import traceback
@@ -58,14 +69,14 @@ def getPage(url, headers={}, post_data=None):
 
     try:
         ctx = ssl._create_unverified_context()
-        customOpeners.append(urllib2.HTTPSHandler(context=ctx))
+        customOpeners.append(urllib2_HTTPSHandler(context=ctx))
     except Exception:
         pass
 
     sts = 0
     data = ''
     try:
-        req = urllib2.Request(url)
+        req = urllib2_Request(url)
         for key in headers:
             req.add_header(key, headers[key])
 
@@ -73,11 +84,11 @@ def getPage(url, headers={}, post_data=None):
         printDBG(req.headers)
         printDBG("++++HEADERS END++++")
 
-        opener = urllib2.build_opener(*customOpeners)
+        opener = urllib2_build_opener(*customOpeners)
         response = opener.open(req)
         data = response.read()
         sts = response.getcode()
-    except urllib2.HTTPError as e:
+    except urllib2_HTTPError as e:
         global LAST_HTTP_ERROR_CODE
         global LAST_HTTP_ERROR_DATA
         LAST_HTTP_ERROR_CODE = e.code
@@ -246,7 +257,7 @@ class Myjdapi:
             query = [path + "?"]
             for param in params:
                 if param[0] != "encryptedLoginSecret":
-                    query += ["%s=%s" % (param[0], urllib.quote(param[1]))]
+                    query += ["%s=%s" % (param[0], urllib_quote(param[1]))]
                 else:
                     query += ["&%s=%s" % (param[0], param[1])]
             query += ["rid=" + str(self._request_id)]

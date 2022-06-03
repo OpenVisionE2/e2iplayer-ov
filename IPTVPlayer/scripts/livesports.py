@@ -1,8 +1,22 @@
 # -*- coding: utf-8 -*-
-
 from __future__ import print_function
-import urllib
-import urllib2
+
+###################################################
+#module run in different context then e2iplayer, must have separate version checking and assigments
+import sys
+if sys.version_info[0] == 2: #PY2
+    from urlparse import urlsplit, urlparse, parse_qs, urljoin
+    import cookielib
+    from urllib2 import HTTPSHandler as urllib2_HTTPSHandler, HTTPCookieProcessor as urllib2_HTTPCookieProcessor, \
+                        Request as urllib2_Request, build_opener as urllib2_build_opener, HTTPError as urllib2_HTTPError
+else: #PY3
+    from urllib.parse import urlsplit, urlparse, parse_qs, urljoin
+    import http.cookiejar as cookielib
+    from urllib.request import HTTPSHandler as urllib2_HTTPSHandler, HTTPCookieProcessor as urllib2_HTTPCookieProcessor, \
+                               Request as urllib2_Request, build_opener as urllib2_build_opener
+    from urllib.error import HTTPError as urllib2_HTTPError
+###################################################
+
 import sys
 import traceback
 import base64
@@ -10,16 +24,7 @@ import SocketServer
 import SimpleHTTPServer
 import re
 import ssl
-###################################################
-try: #PY2
-    from urlparse import urlsplit, urlparse, parse_qs, urljoin
-except Exception: #PY3
-    from urllib.parse import urlsplit, urlparse, parse_qs, urljoin
-try: #PY2
-    import cookielib
-except Exception: #PY3
-    import http.cookiejar as cookielib
-###################################################
+
 try:
     import json
 except Exception:
@@ -72,7 +77,7 @@ def getPage(url, params={}):
 
     try:
         ctx = ssl._create_unverified_context(params['ssl_protocol']) if params.get('ssl_protocol', None) != None else ssl._create_unverified_context()
-        customOpeners.append(urllib2.HTTPSHandler(context=ctx))
+        customOpeners.append(urllib2_HTTPSHandler(context=ctx))
     except Exception:
         pass
 
@@ -83,23 +88,23 @@ def getPage(url, params={}):
                 cj.load(params['cookiefile'], ignore_discard=True)
             except IOError:
                 pass
-        customOpeners.append(urllib2.HTTPCookieProcessor(cj))
+        customOpeners.append(urllib2_HTTPCookieProcessor(cj))
 
     sts = False
     data = None
     try:
-        req = urllib2.Request(url)
+        req = urllib2_Request(url)
         for key in ('Referer', 'User-Agent', 'Origin', 'Accept-Encoding', 'Accept'):
             if key in params:
                 req.add_header(key, params[key])
         printDBG("++++HEADERS START++++")
         printDBG(req.headers)
         printDBG("++++HEADERS END++++")
-        opener = urllib2.build_opener(*customOpeners)
+        opener = urllib2_build_opener(*customOpeners)
         resp = opener.open(req)
         data = resp.read()
         sts = True
-    except urllib2.HTTPError as e:
+    except urllib2_HTTPError as e:
         data = e
     except Exception:
         printExc()
