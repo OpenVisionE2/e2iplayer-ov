@@ -12,6 +12,7 @@ from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if not isPY2():
     basestring = str
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib2_urlopen
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import strDecode
 ###################################################
 
 ###################################################
@@ -283,7 +284,7 @@ class iptv_system:
 
     def _dataAvail(self, data):
         if None != data:
-            self.outData += data
+            self.outData += strDecode(data)
 
     def _cmdFinished(self, code):
         printDBG("iptv_system._cmdFinished cmd[%s] code[%r]" % (self.cmd, code))
