@@ -10,12 +10,11 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 from Plugins.Extensions.IPTVPlayer.libs import ph
 from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Playlist
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 ###################################################
 
 
@@ -191,7 +190,7 @@ class BajeczkiOrg(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("FilmeHD.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         cItem = dict(cItem)
-        cItem.update({'category': 'list_items', 'url': self.getFullUrl('/?s=') + urllib.quote_plus(searchPattern)})
+        cItem.update({'category': 'list_items', 'url': self.getFullUrl('/?s=') + urllib_quote_plus(searchPattern)})
         self.listItems(cItem)
 
     def handleService(self, index, refresh=0, searchPattern='', searchType=''):

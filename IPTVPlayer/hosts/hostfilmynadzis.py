@@ -12,11 +12,10 @@ from Plugins.Extensions.IPTVPlayer.libs import ph
 from Components.config import config, ConfigText, getConfigListEntry
 
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
-from urllib import quote_plus
 import re
 
 ###################################################

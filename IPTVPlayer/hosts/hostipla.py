@@ -20,7 +20,7 @@ from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostC
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, CSelOneLink, GetLogoDir, byteify
 from Plugins.Extensions.IPTVPlayer.libs.youtube_dl.utils import clean_html
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
@@ -331,7 +331,7 @@ class Ipla(CBaseHostClass):
             self.getCategories(catId, refresh)
     #WYSZUKAJ
         elif category == 'Wyszukaj':
-            pattern = urllib.quote_plus(searchPattern)
+            pattern = urllib_quote_plus(searchPattern)
             self.getVideosList(Ipla.SEARCH_URL + pattern)
     #HISTORIA WYSZUKIWANIA
         elif category == "search_history":

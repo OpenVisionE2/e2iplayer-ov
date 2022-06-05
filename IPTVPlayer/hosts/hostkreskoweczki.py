@@ -7,11 +7,10 @@ from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostC
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, byteify
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
-import urllib
 try:
     import json
 except Exception:
@@ -234,7 +233,7 @@ class KreskoweczkiPL(CBaseHostClass):
         printDBG("KreskoweczkiPL.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         cItem = dict(cItem)
         cItem['category'] = 'list_items'
-        cItem['url'] = self.getFullUrl('/szukaj?query=' + urllib.quote_plus(searchPattern))
+        cItem['url'] = self.getFullUrl('/szukaj?query=' + urllib_quote_plus(searchPattern))
         self.listItems(cItem)
 
     def getFavouriteData(self, cItem):
