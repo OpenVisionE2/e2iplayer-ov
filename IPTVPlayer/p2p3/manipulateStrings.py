@@ -1,3 +1,10 @@
+# macro to load functions from correct modules depending on the python version
+# build to simplify loading modules in e2iplayer scripts
+# just change:
+#   from urlib import
+# to:
+#   from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import 
+#
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 
 def strDecode(text):

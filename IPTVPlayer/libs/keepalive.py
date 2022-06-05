@@ -22,13 +22,13 @@
 
 """An HTTP handler for urllib2 that supports HTTP 1.1 and keepalive.
 
->>> import urllib2
+>>> import [z/j] urllib2[z/j]
 >>> from keepalive import HTTPHandler
 >>> keepalive_handler = HTTPHandler()
->>> opener = urllib2.build_opener(keepalive_handler)
->>> urllib2.install_opener(opener)
+>>> opener = urllib[z/j]2.build_opener(keepalive_handler)
+>>> urllib2[z/j].install_opener(opener)
 >>>
->>> fo = urllib2.urlopen('http://www.python.org')
+>>> fo = urllib2[z/j].urlopen('http://www.python.org')
 
 If a connection to a given host is requested, and all of the existing
 connections are still in use, another connection will be opened.  If
@@ -104,10 +104,10 @@ EXTRA ATTRIBUTES AND METHODS
 
 # $Id: keepalive.py,v 1.17 2006/12/08 00:14:16 mstenner Exp $
 
-import urllib2
 import httplib
 import socket
 ########################################################
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib2_URLError, urllib2_HTTPHandler, urllib2_HTTPSHandler
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if isPY2():
     import thread
@@ -229,7 +229,7 @@ class KeepAliveHandler:
     def do_open(self, req):
         host = req.host
         if not host:
-            raise urllib2.URLError('no host given')
+            raise urllib2_URLError('no host given')
 
         try:
             h = self._cm.get_ready_conn(host)
@@ -256,7 +256,7 @@ class KeepAliveHandler:
                 self._start_transaction(h, req)
                 r = h.getresponse()
         except (socket.error, httplib.HTTPException) as err:
-            raise urllib2.URLError(err)
+            raise urllib2_URLError(err)
 
         if DEBUG:
             DEBUG.info("STATUS: %s, %s", r.status, r.reason)
@@ -346,7 +346,7 @@ class KeepAliveHandler:
                 else:
                     h.putrequest('GET', req.get_selector())
         except (socket.error, httplib.HTTPException) as err:
-            raise urllib2.URLError(err)
+            raise urllib2_URLError(err)
 
         for args in self.parent.addheaders:
             h.putheader(*args)
@@ -360,7 +360,7 @@ class KeepAliveHandler:
         return NotImplementedError
 
 
-class HTTPHandler(KeepAliveHandler, urllib2.HTTPHandler):
+class HTTPHandler(KeepAliveHandler, urllib2_HTTPHandler):
     def __init__(self):
         KeepAliveHandler.__init__(self)
 
@@ -371,7 +371,7 @@ class HTTPHandler(KeepAliveHandler, urllib2.HTTPHandler):
         return HTTPConnection(host)
 
 
-class HTTPSHandler(KeepAliveHandler, urllib2.HTTPSHandler):
+class HTTPSHandler(KeepAliveHandler, urllib2_HTTPSHandler):
     def __init__(self, ssl_factory=None):
         KeepAliveHandler.__init__(self)
         if not ssl_factory:
