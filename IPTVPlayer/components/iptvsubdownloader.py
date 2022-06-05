@@ -23,15 +23,13 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if not isPY2():
     basestring = str
-######################################################
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote
 ###################################################
 # FOREIGN import
 ###################################################
 from time import sleep as time_sleep
 from os import remove as os_remove, path as os_path
-from urllib import quote as urllib_quote
 from random import shuffle as random_shuffle
-
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Components.Label import Label
