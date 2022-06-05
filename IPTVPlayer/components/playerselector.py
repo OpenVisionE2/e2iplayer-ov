@@ -322,15 +322,15 @@ class PlayerSelectorWidget(Screen):
             self.lastSelection = self.numOfItems - 1
 
         # numbers of lines
-        self.numOfLines = self.numOfItems / self.numOfCol
+        self.numOfLines = int(self.numOfItems / self.numOfCol)
         if self.numOfItems % self.numOfCol > 0:
             self.numOfLines += 1
 
         # numbers of pages
-        self.numOfPages = self.numOfLines / self.numOfRow
+        self.numOfPages = int(self.numOfLines / self.numOfRow)
         if self.numOfLines % self.numOfRow > 0:
             self.numOfPages += 1
-
+        
         self.currPage = 0
         self.currLine = 0
 
@@ -338,7 +338,7 @@ class PlayerSelectorWidget(Screen):
         self.dispY = 0
 
     def updateIconsList(self, rangeList):
-        idx = self.currPage * (self.numOfCol * self.numOfRow)
+        idx = int(self.currPage * (self.numOfCol * self.numOfRow))
         for y in range(1, self.numOfRow + 1):
             for x in range(1, self.numOfCol + 1):
                 if idx >= rangeList[0] and idx <= rangeList[1]:
@@ -348,7 +348,7 @@ class PlayerSelectorWidget(Screen):
                 idx += 1
 
     def updateIcons(self):
-        idx = self.currPage * (self.numOfCol * self.numOfRow)
+        idx = int(self.currPage * (self.numOfCol * self.numOfRow))
         for y in range(1, self.numOfRow + 1):
             for x in range(1, self.numOfCol + 1):
                 strIndex = "cover_%s%s" % (x, y)
@@ -405,7 +405,7 @@ class PlayerSelectorWidget(Screen):
         return
 
     def moveMarker(self, prev_idx=0):
-        new_idx = self.currLine * self.numOfCol + self.dispX
+        new_idx = int(self.currLine * self.numOfCol + self.dispX)
 
         if self.reorderingItemSelected:
             if prev_idx != new_idx:
@@ -453,7 +453,7 @@ class PlayerSelectorWidget(Screen):
                 self.reorderingItemSelected = True
             return
 
-        idx = self.currLine * self.numOfCol + self.dispX
+        idx = int(self.currLine * self.numOfCol + self.dispX)
         PlayerSelectorWidget.LAST_SELECTION[self.groupName] = idx
 
         if idx < self.numOfItems:
