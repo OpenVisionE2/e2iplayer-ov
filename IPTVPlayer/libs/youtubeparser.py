@@ -12,12 +12,11 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads, dumps as json_dumps
 from Plugins.Extensions.IPTVPlayer.libs import ph
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_urlencode
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 import codecs
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlparse, urlunparse, parse_qsl
 from datetime import timedelta
@@ -223,7 +222,7 @@ class YouTubeParser():
         urlParts = urlparse(url)
         query = dict(parse_qsl(urlParts[4]))
         query.update(queryDict)
-        new_query = urllib.urlencode(query)
+        new_query = urllib_urlencode(query)
         new_url = urlunparse((urlParts[0], urlParts[1], urlParts[2], urlParts[3], new_query, urlParts[5]))
         return new_url
 

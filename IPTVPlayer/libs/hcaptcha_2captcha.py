@@ -11,10 +11,11 @@ from Screens.MessageBox import MessageBox
 from Components.config import config
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 ###################################################
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote
+###################################################
 # FOREIGN import
 ###################################################
 import time
-import urllib
 from Components.config import config
 ###################################################
 
@@ -38,7 +39,7 @@ class UnCaptchahCaptcha:
         token = ''
         errorMsgTab = []
         apiKey = config.plugins.iptvplayer.api_key_2captcha.value
-        apiUrl = self.getFullUrl('/in.php?key=') + apiKey + '&method=hcaptcha&sitekey=' + sitekey + '&json=1&pageurl=' + urllib.quote(referer)
+        apiUrl = self.getFullUrl('/in.php?key=') + apiKey + '&method=hcaptcha&sitekey=' + sitekey + '&json=1&pageurl=' + urllib_quote(referer)
         try:
             token = ''
             sts, data = self.cm.getPage(apiUrl)
