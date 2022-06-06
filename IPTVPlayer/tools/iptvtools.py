@@ -11,6 +11,7 @@
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if not isPY2():
     basestring = str
+    unicode = str
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib2_urlopen
 from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import strDecode, iterDictItems
 ###################################################
@@ -1340,6 +1341,7 @@ def ReadTextFile(filePath, encode='utf-8', errors='ignore'):
         if ret.startswith(codecs.BOM_UTF8):
             ret = ret[3:]
         sts = True
+        ret = strDecode(ret, errors)
     except Exception:
         printExc()
     return sts, ret
