@@ -12,7 +12,7 @@ from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if not isPY2():
     basestring = str
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib2_urlopen
-from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import strDecode
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import strDecode, iterDictItems
 ###################################################
 
 ###################################################
@@ -1425,7 +1425,7 @@ class CMoviePlayerPerHost():
 
 def byteify(input, noneReplacement=None, baseTypesAsString=False):
     if isinstance(input, dict):
-        return dict([(byteify(key, noneReplacement, baseTypesAsString), byteify(value, noneReplacement, baseTypesAsString)) for key, value in input.iteritems()])
+        return dict([(byteify(key, noneReplacement, baseTypesAsString), byteify(value, noneReplacement, baseTypesAsString)) for key, value in iterDictItems(input)])
     elif isinstance(input, list):
         return [byteify(element, noneReplacement, baseTypesAsString) for element in input]
     elif isinstance(input, unicode):
