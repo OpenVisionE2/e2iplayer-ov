@@ -13,3 +13,9 @@ def strDecode(text):
     else: #PY3
         retVal = text.decode(encoding='utf-8', errors='strict')
     return retVal
+
+def iterDictItems(myDict):
+    if isPY2():
+        return myDict.iteritems()
+    else:
+        return myDict.items()
