@@ -12,7 +12,8 @@ from Plugins.Extensions.IPTVPlayer.tools.e2ijs import js_execute
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 from Plugins.Extensions.IPTVPlayer.libs import ph
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 ###################################################
 # E2 GUI COMMPONENTS
 ###################################################
@@ -22,8 +23,6 @@ from Screens.MessageBox import MessageBox
 ###################################################
 import base64
 import re
-import urlparse
-import urllib
 from Components.config import config, ConfigText, ConfigSelection, getConfigListEntry
 ###################################################
 
@@ -95,7 +94,7 @@ class EkinoTv(CBaseHostClass, CaptchaHelper):
             if self.cm.isValidUrl(url):
                 return url
             else:
-                return urlparse.urljoin(baseUrl, url)
+                return urljoin(baseUrl, url)
         addParams['cloudflare_params'] = {'domain': self.up.getDomain(baseUrl), 'cookie_file': self.COOKIE_FILE, 'User-Agent': self.USER_AGENT, 'full_url_handle': _getFullUrl}
         return self.cm.getPageCFProtection(baseUrl, addParams, post_data)
 
@@ -265,12 +264,12 @@ class EkinoTv(CBaseHostClass, CaptchaHelper):
         printDBG("EkinoTv.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         searchPattern = searchPattern.replace(' ', '+')
 
-        url = 'https://ekino-tv.pl/search/qf/?q=' + urllib.quote_plus(searchPattern)
+        url = 'https://ekino-tv.pl/search/qf/?q=' + urllib_quote_plus(searchPattern)
         sts, data = self.getPage(url)
         if not sts:
             return
 #        if not 'search' in self.cm.meta['url']:
-#            url = 'https://ekino-tv.pl/se/search?q=' + urllib.quote_plus(searchPattern)
+#            url = 'https://ekino-tv.pl/se/search?q=' + urllib_quote_plus(searchPattern)
 #            sts, data = self.getPage(url)
 #            if not sts: return
         printDBG("EkinoTv.listSearchResult data[%s]" % data)
