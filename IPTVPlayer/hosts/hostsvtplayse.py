@@ -9,13 +9,12 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Playlist, getMPDLinksWithMeta
 
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin, parse_qs
 ###################################################
 # FOREIGN import
 ###################################################
 import re
 import urllib
-import urlparse
 try:
     import json
 except Exception:
@@ -496,8 +495,8 @@ class SVTPlaySE(CBaseHostClass):
                 vidTab = []
                 # item = strwithmeta(item, {'X-Forwarded-For':'83.172.75.170'})
                 try:
-                    tmp = urlparse.urlparse(item)
-                    tmp = urlparse.parse_qs(tmp.query)['alt'][0]
+                    tmp = urlparse(item)
+                    tmp = parse_qs(tmp.query)['alt'][0]
                     vidTab = getDirectM3U8Playlist(tmp, False, checkContent=True)
                 except Exception:
                     printExc()

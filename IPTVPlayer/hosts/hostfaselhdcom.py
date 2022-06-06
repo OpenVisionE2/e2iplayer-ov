@@ -9,11 +9,10 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Playlist
 from Plugins.Extensions.IPTVPlayer.libs import ph
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin, urlparse
 ###################################################
 # FOREIGN import
 ###################################################
-import urlparse
 import re
 import urllib
 ###################################################

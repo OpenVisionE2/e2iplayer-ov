@@ -9,11 +9,10 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Playlist, getMPDLinksWithMeta
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads, dumps as json_dumps
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
 ###################################################
 # FOREIGN import
 ###################################################
-import urlparse
 import urllib
 from datetime import datetime, date, timedelta
 from Components.config import config, ConfigSelection, ConfigYesNo, getConfigListEntry
@@ -82,7 +81,7 @@ class TVNowDE(CBaseHostClass):
             if self.cm.isValidUrl(url):
                 return url
             else:
-                return urlparse.urljoin(baseUrl, url)
+                return urljoin(baseUrl, url)
 
         addParams['cloudflare_params'] = {'domain': self.up.getDomain(baseUrl), 'cookie_file': self.COOKIE_FILE, 'User-Agent': self.USER_AGENT, 'full_url_handle': _getFullUrl}
         sts, data = self.cm.getPageCFProtection(baseUrl, addParams, post_data)

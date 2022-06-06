@@ -7,14 +7,13 @@ from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostC
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, byteify
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
 ###################################################
 # FOREIGN import
 ###################################################
 import datetime
 import re
 import urllib
-import urlparse
 try:
     import json
 except Exception:
@@ -50,7 +49,7 @@ class StreamingSeriesWatch(CBaseHostClass):
             if self.cm.isValidUrl(url):
                 return url
             else:
-                return urlparse.urljoin(baseUrl, url)
+                return urljoin(baseUrl, url)
 
         addParams['cloudflare_params'] = {'domain': self.up.getDomain(baseUrl), 'cookie_file': self.COOKIE_FILE, 'User-Agent': self.USER_AGENT, 'full_url_handle': _getFullUrl}
         sts, data = self.cm.getPageCFProtection(baseUrl, addParams, post_data)

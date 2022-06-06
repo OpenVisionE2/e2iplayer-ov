@@ -7,13 +7,12 @@ from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostC
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, byteify
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin, urlparse
 ###################################################
 # FOREIGN import
 ###################################################
 import re
 import urllib
-import urlparse
 ###################################################
 
 
@@ -169,7 +168,7 @@ class WatchwrestlingUNO(CBaseHostClass):
             parts = matchObj.findall(item)
             partsTab = []
             for part in parts:
-                url = urlparse.urljoin(baseUrl, part[0])
+                url = urljoin(baseUrl, part[0])
                 title = cItem['title'] + '[%s]' % part[1]
                 partsTab.append({'title': title, 'url': strwithmeta(url, {'live': True, 'Referer': cItem['url']})})
             if len(partsTab):
@@ -195,7 +194,7 @@ class WatchwrestlingUNO(CBaseHostClass):
         data = self.cm.ph.getAllItemsBeetwenMarkers(data, '<a', '</a>', True)
         for item in data:
             title = self.cleanHtmlStr(item)
-            url = urlparse.urljoin(baseUrl, self.cm.ph.getSearchGroups(item, '''href=["']([^"^']+?)['"]''')[0])
+            url = urljoin(baseUrl, self.cm.ph.getSearchGroups(item, '''href=["']([^"^']+?)['"]''')[0])
             params = dict(cItem)
             params.update({'good_for_fav': False, 'title': title, 'url': strwithmeta(url, {'live': True, 'Referer': cItem['url']}), 'live': True})
             self.addVideo(params)

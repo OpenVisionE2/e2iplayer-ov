@@ -7,11 +7,10 @@ from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostC
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, byteify
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
 ###################################################
 # FOREIGN import
 ###################################################
-import urlparse
 import re
 import urllib
 import base64
@@ -88,7 +87,7 @@ class LosMovies(CBaseHostClass):
             if self.cm.isValidUrl(url):
                 return url
             else:
-                return urlparse.urljoin(baseUrl, url)
+                return urljoin(baseUrl, url)
 
         addParams['cloudflare_params'] = {'cookie_file': self.COOKIE_FILE, 'User-Agent': self.HEADER['User-Agent']}
         return self.cm.getPageCFProtection(baseUrl, addParams, post_data)

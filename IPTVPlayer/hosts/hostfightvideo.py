@@ -6,11 +6,10 @@ from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT
 from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostClass
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, byteify
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
 ###################################################
 # FOREIGN import
 ###################################################
-import urlparse
 import re
 import urllib
 try:
@@ -47,7 +46,7 @@ class FightVideo(CBaseHostClass):
             if self.cm.isValidUrl(url):
                 return url
             else:
-                return urlparse.urljoin(baseUrl, url)
+                return urljoin(baseUrl, url)
 
         addParams['cloudflare_params'] = {'domain': self.up.getDomain(baseUrl), 'cookie_file': self.COOKIE_FILE, 'User-Agent': self.USER_AGENT, 'full_url_handle': _getFullUrl}
         sts, data = self.cm.getPageCFProtection(baseUrl, addParams, post_data)

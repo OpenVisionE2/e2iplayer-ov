@@ -11,13 +11,12 @@ from Plugins.Extensions.IPTVPlayer.libs import ph
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.tools.e2ijs import js_execute
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
 ###################################################
 # FOREIGN import
 ###################################################
 import re
 import base64
-import urlparse
 try:
     import json
 except Exception:
@@ -69,7 +68,7 @@ class ustvgo(CBaseHostClass):
             if self.cm.isValidUrl(url):
                 return url
             else:
-                return urlparse.urljoin(baseUrl, url)
+                return urljoin(baseUrl, url)
 
         addParams['cloudflare_params'] = {'domain': self.up.getDomain(baseUrl), 'cookie_file': self.COOKIE_FILE, 'User-Agent': self.USER_AGENT, 'full_url_handle': _getFullUrl}
 

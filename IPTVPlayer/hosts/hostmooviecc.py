@@ -7,11 +7,10 @@ from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostC
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, byteify, GetTmpDir
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
 ###################################################
 # FOREIGN import
 ###################################################
-import urlparse
 import re
 import urllib
 from copy import deepcopy
@@ -72,7 +71,7 @@ class MoovieCC(CBaseHostClass):
             if self.cm.isValidUrl(url):
                 return url
             else:
-                return urlparse.urljoin(baseUrl, url)
+                return urljoin(baseUrl, url)
 
         addParams['cloudflare_params'] = {'domain': self.up.getDomain(baseUrl), 'cookie_file': self.COOKIE_FILE, 'User-Agent': self.USER_AGENT, 'full_url_handle': _getFullUrl}
         sts, data = self.cm.getPageCFProtection(baseUrl, addParams, post_data)
@@ -354,7 +353,7 @@ class MoovieCC(CBaseHostClass):
             for item in data:
                 url = self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0]
                 if url != '' and not self.cm.isValidUrl(url):
-                    url = urlparse.urljoin(sourcesLink, url)
+                    url = urljoin(sourcesLink, url)
                 title = self.cleanHtmlStr(item)
                 params = dict(cItem)
                 params.update({'good_for_fav': False, 'category': nextCategory, 'title': title, 'prev_title': mainTitle, 'url': url, 'prev_url': cItem['url'], 'prev_desc': cItem.get('desc', ''), 'icon': icon, 'desc': desc})
@@ -455,7 +454,7 @@ class MoovieCC(CBaseHostClass):
                     if imgUrl != '' and not imgUrl.startswith('/'):
                         imgUrl = '/' + imgUrl
                     if imgUrl.startswith('/'):
-                        imgUrl = urlparse.urljoin(videoUrl, imgUrl)
+                        imgUrl = urljoin(videoUrl, imgUrl)
 
                     printDBG("img URL [%s]" % imgUrl)
 
@@ -463,7 +462,7 @@ class MoovieCC(CBaseHostClass):
                     if actionUrl != '':
                         actionUrl = '/' + actionUrl
                     if actionUrl.startswith('/'):
-                        actionUrl = urlparse.urljoin(videoUrl, actionUrl)
+                        actionUrl = urljoin(videoUrl, actionUrl)
                     elif actionUrl == '':
                         actionUrl = videoUrl
 
