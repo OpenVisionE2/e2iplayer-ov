@@ -10,12 +10,11 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 # needed for option bbc_use_web_proxy definition
 from Plugins.Extensions.IPTVPlayer.libs.youtube_dl.extractor.bbc import BBCCoUkIE
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 try:
     import json
 except Exception:
@@ -509,7 +508,7 @@ class BBCiPlayer(CBaseHostClass):
         # if search pattern was specified, use it to build the URL, otherwise
         # leave the URL alone - it will already be set if this is a Next Page search
         if len(searchPattern):
-            cItem['url'] = self.getFullUrl('iplayer/search?q=' + urllib.quote_plus(searchPattern))
+            cItem['url'] = self.getFullUrl('iplayer/search?q=' + urllib_quote_plus(searchPattern))
 
         self.listItems(cItem, 'list_episodes')
 

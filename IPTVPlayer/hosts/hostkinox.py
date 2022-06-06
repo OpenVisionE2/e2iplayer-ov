@@ -7,13 +7,11 @@ from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostC
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, byteify
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus, urllib_urlencode
 ###################################################
 # FOREIGN import
 ###################################################
-import urlparse
 import re
-import urllib
 try:
     import json
 except Exception:
@@ -375,7 +373,7 @@ class Kinox(CBaseHostClass):
                 query['country'] = cItem['f_country']
             if query != {}:
                 query.update({'q': '', 'actors': '', 'imdbop': '', 'imdbrating': '', 'year': '', 'extended_search': 1})
-            query = urllib.urlencode(query)
+            query = urllib_urlencode(query)
             if query != '':
                 url += '?' + query
 
@@ -495,7 +493,7 @@ class Kinox(CBaseHostClass):
         printDBG("Kinox.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         cItem = dict(cItem)
         cItem['get_list_mode'] = 'direct'
-        cItem['url'] = self.getFullUrl('/Search.html?q=' + urllib.quote_plus(searchPattern))
+        cItem['url'] = self.getFullUrl('/Search.html?q=' + urllib_quote_plus(searchPattern))
         self.listsLangFilter(cItem, 'list_items')
 
     def getLinksForVideo(self, cItem):

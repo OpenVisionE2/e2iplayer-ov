@@ -10,14 +10,12 @@ from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Play
 from Plugins.Extensions.IPTVPlayer.tools.e2ijs import js_execute
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads, dumps as json_dumps
 from Plugins.Extensions.IPTVPlayer.components.captcha_helper import CaptchaHelper
-
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote
 ###################################################
 # FOREIGN import
 ###################################################
 import time
-import urllib
 from datetime import datetime, timedelta
 import operator
 from Components.config import config, ConfigText, getConfigListEntry
@@ -464,7 +462,7 @@ class EuroSportPlayer(CBaseHostClass):
             '''
             page = cItem.get('page', 1)
             variables = {"index":"eurosport_global","preferredLanguages":["pl","en"],"uiLang":"pl","mediaRights":["GeoMediaRight"],"page":page,"pageSize":20,"q":cItem['f_query'],"type":["Video","Airing","EventPage"],"include_images":True}
-            url = self.serverApiData['server_path']['search'] + '/persisted/query/core/sitesearch?variables=' + urllib.quote(json_dumps(variables, separators=(',', ':')))
+            url = self.serverApiData['server_path']['search'] + '/persisted/query/core/sitesearch?variables=' + urllib_quote(json_dumps(variables, separators=(',', ':')))
 
             sts, data = self.getJSPage(url)
             if not sts: return
