@@ -19,3 +19,10 @@ def iterDictItems(myDict):
         return myDict.iteritems()
     else:
         return myDict.items()
+
+def strEncode(text,  encoding = 'utf-8'):
+    if isPY2():
+        retVal = text
+    else: #PY3
+        retVal = text.encode(encoding)
+    return retVal
