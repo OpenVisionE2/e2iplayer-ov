@@ -7,11 +7,11 @@ from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostC
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, byteify
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote, urllib_urlencode
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 try:
     import json
 except Exception:
@@ -138,9 +138,9 @@ class FightVideo(CBaseHostClass):
         for key in self.cacheFiltersKeys:
             baseKey = key[2:] # "f_"
             if key in cItem:
-                query[baseKey] = urllib.quote(cItem[key])
+                query[baseKey] = urllib_quote(cItem[key])
 
-        query = urllib.urlencode(query)
+        query = urllib_urlencode(query)
         if '?' in url:
             url += '&' + query
         else:

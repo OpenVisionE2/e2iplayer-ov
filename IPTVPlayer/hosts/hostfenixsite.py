@@ -15,7 +15,7 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 ###################################################
 # FOREIGN import
 ###################################################
-import urllib
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote, urllib_quote_plus
 import re
 ###################################################
 
@@ -172,7 +172,7 @@ class Fenixsite(CBaseHostClass):
 
     def listSearchResult(self, cItem, searchPattern, searchType):
 
-        url = self.getFullUrl('/api/private/get/search?query=%s&limit=100&f=1' % urllib.quote(searchPattern))
+        url = self.getFullUrl('/api/private/get/search?query=%s&limit=100&f=1' % urllib_quote(searchPattern))
         sts, data = self.getPage(url)
         if not sts:
             return
@@ -218,7 +218,7 @@ class Fenixsite(CBaseHostClass):
                     if it.startswith('"') or it.startswith("'"):
                         apiLink += it[1:-1]
                     elif 'key' in it:
-                        apiLink += urllib.quote_plus(key)
+                        apiLink += urllib_quote_plus(key)
                     elif 'count' in it:
                         apiLink += '1'
                 apiLink = self.getFullUrl(apiLink)

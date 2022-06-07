@@ -8,11 +8,11 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, rm
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 try:
     import json
 except Exception:
@@ -178,7 +178,7 @@ class FilmaonCom(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("FilmaonCom.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
 
-        url = self.getFullUrl('?s=') + urllib.quote_plus(searchPattern)
+        url = self.getFullUrl('?s=') + urllib_quote_plus(searchPattern)
         cItem = dict(cItem)
         cItem.update({'url': url, 'category': 'list_items'})
         self.listItems(cItem, 'explore_item')

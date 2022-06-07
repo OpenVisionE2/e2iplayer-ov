@@ -6,12 +6,11 @@ from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT
 from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostClass, CDisplayListItem, RetHost, CUrlItem, ArticleContent
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, GetLogoDir
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 try:
     import json
 except Exception:
@@ -178,9 +177,9 @@ class Filma24hdCom(CBaseHostClass):
         self.listsTab(tab, params)
 
     def listSearchResult(self, cItem, searchPattern, searchType):
-        searchPattern = urllib.quote_plus(searchPattern)
+        searchPattern = urllib_quote_plus(searchPattern)
         cItem = dict(cItem)
-        cItem['url'] = self.SRCH_URL + urllib.quote_plus(searchPattern)
+        cItem['url'] = self.SRCH_URL + urllib_quote_plus(searchPattern)
         self.listItems(cItem)
 
     def getLinksForVideo(self, cItem):

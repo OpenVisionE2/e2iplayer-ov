@@ -9,10 +9,10 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Playlist
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote
 ###################################################
 # FOREIGN import
 ###################################################
-import urllib
 try:
     import json
 except Exception:
@@ -170,7 +170,7 @@ class EgyBest(CBaseHostClass):
 
             url += '-'.join(query) + ('?page=%s&output_format=json&output_mode=movies_list' % page)
         else:
-            url += ('?page=%s&q=%s&output_format=json' % (page, urllib.quote(cItem['f_search_query'])))
+            url += ('?page=%s&q=%s&output_format=json' % (page, urllib_quote(cItem['f_search_query'])))
 
         sts, data = self.getPage(url)
         if not sts:
