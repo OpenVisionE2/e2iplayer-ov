@@ -14,7 +14,7 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 # FOREIGN import
 ###################################################
 from Components.config import config, ConfigText, getConfigListEntry
-import urllib
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 from hashlib import md5
 try:
     import simplejson as json
@@ -166,7 +166,7 @@ class Chomikuj(CBaseHostClass):
         page = cItem.get('page', 1)
 
         if 'accounts' == searchType:
-            url = self.SEARCH_ACCOUNT_URL % (page, urllib.quote_plus(searchPattern))
+            url = self.SEARCH_ACCOUNT_URL % (page, urllib_quote_plus(searchPattern))
             sts, data = self.requestJsonData(url)
             if not sts:
                 return
@@ -190,7 +190,7 @@ class Chomikuj(CBaseHostClass):
                 self.addDir(params)
         else:
             map = {"images": "Image", "video": "Video", "music": "Music"}
-            self.handleDataRequest(cItem, self.SEARCH_URL % (urllib.quote_plus(searchPattern), page, map[searchType]))
+            self.handleDataRequest(cItem, self.SEARCH_URL % (urllib_quote_plus(searchPattern), page, map[searchType]))
 
     def handleProfile(self, cItem):
         printDBG("Chomikuj.handleProfile cItem[%s]" % cItem)

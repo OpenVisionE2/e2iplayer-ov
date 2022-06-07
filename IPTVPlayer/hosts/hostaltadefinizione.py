@@ -13,7 +13,7 @@ from Plugins.Extensions.IPTVPlayer.tools.e2ijs import js_execute
 # FOREIGN import
 ###################################################
 import re
-import urllib
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus, urllib_urlencode
 try:
     import json
 except Exception:
@@ -200,7 +200,7 @@ class Altadefinizione(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("Altadefinizione.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         cItem = dict(cItem)
-        cItem['url'] = self.getFullUrl('/?s=') + urllib.quote_plus(searchPattern)
+        cItem['url'] = self.getFullUrl('/?s=') + urllib_quote_plus(searchPattern)
         cItem['category'] = 'list_items'
         self.listItems(cItem, 'explore_item')
 
@@ -245,7 +245,7 @@ class Altadefinizione(CBaseHostClass):
                 actionUrl += '&'
             else:
                 actionUrl += '?'
-            actionUrl += urllib.urlencode(query)
+            actionUrl += urllib_urlencode(query)
             urlTab.append({'name': title, 'url': strwithmeta(actionUrl, {'Referer': cUrl}), 'need_resolve': 1})
 
         if len(urlTab):

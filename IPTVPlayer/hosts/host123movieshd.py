@@ -12,7 +12,7 @@ from Plugins.Extensions.IPTVPlayer.libs import ph
 ###################################################
 # FOREIGN import
 ###################################################
-import urllib
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
 from Components.config import config, ConfigSelection, ConfigText, getConfigListEntry
 ###################################################
@@ -281,7 +281,7 @@ class GoMovies(CBaseHostClass):
         if self.MAIN_URL == None:
             self.selectDomain()
         cItem = dict(cItem)
-        cItem['url'] = self.getFullUrl('/browse-word/%s/' % urllib.quote_plus(searchPattern))
+        cItem['url'] = self.getFullUrl('/browse-word/%s/' % urllib_quote_plus(searchPattern))
         cItem.update({'search': True, 'category': 'list_items'})
         self.listItems(cItem, 'explore_item')
 

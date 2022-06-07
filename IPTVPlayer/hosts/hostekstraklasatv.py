@@ -16,7 +16,6 @@ from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Play
 # FOREIGN import
 ###################################################
 import re
-import urllib
 import time
 import datetime
 import random
