@@ -28,17 +28,11 @@ def strEncode(text,  encoding = 'utf-8'):
         retVal = text.encode(encoding)
     return retVal
 
-def ensure_binary(s, encoding='utf-8', errors='strict'): #copied from six library
-    """Coerce **s** to six.binary_type.
-    For Python 2:
-      - `unicode` -> encoded to `str`
-      - `str` -> `str`
-    For Python 3:
-      - `str` -> encoded to `bytes`
-      - `bytes` -> `bytes`
-    """
-    if isinstance(s, binary_type):
-        return s
-    if isinstance(s, text_type):
-        return s.encode(encoding, errors)
-    raise TypeError("not expecting type '%s'" % type(s))
+def ensure_binary(text, encoding='utf-8', errors='strict'): #copied from six library
+    if isPY2():
+        return text
+    else:
+        if isinstance(text, bytes):
+          return text
+        if isinstance(text, str):
+            return text.encode(encoding, errors)
