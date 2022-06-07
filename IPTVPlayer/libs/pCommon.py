@@ -13,6 +13,7 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads, dump
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin, urlparse, urlunparse
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_binary, strDecode
 if isPY2():
     import cookielib
 else:
@@ -1197,7 +1198,7 @@ class common:
                     if len(checkFromFirstBytes):
                         OK = False
                         for item in checkFromFirstBytes:
-                            if buffer.startswith(item):
+                            if buffer.startswith(ensure_binary(item)):
                                 OK = True
                                 break
                         if not OK:
@@ -1462,15 +1463,23 @@ class common:
                     encoding = self.ph.getSearchGroups(metadata['content-type'], '''charset=([A-Za-z0-9\-]+)''', 1, True)[0].strip().upper()
 
                 if encoding == '' and params.get('search_charset', False):
-                    encoding = self.ph.getSearchGroups(data, '''(<meta[^>]+?Content-Type[^>]+?>)''', ignoreCase=True)[0]
+                    encoding = self.ph.getSearchGroups(strDecode(data,'ignore'), '''(<meta[^>]+?Content-Type[^>]+?>)''', ignoreCase=True)[0]
                     encoding = self.ph.getSearchGroups(encoding, '''charset=([A-Za-z0-9\-]+)''', 1, True)[0].strip().upper()
                 if encoding not in ['', 'UTF-8']:
                     printDBG(">> encoding[%s]" % encoding)
                     try:
-                        data = data.decode(encoding).encode('UTF-8')
+                        if isPY2():
+                            data = data.decode(encoding).encode('UTF-8')
+                        else:
+                            data = data.decode(encoding)
                     except Exception:
                         printExc()
                     metadata['orig_charset'] = encoding
+                else:
+                    try:
+                        data = strDecode(data)
+                    except Exception:
+                        data = strDecode(data, 'ignore')
         except Exception:
             printExc()
         return data, metadata

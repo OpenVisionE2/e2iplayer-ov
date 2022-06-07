@@ -1,4 +1,5 @@
 # macro to load functions from correct modules depending on the python version
+# some functions copied from six library to support old nbox python - al credits go to it authors.
 # build to simplify loading modules in e2iplayer scripts
 # just change:
 #   from urlib import
@@ -26,3 +27,18 @@ def strEncode(text,  encoding = 'utf-8'):
     else: #PY3
         retVal = text.encode(encoding)
     return retVal
+
+def ensure_binary(s, encoding='utf-8', errors='strict'): #copied from six library
+    """Coerce **s** to six.binary_type.
+    For Python 2:
+      - `unicode` -> encoded to `str`
+      - `str` -> `str`
+    For Python 3:
+      - `str` -> encoded to `bytes`
+      - `bytes` -> `bytes`
+    """
+    if isinstance(s, binary_type):
+        return s
+    if isinstance(s, text_type):
+        return s.encode(encoding, errors)
+    raise TypeError("not expecting type '%s'" % type(s))
