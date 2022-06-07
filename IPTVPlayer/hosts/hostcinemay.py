@@ -13,7 +13,7 @@ from Plugins.Extensions.IPTVPlayer.tools.e2ijs import js_execute
 # FOREIGN import
 ###################################################
 import re
-import urllib
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 import base64
 ###################################################
 
@@ -221,7 +221,7 @@ class Cinemay(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("Cinemay.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         cItem = dict(cItem)
-        cItem['url'] = self.getFullUrl('/?s=') + urllib.quote_plus(searchPattern)
+        cItem['url'] = self.getFullUrl('/?s=') + urllib_quote_plus(searchPattern)
         self.listItems1(cItem, 'explore_item')
 
     def getLinksForVideo(self, cItem):

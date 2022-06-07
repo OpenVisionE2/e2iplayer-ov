@@ -14,7 +14,7 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 ###################################################
 import time
 import re
-import urllib
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_unquote, urllib_quote
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
 from Components.config import config, ConfigSelection, ConfigText, getConfigListEntry
 ###################################################
@@ -450,15 +450,15 @@ class CartoonHD(CBaseHostClass):
         httpParams['header'] = {'Referer': cItem['url'], 'User-Agent': self.cm.HOST, 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json, text/javascript, */*; q=0.01', 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
         encElid = gettt()
         __utmx = getCookieItem('__utmx')
-        httpParams['header']['Authorization'] = 'Bearer ' + urllib.unquote(__utmx)
+        httpParams['header']['Authorization'] = 'Bearer ' + urllib_unquote(__utmx)
 
         requestLinks = [urljoin(baseurl, jsUrl)]
         if 'class="play"' in data and 'id="updateSources"' not in data:
             requestLinks.append('ajax/embeds.php')
 
-        #httpParams['header']['Cookie'] = '%s=%s; PHPSESSID=%s; flixy=%s;'% (elid, urllib.quote(encElid), getCookieItem('PHPSESSID'), getCookieItem('flixy'))
+        #httpParams['header']['Cookie'] = '%s=%s; PHPSESSID=%s; flixy=%s;'% (elid, urllib_quote(encElid), getCookieItem('PHPSESSID'), getCookieItem('flixy'))
         for url in requestLinks:
-            post_data = {'action': type, 'idEl': elid, 'token': tor, 'elid': urllib.quote(encElid), 'nopop': ''}
+            post_data = {'action': type, 'idEl': elid, 'token': tor, 'elid': urllib_quote(encElid), 'nopop': ''}
             sts, data = self.cm.getPage(url, httpParams, post_data)
             if not sts:
                 continue

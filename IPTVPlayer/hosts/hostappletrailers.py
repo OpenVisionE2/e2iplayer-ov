@@ -11,7 +11,7 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, by
 # FOREIGN import
 ###################################################
 import re
-import urllib
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 try:
     import json
 except Exception:
@@ -161,9 +161,9 @@ class TrailersApple(CBaseHostClass):
             printExc()
 
     def listSearchResult(self, cItem, searchPattern, searchType):
-        searchPattern = urllib.quote_plus(searchPattern)
+        searchPattern = urllib_quote_plus(searchPattern)
 
-        url = self.getFullUrl('/trailers/home/scripts/quickfind.php?q=') + urllib.quote_plus(searchPattern)
+        url = self.getFullUrl('/trailers/home/scripts/quickfind.php?q=') + urllib_quote_plus(searchPattern)
         self.listItems({'url': url}, 'explore_item')
 
     def getLinksForVideo(self, cItem):

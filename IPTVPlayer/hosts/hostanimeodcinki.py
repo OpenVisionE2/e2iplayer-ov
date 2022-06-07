@@ -15,7 +15,7 @@ from Plugins.Extensions.IPTVPlayer.libs.crypto.keyedHash.evp import EVP_BytesToK
 ###################################################
 # FOREIGN import
 ###################################################
-import urllib
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote, urllib_quote_plus
 try:
     import json
 except Exception:
@@ -191,10 +191,10 @@ class AnimeOdcinkiPL(CBaseHostClass):
         for key in self.filtersTab:
             iKey = 'f_' + key
             if iKey in cItem:
-                getParams.append('%s=%s' % (urllib.quote(key), urllib.quote(cItem[iKey])))
+                getParams.append('%s=%s' % (urllib_quote(key), urllib_quote(cItem[iKey])))
 
         if 'f_search' in cItem:
-            getParams.append('s=%s' % (urllib.quote_plus(cItem['f_search'])))
+            getParams.append('s=%s' % (urllib_quote_plus(cItem['f_search'])))
 
         baseUrl = cItem['url']
         if page > 1:
