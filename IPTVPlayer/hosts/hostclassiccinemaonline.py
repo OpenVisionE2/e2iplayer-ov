@@ -11,7 +11,7 @@ from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
 # FOREIGN import
 ###################################################
 import re
-import urllib
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote
 try:
     import json
 except Exception:
@@ -141,7 +141,7 @@ class ClassicCinemaOnline(CBaseHostClass):
         printDBG("ClassicCinemaOnline.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         page = cItem.get('page', 0)
         if page == 0:
-            url = self.getFullUrl('/component/search/?searchword=%s&ordering=newest&searchphrase=all&limit=%s' % (urllib.quote(searchPattern), self.getMaxDisplayItems()))
+            url = self.getFullUrl('/component/search/?searchword=%s&ordering=newest&searchphrase=all&limit=%s' % (urllib_quote(searchPattern), self.getMaxDisplayItems()))
         else:
             url = cItem['url']
 

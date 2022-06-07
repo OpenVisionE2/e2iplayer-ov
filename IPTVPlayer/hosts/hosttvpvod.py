@@ -18,7 +18,7 @@ from Plugins.Extensions.IPTVPlayer.components.captcha_helper import CaptchaHelpe
 from Components.config import config, ConfigSelection, ConfigYesNo, ConfigText, getConfigListEntry
 from datetime import datetime, timedelta, date
 import re
-import urllib
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote
 import time
 ###################################################
 
@@ -649,7 +649,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
 
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("TvpVod.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
-        url = TvpVod.SEARCH_VOD_URL % urllib.quote(searchPattern)
+        url = TvpVod.SEARCH_VOD_URL % urllib_quote(searchPattern)
         cItem = dict(cItem)
         cItem['url'] = url
 

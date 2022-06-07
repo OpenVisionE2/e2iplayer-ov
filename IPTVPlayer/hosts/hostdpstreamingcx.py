@@ -8,12 +8,12 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, by
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote
 ###################################################
 # FOREIGN import
 ###################################################
 import datetime
 import re
-import urllib
 try:
     import json
 except Exception:
@@ -136,7 +136,7 @@ class StreamingSeriesWatch(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("StreamingSeriesWatch.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         cItem = dict(cItem)
-        cItem['url'] = self.MAIN_URL + '?s=' + urllib.quote(searchPattern)
+        cItem['url'] = self.MAIN_URL + '?s=' + urllib_quote(searchPattern)
         self.listItems(cItem, 'episodes')
 
     def getLinksForVideo(self, cItem):
