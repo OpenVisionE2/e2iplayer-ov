@@ -8,11 +8,11 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, by
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_unquote
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 from copy import deepcopy
 try:
     import json
@@ -330,7 +330,7 @@ class MoovieCC(CBaseHostClass):
             printDBG("MoovieCC.exploreItem - missing link for sources")
             return
 
-        tmp = urllib.unquote(sourcesLink)
+        tmp = urllib_unquote(sourcesLink)
         tmp = self.cm.ph.getSearchGroups(tmp[1:], '''(https?://.+)''')[0]
         if tmp != '':
             sourcesLink = tmp

@@ -8,11 +8,11 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, by
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote, urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 import base64
 try:
     import json
@@ -230,7 +230,7 @@ class LosMovies(CBaseHostClass):
             episodesData = self.cm.ph.getAllItemsBeetwenMarkers(sItem, '<h3', '</tbody>', True)
             for eItem in episodesData:
                 eTitle = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(eItem, '<h3', '</h3>', True)[1])
-                eFakeUrl = '#season%s_%s' % (seasonKey, urllib.quote(eTitle))
+                eFakeUrl = '#season%s_%s' % (seasonKey, urllib_quote(eTitle))
                 linksTab = self.getLinksForVideo(cItem, eItem)
                 if len(linksTab):
                     self.cacheLinks[eFakeUrl] = linksTab
@@ -254,7 +254,7 @@ class LosMovies(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("LosMovies.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         cItem = dict(cItem)
-        cItem['url'] = self.getFullUrl('search?type=movies&q=') + urllib.quote_plus(searchPattern)
+        cItem['url'] = self.getFullUrl('search?type=movies&q=') + urllib_quote_plus(searchPattern)
         self.listItems(cItem, 'list_seasons')
 
     def getLinksForVideo(self, cItem, eItem=None):

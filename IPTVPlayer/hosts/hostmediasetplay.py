@@ -12,6 +12,7 @@ from Plugins.Extensions.IPTVPlayer.libs import ph
 from Plugins.Extensions.IPTVPlayer.tools.e2ijs import js_execute, js_execute_ext
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 ###################################################
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_urlencode
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if isPY2():
     import cookielib
@@ -24,7 +25,6 @@ from Screens.MessageBox import MessageBox
 ###################################################
 # FOREIGN import
 ###################################################
-import urllib
 import re
 import uuid
 import time
@@ -241,7 +241,7 @@ class MediasetPlay(CBaseHostClass):
         query = {'hitsPerPage': 50}
         if 'f_onair' in cItem:
             query['inOnda'] = 'true'
-        url = self.API_BASE_URL + 'rec/azlisting/v1.0?' + urllib.urlencode(query)
+        url = self.API_BASE_URL + 'rec/azlisting/v1.0?' + urllib_urlencode(query)
         if 'f_query' in cItem:
             url += '&query=%s' % cItem['f_query'] #query['query'] = cItem['f_query']
         if 'f_category' in cItem:
@@ -378,7 +378,7 @@ class MediasetPlay(CBaseHostClass):
         printDBG("MediasetPlay.listCatalogItems")
         query = {'uxReference': cItem['f_ref'], 'platform': 'pc'}
         query.update(self.initData)
-        url = self.API_BASE_URL + 'rec/cataloguelisting/v1.0?' + urllib.urlencode(query)
+        url = self.API_BASE_URL + 'rec/cataloguelisting/v1.0?' + urllib_urlencode(query)
 
         sts, data = self.getPage(url)
         if not sts:
@@ -442,7 +442,7 @@ class MediasetPlay(CBaseHostClass):
         query = {'uxReference': 'CWSEARCH%s' % searchType.upper(), 'query': searchPattern, 'platform': 'pc'}
         query.update(self.initData)
 
-        url = self.API_BASE_URL + 'rec/search/v1.0?' + urllib.urlencode(query)
+        url = self.API_BASE_URL + 'rec/search/v1.0?' + urllib_urlencode(query)
         if 'clip' == searchType:
             url += '&sort=Viewers=DESC'
 
