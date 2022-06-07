@@ -9,11 +9,11 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.tools.e2ijs import js_execute
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 try:
     import json
 except Exception:
@@ -214,7 +214,7 @@ class govodtv(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("govodtv.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
 
-        url = self.getFullUrl('/szukaj?s=%s') % urllib.quote_plus(searchPattern)
+        url = self.getFullUrl('/szukaj?s=%s') % urllib_quote_plus(searchPattern)
         params = {'name': 'category', 'category': 'list_items', 'good_for_fav': False, 'url': url}
         self.listItems(params)
 

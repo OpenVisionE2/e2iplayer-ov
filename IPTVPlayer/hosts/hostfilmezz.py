@@ -8,11 +8,11 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, by
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin, urlparse
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote, urllib_urlencode, urllib_unquote, urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 from copy import deepcopy
 try:
     import json
@@ -159,9 +159,9 @@ class FilmezzEU(CBaseHostClass):
         for key in self.cacheFiltersKeys:
             baseKey = key[2:] # "f_"
             if key in cItem:
-                query[baseKey] = urllib.quote(cItem[key])
+                query[baseKey] = urllib_quote(cItem[key])
 
-        query = urllib.urlencode(query)
+        query = urllib_urlencode(query)
         if '?' in url:
             url += '&' + query
         else:
@@ -265,7 +265,7 @@ class FilmezzEU(CBaseHostClass):
                 continue
 
             if url.startswith('http://adf.ly/'):
-                url = urllib.unquote(url.rpartition('/')[2])
+                url = urllib_unquote(url.rpartition('/')[2])
                 if url == '':
                     continue
 
@@ -285,7 +285,7 @@ class FilmezzEU(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("FilmezzEU.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         cItem = dict(cItem)
-        cItem['url'] = self.getFullUrl('kereses.php?s=' + urllib.quote_plus(searchPattern))
+        cItem['url'] = self.getFullUrl('kereses.php?s=' + urllib_quote_plus(searchPattern))
         self.listItems(cItem, 'explore_item')
 
     def getLinksForVideo(self, cItem):
