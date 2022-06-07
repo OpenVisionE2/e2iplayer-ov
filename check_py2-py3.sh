@@ -11,6 +11,14 @@ source = open(filename, 'r').read() + '\n'
 compile(source, filename, 'exec')
 " > /tmp/checker.py
 
+
+#find $myAbsPath/IPTVPlayer/hosts -iname "*.py" | 
+#  while read F 
+#  do
+#    sed -i 's/^import urllib/from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import */' "$F"
+#    sed -i 's/urllib\./urllib_/g' "$F"
+#  done
+
 find $myAbsPath/IPTVPlayer -iname "*.py" | 
   while read F 
   do
