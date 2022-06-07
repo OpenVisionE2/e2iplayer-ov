@@ -15,12 +15,12 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import mkdirs, \
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.libs import ph
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlparse, urljoin
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import strDecode
 ###################################################
 # FOREIGN import
 ###################################################
 import threading
-from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlparse, urljoin
 from binascii import hexlify
 from os import path as os_path, listdir, remove as removeFile, rename as os_rename, rmdir as os_rmdir
 from Components.config import config
@@ -141,7 +141,7 @@ class IconMenager:
         if hashed == 0:
             hashAlg = MD5()
             name = hashAlg(item)
-            file = hexlify(name) + '.jpg'
+            file = strDecode(hexlify(name)) + '.jpg'
         else:
             file = item
         ret = False
@@ -160,7 +160,7 @@ class IconMenager:
 
         hashAlg = MD5()
         name = hashAlg(item)
-        filename = hexlify(name) + '.jpg'
+        filename = strDecode(hexlify(name)) + '.jpg'
 
         self.lockAA.acquire()
         file_path = self.queueAA.get(filename, '')
@@ -210,7 +210,7 @@ class IconMenager:
             if url != '':
                 hashAlg = MD5()
                 name = hashAlg(url)
-                file = hexlify(name) + '.jpg'
+                file = strDecode(hexlify(name)) + '.jpg'
 
                 #check if this image is not already available in cache AA list
                 if self.isItemInAAueue(file, 1):
