@@ -7,11 +7,11 @@ from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostC
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, byteify, rm
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_urlencode, urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 try:
     import json
 except Exception:
@@ -236,7 +236,7 @@ class SerijeOnline(CBaseHostClass):
                 if 'getplayer' in item:
                     try:
                         query = byteify(json.loads(item + '}'), '', True)
-                        query = urllib.urlencode(query)
+                        query = urllib_urlencode(query)
                         url = self.getFullUrl("/ajax.php") + '?' + query
                         sts, data = self.getPage(url)
                         printDBG("---------------")
@@ -278,7 +278,7 @@ class SerijeOnline(CBaseHostClass):
         printDBG("SerijeOnline.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         cItem = dict(cItem)
         if 0 == cItem.get('page', 0):
-            cItem['url'] = self.getFullUrl('search.php?keywords=%s' % urllib.quote_plus(searchPattern))
+            cItem['url'] = self.getFullUrl('search.php?keywords=%s' % urllib_quote_plus(searchPattern))
         self.listItems(cItem, 'explore_item')
 
     def getLinksForVideo(self, cItem):

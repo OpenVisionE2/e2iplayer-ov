@@ -8,12 +8,11 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, by
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.tools.e2ijs import js_execute
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus, urllib_urlencode
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 try:
     import json
 except Exception:
@@ -279,7 +278,7 @@ class SeriesOnlineIO(CBaseHostClass):
         if self.MAIN_URL == None:
             self.selectDomain()
 
-        url = self.SEARCH_URL + '/' + urllib.quote_plus(searchPattern).replace('+', '-')
+        url = self.SEARCH_URL + '/' + urllib_quote_plus(searchPattern).replace('+', '-')
         sts, data = self.getPage(url)
         if not sts:
             return
@@ -302,7 +301,7 @@ class SeriesOnlineIO(CBaseHostClass):
                 if '?' not in searchUrl:
                     searchUrl += '?'
                 if 'data' in decoded:
-                    searchUrl += urllib.urlencode(decoded['data'])
+                    searchUrl += urllib_urlencode(decoded['data'])
                 printDBG('searchUrl [%s]\n' % searchUrl)
                 cItem = dict(cItem)
                 cItem['url'] = searchUrl

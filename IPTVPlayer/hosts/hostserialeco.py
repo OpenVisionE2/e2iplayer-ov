@@ -8,12 +8,11 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, by
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.tools.e2ijs import js_execute
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 try:
     import json
 except Exception:
@@ -234,7 +233,7 @@ class SerialeCO(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("SerialeCO.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         cItem = dict(cItem)
-        cItem['url'] = self.getFullUrl('?s=') + urllib.quote_plus(searchPattern)
+        cItem['url'] = self.getFullUrl('?s=') + urllib_quote_plus(searchPattern)
         cItem['category'] = 'list_items'
         cItem['f_marker'] = 'td_module_'
 

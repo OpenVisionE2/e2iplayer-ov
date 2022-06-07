@@ -11,6 +11,7 @@ from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Play
 from Plugins.Extensions.IPTVPlayer.libs.urlparser import urlparser
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads, dumps as json_dumps
 ###################################################
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if isPY2():
     import cookielib
@@ -23,7 +24,6 @@ import os
 import datetime
 import time
 import zlib
-import urllib
 import base64
 from hashlib import sha1
 from Components.config import config, ConfigText, getConfigListEntry
@@ -326,7 +326,7 @@ class RtlMostHU(CBaseHostClass):
             return
         page = cItem.get('page', 0)
         sts, data = self.cm.getPage(self.QUERY_URL.format(queryType), self.queryParams,
-          query.format(urllib.quote(searchPattern), page, 50))
+          query.format(urllib_quote(searchPattern), page, 50))
         if not sts:
             return
         try:

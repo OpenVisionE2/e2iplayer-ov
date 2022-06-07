@@ -8,11 +8,10 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, Ge
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.libs.crypto.cipher.aes_cbc import AES_CBC
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_urlencode, urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
-import urllib
 import base64
 from binascii import unhexlify
 from hashlib import md5
@@ -214,7 +213,7 @@ class SolarMovie(CBaseHostClass):
             if key in cItem:
                 query[baseKey] = cItem[key]
 
-        query = urllib.urlencode(query)
+        query = urllib_urlencode(query)
         if '?' in url:
             url += '&' + query
         else:
@@ -274,7 +273,7 @@ class SolarMovie(CBaseHostClass):
         id = self.cm.ph.getSearchGroups(id, '''data-id=['"]([^'^"]+?)['"]''')[0]
         getParams = {'ts': timestamp}
         getParams = self._updateParams(getParams)
-        url = self.getFullUrl('/ajax/film/servers/{0}?'.format(id) + urllib.urlencode(getParams))
+        url = self.getFullUrl('/ajax/film/servers/{0}?'.format(id) + urllib_urlencode(getParams))
 
         sts, data = self.getPage(url, params)
         if not sts:
@@ -312,7 +311,7 @@ class SolarMovie(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("AnimeTo.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         cItem = dict(cItem)
-        cItem['url'] = self.getFullUrl('search?keyword=' + urllib.quote_plus(searchPattern))
+        cItem['url'] = self.getFullUrl('search?keyword=' + urllib_quote_plus(searchPattern))
         self.listItems(cItem, 'explore_item')
 
     def getLinksForVideo(self, cItem):
@@ -387,7 +386,7 @@ class SolarMovie(CBaseHostClass):
 
         getParams = {'ts': timestamp, 'id': videoUrl.meta.get('id', ''), 'Q': '1'}
         getParams = self._updateParams(getParams)
-        url = self.getFullUrl('/ajax/film/update-views?' + urllib.urlencode(getParams))
+        url = self.getFullUrl('/ajax/film/update-views?' + urllib_urlencode(getParams))
         sts, data = self.getPage(url, params)
         if not sts:
             return []
@@ -398,7 +397,7 @@ class SolarMovie(CBaseHostClass):
         getParams = {'ts': timestamp, 'id': videoUrl.meta.get('id', ''), 'server': videoUrl.meta.get('server_id', ''), 'update': '0'}
         getParams = self._updateParams(getParams)
 
-        url = self.getFullUrl('/ajax/episode/info?' + urllib.urlencode(getParams))
+        url = self.getFullUrl('/ajax/episode/info?' + urllib_urlencode(getParams))
         sts, data = self.getPage(url, params)
         if not sts:
             return []
@@ -421,7 +420,7 @@ class SolarMovie(CBaseHostClass):
                     url += '&'
                 else:
                     url += '?'
-                url += urllib.urlencode(query)
+                url += urllib_urlencode(query)
                 sts, data = self.getPage(url, params)
                 if not sts:
                     return []
@@ -475,7 +474,7 @@ class SolarMovie(CBaseHostClass):
 
         getParams = {'ts': timestamp}
         getParams = self._updateParams(getParams)
-        url = self.getFullUrl('/ajax/film/tooltip/' + id + '?' + urllib.urlencode(getParams))
+        url = self.getFullUrl('/ajax/film/tooltip/' + id + '?' + urllib_urlencode(getParams))
         sts, data = self.getPage(url, params)
         if not sts:
             return []
