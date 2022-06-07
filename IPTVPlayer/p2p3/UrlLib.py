@@ -18,13 +18,15 @@ if isPY2():
                         
     from urllib import addinfourl             as urllib_addinfourl,           quote               as urllib_quote, \
                        quote_plus             as urllib_quote_plus,           unquote             as urllib_unquote, \
-                       unquote_plus           as urllib_unquote_plus,         urlencode           as urllib_urlencode 
+                       unquote_plus           as urllib_unquote_plus,         urlencode           as urllib_urlencode, \
+                       urlopen                as urllib_urlopen,              urlretrieve         as urllib_urlretrieve
 else:
     from urllib.request import addinfourl     as urllib_addinfourl,           BaseHandler         as urllib2_BaseHandler, \
                                build_opener   as urllib2_build_opener,        HTTPCookieProcessor as urllib2_HTTPCookieProcessor, \
                                HTTPHandler    as urllib2_HTTPHandler,         HTTPRedirectHandler as urllib2_HTTPRedirectHandler, \
                                HTTPSHandler   as urllib2_HTTPSHandler,        ProxyHandler        as urllib2_ProxyHandler, \
                                Request        as urllib2_Request,             urlopen             as urllib2_urlopen, \
+                               urlopen        as urllib_urlopen,              urlretrieve         as urllib_urlretrieve, \
                                install_opener as urllib2_install_opener
     
     from urllib.parse import quote            as urllib_quote,                quote_plus          as urllib_quote_plus, \
