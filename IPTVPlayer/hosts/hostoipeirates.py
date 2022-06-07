@@ -8,12 +8,11 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 from Plugins.Extensions.IPTVPlayer.libs import ph
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_urlencode, urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 ###################################################
 
 
@@ -173,7 +172,7 @@ class OipeiratesOnline(CBaseHostClass):
         else:
             query.update({'page': page, 'seo_start_page': page})
 
-            url = cItem['ajaxurl'] + '?action=alm_query_posts&query_type=standard&' + urllib.urlencode(query)
+            url = cItem['ajaxurl'] + '?action=alm_query_posts&query_type=standard&' + urllib_urlencode(query)
             sts, data = self.getPage(url)
             if not sts:
                 return
@@ -358,7 +357,7 @@ class OipeiratesOnline(CBaseHostClass):
         printDBG("OipeiratesOnline.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         cItem = dict(cItem)
         cItem['url'] = self.getMainUrl()
-        cItem['url_suffix'] = '?s=' + urllib.quote_plus(searchPattern)
+        cItem['url_suffix'] = '?s=' + urllib_quote_plus(searchPattern)
         cItem['mode'] = 'search'
         self.listItems(cItem)
 

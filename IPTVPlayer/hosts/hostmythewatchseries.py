@@ -7,11 +7,11 @@ from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostC
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, rm
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_urlencode
 ###################################################
 # FOREIGN import
 ###################################################
-import urllib
+
 ###################################################
 
 
@@ -144,7 +144,7 @@ class MyTheWatchseries(CBaseHostClass):
             baseKey = key[2:] # "f_"
             if key in cItem:
                 query[baseKey] = cItem[key]
-        query = urllib.urlencode(query)
+        query = urllib_urlencode(query)
         if query != '':
             url += '?' + query
 
@@ -187,7 +187,7 @@ class MyTheWatchseries(CBaseHostClass):
             query['keyword'] = searchPattern
         if page > 1:
             query['page'] = page
-        query = urllib.urlencode(query)
+        query = urllib_urlencode(query)
         if query != '':
             if url[-1] in ['&', '?']:
                 sep = ''

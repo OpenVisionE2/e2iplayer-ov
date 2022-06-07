@@ -8,11 +8,11 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, by
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 import base64
 try:
     import json
@@ -374,7 +374,7 @@ class MuziCsillangCC(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("MuziCsillangCC.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         cItem = dict(cItem)
-        query = base64.b64encode('search_term=%s&search_type=0&search_where=0&search_rating_start=1&search_rating_end=10&search_year_from=1900&search_year_to=2100' % urllib.quote_plus(searchPattern))
+        query = base64.b64encode('search_term=%s&search_type=0&search_where=0&search_rating_start=1&search_rating_end=10&search_year_from=1900&search_year_to=2100' % urllib_quote_plus(searchPattern))
         cItem['url'] = self.getFullUrl('kereses/' + query)
         self.listItems(cItem, 'explore_item')
 
