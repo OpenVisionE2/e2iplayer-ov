@@ -1470,6 +1470,8 @@ def GetShortPythonVersion():
 
 
 def GetVersionNum(ver):
+    if ver == '':
+        return 0
     try:
         if None == re.match("[0-9]+\.[0-9][0-9]\.[0-9][0-9]\.[0-9][0-9]", ver):
             raise Exception("Wrong version!")
