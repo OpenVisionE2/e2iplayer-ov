@@ -8,12 +8,11 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, by
 from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Playlist
 from Plugins.Extensions.IPTVPlayer.libs import ph
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 try:
     import json
 except Exception:
@@ -351,7 +350,7 @@ class OurmatchNet(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("OurmatchNet.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         cItem = dict(cItem)
-        cItem.update({'url': self.MAIN_URL, 's': urllib.quote(searchPattern)})
+        cItem.update({'url': self.MAIN_URL, 's': urllib_quote(searchPattern)})
         self.listItems(cItem)
 
     def getFavouriteData(self, cItem):

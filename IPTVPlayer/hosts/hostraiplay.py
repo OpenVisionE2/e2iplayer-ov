@@ -10,12 +10,11 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 from Plugins.Extensions.IPTVPlayer.libs import ph
 from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Playlist
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 import datetime
 ###################################################
 
@@ -75,7 +74,7 @@ class Raiplay(CBaseHostClass):
             url = self.MAIN_URL + url
 
         url = url.replace(" ", "%20")
-        #url = urllib.quote(url, safe="%/:=&?~#+!$,;'@()*[]")
+        #url = urllib_quote(url, safe="%/:=&?~#+!$,;'@()*[]")
 
         #printDBG("PathID: " + url)
 
@@ -448,7 +447,7 @@ class Raiplay(CBaseHostClass):
             self.addVideo(params)
 
     def getLastContentByTag(self, tags="", numContents=16):
-        tags = urllib.quote(tags)
+        tags = urllib_quote(tags)
         domain = "RaiTv"
         xsl = "rai_tv-statistiche-raiplay-json"
 

@@ -7,10 +7,10 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, by
 from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Playlist
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_urlencode
 ###################################################
 # FOREIGN import
 ###################################################
-import urllib
 try:
     import json
 except Exception:
@@ -107,7 +107,7 @@ class QuesttvCoUK(CBaseHostClass):
                 value = self.cm.ph.getSearchGroups(item, '''value=['"]([^'^"]+?)['"]''')[0]
                 getParams[name] = value
 
-            url = 'http://c.brightcove.com/services/viewer/htmlFederated?' + urllib.urlencode(getParams)
+            url = 'http://c.brightcove.com/services/viewer/htmlFederated?' + urllib_urlencode(getParams)
             sts, data = self.getPage(url)
             if sts:
                 data = self.cm.ph.getDataBeetwenMarkers(data, '"renditions":', ']', False)[1]

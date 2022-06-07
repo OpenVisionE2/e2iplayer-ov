@@ -11,13 +11,12 @@ from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Play
 from Plugins.Extensions.IPTVPlayer.libs import ph
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
 import re
 import time
-import urllib
 from datetime import timedelta
 ###################################################
 ###################################################
@@ -187,7 +186,7 @@ class Redbull(CBaseHostClass):
 
     def listSearchResult(self, cItem, searchPattern, searchType):
 
-        url = self.REDBULL_API + "search?q=%s" % urllib.quote_plus(searchPattern)
+        url = self.REDBULL_API + "search?q=%s" % urllib_quote_plus(searchPattern)
         cItem = MergeDicts(cItem, {'category': 'list_search', 'url': url})
         self.listSearchItems(cItem)
 

@@ -7,12 +7,11 @@ from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostC
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, rm
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 try:
     import json
 except Exception:
@@ -181,7 +180,7 @@ class OrthoBullets(CBaseHostClass):
         self.tryTologin()
 
         cItem = dict(cItem)
-        cItem['url'] = self.getFullUrl('/video/list?search=') + urllib.quote(searchPattern)
+        cItem['url'] = self.getFullUrl('/video/list?search=') + urllib_quote(searchPattern)
         cItem['category'] = 'list_items'
         self.listItems(cItem)
 
