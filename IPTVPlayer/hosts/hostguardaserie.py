@@ -6,12 +6,11 @@ from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT
 from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostClass
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, MergeDicts
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus, urllib_unquote
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 try:
     import json
 except Exception:
@@ -173,7 +172,7 @@ class GuardaSerieClick(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("GuardaSerieClick.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         cItem = dict(cItem)
-        cItem['url'] = self.getFullUrl('/?s=') + urllib.quote_plus(searchPattern)
+        cItem['url'] = self.getFullUrl('/?s=') + urllib_quote_plus(searchPattern)
         cItem['category'] = 'list_items'
         self.listItems(cItem, 'explore_item')
 
@@ -192,14 +191,14 @@ class GuardaSerieClick(CBaseHostClass):
             if sts:
                 url = self.getFullUrl(self.cm.ph.getSearchGroups(data, '''<iframe[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0])
             if url == '':
-                videoUrl = 'http://www.safersurf.org/browse.php?u={0}&b=8&f=norefer'.format(urllib.quote_plus(videoUrl, ''))
+                videoUrl = 'http://www.safersurf.org/browse.php?u={0}&b=8&f=norefer'.format(urllib_quote_plus(videoUrl, ''))
                 params = dict(self.defaultParams)
                 params['header'] = MergeDicts(params['header'], {'Referer': videoUrl})
                 sts, data = self.cm.getPage(videoUrl, params)
                 if sts:
                     printDBG(data)
                     url = self.getFullUrl(self.cm.ph.getSearchGroups(data, '''<iframe[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0])
-                    url = urllib.unquote(self.cm.ph.getDataBeetwenMarkers(url, '?u=', '&', False)[1])
+                    url = urllib_unquote(self.cm.ph.getDataBeetwenMarkers(url, '?u=', '&', False)[1])
 
             if url != '':
                 videoUrl = url

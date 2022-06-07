@@ -6,12 +6,11 @@ from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT
 from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostClass, CDisplayListItem, RetHost, CUrlItem, ArticleContent
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, GetLogoDir
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 try:
     import json
 except Exception:
@@ -219,7 +218,7 @@ class GreekDocumentaries3(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("GreekDocumentaries3.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         cItem = dict(cItem)
-        cItem['url'] = self.SEARCH_URL + urllib.quote(searchPattern)
+        cItem['url'] = self.SEARCH_URL + urllib_quote(searchPattern)
         self.listItems(cItem)
 
     def handleService(self, index, refresh=0, searchPattern='', searchType=''):

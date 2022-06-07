@@ -9,12 +9,11 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, by
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Playlist
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_unquote, urllib_quote, urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 try:
     import json
 except Exception:
@@ -71,7 +70,7 @@ class HDSTo(CBaseHostClass):
 
     def getRealUrl(self, url):
         if config.plugins.iptvplayer.hdsto_proxy.value == 'webproxy' and url != None and 'browse.php?u=' in url:
-            url = urllib.unquote(self.cm.ph.getSearchGroups(url + '&', '''\?u=(http[^&]+?)&''')[0])
+            url = urllib_unquote(self.cm.ph.getSearchGroups(url + '&', '''\?u=(http[^&]+?)&''')[0])
         return url
 
     def getFullUrl(self, url, baseUrl=None):
@@ -94,7 +93,7 @@ class HDSTo(CBaseHostClass):
         proxy = config.plugins.iptvplayer.hdsto_proxy.value
         if proxy == 'webproxy':
             addParams = dict(addParams)
-            proxy = 'http://n-guyot.fr/exit/browse.php?u={0}&b=4'.format(urllib.quote(baseUrl, ''))
+            proxy = 'http://n-guyot.fr/exit/browse.php?u={0}&b=4'.format(urllib_quote(baseUrl, ''))
             addParams['header']['Referer'] = proxy + '&f=norefer'
             baseUrl = proxy
         elif proxy != 'None':
@@ -352,10 +351,10 @@ class HDSTo(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         self.tryTologin()
 
-        searchPattern = urllib.quote_plus(searchPattern)
+        searchPattern = urllib_quote_plus(searchPattern)
         cItem = dict(cItem)
         cItem['category'] = 'list_items'
-        cItem['url'] = self.getFullUrl('/search.php?q=') + urllib.quote_plus(searchPattern)
+        cItem['url'] = self.getFullUrl('/search.php?q=') + urllib_quote_plus(searchPattern)
         sts, data = self.getPage(cItem['url'])
         if not sts:
             return
