@@ -10,14 +10,13 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, Ge
                                                           MapUcharEncoding, GetPolishSubEncoding, rmtree, mkdirs
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
 from datetime import timedelta
 import time
 import re
-import urllib
 import unicodedata
 import base64
 try:
@@ -82,7 +81,7 @@ class SubtitlesGrProvider(CBaseSubProviderClass):
     def listSubItems(self, cItem, nextCategory):
         printDBG("SubtitlesGrProvider.listSubItems")
         page = cItem.get('page', 0)
-        keywords = urllib.quote_plus(self.params['confirmed_title'])
+        keywords = urllib_quote_plus(self.params['confirmed_title'])
         baseUrl = "http://gr.greek-subtitles.com/search.php?page=%s&name=%s" % (page, keywords)
 
         url = self.getFullUrl(baseUrl)

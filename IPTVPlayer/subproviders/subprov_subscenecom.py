@@ -10,14 +10,13 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, Ge
                                                           MapUcharEncoding, GetPolishSubEncoding, rmtree, mkdirs
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
 from datetime import timedelta
 import time
 import re
-import urllib
 import unicodedata
 import base64
 from os import listdir as os_listdir, path as os_path
@@ -179,7 +178,7 @@ class SubsceneComProvider(CBaseSubProviderClass):
     def searchByTitle(self, cItem, nextCategory):
         printDBG("SubsceneComProvider.searchByTitle")
         self.cache = {}
-        url = self.getFullUrl('/subtitles/title?q={0}&r=true'.format(urllib.quote_plus(self.params['confirmed_title'])))
+        url = self.getFullUrl('/subtitles/title?q={0}&r=true'.format(urllib_quote_plus(self.params['confirmed_title'])))
 
         header = self._getHeader(cItem['lang_id'])
         sts, data = self.cm.getPage(url, {'header': header})
@@ -213,7 +212,7 @@ class SubsceneComProvider(CBaseSubProviderClass):
 
     def searchByReleaseName(self, cItem, nextCategory):
         printDBG("SubsceneComProvider.searchByReleaseName")
-        url = self.getFullUrl('/subtitles/release?q={0}&r=true'.format(urllib.quote_plus(self.params['confirmed_title'])))
+        url = self.getFullUrl('/subtitles/release?q={0}&r=true'.format(urllib_quote_plus(self.params['confirmed_title'])))
         cItem = dict(cItem)
         cItem.update({'url': url})
         self.listSubItems(cItem, nextCategory)
