@@ -8,14 +8,13 @@ from Plugins.Extensions.IPTVPlayer.components.captcha_helper import CaptchaHelpe
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, MergeDicts, rm, GetCookieDir, ReadTextFile, WriteTextFile
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
 from binascii import hexlify
 from hashlib import md5
 import re
-import urllib
 from Components.config import config, ConfigText, getConfigListEntry
 ###################################################
 
@@ -404,7 +403,7 @@ class VidCorn(CBaseHostClass, CaptchaHelper):
     def listSearchResult(self, cItem, searchPattern, searchType):
         self.tryTologin()
 
-        url = self.getFullUrl('/buscar/') + urllib.quote_plus(searchPattern)
+        url = self.getFullUrl('/buscar/') + urllib_quote_plus(searchPattern)
         sts, data = self.getPage(url)
         if not sts:
             return

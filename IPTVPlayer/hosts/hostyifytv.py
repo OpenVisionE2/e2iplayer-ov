@@ -10,6 +10,8 @@ from Plugins.Extensions.IPTVPlayer.libs.crypto.cipher.aes_cbc import AES_CBC
 from Plugins.Extensions.IPTVPlayer.libs.crypto.cipher.base import noPadding
 from Plugins.Extensions.IPTVPlayer.tools.e2ijs import js_execute
 ###################################################
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus, urllib_unquote
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if not isPY2():
     basestring = str
@@ -17,7 +19,6 @@ if not isPY2():
 # FOREIGN import
 ###################################################
 import re
-import urllib
 import base64
 try:
     import json
@@ -100,7 +101,7 @@ class YifyTV(CBaseHostClass):
             if self.cm.isValidUrl(url):
                 return url
             else:
-                return urlparse.urljoin(baseUrl, url)
+                return urljoin(baseUrl, url)
 
         addParams['cloudflare_params'] = {'domain': self.up.getDomain(baseUrl), 'cookie_file': self.COOKIE_FILE, 'User-Agent': self.USER_AGENT, 'full_url_handle': _getFullUrl}
 
@@ -289,7 +290,7 @@ class YifyTV(CBaseHostClass):
         printDBG("YifyTV.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
 
         currItem = dict(cItem)
-        currItem['url'] = self.SRCH_URL + urllib.quote_plus(searchPattern)
+        currItem['url'] = self.SRCH_URL + urllib_quote_plus(searchPattern)
         self.listItems(currItem)
 
     def getLinksForVideo(self, cItem):
@@ -464,9 +465,9 @@ class YifyTV(CBaseHostClass):
                             g3 = self.cm.ph.getSearchGroups(data + '&', '''[&\?]g3=([^&]+?)&''')[0]
                             emb = self.cm.ph.getSearchGroups(data + '&', '''[&\?]emb=([^&^\*]+?)[&\*]''')[0]
                             if emb != '':
-                                data = urllib.unquote(emb)
+                                data = urllib_unquote(emb)
                             if g3 != '':
-                                post_data = {'fv': '0', 'g3': urllib.unquote(g3)}
+                                post_data = {'fv': '0', 'g3': urllib_unquote(g3)}
                                 url = 'https://ymovies.tv/playerlite/pk/pk/plugins/player_g3.php'
                                 sts, data = self.getPage(url, {'header': header}, post_data)
                                 if not sts:
@@ -477,10 +478,10 @@ class YifyTV(CBaseHostClass):
                                 break
                             else:
                                 if 'showiFrame(' in data:
-                                    url = urllib.unquote(self.cm.ph.getDataBeetwenMarkers(data, "emb='+'", "'", False)[1])
+                                    url = urllib_unquote(self.cm.ph.getDataBeetwenMarkers(data, "emb='+'", "'", False)[1])
                                     tmp = url.split('sub.file')
                                     url = tmp[0]
-                                    subTrack = urllib.unquote(tmp[1])
+                                    subTrack = urllib_unquote(tmp[1])
                                     if url.startswith('//'):
                                         url = 'http:' + url
                                     if subTrack.startswith('//'):

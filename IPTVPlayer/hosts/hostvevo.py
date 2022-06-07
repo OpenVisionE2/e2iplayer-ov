@@ -6,13 +6,12 @@ from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT
 from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostClass
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, byteify
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlparse
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
-from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlparse
 import time
-import urllib
 from datetime import timedelta
 try:
     import json
@@ -373,7 +372,7 @@ class VevoCom(CBaseHostClass):
 
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("VevoCom.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
-        query = 'search?q=%s' % urllib.quote_plus(searchPattern)
+        query = 'search?q=%s' % urllib_quote_plus(searchPattern)
         url = 'https://quest.vevo.com/%s' % query
         params = self._getApiHeaders({'url': self.getFullUrl(query)})
 

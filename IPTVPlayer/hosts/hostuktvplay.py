@@ -8,10 +8,10 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, CS
 from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Playlist
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote
 ###################################################
 # FOREIGN import
 ###################################################
-import urllib
 from datetime import timedelta
 try:
     import json
@@ -233,7 +233,7 @@ class UKTVPlay(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("UKTVPlay.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         try:
-            url = self.tmpUrl % ('search?q=%s&' % urllib.quote(searchPattern))
+            url = self.tmpUrl % ('search?q=%s&' % urllib_quote(searchPattern))
 
             sts, data = self.getPage(url)
             if not sts:

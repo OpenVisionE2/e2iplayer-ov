@@ -10,11 +10,11 @@ from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Play
 
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin, parse_qs
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-import urllib
 try:
     import json
 except Exception:
@@ -426,7 +426,7 @@ class SVTPlaySE(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("SVTPlaySE.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
 
-        baseUrl = self.getFullUrl('sok?q=' + urllib.quote_plus(searchPattern))
+        baseUrl = self.getFullUrl('sok?q=' + urllib_quote_plus(searchPattern))
         cItem = dict(cItem)
         cItem['url'] = baseUrl
         self.explorePage(cItem, 'list_tab_items')

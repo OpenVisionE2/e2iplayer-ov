@@ -8,11 +8,10 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, by
 from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Playlist
 from Plugins.Extensions.IPTVPlayer.libs.urlparser import urlparser
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus, urllib_quote
 ###################################################
 # FOREIGN import
 ###################################################
-import urllib
 try:
     import json
 except Exception:
@@ -512,15 +511,15 @@ class Twitch(CBaseHostClass):
 
     def listSearchResult(self, cItem, searchPattern, searchType):
         if searchType == 'channels':
-            url = self.API1_URL + 'kraken/search/channels?query=%s&limit=25&offset=' % (urllib.quote_plus(searchPattern))
+            url = self.API1_URL + 'kraken/search/channels?query=%s&limit=25&offset=' % (urllib_quote_plus(searchPattern))
             cItem = MergeDicts(cItem, {'url': url, 'category': 'v5_channels'})
             self.listV5Channels(cItem)
         elif searchType == 'games':
-            url = self.API1_URL + 'kraken/search/games?query=%s&limit=25&offset=' % (urllib.quote_plus(searchPattern))
+            url = self.API1_URL + 'kraken/search/games?query=%s&limit=25&offset=' % (urllib_quote_plus(searchPattern))
             cItem = MergeDicts(cItem, {'url': url, 'category': 'v5_games'})
             self.listV5Games(cItem)
         elif searchType == 'streams':
-            url = self.API1_URL + 'kraken/search/streams?query=%s&limit=25&offset=' % (urllib.quote_plus(searchPattern))
+            url = self.API1_URL + 'kraken/search/streams?query=%s&limit=25&offset=' % (urllib_quote_plus(searchPattern))
             cItem = MergeDicts(cItem, {'url': url, 'category': 'v5_streams'})
             self.listV5Streams(cItem)
 
@@ -559,7 +558,7 @@ class Twitch(CBaseHostClass):
             if sts:
                 try:
                     data = json.loads(data)
-                    url = vidUrl % (id, urllib.quote(jstr(data, 'token')), jstr(data, 'sig'))
+                    url = vidUrl % (id, urllib_quote(jstr(data, 'token')), jstr(data, 'sig'))
                     data = getDirectM3U8Playlist(url, checkExt=False)
                     for item in data:
                         item['url'] = urlparser.decorateUrl(item['url'], {'iptv_proto': 'm3u8', 'iptv_livestream': liveStream})

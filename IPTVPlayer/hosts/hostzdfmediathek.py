@@ -9,14 +9,13 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc
 from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Playlist
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote, urllib_unquote
 ###################################################
 # FOREIGN import
 ###################################################
 from Components.config import config, ConfigSelection, ConfigYesNo, getConfigListEntry
 from datetime import datetime, timedelta
 import re
-import urllib
 import time
 ###################################################
 
@@ -104,7 +103,7 @@ class ZDFmediathek(CBaseHostClass):
         params.update({'header': HTTP_HEADER})
 
         if 'zdf-cdn.live.cellular.de' in url and False:
-            proxy = 'http://www.proxy-german.de/index.php?q={0}&hl=2e1'.format(urllib.quote(url, ''))
+            proxy = 'http://www.proxy-german.de/index.php?q={0}&hl=2e1'.format(urllib_quote(url, ''))
             params['header']['Referer'] = proxy
             #params['header']['Cookie'] = 'flags=2e5;'
             url = proxy
@@ -118,7 +117,7 @@ class ZDFmediathek(CBaseHostClass):
     def getIconUrl(self, url):
         url = self.getFullUrl(url)
         if 'zdf-cdn.live.cellular.de' in url and False:
-            proxy = 'http://www.proxy-german.de/index.php?q={0}&hl=2e1'.format(urllib.quote(url, ''))
+            proxy = 'http://www.proxy-german.de/index.php?q={0}&hl=2e1'.format(urllib_quote(url, ''))
             params = {}
             params['User-Agent'] = self.HEADER['User-Agent'],
             params['Referer'] = proxy
@@ -131,7 +130,7 @@ class ZDFmediathek(CBaseHostClass):
 
     def getFullUrl(self, url):
         if 'proxy-german.de' in url:
-            url = urllib.unquote(self.cm.ph.getSearchGroups(url + '&', '''\?q=(http[^&]+?)&''')[0])
+            url = urllib_unquote(self.cm.ph.getSearchGroups(url + '&', '''\?q=(http[^&]+?)&''')[0])
         return CBaseHostClass.getFullUrl(self, url)
 
     def _getNum(self, v, default=0):

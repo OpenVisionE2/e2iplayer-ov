@@ -6,11 +6,10 @@ from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT
 from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostClass, CDisplayListItem
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, byteify
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote
 ###################################################
 # FOREIGN import
 ###################################################
-import urllib
 try:
     import json
 except Exception:
@@ -101,7 +100,7 @@ class TVProart(CBaseHostClass):
     def listSearchResult(self, cItem, searchPattern, searchType):
         printDBG("TVProart.listSearchResult cItem[%s], searchPattern[%s] searchType[%s]" % (cItem, searchPattern, searchType))
         page = cItem.get('page', 0)
-        url = self.SEARCH_URL + urllib.quote(searchPattern)
+        url = self.SEARCH_URL + urllib_quote(searchPattern)
         sts, data = self.cm.getPage(url + '&page={0}'.format(page))
         if not sts:
             return
