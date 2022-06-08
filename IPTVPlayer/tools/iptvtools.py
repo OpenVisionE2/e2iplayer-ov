@@ -1456,6 +1456,8 @@ def GetIPTVPlayerVerstion():
         IPTV_VERSION = "XX.YY.ZZ"
     return IPTV_VERSION
 
+def GetIPTVPlayerVersion(): # just for compatibility
+    return GetIPTVPlayerVerstion()
 
 def GetIPTVPlayerComitStamp():
     try:
