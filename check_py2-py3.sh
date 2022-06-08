@@ -30,7 +30,9 @@ find $myAbsPath/IPTVPlayer -iname "*.py" |
         [ `grep -c "$aVal" < "$F"` -gt 0 ] && echo "WARNING: $F uses '$aVal' which if NOT compatible with python3" 
       done
       [ `grep -c "basetring" < "$F"` -gt 0 ] && [ `grep -c "basetring = str" < "$F"` -eq 0 ] && echo "WARNING: $F uses 'basetring' which if NOT compatible with python3" 
-      [ `grep -c "unicode" < "$F"` -gt 0 ] && [ `grep -c "unicode = str" < "$F"` -eq 0 ] && echo "WARNING: $F uses 'unicode' which if NOT compatible with python3" 
+      [ `grep -c "StringIO" < "$F"` -gt 0 ] && [ `grep -c "from io import StringIO" < "$F"` -eq 0 ] && echo "WARNING: $F uses 'StringIO' which if NOT compatible with python3" 
+      [ `grep -c "BytesIO" < "$F"` -gt 0 ] && [ `grep -c "from io import BytesIO" < "$F"` -eq 0 ] && echo "WARNING: $F uses 'BytesIO' which if NOT compatible with python3" 
+      #[ `grep -c "unicode" < "$F"` -gt 0 ] && [ `grep -c "unicode = str" < "$F"` -eq 0 ] && echo "WARNING: $F uses 'unicode' which if NOT compatible with python3" 
     fi
     if [ -e /usr/bin/python2 ];then
       python2 /tmp/checker.py "$F"

@@ -18,6 +18,7 @@ if isPY2():
     import cookielib
 else:
     import http.cookiejar as cookielib
+    from io import StringIO, BytesIO
     basestring = str
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_addinfourl, urllib_unquote, urllib_quote_plus, urllib_urlencode, urllib_quote, \
                                                       urllib2_HTTPRedirectHandler, urllib2_BaseHandler, urllib2_HTTPHandler, urllib2_HTTPError, \
