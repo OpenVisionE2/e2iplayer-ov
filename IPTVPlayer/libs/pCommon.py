@@ -13,7 +13,7 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads, dump
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin, urlparse, urlunparse
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
-from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_binary, strDecode
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_binary, strDecode, iterDictItems
 if isPY2():
     import cookielib
 else:
@@ -362,7 +362,7 @@ class common:
     def buildHTTPQuery(query):
         def _process(query, data, key_prefix):
             if isinstance(data, dict):
-                for key, value in data.iteritems():
+                for key, value in iterDictItems(data):
                     key = '%s[%s]' % (key_prefix, key) if key_prefix else key
                     _process(query, value, key)
             elif isinstance(data, list):
@@ -912,7 +912,7 @@ class common:
                     if key in responseHeaders:
                         metadata[key.lower()] = responseHeaders[key]
 
-            for header, value in responseHeaders.iteritems():
+            for header, value in iterDictItems(responseHeaders):
                 metadata[header.lower()] = responseHeaders[header]
 
     def getPage(self, url, addParams={}, post_data=None):

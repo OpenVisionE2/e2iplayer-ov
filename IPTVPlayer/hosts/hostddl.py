@@ -9,6 +9,7 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, by
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_unquote, urllib_quote, urllib_quote_plus
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import iterDictItems
 ###################################################
 # FOREIGN import
 ###################################################
@@ -409,8 +410,8 @@ class DDLMe(CBaseHostClass):
                 data = ret['data'].strip()
                 data = byteify(json.loads(data))
 
-                for key, dat in data.iteritems():
-                    for name, item in dat['links'].iteritems():
+                for key, dat in iterDictItems(data):
+                    for name, item in iterDictItems(dat['links']):
                         for linkData in item:
                             pNum = int(linkData[0])
                             url = self.getFullUrl(linkData[3], cUrl)

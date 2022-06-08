@@ -11,13 +11,13 @@ from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Play
 from Plugins.Extensions.IPTVPlayer.libs import ph
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import iterDictItems
 ###################################################
 # FOREIGN import
 ###################################################
 import re
 import time
-from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 from datetime import timedelta
 ###################################################
 
@@ -401,7 +401,7 @@ class Christusvincit(CBaseHostClass):
                     playlistResult = playerConfig.get('playlistResult', {})
                     if not playlistResult:
                         playlistResult['0'] = {'items': [playerConfig['entryResult']['meta']]}
-                    for key, section in playlistResult.iteritems():
+                    for key, section in iterDictItems(playlistResult):
                         for item in section['items']:
                             icon = self.getFullUrl(item['thumbnailUrl'])
                             title = item['name']

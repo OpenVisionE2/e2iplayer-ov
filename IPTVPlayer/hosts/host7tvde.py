@@ -10,11 +10,11 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.libs import ph
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote, urllib_urlencode
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import iterDictItems
 ###################################################
 # FOREIGN import
 ###################################################
-from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote, urllib_urlencode
 from hashlib import sha1
 from datetime import timedelta
 ###################################################
@@ -128,7 +128,7 @@ class C7tvDe(CBaseHostClass):
         cUrl = self.cm.meta['url']
         try:
             data = json_loads(data)
-            for letter, value in data['facet'].iteritems():
+            for letter, value in iterDictItems(data['facet']):
                 if letter == '#':
                     letter = '0-9'
                 if value:

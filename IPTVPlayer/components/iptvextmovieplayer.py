@@ -26,9 +26,9 @@ from Plugins.Extensions.IPTVPlayer.components.iptvchoicebox import IPTVChoiceBox
 from Plugins.Extensions.IPTVPlayer.components.iptvdirbrowser import IPTVFileSelectorWidget
 from Plugins.Extensions.IPTVPlayer.components.configextmovieplayer import ConfigExtMoviePlayerBase, ConfigExtMoviePlayer
 from Plugins.Extensions.IPTVPlayer.libs.pCommon import CParsingHelper
-from Plugins.Extensions.IPTVPlayer.libs.urlparser import urlparser
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.libs.urlparser import urlparser
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import iterDictItems
 ###################################################
 # FOREIGN import
 ###################################################
@@ -1203,7 +1203,7 @@ class IPTVExtMoviePlayer(Screen):
         if self.playback['Length'] > 0 and self.downloader != None and self.downloader.getName() == 'ffmpeg':
             stsObj['Length'] = self.playback['Length']
 
-        for key, val in stsObj.iteritems():
+        for key, val in iterDictItems(stsObj):
             if 'Length' == key:
                 if 0 > val:
                     printDBG('IPTVExtMoviePlayer.playbackUpdateInfo Length[%d] - live stream?' % val)

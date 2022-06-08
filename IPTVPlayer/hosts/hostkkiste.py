@@ -11,6 +11,7 @@ from Plugins.Extensions.IPTVPlayer.libs import ph
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlsplit, urlunsplit, urlparse
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_urlencode, urllib_quote_plus
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import iterDictItems
 ###################################################
 # FOREIGN import
 ###################################################
@@ -277,7 +278,7 @@ class KKisteAG(CBaseHostClass):
 
     def joinLink(self, params):
         tab = []
-        for key, value in params[1].iteritems():
+        for key, value in iterDictItems(params[1]):
             tab.append('%s=%s' % (key, value))
         return params[0] + '?' + '&'.join(tab)
 

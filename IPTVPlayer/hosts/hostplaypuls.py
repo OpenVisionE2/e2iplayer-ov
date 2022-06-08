@@ -9,6 +9,7 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import CSelOneLink, printDBG,
 from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Playlist
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import iterDictItems
 ###################################################
 # FOREIGN import
 ###################################################
@@ -238,7 +239,7 @@ class Playpuls(CBaseHostClass):
                 source3Data = byteify(json.loads(source3Data))
                 if 'sources' in source3Data:
                     source3Data = source3Data['sources']
-                for key, val in source3Data.iteritems():
+                for key, val in iterDictItems(source3Data):
                     if val != '':
                         key = key.replace('src', '')
                         sources.append({'quality': key, 'src': '/play/%s' % val})

@@ -7,13 +7,12 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc
 from Plugins.Extensions.IPTVPlayer.libs.pCommon import common
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_unquote_plus
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import iterDictItems
 ###################################################
 # FOREIGN import
 ###################################################
 from Components.config import config, ConfigSelection, ConfigYesNo, ConfigText, getConfigListEntry
-from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_unquote_plus
-                                                      
 ############################################
 
 ###################################################
@@ -65,7 +64,7 @@ class WeebTvApi:
     def _jsonToSortedTab(self, data):
         strTab = []
         outTab = []
-        for v, k in data.iteritems():
+        for v, k in iterDictItems(data):
             strTab.append(int(v))
             strTab.append(k)
             outTab.append(strTab)

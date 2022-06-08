@@ -4,6 +4,8 @@ import re
 import time
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_urlencode, urllib_unquote_plus
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlparse, urlunparse
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import iterDictItems
+
 from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT as _, SetIPTVPlayerLastHostError
 from Plugins.Extensions.IPTVPlayer.libs.youtube_dl.utils import *
 from Plugins.Extensions.IPTVPlayer.libs.youtube_dl.utils import _unquote
@@ -141,7 +143,7 @@ class CYTSignAlgoExtractor:
                 code.insert(0, fun)
 
             objects = self._getAllObjectsWithMethods(mainFunction)
-            for objName, methods in objects.iteritems():
+            for objName, methods in iterDictItems(objects):
                 obj = self._findObject(objName, methods)
                 code.insert(0, obj)
 

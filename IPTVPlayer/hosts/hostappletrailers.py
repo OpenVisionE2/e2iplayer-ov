@@ -6,12 +6,12 @@ from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT
 from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostClass
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, byteify
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import iterDictItems
 ###################################################
 # FOREIGN import
 ###################################################
 import re
-from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 try:
     import json
 except Exception:
@@ -138,8 +138,8 @@ class TrailersApple(CBaseHostClass):
                 icon = self.getFullIconUrl(item['thumb'])
 
                 urls = []
-                for version, versionData in item.get('versions', {}).iteritems():
-                    for size, sizeData in versionData.get('sizes', {}).iteritems():
+                for version, versionData in iterDictItems(item.get('versions', {})):
+                    for size, sizeData in iterDictItems(versionData.get('sizes', {})):
                         url = sizeData.get('src')
                         if not url:
                             continue
