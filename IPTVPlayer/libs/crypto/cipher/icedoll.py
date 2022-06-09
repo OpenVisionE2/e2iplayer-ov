@@ -13,7 +13,7 @@
         Fi = Ek(t,P[i-1]) ; Fi, with i=0 is nonce or a fixed value
         C[i] = Fi^Ek(N,P[i]^Fi)
 
-    Copyright © (c) 2002 by Paul A. Lambert
+    Copyright (c) 2002 by Paul A. Lambert
     Read LICENSE.txt for license information.
 
     June 2002

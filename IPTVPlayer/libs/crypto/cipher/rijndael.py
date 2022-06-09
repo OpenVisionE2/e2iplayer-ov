@@ -7,7 +7,7 @@
     match FIPS specification for readability.  It is not implemented
     for performance.
 
-    Copyright © (c) 2002 by Paul A. Lambert
+    Copyright (c) 2002 by Paul A. Lambert
     Read LICENSE.txt for license information.
 
     2002-06-01

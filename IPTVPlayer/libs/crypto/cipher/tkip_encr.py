@@ -6,7 +6,7 @@
     TKIP uses WEP (ARC4 with crc32) and key mixing
     This is only the encryption and not the Michael integrity check!
 
-    Copyright © (c) 2002 by Paul A. Lambert
+    Copyright (c) 2002 by Paul A. Lambert
     Read LICENSE.txt for license information.
 
     November 2002
