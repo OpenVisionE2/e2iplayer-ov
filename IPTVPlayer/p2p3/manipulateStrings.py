@@ -28,7 +28,7 @@ def strEncode(text,  encoding = 'utf-8'):
         retVal = text.encode(encoding)
     return retVal
 
-def ensure_binary(text, encoding='utf-8', errors='strict'): #copied from six library
+def ensure_binary(text, encoding='utf-8', errors='strict'): #based on six library
     if isPY2():
         return text
     else:
@@ -36,3 +36,11 @@ def ensure_binary(text, encoding='utf-8', errors='strict'): #copied from six lib
           return text
         if isinstance(text, str):
             return text.encode(encoding, errors)
+
+def ensure_str(text, encoding='utf-8', errors='strict'): #based on six library
+    if type(text) is str:
+        return text
+    if isPY2() and isinstance(text, unicode):
+        return text.encode(encoding, errors)
+    elif PY3 and isinstance(text, bytes):
+        return text.decode(encoding, errors)

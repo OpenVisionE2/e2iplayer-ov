@@ -14,7 +14,7 @@ from Plugins.Extensions.IPTVPlayer.libs import m3u8
 from Plugins.Extensions.IPTVPlayer.iptvdm.basedownloader import BaseDownloader
 from Plugins.Extensions.IPTVPlayer.iptvdm.iptvdh import DMHelper
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import strDecode
 ###################################################
 # FOREIGN import
 ###################################################
@@ -345,7 +345,7 @@ class M3U8Downloader(BaseDownloader):
 
     def _dataAvail(self, data):
         if None != data:
-            self.outData += data
+            self.outData += strDecode(data)
             if self.DOWNLOAD_TYPE.M3U8 == self.downloadType:
                 return
 
