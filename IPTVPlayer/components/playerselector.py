@@ -83,8 +83,8 @@ class PlayerSelectorWidget(Screen):
         markerHeight = 45 + coverHeight
 
         # position of first marker
-        offsetMarkerX = offsetCoverX - (markerWidth - coverWidth) / 2
-        offsetMarkerY = offsetCoverY - (markerHeight - coverHeight) / 2
+        offsetMarkerX = int(offsetCoverX - (markerWidth - coverWidth) / 2)
+        offsetMarkerY = int(offsetCoverY - (markerHeight - coverHeight) / 2)
 
         # how to calculate position of image with indexes indxX, indxY:
         #posX = offsetCoverX + (coverWidth + disWidth) * indxX
@@ -128,7 +128,7 @@ class PlayerSelectorWidget(Screen):
 
         # pagination
         self.pageItemSize = 16
-        self.pageItemStartX = (offsetCoverX + tmpX * numOfCol + offsetCoverX - disWidth - self.numOfPages * self.pageItemSize) / 2
+        self.pageItemStartX = int((offsetCoverX + tmpX * numOfCol + offsetCoverX - disWidth - self.numOfPages * self.pageItemSize) / 2)
         if screenwidth and screenwidth == 1920:
             self.pageItemStartY = 60
         else:
@@ -261,7 +261,7 @@ class PlayerSelectorWidget(Screen):
             self.currLine = (self.numOfLines - 1)
 
         # calculate new page number
-        newPage = self.currLine / self.numOfRow
+        newPage = int(self.currLine / self.numOfRow)
         if newPage != self.currPage:
             self.currPage = newPage
             self.updateIcons()
@@ -330,7 +330,7 @@ class PlayerSelectorWidget(Screen):
         self.numOfPages = int(self.numOfLines / self.numOfRow)
         if self.numOfLines % self.numOfRow > 0:
             self.numOfPages += 1
-        
+
         self.currPage = 0
         self.currLine = 0
 
@@ -362,14 +362,14 @@ class PlayerSelectorWidget(Screen):
                     self[strIndex].hide()
         x = self.pageItemStartX + self.currPage * self.pageItemSize
         y = self.pageItemStartY
-        self["page_marker"].instance.move(ePoint(x, y))
+        self["page_marker"].instance.move(ePoint(int(x), y))
 
     def setIdx(self, selIdx):
         if selIdx > self.numOfItems:
             selIdx = self.numOfItems
 
         self.dispX = selIdx % self.numOfCol
-        self.currLine = selIdx / self.numOfCol
+        self.currLine = int(selIdx / self.numOfCol)
 
         self.calcMarkerPosX()
         self.calcMarkerPosY()
@@ -423,8 +423,8 @@ class PlayerSelectorWidget(Screen):
         imgPosY = self.offsetCoverY + (self.coverHeight + self.disHeight) * self.dispY
 
         # calculate postion of marker for current image
-        x = imgPosX - (self.markerWidth - self.coverWidth) / 2
-        y = imgPosY - (self.markerHeight - self.coverHeight) / 2
+        x = int(imgPosX - (self.markerWidth - self.coverWidth) / 2)
+        y = int(imgPosY - (self.markerHeight - self.coverHeight) / 2)
 
         #x =  30 + self.dispX * 180
         #y = 130 + self.dispY * 125
