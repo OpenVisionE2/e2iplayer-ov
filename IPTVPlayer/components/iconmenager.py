@@ -17,6 +17,7 @@ from Plugins.Extensions.IPTVPlayer.libs import ph
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlparse, urljoin
 from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import strDecode
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 ###################################################
 # FOREIGN import
 ###################################################
@@ -86,14 +87,22 @@ class IconMenager:
     def stopWorkThread(self):
         self.lockDQ.acquire()
 
-        if self.workThread != None and self.workThread.Thread.isAlive():
-            self.stopThread = True
-
+        if isPY2():
+            if self.workThread != None and self.workThread.Thread.isAlive():
+                self.stopThread = True
+        else:
+            if self.workThread != None and self.workThread.Thread.is_alive():
+                self.stopThread = True
+          
         self.lockDQ.release()
 
     def runWorkThread(self):
-        if self.workThread == None or not self.workThread.Thread.isAlive():
-            self.workThread = AsyncMethod(self.processDQ)()
+        if isPY2():
+            if self.workThread == None or not self.workThread.Thread.isAlive():
+                self.workThread = AsyncMethod(self.processDQ)()
+        else:
+            if self.workThread == None or not self.workThread.Thread.is_alive():
+                self.workThread = AsyncMethod(self.processDQ)()
 
     def clearDQueue(self):
         self.lockDQ.acquire()
@@ -255,16 +264,16 @@ class IconMenager:
             #params['subtypes'] = subtypes
             params['check_first_bytes'] = []
             if 'jpeg' in subtypes:
-                params['check_first_bytes'].extend(['\xFF\xD8', '\xFF\xD9'])
+                params['check_first_bytes'].extend([b'\xFF\xD8', b'\xFF\xD9']) #py2 interprets b as str, no impact
             if 'png' in subtypes:
-                params['check_first_bytes'].append('\x89\x50\x4E\x47')
+                params['check_first_bytes'].append(b'\x89\x50\x4E\x47')
             if 'gif' in subtypes:
-                params['check_first_bytes'].extend(['GIF87a', 'GIF89a'])
+                params['check_first_bytes'].extend([b'GIF87a', b'GIF89a'])
             # formato webp	'RI'
             if 'webp' in subtypes:
-                params['check_first_bytes'].extend(['RI'])
+                params['check_first_bytes'].extend([b'RI'])
         else:
-            params['check_first_bytes'] = ['\xFF\xD8', '\xFF\xD9', '\x89\x50\x4E\x47', 'GIF87a', 'GIF89a', 'RI']
+            params['check_first_bytes'] = [b'\xFF\xD8', b'\xFF\xD9', b'\x89\x50\x4E\x47', 'GIF87a', 'GIF89a', 'RI']
 
         if img_url.endswith('|cf'):
             img_url = img_url[:-3]

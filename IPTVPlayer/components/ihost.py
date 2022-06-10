@@ -14,6 +14,7 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads, dump
 from Components.config import config
 from skin import parseColor
 
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
 if not isPY2():
@@ -758,11 +759,10 @@ class CBaseHostClass:
 
     @staticmethod
     def getStr(v, default=''):
-        if type(v) == type(u''):
-            return v.encode('utf-8')
-        elif type(v) == type(''):
-            return v
-        return default
+        try:
+            return ensure_str(v)
+        except Exception:
+            return default
 
     def getCurrList(self):
         return self.currList

@@ -340,7 +340,7 @@ class E2iPlayerWidget(Screen):
         except Exception as e:
             SetTmpCookieDir()
             SetTmpJSCacheDir()
-            msg1 = _("Critical Error – cookie can't be saved!")
+            msg1 = _("Critical Error - cookie can't be saved!")
             msg2 = _("Last error:\n%s" % str(e))
             msg3 = _("Please make sure that the folder for cache data (set in the configuration) is writable.")
             GetIPTVNotify().push('%s\n\n%s\n\n%s' % (msg1, msg2, msg3), 'error', 20)
@@ -1005,7 +1005,7 @@ class E2iPlayerWidget(Screen):
                     self.stopAutoPlaySequencer()
                     self.currSelIndex = currSelIndex
                     if item.pinLocked:
-                        from iptvpin import IPTVPinWidget
+                        from Plugins.Extensions.IPTVPlayer.components.iptvpin import IPTVPinWidget
                         self.session.openWithCallback(boundFunction(self.checkDirPin, self.requestListFromHost, 'ForItem', currSelIndex, '', item.pinCode), IPTVPinWidget, title=_("Enter pin"))
                     else:
                         self.requestListFromHost('ForItem', currSelIndex, '')
@@ -1522,7 +1522,7 @@ class E2iPlayerWidget(Screen):
             protected = False # should never happen
 
         if protectedByPin:
-            from iptvpin import IPTVPinWidget
+            from Plugins.Extensions.IPTVPlayer.components.iptvpin import IPTVPinWidget
             self.session.openWithCallback(boundFunction(self.checkPin, self.loadHostData, self.selectHost), IPTVPinWidget, title=_("Enter pin"))
         else:
             self.loadHostData()

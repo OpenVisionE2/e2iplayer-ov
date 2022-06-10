@@ -13,7 +13,7 @@ from Plugins.Extensions.IPTVPlayer.components.iptvlist import IPTVMainNavigatorL
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, mkdir, IsValidFileName, GetBinDir, eConnectCallback, E2PrioFix
 from Plugins.Extensions.IPTVPlayer.components.e2ivkselector import GetVirtualKeyboard
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -199,7 +199,7 @@ class IPTVDirectorySelectorWidget(Screen):
             self.tmpData = ''
 
     def refreshNewData(self, data):
-        self.tmpData += data
+        self.tmpData += ensure_str(data)
         newItems = self.tmpData.split('\n')
         if self.tmpData.endswith('\n'):
             self.tmpData = ''

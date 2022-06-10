@@ -28,7 +28,7 @@ from Plugins.Extensions.IPTVPlayer.components.configextmovieplayer import Config
 from Plugins.Extensions.IPTVPlayer.libs.pCommon import CParsingHelper
 ###################################################
 from Plugins.Extensions.IPTVPlayer.libs.urlparser import urlparser
-from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import iterDictItems
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import iterDictItems, iterDictKeys, ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -1577,6 +1577,7 @@ class IPTVExtMoviePlayer(Screen):
 
         if None == data or self.isClosing:
             return
+        data = ensure_str(data)
         if None == self.playerBinaryInfo['version']:
             self.playerBinaryInfo['data'] += data
         data = self.responseData + data
@@ -1594,7 +1595,7 @@ class IPTVExtMoviePlayer(Screen):
                 try:
                     obj = json.loads(item.strip())
                     #printDBG("Status object [%r]" % obj)
-                    key = obj.keys()[0]
+                    key = list(obj.keys())[0]
                     obj = obj[key]
                 except Exception:
                     printExc(item)
@@ -1745,7 +1746,7 @@ class IPTVExtMoviePlayer(Screen):
         self.subHandler['timer_conn'] = None
 
         self.updateInfoTimer_conn = None
-        for key in self.playback.iterkeys():
+        for key in iterDictKeys(self.playback):
             self.playback[key] = None
         self.onClose.remove(self.__onClose)
         self.messageQueue = []
