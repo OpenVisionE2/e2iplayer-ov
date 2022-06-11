@@ -1506,7 +1506,7 @@ class common:
     def iriToUri(self, iri):
         try:
             if isPY2() or isinstance(iri, bytes):
-                iri = iri.decode('utf-8'
+                iri = iri.decode('utf-8')
             parts = urlparse(iri)
             encodedParts = []
             for parti, part in enumerate(parts):
