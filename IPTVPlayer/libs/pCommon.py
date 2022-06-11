@@ -59,7 +59,10 @@ def DecodeGzipped(data):
         f = gzip.GzipFile(fileobj=buf)
         return f.read()
     else:
-        return gzip.decompress(data)
+        #return gzip.decompress(data)
+        buf = BytesIO(data)
+        f = gzip.GzipFile(fileobj=buf)
+        return f.read()
 
 
 def EncodeGzipped(data):
@@ -1406,8 +1409,12 @@ class common:
                     self.fillHeaderItems(metadata, response.info(), True, collectAllHeaders=params.get('collect_all_headers'))
                 except Exception:
                     pass
-
-                data = response.read(params.get('max_data_size', -1))
+                
+                max = params.get('max_data_size', -1)
+                if max == -1:
+                    data = response.read()
+                else:
+                    data = response.read(max)
                 response.close()
             except urllib2_HTTPError as e:
                 ignoreCodeRanges = params.get('ignore_http_code_ranges', [(404, 404), (500, 500)])
@@ -1427,7 +1434,11 @@ class common:
                         self.fillHeaderItems(metadata, e.fp.info(), True, collectAllHeaders=params.get('collect_all_headers'))
                     except Exception:
                         pass
-                    data = e.fp.read(params.get('max_data_size', -1))
+                    max = params.get('max_data_size', -1)
+                    if max == -1:
+                        data = e.fp.read()
+                    else:
+                        data = e.fp.read(max)
                     #e.msg
                     #e.headers
                 elif e.code == 503:
