@@ -8,6 +8,16 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.libs.pCommon import CParsingHelper, common
 from Plugins.Extensions.IPTVPlayer.libs import m3u8
 ###################################################
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_binary
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_unquote
+try:
+    from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlsplit, urlunsplit, urljoin
+except Exception:
+    printExc()
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
+if not isPY2():
+    unichr = chr
+###################################################
 # FOREIGN import
 ###################################################
 from binascii import hexlify
@@ -15,17 +25,12 @@ import re
 import time
 import string
 import codecs
-from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_unquote
-try:
-    from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlsplit, urlunsplit, urljoin
-except Exception:
-    printExc()
 ###################################################
 try:
     from hashlib import md5
 
     def hex_md5(e):
-        return md5(e).hexdigest()
+        return md5(ensure_binary(e)).hexdigest()
 except Exception:
     from Plugins.Extensions.IPTVPlayer.libs.crypto.hash.md5Hash import MD5 as md5
 

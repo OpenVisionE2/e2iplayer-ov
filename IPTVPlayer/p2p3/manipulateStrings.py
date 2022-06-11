@@ -27,6 +27,12 @@ def iterDictKeys(myDict):
     else:
         return myDict.keys()
 
+def iterDictValues(myDict):
+    if isPY2():
+        return myDict.itervalues()
+    else:
+        return myDict.values()
+
 def strEncode(text,  encoding = 'utf-8'):
     if isPY2():
         retVal = text

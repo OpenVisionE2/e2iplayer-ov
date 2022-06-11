@@ -11,15 +11,21 @@ from Plugins.Extensions.IPTVPlayer.tools.e2ijs import js_execute_ext
 from Plugins.Extensions.IPTVPlayer.libs import ph
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads, dumps as json_dumps
 ###################################################
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_binary, strDecode, iterDictItems, ensure_str
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin, urlparse, urlunparse
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
-from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_binary, strDecode, iterDictItems
 if isPY2():
     import cookielib
+    try:
+        from cStringIO import StringIO
+    except Exception:
+        from StringIO import StringIO
 else:
     import http.cookiejar as cookielib
     from io import StringIO, BytesIO
     basestring = str
+    file = open
+    unichr = chr
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_addinfourl, urllib_unquote, urllib_quote_plus, urllib_urlencode, urllib_quote, \
                                                       urllib2_HTTPRedirectHandler, urllib2_BaseHandler, urllib2_HTTPHandler, urllib2_HTTPError, \
                                                       urllib2_URLError, urllib2_build_opener, urllib2_urlopen, urllib2_HTTPCookieProcessor, \
@@ -40,10 +46,6 @@ try:
 except Exception:
     pass
 try:
-    try:
-        from cStringIO import StringIO
-    except Exception:
-        from StringIO import StringIO
     import gzip
 except Exception:
     pass
@@ -52,9 +54,12 @@ from binascii import hexlify
 
 
 def DecodeGzipped(data):
-    buf = StringIO(data)
-    f = gzip.GzipFile(fileobj=buf)
-    return f.read()
+    if isPY2():
+        buf = StringIO(data)
+        f = gzip.GzipFile(fileobj=buf)
+        return f.read()
+    else:
+        return gzip.decompress(data)
 
 
 def EncodeGzipped(data):
@@ -254,7 +259,7 @@ class CParsingHelper:
                              u'á': u'a', u'é': u'e', u'í': u'i', u'ñ': u'n', u'ó': u'o', u'ú': u'u', u'ü': u'u',
                              u'Á': u'A', u'É': u'E', u'Í': u'I', u'Ñ': u'N', u'Ó': u'O', u'Ú': u'U', u'Ü': u'U',
                             }
-        txt = txt.decode('utf-8')
+        txt = ensure_str(txt)
         if None != idx:
             txt = txt[idx]
         nrmtxt = unicodedata.normalize('NFC', txt)
@@ -266,7 +271,10 @@ class CParsingHelper:
                     ret_str.append(item)
             else: # pure ASCII character
                 ret_str.append(item)
-        return ''.join(ret_str).encode('utf-8')
+        if isPY2():
+            return ''.join(ret_str).encode('utf-8')
+        else:
+            return ''.join(ret_str)
 
     @staticmethod
     def isalpha(txt, idx=None):
@@ -541,7 +549,10 @@ class common:
         out_data = None
         sts = False
 
-        buffer = StringIO()
+        if isPY2():
+            buffer = StringIO()
+        else:
+            buffer = BytesIO()
         checkFromFirstBytes = params.get('check_first_bytes', [])
         fileHandler = None
         firstAttempt = [True]
@@ -550,6 +561,7 @@ class common:
         responseHeaders = {}
 
         def _headerFunction(headerLine):
+            headerLine = ensure_str(headerLine)
             if ':' not in headerLine:
                 if 0 == maxDataSize:
                     if headerLine in ['\r\n', '\n']:
@@ -706,7 +718,7 @@ class common:
 
             if params.get('use_cookie', False):
                 cookiesStr = ''
-                for cookieKey in params.get('cookie_items', {}).keys():
+                for cookieKey in list(params.get('cookie_items', {}).keys()):
                     printDBG("cookie_item[%s=%s]" % (cookieKey, params['cookie_items'][cookieKey]))
                     cookiesStr += '%s=%s; ' % (cookieKey, params['cookie_items'][cookieKey])
 
@@ -1314,7 +1326,7 @@ class common:
                 except Exception:
                     printExc()
             try:
-                for cookieKey in params.get('cookie_items', {}).keys():
+                for cookieKey in list(params.get('cookie_items', {}).keys()):
                     printDBG("cookie_item[%s=%s]" % (cookieKey, params['cookie_items'][cookieKey]))
                     cookieItem = cookielib.Cookie(version=0, name=cookieKey, value=params['cookie_items'][cookieKey], port=None, port_specified=False, domain='', domain_specified=False, domain_initial_dot=False, path='/', path_specified=True, secure=False, expires=None, discard=True, comment=None, comment_url=None, rest={'HttpOnly': None}, rfc2109=False)
                     cj.set_cookie(cookieItem)
@@ -1372,7 +1384,10 @@ class common:
                 customOpeners.append(MultipartPostHandler())
                 dataPost = post_data
             else:
-                dataPost = urllib_urlencode(post_data)
+                if isPY2():
+                    dataPost = urllib_urlencode(post_data)
+                else:
+                    dataPost = urllib_urlencode(post_data).encode()
             req = urllib2_Request(pageUrl, dataPost, headers)
         else:
             req = urllib2_Request(pageUrl, None, headers)
@@ -1490,7 +1505,9 @@ class common:
 
     def iriToUri(self, iri):
         try:
-            parts = urlparse(iri.decode('utf-8'))
+            if isPY2() or isinstance(iri, bytes):
+                iri = iri.decode('utf-8'
+            parts = urlparse(iri)
             encodedParts = []
             for parti, part in enumerate(parts):
                 newPart = part

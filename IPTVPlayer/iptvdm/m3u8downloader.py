@@ -15,6 +15,7 @@ from Plugins.Extensions.IPTVPlayer.iptvdm.basedownloader import BaseDownloader
 from Plugins.Extensions.IPTVPlayer.iptvdm.iptvdh import DMHelper
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import strDecode
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 ###################################################
 # FOREIGN import
 ###################################################
@@ -500,10 +501,16 @@ class M3U8Downloader(BaseDownloader):
 
         '''
         if None != self.updateThread:
-            if self.updateThread.Thread.isAlive():
-                # give some time for update thread to finish
-                sleep(self.MIN_REFRESH_DELAY)
-                printDBG('m3u8 downloader killing update thread')
+            if isPY2:
+                if self.updateThread.Thread.isAlive():
+                    # give some time for update thread to finish
+                    sleep(self.MIN_REFRESH_DELAY)
+                    printDBG('m3u8 downloader killing update thread')
+            else:
+                if self.updateThread.Thread.is_alive():
+                    # give some time for update thread to finish
+                    sleep(self.MIN_REFRESH_DELAY)
+                    printDBG('m3u8 downloader killing update thread')
         '''
 
         if not terminated:
