@@ -469,7 +469,7 @@ class CartoonHD(CBaseHostClass):
             try:
                 keys = re.compile('"(_[0-9]+?)"').findall(data)
                 data = json_loads(data)
-                for key in data.keys():
+                for key in list(data.keys()):
                     if key not in keys:
                         keys.append(key)
                 for key in keys:
@@ -499,8 +499,8 @@ class CartoonHD(CBaseHostClass):
         urlTab = []
 
         # mark requested link as used one
-        if len(self.cacheLinks.keys()):
-            key = self.cacheLinks.keys()[0]
+        if len(list(self.cacheLinks.keys())):
+            key = list(self.cacheLinks.keys())[0]
             for idx in range(len(self.cacheLinks[key])):
                 if videoUrl in self.cacheLinks[key][idx]['url']:
                     if not self.cacheLinks[key][idx]['name'].startswith('*'):

@@ -553,7 +553,7 @@ class EFilmyTv(CBaseHostClass):
         urlTab = []
 
         # mark requested link as used one
-        if len(self.cacheLinks.keys()):
+        if len(list(self.cacheLinks.keys())):
             for key in self.cacheLinks:
                 for idx in range(len(self.cacheLinks[key])):
                     if videoUrl in self.cacheLinks[key][idx]['url']:
@@ -591,7 +591,7 @@ class EFilmyTv(CBaseHostClass):
             header = dict(self.HTTP_HEADER)
             header['Accept'] = 'image/png,image/*;q=0.8,*/*;q=0.5'
             params = dict(self.defaultParams)
-            params.update({'maintype': 'image', 'subtypes': ['jpeg', 'png'], 'check_first_bytes': ['\xFF\xD8', '\xFF\xD9', '\x89\x50\x4E\x47'], 'header': header})
+            params.update({'maintype': 'image', 'subtypes': ['jpeg', 'png'], 'check_first_bytes': [b'\xFF\xD8', b'\xFF\xD9', b'\x89\x50\x4E\x47'], 'header': header})
             filePath = GetTmpDir('.iptvplayer_captcha.jpg')
             rm(filePath)
             ret = self.cm.saveWebFile(filePath, imgUrl.replace('&amp;', '&'), params)

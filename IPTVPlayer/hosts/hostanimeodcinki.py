@@ -318,8 +318,8 @@ class AnimeOdcinkiPL(CBaseHostClass):
         urlTab = []
 
         # mark requested link as used one
-        if len(self.cacheLinks.keys()):
-            key = self.cacheLinks.keys()[0]
+        if len(list(self.cacheLinks.keys())):
+            key = list(self.cacheLinks.keys())[0]
             for idx in range(len(self.cacheLinks[key])):
                 if videoUrl in self.cacheLinks[key][idx]['url']:
                     if not self.cacheLinks[key][idx]['name'].startswith('*'):

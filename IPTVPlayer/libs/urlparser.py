@@ -43,6 +43,7 @@ from Screens.MessageBox import MessageBox
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if not isPY2():
     basestring = str
+    xrange = range
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_unquote, urllib_quote_plus, urllib_urlencode, urllib_quote
 ###################################################
 # FOREIGN import
@@ -129,7 +130,7 @@ class urlparser:
         valTab = []
         i = 0
         if len(v) > 0:
-            for url in (v.values() if type(v) is dict else v):
+            for url in (list(v.values()) if type(v) is dict else v):
                 if 1 == self.checkHostSupport(url):
                     hostName = self.getHostName(url, True)
                     i = i + 1
@@ -1169,7 +1170,7 @@ class pageParser(CaptchaHelper):
     def getYTParser(self):
         if self.ytParser == None:
             try:
-                from youtubeparser import YouTubeParser
+                from Plugins.Extensions.IPTVPlayer.libs.youtubeparser import YouTubeParser
                 self.ytParser = YouTubeParser()
             except Exception:
                 printExc()
@@ -1199,7 +1200,7 @@ class pageParser(CaptchaHelper):
     def getMoonwalkParser(self):
         if self.moonwalkParser == None:
             try:
-                from moonwalkcc import MoonwalkParser
+                from Plugins.Extensions.IPTVPlayer.libs.moonwalkcc import MoonwalkParser
                 self.moonwalkParser = MoonwalkParser()
             except Exception:
                 printExc()
@@ -8785,7 +8786,7 @@ class pageParser(CaptchaHelper):
 
         def _url_path_join(*parts):
             """Normalize url parts and join them with a slash."""
-            schemes, netlocs, paths, queries, fragments = zip(*(urlsplit(part) for part in parts))
+            schemes, netlocs, paths, queries, fragments = list(zip(*(urlsplit(part) for part in parts)))
             scheme, netloc, query, fragment = _first_of_each(schemes, netlocs, queries, fragments)
             path = '/'.join(x.strip('/') for x in paths if x)
             return urlunsplit((scheme, netloc, path, query, fragment))
@@ -9732,7 +9733,7 @@ class pageParser(CaptchaHelper):
             printDBG(data)
 
             data = json_loads(data)
-            key, token = data.items()[0]
+            key, token = list(data.items())[0]
 
             hlsUrl = hlsUrl + token
             hlsUrl = urlparser.decorateUrl(hlsUrl, {'iptv_proto': 'm3u8', 'iptv_livestream': True, 'Origin': self.cm.getBaseUrl(baseUrl), 'User-Agent': HTTP_HEADER['User-Agent'], 'Referer': baseUrl})
@@ -12657,8 +12658,8 @@ class pageParser(CaptchaHelper):
         retTab = []
         try:
             tmp = json_loads(ph.find(data, 'var video_links =', '};', flags=0)[1] + '}')
-            for subItem in tmp.itervalues():
-                for item in subItem.itervalues():
+            for subItem in iterDictValues(tmp):
+                for item in iterDictValues(subItem):
                     for it in item:
                         url = strwithmeta(it['link'], {'User-Agent': HTTP_HEADER['User-Agent'], 'Referer': self.cm.meta['url']})
                         type = url.split('?', 1)[0].rsplit('.', 1)[-1].lower()

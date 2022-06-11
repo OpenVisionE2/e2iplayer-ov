@@ -9,12 +9,14 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, fo
 from Plugins.Extensions.IPTVPlayer.libs.youtube_dl.utils import clean_html
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
+if not isPY2:
+    long = int
 ###################################################
 # FOREIGN import
 ###################################################
 from Components.config import config, ConfigText, getConfigListEntry
-from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 from hashlib import md5
 try:
     import simplejson as json
