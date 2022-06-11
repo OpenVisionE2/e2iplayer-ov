@@ -5,7 +5,7 @@
 ###################################################
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, byteify
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.tools.iptvtools import isPY2
 ###################################################
 # FOREIGN import
 ###################################################
@@ -25,7 +25,7 @@ def loads(input, noneReplacement=None, baseTypesAsString=False, utf8=True):
             e2icjson = e2icjson
         except Exception:
             e2icjson = False
-            printExc()
+            #printExc()
 
     if e2icjson:
         printDBG(">> cjson ACELERATION noneReplacement[%s] baseTypesAsString[%s]" % (noneReplacement, baseTypesAsString))
@@ -35,7 +35,7 @@ def loads(input, noneReplacement=None, baseTypesAsString=False, utf8=True):
             out = byteify(out, noneReplacement, baseTypesAsString)
     else:
         out = json.loads(input)
-        if utf8 or noneReplacement != None or baseTypesAsString != False:
+        if isPY2() and (utf8 or noneReplacement != None or baseTypesAsString != False):
             out = byteify(out, noneReplacement, baseTypesAsString)
 
     return out
