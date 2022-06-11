@@ -12,6 +12,7 @@ from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if not isPY2():
     basestring = str
     unicode = str
+    from functools import cmp_to_key
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib2_urlopen
 from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import strDecode, iterDictItems
 ###################################################
@@ -598,7 +599,10 @@ class CSelOneLink():
     def getBestSortedList(self):
         printDBG('getBestSortedList')
         sortList = self.listOfLinks[::-1]
-        sortList.sort(self._cmpLinksBest)
+        if isPY2():
+            sortList.sort(self._cmpLinksBest)
+        else:
+            sortList.sort(key=cmp_to_key(self._cmpLinksBest))
         retList = []
         tmpList = []
         for item in sortList:
@@ -613,7 +617,10 @@ class CSelOneLink():
     def getSortedLinks(self, defaultFirst=True):
         printDBG('getSortedLinks defaultFirst[%r]' % defaultFirst)
         sortList = self.listOfLinks[::-1]
-        sortList.sort(self._cmpLinks)
+        if isPY2():
+            sortList.sort(self._cmpLinks)
+        else:
+            sortList.sort(key=cmp_to_key(self._cmpLinks))
         if len(self.listOfLinks) < 2 or None == self.maxRes:
             return self.listOfLinks
 
@@ -628,9 +635,13 @@ class CSelOneLink():
                     group1.append(self.listOfLinks[idx])
                 else:
                     group2.append(self.listOfLinks[idx])
-            group1.sort(self._cmpLinks)
+            if isPY2():
+                group1.sort(self._cmpLinks)
+                group2.sort(self._cmpLinks)
+            else:
+                group1.sort(key=cmp_to_key(self._cmpLinks))
+                group2.sort(key=cmp_to_key(self._cmpLinks))
             group1.reverse()
-            group2.sort(self._cmpLinks)
             group1.extend(group2)
             return group1
 
