@@ -24,13 +24,13 @@ def iterDictItems(myDict):
 def iterDictKeys(myDict):
     if isPY2():
         return myDict.iterkeys()
-    else:
+    else: #PY3
         return myDict.keys()
 
 def iterDictValues(myDict):
     if isPY2():
         return myDict.itervalues()
-    else:
+    else: #PY3
         return myDict.values()
 
 def strEncode(text,  encoding = 'utf-8'):
@@ -43,7 +43,7 @@ def strEncode(text,  encoding = 'utf-8'):
 def ensure_binary(text, encoding='utf-8', errors='strict'): #based on six library
     if isPY2():
         return text
-    else:
+    else: #PY3
         if isinstance(text, bytes):
           return text
         if isinstance(text, str):
@@ -52,7 +52,9 @@ def ensure_binary(text, encoding='utf-8', errors='strict'): #based on six librar
 def ensure_str(text, encoding='utf-8', errors='strict'): #based on six library
     if type(text) is str:
         return text
-    if isPY2() and isinstance(text, unicode):
-        return text.encode(encoding, errors)
-    elif PY3 and isinstance(text, bytes):
-        return text.decode(encoding, errors)
+    if isPY2():
+        if isinstance(text, unicode):
+            return text.encode(encoding, errors)
+    else:: #PY3
+        if isinstance(text, bytes):
+            return text.decode(encoding, errors)
