@@ -118,6 +118,7 @@ NaN
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if not isPY2():
     basestring = str
+    long = int
 ######################################################
 __all__ = [
     # Two major classes
@@ -3371,7 +3372,7 @@ def _dec_from_triple(sign, coefficient, exponent, special=False):
 
 
 # get rounding method function:
-rounding_functions = [name for name in Decimal.__dict__.keys()
+rounding_functions = [name for name in list(Decimal.__dict__.keys())
                                     if name.startswith('_round_')]
 for name in rounding_functions:
     # name is like _round_half_even, goes to the global ROUND_HALF_EVEN value.
@@ -3435,7 +3436,7 @@ class Context(object):
         if traps is not None and not isinstance(traps, dict):
             traps = dict([(s, s in traps) for s in _signals])
             del s
-        for name, val in locals().items():
+        for name, val in list(locals().items()):
             if val is None:
                 setattr(self, name, _copy.copy(getattr(DefaultContext, name)))
             else:
@@ -3448,9 +3449,9 @@ class Context(object):
         s.append('Context(prec=%(prec)d, rounding=%(rounding)s, '
                  'Emin=%(Emin)d, Emax=%(Emax)d, capitals=%(capitals)d'
                  % vars(self))
-        names = [f.__name__ for f, v in self.flags.items() if v]
+        names = [f.__name__ for f, v in list(self.flags.items()) if v]
         s.append('flags=[' + ', '.join(names) + ']')
-        names = [t.__name__ for t, v in self.traps.items() if v]
+        names = [t.__name__ for t, v in list(self.traps.items()) if v]
         s.append('traps=[' + ', '.join(names) + ']')
         return ', '.join(s) + ')'
 

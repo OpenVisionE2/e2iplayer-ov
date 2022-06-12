@@ -198,7 +198,7 @@ class KeepAliveHandler:
     def open_connections(self):
         """return a list of connected hosts and the number of connections
         to each.  [('foo.com:80', 2), ('bar.org', 1)]"""
-        return [(host, len(li)) for (host, li) in self._cm.get_all().items()]
+        return [(host, len(li)) for (host, li) in list(self._cm.get_all().items())]
 
     def close_connection(self, host):
         """close connection(s) to <host>
@@ -210,7 +210,7 @@ class KeepAliveHandler:
 
     def close_all(self):
         """close all open connections"""
-        for host, conns in self._cm.get_all().items():
+        for host, conns in list(self._cm.get_all().items()):
             for h in conns:
                 self._cm.remove(h)
                 h.close()

@@ -9,6 +9,7 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_unquote_plus
 from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import iterDictItems
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 ###################################################
 # FOREIGN import
 ###################################################
@@ -90,7 +91,7 @@ class WeebTvApi:
         return ret
 
     def _getStr(self, v, default=''):
-        if type(v) == type(u''):
+        if isPY2() and type(v) == type(u''):
             return v.encode('utf-8')
         elif type(v) == type(''):
             return v

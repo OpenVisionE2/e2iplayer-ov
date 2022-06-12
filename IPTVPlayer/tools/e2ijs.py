@@ -7,6 +7,7 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, Ge
                                                           ReadTextFile, WriteTextFile
 
 ########################################################
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_binary
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if isPY2():
     import thread
@@ -82,7 +83,7 @@ def js_execute_ext(items, params={}):
                         sts, code = ReadTextFile(path)
                         if not sts:
                             raise Exception('Faile to read file "%s"!' % path)
-                    hash = hexlify(md5(code).digest())
+                    hash = hexlify(md5(ensure_binary(code)).digest())
                 byteFileName = GetJSCacheDir(name + '.byte')
                 metaFileName = GetJSCacheDir(name + '.meta')
                 if fileExists(byteFileName):

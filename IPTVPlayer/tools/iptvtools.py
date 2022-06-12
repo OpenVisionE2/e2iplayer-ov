@@ -14,7 +14,7 @@ if not isPY2():
     unicode = str
     from functools import cmp_to_key
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib2_urlopen
-from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import strDecode, iterDictItems
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import strDecode, iterDictItems, ensure_str
 ###################################################
 
 ###################################################
@@ -1267,7 +1267,7 @@ class CSearchHistoryHelper():
                 value = line.replace('\n', '').strip()
                 if len(value) > 0:
                     try:
-                        historyList.insert(0, value.encode('utf-8', 'ignore'))
+                        historyList.insert(0, ensure_str(value))
                     except Exception:
                         printExc()
             file.close()
@@ -1397,7 +1397,7 @@ class CMoviePlayerPerHost():
                 sts = True
             else:
                 file = codecs.open(self.filePath, 'r', 'utf-8', 'ignore')
-                ret = file.read().encode('utf-8', 'ignore')
+                ret = ensure_str(file.read(), encoding='utf-8', errors='ignore')
                 file.close()
                 activePlayer = {}
                 ret = json_loads(ret)
@@ -1419,7 +1419,7 @@ class CMoviePlayerPerHost():
                 data = {}
                 data['buffering'] = self.activePlayer['buffering']
                 data['player'] = {'value': self.activePlayer['player'].value, 'text': self.activePlayer['player'].getText()}
-                data = json_dumps(data).encode('utf-8')
+                data = json_dumps(ensure_str(data))
                 file = codecs.open(self.filePath, 'w', 'utf-8', 'replace')
                 file.write(data)
                 file.close

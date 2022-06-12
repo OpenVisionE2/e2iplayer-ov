@@ -117,7 +117,7 @@ class AutocompleteSearch:
                         if isPY2:
                             text = text.decode('utf-8').lower()
                         else:
-                            text = text.lower()
+                            text = ensure_str(text).lower()
                         for item in self.historyList:
                             if item[0] == text:
                                 retList.append(item[1])

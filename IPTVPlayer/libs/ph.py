@@ -3,6 +3,7 @@
 import re
 from Plugins.Extensions.IPTVPlayer.libs.youtube_dl.utils import clean_html as yt_clean_html
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printExc
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if not isPY2():
     basestring = str
@@ -283,7 +284,8 @@ def strip_doubles(data, pattern):
 STRIP_HTML_TAGS_C = None
 
 
-def clean_html(str):
+def clean_html(string): # str is a keyword in python and should not be used, so changed to string
+    string = ensure_str(string)
     global STRIP_HTML_TAGS_C
     if None == STRIP_HTML_TAGS_C:
         STRIP_HTML_TAGS_C = False
@@ -295,11 +297,11 @@ def clean_html(str):
             printExc()
 
     if STRIP_HTML_TAGS_C and type(u' ') != type(str):
-        return STRIP_HTML_TAGS_C.strip_html_tags(str)
+        return STRIP_HTML_TAGS_C.strip_html_tags(string)
 
-    str = str.replace('<', ' <')
-    str = str.replace('&nbsp;', ' ')
-    str = str.replace('&nbsp', ' ')
-    str = yt_clean_html(str)
-    str = str.replace('\n', ' ').replace('\r', ' ').replace('\t', ' ')
-    return strip_doubles(str, ' ').strip()
+    string = string.replace('<', ' <')
+    string = string.replace('&nbsp;', ' ')
+    string = string.replace('&nbsp', ' ')
+    string = yt_clean_html(string)
+    string = string.replace('\n', ' ').replace('\r', ' ').replace('\t', ' ')
+    return strip_doubles(string, ' ').strip()
