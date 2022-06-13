@@ -78,7 +78,7 @@ class TVProart(CBaseHostClass):
             for item in data['content']:
                 icon = self.getFullUrl(ensure_str(item['thumb']))
                 item = item['data']
-                url = self.API_URL + 'video?id={0}&slug={1}'.format(str(item['id']), ensure_str(item['slug'])
+                url = self.API_URL + 'video?id={0}&slug={1}'.format(str(item['id']), ensure_str(item['slug']))
                 title = ensure_str(item['title'])
                 date = ensure_str(item['date'])
                 if date not in title:
