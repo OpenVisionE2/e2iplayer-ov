@@ -17,13 +17,18 @@ from Components.config import config, configfile
 from Screens.MessageBox import MessageBox
 from Screens.ChoiceBox import ChoiceBox
 
+###################################################
+# LOCAL import
+###################################################
 from Plugins.Extensions.IPTVPlayer.components.cover import Cover3
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, mkdirs, GetDefaultLang, GetIconDir, GetE2iPlayerVKLayoutDir, GetResourcesServerUri
 from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT as _
 from Plugins.Extensions.IPTVPlayer.components.iptvlist import IPTVListComponentBase
 from Plugins.Extensions.IPTVPlayer.components.e2isimpledownloader import SingleFileDownloaderWidget
-
+###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
+from Plugins.Extensions.IPTVPlayer.p2p3.Widgets import getWidgetText, innerWidgetTextRight
+###################################################
 
 class E2iInput(Input):
     def __init__(self, *args, **kwargs):
@@ -942,7 +947,7 @@ class E2iVirtualKeyBoard(Screen):
                 if self.currentKeyId in self.RIGHT_KEYS:
                     self.handleArrowKey(1, 0)
         elif self.focus == self.FOCUS_KEYBOARD:
-            if self.currentKeyId in self.RIGHT_KEYS or (self.currentKeyId == 0 and self['text'].currPos == len(self['text'].Text)):
+            if self.currentKeyId in self.RIGHT_KEYS or (self.currentKeyId == 0 and self['text'].currPos == len(getWidgetText(self['text']))):
                 if self.isSuggestionVisible:
                     self.switchToSuggestions()
                     return
@@ -1014,10 +1019,7 @@ class E2iVirtualKeyBoard(Screen):
         for letter in text:
             try:
                 self["text"].insertChar(letter, self["text"].currPos, False, True)
-                try:
-                    self["text"].innerright()
-                except Exception:
-                    self["text"].innerRight()
+                innerWidgetTextRight(self["text"])
                 self["text"].update()
             except Exception:
                 printExc()
@@ -1033,7 +1035,7 @@ class E2iVirtualKeyBoard(Screen):
 
     def updateSuggestions(self):
         if self.isAutocompleteEnabled:
-            if not self["text"].Text:
+            if not getWidgetText(self["text"]):
                 self.setSuggestionVisible(False)
                 self['right_list'].setList([])
                 #self.autocomplete.stop()
@@ -1047,7 +1049,7 @@ class E2iVirtualKeyBoard(Screen):
     def setSuggestions(self, list, stamp):
         # we would not want to modify list when user
         # is under selection item from it
-        if self.focus != self.FOCUS_SUGGESTIONS and self["text"].Text:
+        if self.focus != self.FOCUS_SUGGESTIONS and getWidgetText(self["text"]):
             if list:
                 self['right_list'].setList([(x,) for x in list])
             self.setSuggestionVisible(True if list else False)
