@@ -1451,9 +1451,12 @@ def byteify(input, noneReplacement=None, baseTypesAsString=False):
         return input
 
 
-def printExc(msg=''):
+def printExc(msg='', WarnOnly = False):
     printDBG("===============================================")
-    printDBG("                   EXCEPTION                   ")
+    if msg == 'WARNING' or WarnOnly:
+        printDBG("                    WARNING                    ")
+    else:
+        printDBG("                   EXCEPTION                   ")
     printDBG("===============================================")
     msg = msg + ': \n%s' % traceback.format_exc()
     printDBG(msg)
