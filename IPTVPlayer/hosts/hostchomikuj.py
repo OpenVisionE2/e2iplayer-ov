@@ -13,6 +13,7 @@ from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if not isPY2:
     long = int
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -81,7 +82,7 @@ class Chomikuj(CBaseHostClass):
             v = None
         if None == v:
             return default
-        return clean_html(u'%s' % v).encode('utf-8')
+        return ensure_str(clean_html(u'%s' % v))
 
     def _getJItemNum(self, item, key, default=0):
         try:

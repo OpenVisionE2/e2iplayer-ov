@@ -11,7 +11,7 @@ from hashlib import md5
 from Plugins.Extensions.IPTVPlayer.libs.crypto.cipher.aes_cbc import AES_CBC
 from Plugins.Extensions.IPTVPlayer.libs.crypto.keyedHash.evp import EVP_BytesToKey
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -277,7 +277,7 @@ class AnimeOdcinkiPL(CBaseHostClass):
                 alg = AES_CBC(key, keySize=kSize)
                 decrypted = alg.decrypt(a2b_base64(data["a"]), iv=iv)
                 decrypted = decrypted.split('\x00')[0]
-            decrypted = "%s" % json.loads(decrypted).encode('utf-8')
+            decrypted = "%s" % ensure_str(json.loads(decrypted))
         except Exception:
             printExc()
             decrypted = ''

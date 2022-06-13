@@ -18,6 +18,7 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads, dump
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if not isPY2():
     basestring = str
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -379,7 +380,7 @@ class LocalMedia(CBaseHostClass):
                         printExc()
                         continue
                 try:
-                    title = item[0].decode(encoding).encode('utf-8')
+                    title = ensure_str(item[0].decode(encoding))
                 except Exception:
                     title = item[0]
                     printExc()

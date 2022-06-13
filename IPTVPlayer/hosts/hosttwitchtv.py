@@ -9,6 +9,7 @@ from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Play
 from Plugins.Extensions.IPTVPlayer.libs.urlparser import urlparser
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus, urllib_quote
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -26,12 +27,10 @@ def gettytul():
 
 def jstr(item, key, default=''):
     v = item.get(key, default)
-    if type(v) == type(u''):
-        return v.encode('utf-8')
-    elif type(v) == type(''):
-        return v
-    else:
+    if None == v:
         return default
+    else:
+        return ensure_str(v)
 
 
 class Twitch(CBaseHostClass):

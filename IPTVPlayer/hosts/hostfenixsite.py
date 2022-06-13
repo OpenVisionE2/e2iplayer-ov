@@ -11,7 +11,7 @@ from Plugins.Extensions.IPTVPlayer.libs import ph
 from Plugins.Extensions.IPTVPlayer.tools.e2ijs import js_execute
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -94,7 +94,7 @@ class Fenixsite(CBaseHostClass):
 
             self.addDir(MergeDicts(cItem, {'title': _('--All--'), 'category': nextCategory}))
             for letter in letters:
-                self.addDir(MergeDicts(cItem, {'good_for_fav': False, 'category': 'sub_items', 'sub_items': subItems[letter], 'title': '%s [%d]' % (letter.encode('utf-8'), len(subItems[letter]))}))
+                self.addDir(MergeDicts(cItem, {'good_for_fav': False, 'category': 'sub_items', 'sub_items': subItems[letter], 'title': '%s [%d]' % (ensure_str(letter), len(subItems[letter]))}))
         else:
             self.currList.append(MergeDicts(cItem, {'title': _('--All--'), 'category': nextCategory}))
             self.currList.extend(itemsList)

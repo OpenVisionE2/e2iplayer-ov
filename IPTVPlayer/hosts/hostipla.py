@@ -21,6 +21,7 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, CS
 from Plugins.Extensions.IPTVPlayer.libs.youtube_dl.utils import clean_html
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -80,10 +81,7 @@ class Ipla(CBaseHostClass):
     def getStr(self, v, default=''):
         if None == v:
             return default
-        elif type(v) == type(u''):
-            return v.encode('utf-8')
-        elif type(v) == type(''):
-            return v
+        return ensure_str(v)
 
     def __getAttribs(self, data):
         re_compile = re.compile('([^= ]+?)="([^"]+?)"')

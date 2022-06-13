@@ -10,6 +10,7 @@ from Plugins.Extensions.IPTVPlayer.tools.e2ijs import js_execute
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_urlencode, urllib_quote_plus
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -139,7 +140,7 @@ class MRPiracyGQ(CBaseHostClass, CaptchaHelper):
             encoding = self.cm.ph.getDataBeetwenMarkers(data, 'charset=', '"', False)[1]
             if encoding != '':
                 try:
-                    data = data.decode(encoding).encode('utf-8')
+                    data = ensure_str(data.decode(encoding))
                 except Exception:
                     printExc()
         return sts, data

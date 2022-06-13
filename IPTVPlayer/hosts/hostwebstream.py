@@ -47,6 +47,7 @@ if not isPY2():
     basestring = str
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus, urllib_unquote
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlsplit, urlunsplit
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -266,7 +267,7 @@ class HasBahCa(CBaseHostClass):
         v = item.get(key, None)
         if None == v:
             return default
-        return clean_html(u'%s' % v).encode('utf-8')
+        return ensure_str(clean_html(u'%s' % v))
 
     def addItem(self, params):
         self.currList.append(params)
@@ -388,7 +389,7 @@ class HasBahCa(CBaseHostClass):
                 icon = item.get('logo_uri', '')
         except Exception:
             printExc()
-        return icon.encode('utf-8')
+        return ensure_str(icon)
 
     def __setFilmOn(self):
         if None == self.filmOnApi:
@@ -404,8 +405,8 @@ class HasBahCa(CBaseHostClass):
         for item in tmpList:
             try:
                 params = {'name': 'filmon_channels',
-                           'title': item['title'].encode('utf-8'),
-                           'desc': item['description'].encode('utf-8'),
+                           'title': ensure_str(item['title']),
+                           'desc': ensure_str(item['description']),
                            'group_id': item['group_id'],
                            'icon': self.__getFilmOnIconUrl(item)
                            }
@@ -419,9 +420,9 @@ class HasBahCa(CBaseHostClass):
         for item in tmpList:
             try:
                 params = {'name': 'filmon_channel',
-                           'title': item['title'].encode('utf-8'),
+                           'title': ensure_str(item['title']),
                            'url': item['id'],
-                           'desc': item['group'].encode('utf-8'),
+                           'desc': ensure_str(item['group']),
                            'seekable': item['seekable'],
                            'icon': self.__getFilmOnIconUrl(item)
                            }

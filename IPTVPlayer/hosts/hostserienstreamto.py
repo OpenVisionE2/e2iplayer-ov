@@ -10,7 +10,7 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.libs import ph
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -156,7 +156,7 @@ class SerienStreamTo(CBaseHostClass, CaptchaHelper):
                 letter = title.decode('utf-8')[0].upper()
                 if not letter.isalpha():
                     letter = '#'
-                letter = letter.encode('utf-8')
+                letter = ensure_str(letter)
                 if letter not in self.allCache['letters_list']:
                     self.allCache['letters_list'].append(letter)
                     self.allCache['letters_keys'][letter] = []

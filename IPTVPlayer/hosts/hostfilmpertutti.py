@@ -8,6 +8,7 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -176,7 +177,7 @@ class FilmPertutti(CBaseHostClass):
                     episodeName = ''
                 else:
                     try:
-                        episodeName = episodeName.decode('utf-8').strip().encode('utf-8')
+                        episodeName = ensure_str(episodeName)
                     except Exception:
                         pass
 

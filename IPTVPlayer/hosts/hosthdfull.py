@@ -11,7 +11,7 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 from Plugins.Extensions.IPTVPlayer.libs.pCommon import common
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -80,12 +80,10 @@ class SuggestionsProvider:
 
 def jstr(item, key, default=''):
     v = item.get(key, default)
-    if type(v) == type(u''):
-        return v.encode('utf-8')
-    elif type(v) == type(''):
-        return v
-    else:
+    if None == v:
         return default
+    else:
+        return ensure_str(v)
 
 
 class HDFull(CBaseHostClass, CaptchaHelper):

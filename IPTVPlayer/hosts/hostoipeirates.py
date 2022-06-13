@@ -9,6 +9,7 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 from Plugins.Extensions.IPTVPlayer.libs import ph
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_urlencode, urllib_quote_plus
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -244,7 +245,7 @@ class OipeiratesOnline(CBaseHostClass):
         if not sts:
             return
         seasonMarkerObj = re.compile(">\s*season|>\s*σεζόν")
-        linksDataLower = linksData.decode('utf-8').lower().encode('utf-8')
+        linksDataLower = ensure_str(linksData).lower()
 
         mode = cItem.get('mode', 'unknown')
         if '-collection' in cItem['url']:

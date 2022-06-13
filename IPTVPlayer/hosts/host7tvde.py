@@ -12,6 +12,7 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote, urllib_urlencode
 from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import iterDictItems
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -226,7 +227,7 @@ class C7tvDe(CBaseHostClass):
             desc = ph.clean_html(ph.find(item, ('<div', '>', 'caption'), '</div>', flags=0)[1])
             title = ph.clean_html(ph.find(item, ('<h5', '>', 'title'), '</h5>', flags=0)[1])
             if title == '':
-                title = url.rsplit('/', 1)[-1].replace('-', ' ').decode('utf-8').title().encode('utf-8')
+                title = ensure_str(url.rsplit('/', 1)[-1].replace('-', ' '))
             desc = [desc] if desc else []
             desc.append(ph.clean_html(ph.find(item, ('<p', '>'), '</p>', flags=0)[1]))
             if sTitle:

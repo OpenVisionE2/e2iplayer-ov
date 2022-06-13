@@ -7,6 +7,7 @@ from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostC
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, byteify
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -75,11 +76,11 @@ class TVProart(CBaseHostClass):
             if data['status'] != '200':
                 return
             for item in data['content']:
-                icon = self.getFullUrl(item['thumb'].encode('utf-8'))
+                icon = self.getFullUrl(ensure_str(item['thumb']))
                 item = item['data']
-                url = self.API_URL + 'video?id={0}&slug={1}'.format(str(item['id']), item['slug'].encode('utf-8'))
-                title = item['title'].encode('utf-8')
-                date = item['date'].encode('utf-8')
+                url = self.API_URL + 'video?id={0}&slug={1}'.format(str(item['id']), ensure_str(item['slug'])
+                title = ensure_str(item['title'])
+                date = ensure_str(item['date'])
                 if date not in title:
                     title += ' [%s]' % date
                 params = {'title': title, 'url': url, 'icon': icon, 'desc': date}

@@ -10,6 +10,7 @@ from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urljoin
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -347,7 +348,7 @@ class Gledalica(CBaseHostClass):
                 if title == '':
                     continue
                 icon = self.getFullIconUrl(self.cm.ph.getSearchGroups(item, '''src=['"]([^"^']+?)['"]''')[0])
-                letter = title.decode('utf-8')[0].upper().encode('utf-8')
+                letter = ensure_str(title.decode('utf-8')[0]).upper()
                 if not letter.isalpha():
                     letter = '#'
 
@@ -470,7 +471,7 @@ class Gledalica(CBaseHostClass):
             val = self.cleanHtmlStr(tmp[idx])
             if val == '' or val.lower() == 'n/a':
                 continue
-            key = self.cleanHtmlStr(tmp[idx - 1]).decode('utf-8').lower().encode('utf-8')
+            key = ensure_str(self.cleanHtmlStr(tmp[idx - 1])).lower()
             if key not in keysMap:
                 continue
             otherInfo[keysMap[key]] = val

@@ -8,6 +8,7 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, by
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote_plus, urllib_urlencode
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -395,7 +396,7 @@ class Kinox(CBaseHostClass):
             if 'f_lang' in cItem:
                 additionalParams['onlyLanguage'] = cItem['f_lang']
 
-            post_data = {'Page': page, 'Per_Page': ITEMS_PER_PAGE, 'per_page': ITEMS_PER_PAGE, 'dir': 'desc', 'sort': 'title', 'ListMode': 'cover', 'additional': json.dumps(additionalParams).encode('utf-8')}
+            post_data = {'Page': page, 'Per_Page': ITEMS_PER_PAGE, 'per_page': ITEMS_PER_PAGE, 'dir': 'desc', 'sort': 'title', 'ListMode': 'cover', 'additional': ensure_str(json.dumps(additionalParams))}
             sts, data = self.getPage(self.getFullUrl('/aGET/List/'), post_data=post_data)
             if not sts:
                 return

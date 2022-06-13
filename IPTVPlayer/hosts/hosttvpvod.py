@@ -11,7 +11,7 @@ from Plugins.Extensions.IPTVPlayer.libs import ph
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads, dumps as json_dumps
 from Plugins.Extensions.IPTVPlayer.components.captcha_helper import CaptchaHelper
 ###################################################
-
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 ###################################################
 # FOREIGN import
 ###################################################
@@ -163,12 +163,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
         return self.cleanHtmlStr(self._encodeStr(v, default))
 
     def _encodeStr(self, v, default=''):
-        if type(v) == type(u''):
-            return v.encode('utf-8')
-        elif type(v) == type(''):
-            return v
-        else:
-            return default
+        return ensure_str(v)
 
     def _getNum(self, v, default=0):
         try:
