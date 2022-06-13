@@ -986,7 +986,8 @@ def mkdirs(newdir, raiseException=False):
 
 def rm(fullname):
     try:
-        os.remove(fullname)
+        if os.path.exists(fullname):
+            os.remove(fullname)
         return True
     except Exception:
         printExc()
@@ -1453,8 +1454,12 @@ def byteify(input, noneReplacement=None, baseTypesAsString=False):
 
 def printExc(msg='', WarnOnly = False):
     printDBG("===============================================")
-    if msg == 'WARNING' or WarnOnly:
+    if WarnOnly:
+        msg = ''
         printDBG("                    WARNING                    ")
+    elif msg == 'WARNING':
+        printDBG("                    WARNING                    ")
+        msg = ''
     else:
         printDBG("                   EXCEPTION                   ")
     printDBG("===============================================")
