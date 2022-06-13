@@ -1014,7 +1014,10 @@ class E2iVirtualKeyBoard(Screen):
         for letter in text:
             try:
                 self["text"].insertChar(letter, self["text"].currPos, False, True)
-                self["text"].innerright()
+                try:
+                    self["text"].innerright()
+                except Exception:
+                    self["text"].innerRight()
                 self["text"].update()
             except Exception:
                 printExc()
