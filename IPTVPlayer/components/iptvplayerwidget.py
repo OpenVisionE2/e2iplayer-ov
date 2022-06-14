@@ -74,6 +74,7 @@ import Plugins.Extensions.IPTVPlayer.components.asynccall as asynccall
 from Plugins.Extensions.IPTVPlayer.components.playerselector import PlayerSelectorWidget
 from Plugins.Extensions.IPTVPlayer.components.e2ivkselector import GetVirtualKeyboard
 ######################################################
+from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote
 from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if not isPY2():
@@ -1581,10 +1582,8 @@ class E2iPlayerWidget(Screen):
         options = []
         for link in links:
             printDBG("selectLinkForCurrVideo: |%s| |%s|" % (link.name, link.url))
-            if type(u'') == type(link.name):
-                link.name = link.name.encode('utf-8', 'ignore')
-            if type(u'') == type(link.url):
-                link.url = link.url.encode('utf-8', 'ignore')
+            link.name = ensure_str(link.name)
+            link.url = ensure_str(link.url)
             options.append((link.name, link.url, link.urlNeedsResolve))
 
         #There is no free links for current video
