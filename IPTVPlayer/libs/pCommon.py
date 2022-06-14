@@ -1512,7 +1512,7 @@ class common:
         return data, metadata
 
     def urlEncodeNonAscii(self, b):
-        return re.sub('[\x80-\xFF]', lambda c: '%%%02x' % ord(c.group(0)), b)
+        return re.sub(b'[\x80-\xFF]', lambda c: '%%%02x' % ord(c.group(0)), b)
 
     def iriToUri(self, iri):
         try:
@@ -1529,7 +1529,7 @@ class common:
                         newPart = self.urlEncodeNonAscii(part.encode('utf-8'))
                 except Exception:
                     printExc()
-                encodedParts.append(newPart)
+                encodedParts.append(ensure_str(newPart))
             return urlunparse(encodedParts)
         except Exception:
             printExc()
