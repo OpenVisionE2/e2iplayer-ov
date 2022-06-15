@@ -680,7 +680,13 @@ class UpdateMainAppImpl(IUpdateObjectInterface):
         self.cmd = iptv_system(cmd, self.__installNewVersionCmdFinished)
 
     def downloadFinished(self, callBackFun, arg, status):
-        printDBG('UpdateMainAppImpl.downloadFinished file[%s], status[%s]' % (file, status))
+        if 0:
+            #usage of 'file' in below line seems to be a mistake. file is a standard object and doesn't return anything valuable - just pointer to itself
+            #Example:
+            #  UpdateMainAppImpl.downloadFinished file[<type 'file'>], status[STS_DOWNLOADED]
+            printDBG('UpdateMainAppImpl.downloadFinished file[%s], status[%s]' % (file, status))
+        else:
+            printDBG('UpdateMainAppImpl.downloadFinished, status[%s]' % (status))
         self.downloader.subscribersFor_Finish = []
         if self.terminating:
             printDBG('UpdateMainAppImpl.downloadFinished closing')
