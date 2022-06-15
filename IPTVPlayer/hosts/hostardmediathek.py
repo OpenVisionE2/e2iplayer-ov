@@ -8,7 +8,8 @@ from Plugins.Extensions.IPTVPlayer.components.ihost import CHostBase, CBaseHostC
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, byteify
 from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Playlist
 ###################################################
-
+if not isPY2():
+    from functools import cmp_to_key
 ###################################################
 # FOREIGN import
 ###################################################
@@ -453,7 +454,10 @@ class ARDmediathek(CBaseHostClass):
                                 return 1
                             else:
                                 return 0
-            tmpUrlTab.sort(_cmpLinks)
+            if isPY2():
+                tmpUrlTab.sort(_cmpLinks)
+            else:
+                tmpUrlTab.sort(key=cmp_to_key(_cmpLinks))
             onelinkmode = config.plugins.iptvplayer.ardmediathek_onelinkmode.value
             for item in tmpUrlTab:
                 url = item['url']

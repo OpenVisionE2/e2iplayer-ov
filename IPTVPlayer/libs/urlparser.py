@@ -44,6 +44,7 @@ from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 if not isPY2():
     basestring = str
     xrange = range
+    from functools import cmp_to_key
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_unquote, urllib_quote_plus, urllib_urlencode, urllib_quote
 ###################################################
 # FOREIGN import
@@ -6141,7 +6142,10 @@ class pageParser(CaptchaHelper):
                 ret = 0
             return ret
 
-        data.sort(_cmpLinksBest)
+        if isPY2():
+            data.sort(_cmpLinksBest)
+        else:
+            data.sort(key=cmp_to_key(_cmpLinksBest))
         data = clean_html(''.join(data)).strip()
         if data != '':
             post_data['code'] = data

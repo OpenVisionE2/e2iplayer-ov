@@ -10,6 +10,9 @@ from Plugins.Extensions.IPTVPlayer.libs.urlparserhelper import getDirectM3U8Play
 from Plugins.Extensions.IPTVPlayer.libs.e2ijson import loads as json_loads
 ###################################################
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlLib import urllib_quote, urllib_unquote
+from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
+if not isPY2():
+    from functools import cmp_to_key
 ###################################################
 # FOREIGN import
 ###################################################
@@ -508,7 +511,10 @@ class ZDFmediathek(CBaseHostClass):
                                 return 1
                             else:
                                 return 0
-            tmpUrlTab.sort(_cmpLinks)
+            if isPY2():
+                tmpUrlTab.sort(_cmpLinks)
+            else:
+                tmpUrlTab.sort(key=cmp_to_key(_cmpLinks))
             onelinkmode = config.plugins.iptvplayer.zdfmediathek_onelinkmode.value
             for item in tmpUrlTab:
                 url = item['url']
