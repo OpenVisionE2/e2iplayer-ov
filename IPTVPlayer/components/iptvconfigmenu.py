@@ -492,10 +492,12 @@ class ConfigMenu(ConfigBaseWidget):
         list.append(getConfigListEntry(_("Block wmv files"), config.plugins.iptvplayer.ZablokujWMV))
         list.append(getConfigListEntry(_("Show IPTVPlayer in extension list"), config.plugins.iptvplayer.showinextensions))
         list.append(getConfigListEntry(_("Show IPTVPlayer in main menu"), config.plugins.iptvplayer.showinMainMenu))
-        list.append(getConfigListEntry(_("Show update icon in service selection menu"), config.plugins.iptvplayer.AktualizacjaWmenu))
+        if config.plugins.iptvplayer.preferredupdateserver.value != '4': #4 = managed by opkg, no no update icon
+            list.append(getConfigListEntry(_("Show update icon in service selection menu"), config.plugins.iptvplayer.AktualizacjaWmenu))
         list.append(getConfigListEntry(_("Debug logs"), config.plugins.iptvplayer.debugprint))
-        list.append(getConfigListEntry(_("Allow downgrade"), config.plugins.iptvplayer.downgradePossible))
-        list.append(getConfigListEntry(_("Update packet type"), config.plugins.iptvplayer.possibleUpdateType))
+        if config.plugins.iptvplayer.preferredupdateserver.value != '4': #4 = managed by opkg, no no update icon
+            list.append(getConfigListEntry(_("Allow downgrade"), config.plugins.iptvplayer.downgradePossible))
+            list.append(getConfigListEntry(_("Update packet type"), config.plugins.iptvplayer.possibleUpdateType))
 
     def runSetup(self):
         self.list = []
