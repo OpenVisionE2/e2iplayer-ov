@@ -1819,3 +1819,7 @@ def is_port_in_use(pIP, pPORT):
     res = sock.connect_ex((pIP, pPORT))
     sock.close()
     return res == 0
+
+def isOPKGinstall():
+    return False # temporary for now
+
