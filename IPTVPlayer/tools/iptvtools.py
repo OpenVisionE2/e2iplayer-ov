@@ -406,7 +406,7 @@ def TestTmpCookieDir():
 def GetCookieDir(file='', forceFromConfig=False):
     global gE2iPlayerTempCookieDir
     if gE2iPlayerTempCookieDir == None or forceFromConfig:
-        cookieDir = config.plugins.iptvplayer.SciezkaCache.value + '/cookies/'
+        cookieDir = os.path.join(config.plugins.iptvplayer.SciezkaCache.value , 'cookies/')
     else:
         cookieDir = gE2iPlayerTempCookieDir
     try:
@@ -431,8 +431,8 @@ def ClearTmpJSCacheDir():
     global gE2iPlayerTempJSCache
     if gE2iPlayerTempJSCache != None:
         try:
-            for file in os.listdir(gE2iPlayerTempJSCache):
-                rm(gE2iPlayerTempJSCache + '/' + file)
+            for fileName in os.listdir(gE2iPlayerTempJSCache): #file is native p2 function renamed for clarity
+                rm(os.path.join(gE2iPlayerTempJSCache , fileName))
         except Exception:
             printExc()
     gE2iPlayerTempJSCache = None
@@ -446,10 +446,10 @@ def TestTmpJSCacheDir():
         f.write("test")
 
 
-def GetJSCacheDir(file='', forceFromConfig=False):
+def GetJSCacheDir(fileName='', forceFromConfig=False):
     global gE2iPlayerTempJSCache
     if gE2iPlayerTempJSCache == None or forceFromConfig:
-        cookieDir = config.plugins.iptvplayer.SciezkaCache.value + '/JSCache/'
+        cookieDir = os.path.join(config.plugins.iptvplayer.SciezkaCache.value , 'JSCache/')
     else:
         cookieDir = gE2iPlayerTempJSCache
     try:
@@ -457,23 +457,23 @@ def GetJSCacheDir(file='', forceFromConfig=False):
             mkdirs(cookieDir)
     except Exception:
         printExc()
-    return cookieDir + file
+    return os.path.join(cookieDir , fileName)
 ##############################
 
 
-def GetTmpDir(file=''):
+def GetTmpDir(fileName=''):
     path = config.plugins.iptvplayer.NaszaTMP.value
     path = path.replace('//', '/')
     mkdirs(path)
-    return path + '/' + file
+    return os.path.join(path , fileName)
 
 
-def GetE2iPlayerRootfsDir(file=''):
-    return '/iptvplayer_rootfs/' + file
+def GetE2iPlayerRootfsDir(fileName=''):
+    return os.path.join('/iptvplayer_rootfs' , fileName)
 
 
-def GetE2iPlayerVKLayoutDir(file=''):
-    return GetE2iPlayerRootfsDir('etc/vk/' + file)
+def GetE2iPlayerVKLayoutDir(fileName=''):
+    return GetE2iPlayerRootfsDir(os.path.join('etc/vk/' , fileName))
 
 
 def CreateTmpFile(filename, data=''):
@@ -488,53 +488,52 @@ def CreateTmpFile(filename, data=''):
     return sts, filePath
 
 
-def GetCacheSubDir(dir, file=''):
-    path = config.plugins.iptvplayer.SciezkaCache.value + "/" + dir
-    path = path.replace('//', '/')
+def GetCacheSubDir(dirName, fileName=''):
+    path = os.path.join(config.plugins.iptvplayer.SciezkaCache.value , dirName)
     mkdirs(path)
-    return path + '/' + file
+    return os.path.join(path , fileName)
 
 
-def GetSearchHistoryDir(file=''):
-    return GetCacheSubDir('SearchHistory', file)
+def GetSearchHistoryDir(fileName=''):
+    return GetCacheSubDir('SearchHistory', fileName)
 
 
-def GetFavouritesDir(file=''):
-    return GetCacheSubDir('IPTVFavourites', file)
+def GetFavouritesDir(fileName=''):
+    return GetCacheSubDir('IPTVFavourites', fileName)
 
 
-def GetSubtitlesDir(file=''):
-    return GetCacheSubDir('Subtitles', file)
+def GetSubtitlesDir(fileName=''):
+    return GetCacheSubDir('Subtitles', fileName)
 
 
-def GetMovieMetaDataDir(file=''):
-    return GetCacheSubDir('MovieMetaData', file)
+def GetMovieMetaDataDir(fileName=''):
+    return GetCacheSubDir('MovieMetaData', fileName)
 
 
-def GetIPTVDMImgDir(file=''):
-    return resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/icons/') + file
+def GetIPTVDMImgDir(fileName=''):
+    return os.path.join(resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/icons/') , fileName)
 
 
-def GetIconDir(file=''):
-    return resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/icons/') + file
+def GetIconDir(fileName=''):
+    return os.path.join(resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/icons/') , fileName)
 
 
-def GetBinDir(file='', platform=None):
+def GetBinDir(fileName='', platform=None):
     if None == platform:
         platform = config.plugins.iptvplayer.plarform.value
-    return resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/bin/') + platform + '/' + file
+    return os.path.join(resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/bin/') , platform , fileName)
 
 
-def GetPluginDir(file=''):
-    return resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/') + file
+def GetPluginDir(fileName=''):
+    return os.path.join(resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/') , fileName)
 
 
-def GetExtensionsDir(file=''):
-    return resolveFilename(SCOPE_PLUGINS, 'Extensions/') + file
+def GetExtensionsDir(fileName=''):
+    return os.path.join(resolveFilename(SCOPE_PLUGINS, 'Extensions/') , fileName)
 
 
 def GetSkinsDir(path=''):
-    return resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/skins/') + path
+    return os.path.join(resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/skins/') , path)
 
 
 def GetConfigDir(path=''):
@@ -727,8 +726,8 @@ def __isHostNameValid(hostName):
     return False
 
 
-def __getHostsPath(file=''):
-    return resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/hosts/' + file)
+def __getHostsPath(fileName=''):
+    return resolveFilename(SCOPE_PLUGINS, os.path.join('Extensions/IPTVPlayer/hosts/' , fileName))
 
 
 def GetHostsFromList(useCache=True):
@@ -802,7 +801,7 @@ def GetHostsAliases():
     ret = {}
     try:
         HOST_PATH = resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/hosts/')
-        sts, data = ReadTextFile(HOST_PATH + '/aliases.txt')
+        sts, data = ReadTextFile(os.path.join(HOST_PATH , 'aliases.txt'))
         if sts:
             data = json_loads(data)
             if isinstance(data, dict):
