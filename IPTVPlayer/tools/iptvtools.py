@@ -387,8 +387,8 @@ def ClearTmpCookieDir():
     global gE2iPlayerTempCookieDir
     if gE2iPlayerTempCookieDir != None:
         try:
-            for file in os.listdir(gE2iPlayerTempCookieDir):
-                rm(gE2iPlayerTempCookieDir + '/' + file)
+            for fileName in os.listdir(gE2iPlayerTempCookieDir):
+                rm(os.path.join(gE2iPlayerTempCookieDir , fileName))
         except Exception:
             printExc()
 
@@ -717,7 +717,7 @@ def printDBG(DBGtxt):
 #####################################################
 g_cacheHostsFromList = None
 g_cacheHostsFromFolder = None
-
+g_cachePluginFolder = None
 
 def __isHostNameValid(hostName):
     BLOCKED_MARKER = '_blocked_'
@@ -727,17 +727,18 @@ def __isHostNameValid(hostName):
 
 
 def __getHostsPath(fileName=''):
-    return resolveFilename(SCOPE_PLUGINS, os.path.join('Extensions/IPTVPlayer/hosts/' , fileName))
+    return os.path.join(resolveFilename(SCOPE_PLUGINS) , 'Extensions/IPTVPlayer/hosts/' , fileName)
 
 
 def GetHostsFromList(useCache=True):
     global g_cacheHostsFromList
-    if useCache and g_cacheHostsFromList != None:
+    if useCache and g_cacheHostsFromList != None and len(g_cacheHostsFromList) > 0:
+        printDBG('iptvtools.GetHostsFromList returns cached list (%s)' % str(g_cacheHostsFromList))
         return list(g_cacheHostsFromList)
 
     lhosts = []
     try:
-        sts, data = ReadTextFile(__getHostsPath('/list.txt'))
+        sts, data = ReadTextFile(__getHostsPath('list.txt'))
         if sts:
             data = data.split('\n')
             for item in data:
@@ -748,18 +749,21 @@ def GetHostsFromList(useCache=True):
     except Exception:
         printExc()
 
-    g_cacheHostsFromList = list(lhosts)
+    g_cacheHostsFromList = lhosts
+    printDBG(str(g_cacheHostsFromList))
     return lhosts
 
 
 def GetHostsFromFolder(useCache=True):
     global g_cacheHostsFromFolder
-    if useCache and g_cacheHostsFromFolder != None:
+    if useCache and g_cacheHostsFromFolder != None and len(g_cacheHostsFromFolder) > 0:
+        printDBG('iptvtools.GetHostsFromFolder returns cached list (%s)' % str(g_cacheHostsFromFolder))
         return g_cacheHostsFromFolder
 
     lhosts = []
     try:
         fileList = os.listdir(__getHostsPath())
+        printDBG('\t len(fileList)=%s'% len(fileList))
         for wholeFileName in fileList:
             # separate file name and file extension
             fileName, fileExt = os.path.splitext(wholeFileName)
@@ -768,26 +772,26 @@ def GetHostsFromFolder(useCache=True):
                 if fileName[4:] not in lhosts:
                     lhosts.append(fileName[4:])
                     printDBG('getHostsList add host with fileName: "%s"' % fileName[4:])
-        printDBG('getHostsList end')
+        printDBG('iptvtools.getHostsList end')
         lhosts.sort()
     except Exception:
-        printDBG('GetHostsList EXCEPTION')
+        printDBG('iptvtools.GetHostsList EXCEPTION')
 
-    g_cacheHostsFromFolder = list(lhosts)
+    g_cacheHostsFromFolder = lhosts
     return lhosts
 
 
 def GetHostsList(fromList=True, fromHostFolder=True, useCache=True):
-    printDBG('getHostsList begin')
-
     lhosts = []
     if fromHostFolder:
+        printDBG('iptvtools.getHostsList(fromHostFolder)')
         lhosts = GetHostsFromFolder(useCache)
 
     # when new option to remove not enabled host is enabled
     # on list should be also host which are not normally in
     # the folder, so we will read first predefined list
     if fromList:
+        printDBG('iptvtools.getHostsList(fromList)')
         tmp = GetHostsFromList(useCache)
         for host in tmp:
             if host not in lhosts:
@@ -1822,4 +1826,3 @@ def is_port_in_use(pIP, pPORT):
 
 def isOPKGinstall():
     return False # temporary for now
-
