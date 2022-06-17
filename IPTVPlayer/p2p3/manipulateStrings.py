@@ -57,7 +57,7 @@ def ensure_str(text, encoding='utf-8', errors='strict'): #based on six library
             return text.encode(encoding, errors)
         except Exception:
             return text.encode(encoding, 'ignore')
-    elif not PY2() and isinstance(text, bytes): #PY3
+    elif not isPY2() and isinstance(text, bytes): #PY3
         try:
             return text.decode(encoding, errors)
         except Exception:
