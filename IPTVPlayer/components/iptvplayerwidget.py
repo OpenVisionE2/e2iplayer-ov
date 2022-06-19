@@ -415,7 +415,7 @@ class E2iPlayerWidget(Screen):
         try:
             asynccall.gMainFunctionsQueueTab[0].setProcFun(None)
             asynccall.gMainFunctionsQueueTab[0].clearQueue()
-            iptv_system('echo 1 > /proc/sys/vm/drop_caches')
+            with open("/proc/sys/vm/drop_caches", "w") as f: f.write("1")
         except Exception:
             printExc()
         self.activePlayer = None
