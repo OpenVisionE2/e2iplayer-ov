@@ -1445,19 +1445,19 @@ class CMoviePlayerPerHost():
         self.save()
 
 
-def byteify(input, noneReplacement=None, baseTypesAsString=False):
-    if isinstance(input, dict):
-        return dict([(byteify(key, noneReplacement, baseTypesAsString), byteify(value, noneReplacement, baseTypesAsString)) for key, value in iterDictItems(input)])
-    elif isinstance(input, list):
-        return [byteify(element, noneReplacement, baseTypesAsString) for element in input]
-    elif isinstance(input, unicode):
-        return input.encode('utf-8')
-    elif input == None and noneReplacement != None:
+def byteify(inData, noneReplacement=None, baseTypesAsString=False):
+    if isinstance(inData, dict):
+        return dict([(byteify(key, noneReplacement, baseTypesAsString), byteify(value, noneReplacement, baseTypesAsString)) for key, value in iterDictItems(inData)])
+    elif isinstance(inData, list):
+        return [byteify(element, noneReplacement, baseTypesAsString) for element in inData]
+    elif isinstance(inData, unicode):
+        return ensure_str(inData)
+    elif inData == None and noneReplacement != None:
         return noneReplacement
     elif baseTypesAsString:
-        return str(input)
+        return str(inData)
     else:
-        return input
+        return inData
 
 
 def printExc(msg='', WarnOnly = False):
