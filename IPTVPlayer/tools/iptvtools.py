@@ -36,7 +36,7 @@ import socket
 
 SERVER_DOMAINS = {'vline': 'http://iptvplayer.vline.pl/', 'gitlab': 'http://zadmario.gitlab.io/', 'private': 'http://www.e2iplayer.gitlab.io/'}
 SERVER_UPDATE_PATH = {'vline': 'download/update2/', 'gitlab': 'update2/', 'private': 'update2/'}
-
+CACHED_DATA_DICT = {}
 
 def GetServerKey(serverNum=None):
     if serverNum == None:
@@ -1481,7 +1481,6 @@ def printExc(msg='', WarnOnly = False):
         pass
     return retMSG #returns the error description to possibly use in main code. E.g. inform about failed login
 
-
 def GetIPTVPlayerVerstion():
     try:
         from Plugins.Extensions.IPTVPlayer.version import IPTV_VERSION
@@ -1841,3 +1840,21 @@ def isOPKGinstall():
         return True
     else:
         return False
+
+def getIPTVplayerOPKGVersion():
+    global CACHED_DATA_DICT
+    if None == CACHED_DATA_DICT.get('IPTVplayerOPKGVersion', None):
+        if not isOPKGinstall():
+            CACHED_DATA_DICT['IPTVplayerOPKGVersion'] = ''
+        else:
+            for controlFile in ('/var/lib/opkg/info/enigma2-plugin-extensions--j00zeks-e2iplayer-mod-zadmario.control',
+                                '/var/lib/opkg/info/enigma2-plugin-extensions-e2iplayer.control'):
+                if os.path.exists(controlFile):
+                    lines = []
+                    with open(controlFile, 'r') as f:
+                        lines = f.readlines()
+                        f.close()
+                    for line in lines:
+                        if line.startswith('Version: '):
+                            CACHED_DATA_DICT['IPTVplayerOPKGVersion'] = line[9:].strip()
+    return CACHED_DATA_DICT.get('IPTVplayerOPKGVersion', '')
