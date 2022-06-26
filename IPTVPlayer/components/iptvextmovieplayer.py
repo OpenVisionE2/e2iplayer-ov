@@ -1676,16 +1676,18 @@ class IPTVExtMoviePlayer(Screen):
                 elif "EPLAYER3_EXTENDED" == key:
                     self.playerBinaryInfo['version'] = obj['version']
                 elif "GST_ERROR" == key:
-                    msgType = MessageBox.TYPE_ERROR
-                    msgText += 'GST_ERROR: %s, code %s\n' % (ensure_str(obj['msg']), obj['code'])
                     printDBG('GST_ERROR: %s, code %s\n' % (ensure_str(obj['msg']), obj['code']))
+                    msgType = MessageBox.TYPE_ERROR
+                    msgText += 'GST_ERROR: %s (code %s)\n' % (ensure_str(obj['msg']), obj['code'])
+                    if ensure_str(obj['msg']) == "No URI handler implemented for 'ifd'.":
+                        msgText += _('Try to change extplayer or disable IFD in GSTplayer configuration')
                 elif "FF_ERROR" == key:
+                    printDBG('FF_ERROR: %s, code %s\n' % (ensure_str(obj['msg']), obj['code']))
                     msgType = MessageBox.TYPE_ERROR
                     msgText += 'FF_ERROR: %s, code %s\n' % (ensure_str(obj['msg']), obj['code'])
-                    printDBG('FF_ERROR: %s, code %s\n' % (ensure_str(obj['msg']), obj['code']))
                 elif "GST_MISSING_PLUGIN" == key:
-                    msgText += 'GST_MISSING_PLUGIN: %s\n' % ensure_str(obj['msg'])
                     printDBG('GST_MISSING_PLUGIN: %s\n' % ensure_str(obj['msg']))
+                    msgText += 'GST_MISSING_PLUGIN: %s\n' % ensure_str(obj['msg'])
 
                 # {u'PLAYBACK_INFO':
                 # {u'isSeeking': False,
@@ -1960,7 +1962,8 @@ class IPTVExtMoviePlayer(Screen):
 
             # active audio track
             audioTrackIdx = self.metaHandler.getAudioTrackIdx()
-            cmd += ' %d ' % audioTrackIdx
+            if config.plugins.iptvplayer.GSTplayer_no_IFD.value == False:
+                cmd += ' %d ' % audioTrackIdx
 
             # file download timeout
             if None != self.downloader and self.downloader.isDownloading():
