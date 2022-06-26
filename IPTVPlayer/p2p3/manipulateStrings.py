@@ -10,7 +10,7 @@ from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 
 def strDecode(text,  setErrors = 'strict'):
     if isPY2():
-        retVal = text
+        retVal = text.decode('utf-8')
     else: #PY3
         retVal = text.decode(encoding='utf-8', errors=setErrors)
     return retVal
