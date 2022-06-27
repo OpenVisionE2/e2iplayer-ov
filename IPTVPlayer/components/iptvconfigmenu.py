@@ -26,7 +26,8 @@ from Screens.Screen import Screen
 
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.Label import Label
-from Components.config import config, ConfigSubsection, ConfigSelection, ConfigDirectory, ConfigYesNo, ConfigOnOff, Config, ConfigInteger, ConfigSubList, ConfigText, getConfigListEntry, configfile
+from Components.config import config, ConfigSubsection, ConfigSelection, ConfigDirectory, ConfigYesNo, ConfigOnOff, Config, ConfigInteger, \
+                              ConfigSubList, ConfigText, getConfigListEntry, configfile, ConfigNothing, NoSave
 from Components.ConfigList import ConfigListScreen
 from Tools.BoundFunction import boundFunction
 from Tools.Directories import resolveFilename, fileExists, SCOPE_PLUGINS
@@ -37,6 +38,8 @@ from Tools.Directories import resolveFilename, fileExists, SCOPE_PLUGINS
 # Config options for HOST
 ###################################################
 config.plugins.iptvplayer = ConfigSubsection()
+
+config.plugins.iptvplayer.FakeEntry = NoSave(ConfigNothing())
 
 from Plugins.Extensions.IPTVPlayer.components.configextmovieplayer import ConfigExtMoviePlayer
 
@@ -323,6 +326,7 @@ class ConfigMenu(ConfigBaseWidget):
     @staticmethod
     def fillConfigList(list, hiddenOptions=False):
         if hiddenOptions:
+            list.append(getConfigListEntry('\\c00289496' + _("----- HIDDEN OPTIONS -----"), config.plugins.iptvplayer.FakeEntry))
             list.append(getConfigListEntry(_("Last checked version"), config.plugins.iptvplayer.updateLastCheckedVersion))
             list.append(getConfigListEntry(_("Show all version in the update menu"), config.plugins.iptvplayer.hiddenAllVersionInUpdate))
             list.append(getConfigListEntry(_("VFD set current title:"), config.plugins.iptvplayer.set_curr_title))
