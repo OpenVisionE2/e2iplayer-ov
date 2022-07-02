@@ -62,3 +62,6 @@ find $myAbsPath/IPTVPlayer -iname "*.py" |
       fi
     fi
   done
+
+echo "refreshing mo files..."
+find $myAbsPath/IPTVPlayer/locale -type f -name *.po  -exec bash -c 'msgfmt "$1" -o "${1%.po}".mo' - '{}' \;
