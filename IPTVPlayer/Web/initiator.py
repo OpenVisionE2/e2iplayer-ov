@@ -1,6 +1,6 @@
 import os
 from Plugins.Extensions.OpenWebif.WebChilds.Toplevel import addExternalChild
-from Tools.Directories import resolveFilename, SCOPE_PLUGINS
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS, isPluginInstalled
 
 from webSite import StartPage, redirectionPage, hostsPage, useHostPage, downloaderPage, settingsPage, logsPage, searchPage
 from twisted.web import static
@@ -42,7 +42,7 @@ def checkForFC():
     return ret
 
 
-if os.path.exists(resolveFilename(SCOPE_PLUGINS, 'Extensions/OpenWebif/pluginshook.src')):
+if isPluginInstalled("OpenWebif"):
     # Old openwebif version (prior July the 14th 2017) has a bug and does not populate links to all properly registered web addons except fancontrol
     # see: https://github.com/E2OpenPlugins/e2openplugin-OpenWebif/pull/629
     #  A HACK: we will canibalize fancontrol entry point (if not installed) to present IPTVplayer option on the web
