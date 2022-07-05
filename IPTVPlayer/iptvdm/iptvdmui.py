@@ -29,7 +29,7 @@ from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.Label import Label
 from Components.Sources.StaticText import StaticText
 from Components.config import config
-
+from Components.SystemInfo import BoxInfo
 from os import chmod as os_chmod, path as os_path, remove as os_remove
 ###################################################
 
@@ -333,7 +333,7 @@ class IPTVDMWidget(Screen):
                         additionalParams['show_iframe'] = config.plugins.iptvplayer.show_iframe.value
                         additionalParams['iframe_file_start'] = config.plugins.iptvplayer.iframe_file.value
                         additionalParams['iframe_file_end'] = config.plugins.iptvplayer.clear_iframe_file.value
-                        if 'sh4' == config.plugins.iptvplayer.plarform.value:
+                        if BoxInfo.getItem("architecture") == "sh4":
                             additionalParams['iframe_continue'] = True
                         else:
                             additionalParams['iframe_continue'] = False
