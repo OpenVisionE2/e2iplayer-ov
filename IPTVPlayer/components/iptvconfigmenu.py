@@ -51,9 +51,6 @@ config.plugins.iptvplayer.otherConfVisible = NoSave(ConfigNothing())
 
 from Plugins.Extensions.IPTVPlayer.components.configextmovieplayer import ConfigExtMoviePlayer
 
-config.plugins.iptvplayer.cmdwrappath = ConfigText(default="", fixed_size=False)
-config.plugins.iptvplayer.dukpath = ConfigText(default="", fixed_size=False)
-config.plugins.iptvplayer.uchardetpath = ConfigText(default="", fixed_size=False)
 config.plugins.iptvplayer.set_curr_title = ConfigYesNo(default=False)
 config.plugins.iptvplayer.curr_title_file = ConfigText(default="", fixed_size=False)
 config.plugins.iptvplayer.plarform = ConfigSelection(default="auto", choices=[("auto", "auto"), ("mipsel", _("mipsel")), ("sh4", _("sh4")), ("i686", _("i686")), ("armv7", _("armv7")), ("armv5t", _("armv5t")), ("unknown", _("unknown"))])
@@ -263,9 +260,6 @@ class ConfigMenu(ConfigBaseWidget):
             list.append(getConfigListEntry(_("Write current title to file:"), config.plugins.iptvplayer.curr_title_file))
             list.append(getConfigListEntry(_("The default aspect ratio for the external player"), config.plugins.iptvplayer.hidden_ext_player_def_aspect_ratio))
 
-            list.append(getConfigListEntry("cmdwrappath", config.plugins.iptvplayer.cmdwrappath))
-            list.append(getConfigListEntry("dukpath", config.plugins.iptvplayer.dukpath))
-            list.append(getConfigListEntry("uchardetpath", config.plugins.iptvplayer.uchardetpath))
             list.append(getConfigListEntry("E2iPlayer auto start at Enigma2 start", config.plugins.iptvplayer.plugin_autostart))
             list.append(getConfigListEntry("Auto start method", config.plugins.iptvplayer.plugin_autostart_method))
             list.append(getConfigListEntry("Prefer hlsld for playlist with alt. media", config.plugins.iptvplayer.prefer_hlsdl_for_pls_with_alt_media))

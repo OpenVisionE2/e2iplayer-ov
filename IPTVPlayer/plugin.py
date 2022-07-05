@@ -120,7 +120,7 @@ class pluginAutostart(Screen):
 
     def onStart(self):
         self.onShow.remove(self.onStart)
-        doRunMain(self.session, self.iptvDoRunMain)
+        doRunMain(self.session)
 
     def iptvDoRunMain(self, session):
         session.openWithCallback(self.iptvDoClose, E2iPlayerWidget)
