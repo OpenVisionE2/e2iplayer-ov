@@ -28,7 +28,9 @@ from Tools.BoundFunction import boundFunction
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import fileExists
 from enigma import getDesktop, eTimer
+from Components.SystemInfo import BoxInfo
 
+architecture = BoxInfo.getItem("architecture")
 ####################################################
 #                   IPTV components
 ####################################################
@@ -356,7 +358,6 @@ class E2iPlayerWidget(Screen):
         self.enabledHostsListOld = []
         asynccall.SetMainThreadId()
 
-        self.checkWrongImage = True
         self.downloadable = False
         self.colorEnabled = parseColor("#FFFFFF")
         self.colorDisabled = parseColor("#808080")
@@ -1136,7 +1137,6 @@ class E2iPlayerWidget(Screen):
         self.setTitle('E2iPlayer ' + GetIPTVPlayerVerstion())
         self.loadSpinner()
         self.hideSpinner()
-        self.checkBlacklistedImage()
         self.askUpdateAvailable(self.selectHost)
 
     def __requestCheckUpdate(self):
@@ -1812,7 +1812,7 @@ class E2iPlayerWidget(Screen):
                     gstAdditionalParams['show_iframe'] = config.plugins.iptvplayer.show_iframe.value
                     gstAdditionalParams['iframe_file_start'] = config.plugins.iptvplayer.iframe_file.value
                     gstAdditionalParams['iframe_file_end'] = config.plugins.iptvplayer.clear_iframe_file.value
-                    if 'sh4' == config.plugins.iptvplayer.plarform.value:
+                    if architecture == "sh4":
                         gstAdditionalParams['iframe_continue'] = True
                     else:
                         gstAdditionalParams['iframe_continue'] = False
@@ -1834,7 +1834,7 @@ class E2iPlayerWidget(Screen):
                             playerVal = 'gstplayer'
                             gstAdditionalParams['download-buffer-path'] = ''
                             gstAdditionalParams['ring-buffer-max-size'] = 0
-                            if 'sh4' == config.plugins.iptvplayer.plarform.value: # use default value, due to small amount of RAM
+                            if architecture == "sh4": # use default value, due to small amount of RAM
                                 #use the default value, due to small amount of RAM
                                 #in the future it will be configurable
                                 gstAdditionalParams['buffer-duration'] = -1
@@ -2292,27 +2292,6 @@ class E2iPlayerWidget(Screen):
            self.session.open(MessageBox, ret.value[0], type=MessageBox.TYPE_ERROR)
         else:
             self.checkAutoPlaySequencer()
-
-    def checkBlacklistedImage(self):
-        if self.checkWrongImage:
-            self.checkWrongImage = False
-            try:
-                if os_path.isfile(GetExtensionsDir('/iPabUpdater/__init__.pyo')):
-                    message = ["WARNING (phase 1/3)"]
-                    message.append("Because of blocking part of functionality of the IPTVPlayer by http://ipab.tv/ developer your image was blacklisted.")
-                    message.append("Please be also informed that users of http://ipab.tv/ will NOT get support, due to same reason.")
-                    GetIPTVNotify().push('\n'.join(message), 'error', 120)
-                elif os_path.isfile('/etc/bpversion'):
-                    with open("/etc/bpversion") as file:
-                        data = file.read(256)
-                        if 'opendonki' in data.lower():
-                            message = ["WARNING (phase 1/3)"]
-                            message.append("Because of very bad behaviour of user @DirtyDonki your image was blacklisted.")
-                            message.append("Please be also informed that users of https://vuplus-images.co.uk/ forum will NOT get support, due to same reason.")
-                            GetIPTVNotify().push('\n'.join(message), 'error', 120)
-            except:
-                printExc()
-#class E2iPlayerWidget
 
 
 class IPTVPlayerLCDScreen(Screen):

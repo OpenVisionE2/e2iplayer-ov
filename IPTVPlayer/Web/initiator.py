@@ -1,5 +1,5 @@
 import os
-from Plugins.Extensions.WebInterface.WebChilds.Toplevel import addExternalChild
+from Plugins.Extensions.OpenWebif.WebChilds.Toplevel import addExternalChild
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 
 from webSite import StartPage, redirectionPage, hostsPage, useHostPage, downloaderPage, settingsPage, logsPage, searchPage
@@ -42,16 +42,7 @@ def checkForFC():
     return ret
 
 
-# registration for old webinterface
-if os.path.exists(resolveFilename(SCOPE_PLUGINS, 'Extensions/WebInterface/web/external.xml')):
-    try:
-        addExternalChild(("e2iplayer", IPTVwebRoot, "E2iPlayer", settings.WebInterfaceVersion, True))
-        addExternalChild(("iptvplayer", IPTVwebRoot, "E2iPlayer", settings.WebInterfaceVersion, True))
-    except Exception:
-        addExternalChild(("e2iplayer", IPTVwebRoot))
-        addExternalChild(("iptvplayer", IPTVwebRoot))
-# registration for openwebif
-elif os.path.exists(resolveFilename(SCOPE_PLUGINS, 'Extensions/OpenWebif/pluginshook.src')):
+if os.path.exists(resolveFilename(SCOPE_PLUGINS, 'Extensions/OpenWebif/pluginshook.src')):
     # Old openwebif version (prior July the 14th 2017) has a bug and does not populate links to all properly registered web addons except fancontrol
     # see: https://github.com/E2OpenPlugins/e2openplugin-OpenWebif/pull/629
     #  A HACK: we will canibalize fancontrol entry point (if not installed) to present IPTVplayer option on the web

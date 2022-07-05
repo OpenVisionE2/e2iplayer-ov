@@ -33,6 +33,7 @@ import stat
 import codecs
 import datetime
 import socket
+from Components.SystemInfo import BoxInfo
 
 SERVER_DOMAINS = {'vline': 'http://iptvplayer.vline.pl/', 'gitlab': 'http://zadmario.gitlab.io/'}
 SERVER_UPDATE_PATH = {'vline': 'download/update2/', 'gitlab': 'update2/'}
@@ -136,7 +137,7 @@ def GetNice(pid=None):
 
 
 def E2PrioFix(cmd, factor=2):
-    if '/duk' not in cmd and config.plugins.iptvplayer.plarform.value in ('mipsel', 'armv7', 'armv5t'):
+    if BoxInfo.getItem("architecture") != "sh4":
         return 'nice -n %d %s' % (GetNice() + factor, cmd)
     else:
         return cmd
@@ -348,7 +349,7 @@ def GetPyScriptCmd(name):
     elif fileExists(baseName + '.pyo'):
         baseName += '.pyo'
     if baseName != '':
-        for item in ['python', 'python2.7', 'python2.6']:
+        for item in ['python', 'python2.7']:
             pyPath = Which(item)
             if '' != pyPath:
                 cmd = '%s %s' % (pyPath, baseName)
@@ -1511,25 +1512,6 @@ def GetVersionNum(ver):
     except Exception:
         printExc('Version[%r]' % ver)
         return 0
-
-
-def IsFPUAvailable():
-    try:
-        if None == IsFPUAvailable.available:
-            with open('/proc/cpuinfo', 'r') as f:
-                data = f.read().strip().upper()
-            if ' FPU ' in data:
-                IsFPUAvailable.available = True
-            else:
-                IsFPUAvailable.available = False
-        if IsFPUAvailable.available == False and config.plugins.iptvplayer.plarformfpuabi.value == 'hard_float':
-            return True
-    except Exception:
-        printExc()
-    return IsFPUAvailable.available
-
-
-IsFPUAvailable.available = None
 
 
 def IsSubtitlesParserExtensionCanBeUsed():
