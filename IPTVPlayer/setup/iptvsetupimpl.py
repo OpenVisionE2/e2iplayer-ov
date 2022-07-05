@@ -306,7 +306,7 @@ class IPTVSetupImpl:
     def getOpensslVersionFinished(self, stsTab, dataTab):
         printDBG("IPTVSetupImpl.getOpensslVersionFinished")
         if len(stsTab) > 0 and True == stsTab[-1]:
-            for ver in ['0.9.8', '1.0.0', '1.0.2', '1.1.1']:
+            for ver in ['0.9.8', '1.0.0', '1.0.2', '1.1.1', '3.0.3', '3.0.4']:
                 if ver in dataTab[-1]:
                     self.openSSLVersion = '.' + ver
                     break
@@ -1108,16 +1108,7 @@ class IPTVSetupImpl:
         if len(self.ffmpegVersion) >= 5:
             shortFFmpegVersion = self.ffmpegVersion[:-2]
 
-        if self.platform in ['sh4'] and shortFFmpegVersion in ['1.0', '1.1', '1.2', '2.0', '2.2', '2.5', '2.6', '2.7', '2.8', '3.0', '3.1', '3.2', '3.3', '3.4']:
-            self.ffmpegVersion = shortFFmpegVersion
-            self.exteplayer3Step()
-        elif self.platform in ['mipsel'] and shortFFmpegVersion in ['2.8', '3.0', '3.1', '3.2', '3.3', '3.4']:
-            self.ffmpegVersion = shortFFmpegVersion
-            self.exteplayer3Step()
-        elif self.platform in ['armv7'] and shortFFmpegVersion in ['2.8', '3.0', '3.1', '3.2', '3.3', '3.4']:
-            self.ffmpegVersion = shortFFmpegVersion
-            self.exteplayer3Step()
-        elif self.platform in ['armv5t'] and shortFFmpegVersion in ['2.8', '3.0', '3.1', '3.2', '3.3', '3.4']:
+        if self.platform in ['sh4', 'mipsel', 'armv7', 'armv5t'] and shortFFmpegVersion in ['3.0', '3.1', '3.2', '3.3', '3.4', '4.0', '4.1', '5.0']:
             self.ffmpegVersion = shortFFmpegVersion
             self.exteplayer3Step()
         elif "" != self.gstreamerVersion:
