@@ -506,7 +506,7 @@ class E2iPlayerWidget(Screen):
                         message += "\n"
                         message += _('\nMake sure you are using the latest version of the plugin.')
                         if config.plugins.iptvplayer.preferredupdateserver.value == '3': #private sss repository
-                            message += _('\nYou can also report problem here: \nhttps://gitlab.com/iptvplayer-for-e2/iptvplayer-for-e2/issues\nor here: samsamsam@o2.pl')
+                            message += _('\nYou can also report problem here: \nhttps://github.com/OpenVisionE2/e2iplayer-ov/issues')
                         self.session.openWithCallback(self.reportHostCrash, MessageBox, text=message, type=MessageBox.TYPE_YESNO)
             self.hideSpinner()
         except Exception:
@@ -724,8 +724,9 @@ class E2iPlayerWidget(Screen):
             if ret[1] == "info": #information about plugin
                 TextMSG = _("Lead programmer: ") + "\n\t- samsamsam\n"
                 if config.plugins.iptvplayer.preferredupdateserver.value == '3': #private sss repository
-                    TextMSG += _("E-mail: ") + "\n\t- iptvplayere2@gmail.com\n"
-                    TextMSG += _("www: ") + "\n\t- http://iptvplayer.vline.pl/" + '\n\t- http://www.iptvplayer.gitlab.io/\n'
+#                    TextMSG += _("E-mail: ") + "\n\t- iptvplayere2@gmail.com\n"
+#                    TextMSG += _("www: ") + "\n\t- http://iptvplayer.vline.pl/" + '\n\t- http://www.iptvplayer.gitlab.io/\n'
+                    TextMSG += _("www: ") + "\n\t- https://github.com/OpenVisionE2/e2iplayer-ov"
                 TextMSG += _("Developers: ")
                 developersTab = [{'nick': 'zdzislaw22', },
                                  {'nick': 'mamrot', },
@@ -736,6 +737,8 @@ class E2iPlayerWidget(Screen):
                                  {'nick': 'matzg', },
                                  {'nick': 'tomashj291', },
                                  {'nick': 'a4tech', },
+                                 {'nick': 'zadmario',    },
+                                 {'nick': 'Open Vision Developers',    },
                                 ]
                 # present alphabetically, the order does not mean validity
                 sortedList = sorted(developersTab, key=lambda k: k['nick'].upper())
