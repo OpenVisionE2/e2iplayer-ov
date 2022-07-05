@@ -630,7 +630,6 @@ class E2iVirtualKeyBoard(Screen):
     def loadKeyboardLayout(self, vkLayoutId, allowDownload=False):
         printDBG("loadKeyboardLayout vkLayoutId: %s" % vkLayoutId)
         errorMsg = ''
-        askForDowanload = 0
         filePath = GetE2iPlayerVKLayoutDir('%s.kle' % vkLayoutId)
         if vkLayoutId == self.DEFAULT_VK_LAYOUT['id']:
             self.setVKLayout(self.DEFAULT_VK_LAYOUT)
@@ -654,10 +653,8 @@ class E2iVirtualKeyBoard(Screen):
                 except Exception as e:
                     printExc()
                     errorMsg = _('Load of the Virtual Keyboard layout "%s" failed due to the following error: "%s"') % (vkLayoutItem[0], str(e))
-                    askForDowanload = 2
             else:
                 errorMsg = _('"%s" Virtual Keyboard layout not available.') % vkLayoutItem[0]
-                askForDowanload = 1
 
     def setVKLayout(self, layout=None):
         if layout != None:
