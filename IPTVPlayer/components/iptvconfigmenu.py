@@ -11,7 +11,7 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, Ge
                                                           IsHostEnabled, IsExecutable, CFakeMoviePlayerOption, GetAvailableIconSize, \
                                                           IsWebInterfaceModuleAvailable, SetIconsHash, SetGraphicsHash, isOPKGinstall
 from Plugins.Extensions.IPTVPlayer.iptvupdate.updatemainwindow import IPTVUpdateWindow, UpdateMainAppImpl
-from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT as _, IPTVPlayerNeedInit
+from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT as _
 from Plugins.Extensions.IPTVPlayer.components.configbase import ConfigBaseWidget, COLORS_DEFINITONS
 from Plugins.Extensions.IPTVPlayer.components.confighost import ConfigHostsMenu
 from Plugins.Extensions.IPTVPlayer.components.iptvdirbrowser import IPTVDirectorySelectorWidget
@@ -317,7 +317,6 @@ class ConfigMenu(ConfigBaseWidget):
         # remember old
         self.showcoverOld = config.plugins.iptvplayer.showcover.value
         self.SciezkaCacheOld = config.plugins.iptvplayer.SciezkaCache.value
-        self.platformOld = config.plugins.iptvplayer.plarform.value
         self.remove_diabled_hostsOld = config.plugins.iptvplayer.remove_diabled_hosts.value
         self.enabledHostsListOld = GetEnabledHostsList()
         self.basicConfVisible = True #BASIC CONFIGURATION
@@ -381,7 +380,6 @@ class ConfigMenu(ConfigBaseWidget):
                 list.append(getConfigListEntry(_("    Show suggestions"), config.plugins.iptvplayer.osk_allow_suggestions))
                 list.append(getConfigListEntry(_("    Default suggestions provider"), config.plugins.iptvplayer.osk_default_suggestions))
 
-            list.append(getConfigListEntry(_("Platform"), config.plugins.iptvplayer.plarform))
             list.append(getConfigListEntry(_("Services configuration"), config.plugins.iptvplayer.fakeHostsList))
             list.append(getConfigListEntry(_("Remove disabled services"), config.plugins.iptvplayer.remove_diabled_hosts))
             list.append(getConfigListEntry(_("Initialize web interface (experimental)"), config.plugins.iptvplayer.IPTVWebIterface))
@@ -578,9 +576,6 @@ class ConfigMenu(ConfigBaseWidget):
         if self.showcoverOld != config.plugins.iptvplayer.showcover.value or \
            self.SciezkaCacheOld != config.plugins.iptvplayer.SciezkaCache.value:
            pass
-           # plugin must be restarted if we wont to this options take effect
-        if self.platformOld != config.plugins.iptvplayer.plarform.value:
-            IPTVPlayerNeedInit(True)
 
     def getMessageBeforeClose(self, afterSave):
         return ''
@@ -646,36 +641,10 @@ class ConfigMenu(ConfigBaseWidget):
               config.plugins.iptvplayer.ListaGraficzna,
               config.plugins.iptvplayer.pluginProtectedByPin,
               config.plugins.iptvplayer.configProtectedByPin,
-              config.plugins.iptvplayer.plarform,
               config.plugins.iptvplayer.osk_type,
               config.plugins.iptvplayer.preferredupdateserver,
               ]
         players = []
-        if 'sh4' == config.plugins.iptvplayer.plarform.value:
-            players.append(config.plugins.iptvplayer.defaultSH4MoviePlayer0)
-            players.append(config.plugins.iptvplayer.alternativeSH4MoviePlayer0)
-            players.append(config.plugins.iptvplayer.defaultSH4MoviePlayer)
-            players.append(config.plugins.iptvplayer.alternativeSH4MoviePlayer)
-        elif 'mipsel' == config.plugins.iptvplayer.plarform.value:
-            players.append(config.plugins.iptvplayer.defaultMIPSELMoviePlayer0)
-            players.append(config.plugins.iptvplayer.alternativeMIPSELMoviePlayer0)
-            players.append(config.plugins.iptvplayer.defaultMIPSELMoviePlayer)
-            players.append(config.plugins.iptvplayer.alternativeMIPSELMoviePlayer)
-        elif 'armv7' == config.plugins.iptvplayer.plarform.value:
-            players.append(config.plugins.iptvplayer.defaultARMV7MoviePlayer0)
-            players.append(config.plugins.iptvplayer.alternativeARMV7MoviePlayer0)
-            players.append(config.plugins.iptvplayer.defaultARMV7MoviePlayer)
-            players.append(config.plugins.iptvplayer.alternativeARMV7MoviePlayer)
-        elif 'armv5t' == config.plugins.iptvplayer.plarform.value:
-            players.append(config.plugins.iptvplayer.defaultARMV5TMoviePlayer0)
-            players.append(config.plugins.iptvplayer.alternativeARMV5TMoviePlayer0)
-            players.append(config.plugins.iptvplayer.defaultARMV5TMoviePlayer)
-            players.append(config.plugins.iptvplayer.alternativeARMV5TMoviePlayer)
-        elif 'i686' == config.plugins.iptvplayer.plarform.value:
-            players.append(config.plugins.iptvplayer.defaultI686MoviePlayer0)
-            players.append(config.plugins.iptvplayer.alternativeI686MoviePlayer0)
-            players.append(config.plugins.iptvplayer.defaultI686MoviePlayer)
-            players.append(config.plugins.iptvplayer.alternativeI686MoviePlayer)
         else:
             players.append(config.plugins.iptvplayer.NaszPlayer)
         tab.extend(players)
