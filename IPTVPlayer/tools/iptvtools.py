@@ -370,7 +370,7 @@ def GetCmdwrapPath():
 
 
 def GetDukPath():
-        return '/usr/bin/duk'
+    return '/usr/bin/duk'
 
 
 gE2iPlayerTempCookieDir = None
