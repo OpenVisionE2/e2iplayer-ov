@@ -53,7 +53,6 @@ from Plugins.Extensions.IPTVPlayer.components.configextmovieplayer import Config
 
 config.plugins.iptvplayer.set_curr_title = ConfigYesNo(default=False)
 config.plugins.iptvplayer.curr_title_file = ConfigText(default="", fixed_size=False)
-config.plugins.iptvplayer.plarform = ConfigSelection(default="auto", choices=[("auto", "auto"), ("mipsel", _("mipsel")), ("sh4", _("sh4")), ("i686", _("i686")), ("armv7", _("armv7")), ("armv5t", _("armv5t")), ("unknown", _("unknown"))])
 
 config.plugins.iptvplayer.showcover = ConfigYesNo(default=True)
 config.plugins.iptvplayer.deleteIcons = ConfigSelection(default="3", choices=[("0", _("after closing")), ("1", _("after day")), ("3", _("after three days")), ("7", _("after a week"))])
@@ -83,7 +82,7 @@ config.plugins.iptvplayer.plugin_autostart = ConfigYesNo(default=False)
 config.plugins.iptvplayer.plugin_autostart_method = ConfigSelection(default="wizard", choices=[("wizard", "wizard"), ("infobar", "infobar")])
 
 if isOPKGinstall():
-    config.plugins.iptvplayer.preferredupdateserver = ConfigSelection(default="4", choices=[("", _("Default")), ("1", "http://iptvplayer.vline.pl/"), ("2", _("http://zadmario.gitlab.io/")), ("4", "opkg repo")])
+    config.plugins.iptvplayer.preferredupdateserver = ConfigSelection(default="3", choices=[("", _("Default")), ("1", "http://iptvplayer.vline.pl/"), ("2", _("http://zadmario.gitlab.io/")), ("3", "opkg repo")])
 else:
     config.plugins.iptvplayer.preferredupdateserver = ConfigSelection(default="2", choices=[("", _("Default")), ("1", "http://iptvplayer.vline.pl/"), ("2", _("http://zadmario.gitlab.io/"))])
 config.plugins.iptvplayer.osk_type = ConfigSelection(default="", choices=[("", _("Auto")), ("system", _("System")), ("own", _("Own model"))])
@@ -270,7 +269,7 @@ class ConfigMenu(ConfigBaseWidget):
             list.append(getConfigListEntry(_("The preferred update server"), config.plugins.iptvplayer.preferredupdateserver))
             if config.plugins.iptvplayer.preferredupdateserver.value == '2':
                 list.append(getConfigListEntry(_("Add update from GitLab repository"), config.plugins.iptvplayer.gitlab_repo))
-            if config.plugins.iptvplayer.preferredupdateserver.value != '3':
+            if config.plugins.iptvplayer.preferredupdateserver.value != '4':
                 list.append(getConfigListEntry(_("Update"), config.plugins.iptvplayer.fakeUpdate))
         
             list.append(getConfigListEntry(_("Virtual Keyboard type"), config.plugins.iptvplayer.osk_type))
@@ -376,7 +375,7 @@ class ConfigMenu(ConfigBaseWidget):
             list.append(getConfigListEntry(_("Block wmv files"), config.plugins.iptvplayer.ZablokujWMV))
             list.append(getConfigListEntry(_("Show IPTVPlayer in extension list"), config.plugins.iptvplayer.showinextensions))
             list.append(getConfigListEntry(_("Show IPTVPlayer in main menu"), config.plugins.iptvplayer.showinMainMenu))
-            if config.plugins.iptvplayer.preferredupdateserver.value != '3': #4 = managed by opkg, no no update icon
+            if config.plugins.iptvplayer.preferredupdateserver.value != '4': #3 = managed by opkg, no no update icon
                 list.append(getConfigListEntry(_("Show update icon in service selection menu"), config.plugins.iptvplayer.AktualizacjaWmenu))
             list.append(getConfigListEntry(_("Debug logs"), config.plugins.iptvplayer.debugprint))
 
