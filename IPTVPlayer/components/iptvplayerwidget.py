@@ -712,8 +712,6 @@ class E2iPlayerWidget(Screen):
             if ret[1] == "info": #information about plugin
                 TextMSG = _("Lead programmer: ") + "\n\t- samsamsam\n"
                 if config.plugins.iptvplayer.preferredupdateserver.value == '3': #private sss repository
-#                    TextMSG += _("E-mail: ") + "\n\t- iptvplayere2@gmail.com\n"
-#                    TextMSG += _("www: ") + "\n\t- http://iptvplayer.vline.pl/" + '\n\t- http://www.iptvplayer.gitlab.io/\n'
                     TextMSG += _("www: ") + "\n\t- https://github.com/OpenVisionE2/e2iplayer-ov"
                 TextMSG += _("Developers: ")
                 developersTab = [{'nick': 'zdzislaw22', },
@@ -728,6 +726,7 @@ class E2iPlayerWidget(Screen):
                                  {'nick': 'zadmario',    },
                                  {'nick': 'mosz_nowy',    },
                                  {'nick': 'maxbambi',    },
+                                 {'nick': 'j00zek',    },
                                  {'nick': 'Open Vision Developers',    },
                                 ]
                 # present alphabetically, the order does not mean validity
