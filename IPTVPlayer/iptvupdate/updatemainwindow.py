@@ -34,7 +34,7 @@ from Components.config import config
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Tools.BoundFunction import boundFunction
-from Tools.Directories import resolveFilename, SCOPE_PLUGINS
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS, isPluginInstalled
 
 try:
     import json
@@ -830,8 +830,6 @@ class UpdateMainAppImpl(IUpdateObjectInterface):
                 else:
                     self.stepFinished(-1, _("Problem with parsing the server list."))
                 return
-            if config.plugins.iptvplayer.hiddenAllVersionInUpdate.value:
-                self.__addLastVersion(serversList) # get last version from gitlab.com only for developers
 
             if config.plugins.iptvplayer.gitlab_repo.value and config.plugins.iptvplayer.preferredupdateserver.value == '2':
                 serversList.append(self.gitlabList)
@@ -844,7 +842,7 @@ class UpdateMainAppImpl(IUpdateObjectInterface):
                 self.serversList.sort(cmp=ServerComparator, reverse=True)
                 for idx in range(len(serversList)):
                     server = serversList[idx]
-                    if not config.plugins.iptvplayer.hiddenAllVersionInUpdate.value:
+                    if not isPluginInstalled("IPTVPlayer"):
                         try:
                             newVerNum = int(server['version'].replace('.', ''))
                         except Exception:
@@ -862,7 +860,7 @@ class UpdateMainAppImpl(IUpdateObjectInterface):
                     name = "| %s | python %s | %s | %s |" % (server['version'], server['pyver'], server['packagetype'], server['name'])
                     #printDBG("server list: " + name)
                     options.append((name, idx))
-                if 1 == len(options) and not config.plugins.iptvplayer.downgradePossible.value:
+                if 1 == len(options):
                     self.__selServerCallBack(options[0])
                 elif 0 < len(options):
                     self.session.openWithCallback(self.__selServerCallBack, ChoiceBox, title=_("Select update server"), list=options)

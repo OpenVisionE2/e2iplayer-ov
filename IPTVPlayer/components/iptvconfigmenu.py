@@ -221,11 +221,7 @@ config.plugins.iptvplayer.myjd_password = ConfigText(default="", fixed_size=Fals
 config.plugins.iptvplayer.myjd_jdname = ConfigText(default="", fixed_size=False)
 
 # Update
-config.plugins.iptvplayer.autoCheckForUpdate = ConfigYesNo(default=False)
-config.plugins.iptvplayer.updateLastCheckedVersion = ConfigText(default="00.00.00.00", fixed_size=False)
 config.plugins.iptvplayer.fakeUpdate = ConfigSelection(default="fake", choices=[("fake", "  ")])
-config.plugins.iptvplayer.downgradePossible = ConfigYesNo(default=False)
-config.plugins.iptvplayer.possibleUpdateType = ConfigSelection(default="precompiled", choices=[("sourcecode", _("with source code")), ("precompiled", _("precompiled")), ("all", _("all types"))])
 
 # Hosts lists
 config.plugins.iptvplayer.fakeHostsList = ConfigSelection(default="fake", choices=[("fake", "  ")])
@@ -235,7 +231,6 @@ config.plugins.iptvplayer.fakeHostsList = ConfigSelection(default="fake", choice
 config.plugins.iptvplayer.fakExtMoviePlayerList = ConfigSelection(default="fake", choices=[("fake", "  ")])
 
 # hidden options
-config.plugins.iptvplayer.hiddenAllVersionInUpdate = ConfigYesNo(default=False)
 config.plugins.iptvplayer.hidden_ext_player_def_aspect_ratio = ConfigSelection(default="-1", choices=[("-1", _("default")), ("0", _("4:3 Letterbox")), ("1", _("4:3 PanScan")), ("2", _("16:9")), ("3", _("16:9 always")), ("4", _("16:10 Letterbox")), ("5", _("16:10 PanScan")), ("6", _("16:9 Letterbox"))])
 
 config.plugins.iptvplayer.search_history_size = ConfigInteger(50, (0, 1000000))
@@ -274,35 +269,6 @@ for hostName in gListOfHostsNames:
 def GetListOfHostsNames():
     global gListOfHostsNames
     return gListOfHostsNames
-
-
-def IsUpdateNeededForHostsChangesCommit(enabledHostsListOld, enabledHostsList=None, hostsFromFolder=None):
-    if enabledHostsList == None:
-        enabledHostsList = GetEnabledHostsList()
-    if hostsFromFolder == None:
-        hostsFromFolder = GetHostsList(fromList=False, fromHostFolder=True)
-
-    bRet = False
-    if config.plugins.iptvplayer.remove_diabled_hosts.value and enabledHostsList != enabledHostsListOld:
-        hostsFromList = GetHostsList(fromList=True, fromHostFolder=False)
-        diffDisabledHostsList = set(enabledHostsListOld).difference(set(enabledHostsList))
-        diffList = set(enabledHostsList).symmetric_difference(set(enabledHostsListOld))
-        for hostItem in diffList:
-            if hostItem in hostsFromList:
-                if hostItem in diffDisabledHostsList:
-                    if hostItem in hostsFromFolder:
-                        # standard host has been disabled but it is still in folder
-                        bRet = True
-                        break
-                else:
-                    if hostItem not in hostsFromFolder:
-                        # standard host has been enabled but it is not in folder
-                        bRet = True
-                        break
-    if bRet:
-        SetGraphicsHash("")
-        SetIconsHash("")
-    return bRet
 
 ###################################################
 
@@ -343,8 +309,6 @@ class ConfigMenu(ConfigBaseWidget):
                                                   captConfVisible = False, subtConfVisible = False, playConfVisible = False, otherConfVisible = False):
         if hiddenOptions:
             list.append(getConfigListEntry('\\c00289496' + _("----- HIDDEN OPTIONS -----"), config.plugins.iptvplayer.FakeEntry))
-            list.append(getConfigListEntry(_("Last checked version"), config.plugins.iptvplayer.updateLastCheckedVersion))
-            list.append(getConfigListEntry(_("Show all version in the update menu"), config.plugins.iptvplayer.hiddenAllVersionInUpdate))
             list.append(getConfigListEntry(_("VFD set current title:"), config.plugins.iptvplayer.set_curr_title))
             list.append(getConfigListEntry(_("Write current title to file:"), config.plugins.iptvplayer.curr_title_file))
             list.append(getConfigListEntry(_("The default aspect ratio for the external player"), config.plugins.iptvplayer.hidden_ext_player_def_aspect_ratio))
@@ -365,7 +329,6 @@ class ConfigMenu(ConfigBaseWidget):
             
         list.append(getConfigListEntry('\\c00289496' + _("----- BASIC CONFIGURATION (OK) -----"), config.plugins.iptvplayer.basicConfVisible))
         if basicConfVisible: #BASIC CONFIGURATION
-            list.append(getConfigListEntry(_("Auto check for plugin update"), config.plugins.iptvplayer.autoCheckForUpdate))
             list.append(getConfigListEntry(_("The preferred update server"), config.plugins.iptvplayer.preferredupdateserver))
             if config.plugins.iptvplayer.preferredupdateserver.value == '2':
                 list.append(getConfigListEntry(_("Add update from GitLab repository"), config.plugins.iptvplayer.gitlab_repo))
@@ -533,9 +496,6 @@ class ConfigMenu(ConfigBaseWidget):
             if config.plugins.iptvplayer.preferredupdateserver.value != '3': #4 = managed by opkg, no no update icon
                 list.append(getConfigListEntry(_("Show update icon in service selection menu"), config.plugins.iptvplayer.AktualizacjaWmenu))
             list.append(getConfigListEntry(_("Debug logs"), config.plugins.iptvplayer.debugprint))
-            if config.plugins.iptvplayer.preferredupdateserver.value != '3': #4 = managed by opkg, no no update icon
-                list.append(getConfigListEntry(_("Allow downgrade"), config.plugins.iptvplayer.downgradePossible))
-                list.append(getConfigListEntry(_("Update packet type"), config.plugins.iptvplayer.possibleUpdateType))
 
     def runSetup(self):
         self.list = []
