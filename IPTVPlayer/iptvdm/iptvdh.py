@@ -96,7 +96,7 @@ class DMHelper:
 
     @staticmethod
     def GET_F4M_PATH():
-         return '/usr/bin/f4mdump'
+        return '/usr/bin/f4mdump'
 
     @staticmethod
     def GET_HLSDL_PATH():
