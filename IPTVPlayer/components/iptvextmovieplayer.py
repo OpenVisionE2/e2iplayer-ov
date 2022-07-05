@@ -1957,7 +1957,7 @@ class IPTVExtMoviePlayer(Screen):
                 self.showMessage(msg, MessageBox.TYPE_ERROR)
 
             #'export GST_DEBUG="*:6" &&' +
-            cmd = '/usr/bin/gstplayer'  + ' "%s"' % self.fileSRC
+            cmd = '/usr/bin/gstplayer' + ' "%s"' % self.fileSRC
 
             # active audio track
             audioTrackIdx = self.metaHandler.getAudioTrackIdx()
