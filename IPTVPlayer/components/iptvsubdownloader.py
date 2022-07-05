@@ -44,7 +44,7 @@ from enigma import getDesktop, eTimer
 ####################################################
 #                   IPTV components
 ####################################################
-from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT as _, IPTVPlayerNeedInit, GetIPTVPlayerLastHostError
+from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT as _, GetIPTVPlayerLastHostError
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 import Plugins.Extensions.IPTVPlayer.components.asynccall as asynccall
 ###################################################
@@ -380,7 +380,7 @@ class IPTVSubDownloaderWidget(Screen):
                     message += "\n"
                     message += _('\nMake sure you are using the latest version of the plugin.')
                     if config.plugins.iptvplayer.preferredupdateserver.value == '3': #private sss repository
-                        message += _('\nYou can also report problem here: \nhttps://gitlab.com/iptvplayer-for-e2/iptvplayer-for-e2/issues\nor here: samsamsam@o2.pl')
+                        message += _('\nYou can also report problem here: \nhttps://github.com/OpenVisionE2/e2iplayer-ov/issues')
                     self.session.openWithCallback(self.reportHostCrash, MessageBox, text=message, type=MessageBox.TYPE_YESNO)
             self.hideSpinner()
         except Exception:

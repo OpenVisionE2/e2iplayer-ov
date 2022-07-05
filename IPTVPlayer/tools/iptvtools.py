@@ -33,18 +33,17 @@ import stat
 import codecs
 import datetime
 import socket
+from Components.SystemInfo import BoxInfo
 
-SERVER_DOMAINS = {'vline': 'http://iptvplayer.vline.pl/', 'gitlab': 'http://zadmario.gitlab.io/', 'private': 'http://www.e2iplayer.gitlab.io/'}
-SERVER_UPDATE_PATH = {'vline': 'download/update2/', 'gitlab': 'update2/', 'private': 'update2/'}
+SERVER_DOMAINS = {'vline': 'http://iptvplayer.vline.pl/', 'gitlab': 'http://zadmario.gitlab.io/'}
+SERVER_UPDATE_PATH = {'vline': 'download/update2/', 'gitlab': 'update2/'}
 CACHED_DATA_DICT = {}
 
 def GetServerKey(serverNum=None):
     if serverNum == None:
         serverNum = config.plugins.iptvplayer.preferredupdateserver.value
 
-    if serverNum == '3':
-        serverKey = 'private'
-    elif serverNum == '2':
+    if serverNum == '2':
         serverKey = 'gitlab'
     else:
         serverKey = 'vline'
@@ -138,7 +137,7 @@ def GetNice(pid=None):
 
 
 def E2PrioFix(cmd, factor=2):
-    if '/duk' not in cmd and config.plugins.iptvplayer.plarform.value in ('mipsel', 'armv7', 'armv5t'):
+    if BoxInfo.getItem("architecture") != "sh4":
         return 'nice -n %d %s' % (GetNice() + factor, cmd)
     else:
         return cmd
@@ -350,7 +349,7 @@ def GetPyScriptCmd(name):
     elif fileExists(baseName + '.pyo'):
         baseName += '.pyo'
     if baseName != '':
-        for item in ['python', 'python2.7', 'python2.6']:
+        for item in ['python', 'python2.7']:
             pyPath = Which(item)
             if '' != pyPath:
                 cmd = '%s %s' % (pyPath, baseName)
@@ -363,15 +362,15 @@ def GetJSScriptFile(file):
 
 
 def GetUchardetPath():
-    return config.plugins.iptvplayer.uchardetpath.value
+    return '/usr/bin/uchardet'
 
 
 def GetCmdwrapPath():
-    return config.plugins.iptvplayer.cmdwrappath.value
+    return '/usr/cmdwrapper'
 
 
 def GetDukPath():
-    return config.plugins.iptvplayer.dukpath.value
+    return '/usr/bin/duk'
 
 
 gE2iPlayerTempCookieDir = None
@@ -518,10 +517,8 @@ def GetIconDir(fileName=''):
     return os.path.join(resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/icons/') , fileName)
 
 
-def GetBinDir(fileName='', platform=None):
-    if None == platform:
-        platform = config.plugins.iptvplayer.plarform.value
-    return os.path.join(resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/bin/') , platform , fileName)
+def GetBinDir(file = ''):
+    return '/usr/bin/' + file
 
 
 def GetPluginDir(fileName=''):
@@ -1513,25 +1510,6 @@ def GetVersionNum(ver):
     except Exception:
         printExc('Version[%r]' % ver)
         return 0
-
-
-def IsFPUAvailable():
-    try:
-        if None == IsFPUAvailable.available:
-            with open('/proc/cpuinfo', 'r') as f:
-                data = f.read().strip().upper()
-            if ' FPU ' in data:
-                IsFPUAvailable.available = True
-            else:
-                IsFPUAvailable.available = False
-        if IsFPUAvailable.available == False and config.plugins.iptvplayer.plarformfpuabi.value == 'hard_float':
-            return True
-    except Exception:
-        printExc()
-    return IsFPUAvailable.available
-
-
-IsFPUAvailable.available = None
 
 
 def IsSubtitlesParserExtensionCanBeUsed():

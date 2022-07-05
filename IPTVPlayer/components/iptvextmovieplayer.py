@@ -902,7 +902,7 @@ class IPTVExtMoviePlayer(Screen):
         printDBG("openSubtitlesFromFileCallback filePath[%s]" % filePath)
         if None != filePath:
             self.subHandler['handler'].removeCacheFile(filePath)
-            cmd = '%s "%s"' % (config.plugins.iptvplayer.uchardetpath.value, filePath)
+            cmd = '/usr/bin/uchardet "%s"' % (filePath)
             self.workconsole = iptv_system(cmd, boundFunction(self.enableSubtitlesFromFile, filePath))
 
     def enableSubtitlesFromFile(self, filePath, code=127, encoding=""):
@@ -1956,9 +1956,8 @@ class IPTVExtMoviePlayer(Screen):
                 msg = _("Link is not supported by the gstplayer. Please use the extelayer3 if available.")
                 self.showMessage(msg, MessageBox.TYPE_ERROR)
 
-            gstplayerPath = config.plugins.iptvplayer.gstplayerpath.value
             #'export GST_DEBUG="*:6" &&' +
-            cmd = gstplayerPath + ' "%s"' % self.fileSRC
+            cmd = '/usr/bin/gstplayer' + ' "%s"' % self.fileSRC
 
             # active audio track
             audioTrackIdx = self.metaHandler.getAudioTrackIdx()
@@ -1995,8 +1994,7 @@ class IPTVExtMoviePlayer(Screen):
                             cmd += (' "proxy=%s" ' % tmp)
             cmd += " > /dev/null"
         else:
-            exteplayer3path = config.plugins.iptvplayer.exteplayer3path.value
-            cmd = exteplayer3path
+            cmd = '/usr/bin/exteplayer3'
             tmpUri = strwithmeta(self.fileSRC)
 
             audioUri = ''

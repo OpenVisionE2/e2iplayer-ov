@@ -46,14 +46,14 @@ def DownloaderCreator(url):
     url = urlparser.decorateUrl(url)
     iptv_proto = url.meta.get('iptv_proto', '')
     if 'm3u8' == iptv_proto:
-        if config.plugins.iptvplayer.hlsdlpath.value != '':
+        try:
             downloader = HLSDownloader()
-        else:
+        except:
             downloader = M3U8Downloader()
     elif 'em3u8' == iptv_proto:
-        if config.plugins.iptvplayer.hlsdlpath.value != '':
+        try:
             downloader = EHLSDownloader()
-        else:
+        except:
             downloader = EM3U8Downloader()
     elif 'f4m' == iptv_proto:
         downloader = F4mDownloader()
@@ -62,13 +62,13 @@ def DownloaderCreator(url):
     elif iptv_proto in ['https', 'http']:
         downloader = WgetDownloader()
     elif 'merge' == iptv_proto:
-        if url.meta.get('prefered_merger') == 'hlsdl' and config.plugins.iptvplayer.hlsdlpath.value != '' and config.plugins.iptvplayer.prefer_hlsdl_for_pls_with_alt_media.value:
+        if url.meta.get('prefered_merger') == 'hlsdl' and config.plugins.iptvplayer.prefer_hlsdl_for_pls_with_alt_media.value:
             downloader = HLSDownloader()
-        elif IsExecutable('ffmpeg') and config.plugins.iptvplayer.cmdwrappath.value != '':
+        elif IsExecutable('ffmpeg'):
             downloader = FFMPEGDownloader()
         else:
             downloader = MergeDownloader()
-    elif 'mpd' == iptv_proto and IsExecutable('ffmpeg') and config.plugins.iptvplayer.cmdwrappath.value != '':
+    elif 'mpd' == iptv_proto and IsExecutable('ffmpeg'):
         downloader = FFMPEGDownloader()
 
     return downloader
