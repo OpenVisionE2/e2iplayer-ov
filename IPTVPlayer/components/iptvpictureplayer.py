@@ -52,9 +52,8 @@ class IPTVSimpleAudioPlayer():
         self.uri = uri
         self.playMode = mode
 
-        gstplayerPath = config.plugins.iptvplayer.gstplayerpath.value
         #'export GST_DEBUG="*:6" &&' +
-        cmd = gstplayerPath + ' "%s"' % self.uri
+        cmd = '/usr/bin/gstplayer' + ' "%s"' % self.uri
         if "://" in self.uri:
             cmd += ' "%s" "%s"  "%s"  "%s" ' % (self.gstAdditionalParams['download-buffer-path'], self.gstAdditionalParams['ring-buffer-max-size'], self.gstAdditionalParams['buffer-duration'], self.gstAdditionalParams['buffer-size'])
             tmp = strwithmeta(self.uri)
@@ -218,7 +217,7 @@ class IPTVPicturePlayerWidget(Screen):
         self.refreshCount = 0
         self.refreshing = False
 
-        if len(self.audioUrl) and len(config.plugins.iptvplayer.gstplayerpath.value):
+        if len(self.audioUrl):
             self.audioPlayer = IPTVSimpleAudioPlayer()
         else:
             self.audioPlayer = None

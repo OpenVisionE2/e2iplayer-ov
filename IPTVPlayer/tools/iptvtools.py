@@ -517,10 +517,8 @@ def GetIconDir(fileName=''):
     return os.path.join(resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/icons/') , fileName)
 
 
-def GetBinDir(fileName='', platform=None):
-    if None == platform:
-        platform = config.plugins.iptvplayer.plarform.value
-    return os.path.join(resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/bin/') , platform , fileName)
+def GetBinDir(file = ''):
+    return '/usr/bin/' + file
 
 
 def GetPluginDir(fileName=''):
