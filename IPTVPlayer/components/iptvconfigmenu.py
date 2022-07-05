@@ -94,9 +94,9 @@ config.plugins.iptvplayer.plugin_autostart = ConfigYesNo(default=False)
 config.plugins.iptvplayer.plugin_autostart_method = ConfigSelection(default="wizard", choices=[("wizard", "wizard"), ("infobar", "infobar")])
 
 if isOPKGinstall():
-    config.plugins.iptvplayer.preferredupdateserver = ConfigSelection(default="4", choices=[("", _("Default")), ("1", "http://iptvplayer.vline.pl/"), ("2", _("http://zadmario.gitlab.io/")), ("3", _("private")), ("4", "opkg repo")])
+    config.plugins.iptvplayer.preferredupdateserver = ConfigSelection(default="4", choices=[("", _("Default")), ("1", "http://iptvplayer.vline.pl/"), ("2", _("http://zadmario.gitlab.io/")), ("4", "opkg repo")])
 else:
-    config.plugins.iptvplayer.preferredupdateserver = ConfigSelection(default="2", choices=[("", _("Default")), ("1", "http://iptvplayer.vline.pl/"), ("2", _("http://zadmario.gitlab.io/")), ("3", _("private"))])
+    config.plugins.iptvplayer.preferredupdateserver = ConfigSelection(default="2", choices=[("", _("Default")), ("1", "http://iptvplayer.vline.pl/"), ("2", _("http://zadmario.gitlab.io/"))])
 config.plugins.iptvplayer.osk_type = ConfigSelection(default="", choices=[("", _("Auto")), ("system", _("System")), ("own", _("Own model"))])
 config.plugins.iptvplayer.osk_layout = ConfigText(default="", fixed_size=False)
 config.plugins.iptvplayer.osk_allow_suggestions = ConfigYesNo(default=True)
@@ -222,11 +222,11 @@ config.plugins.iptvplayer.myjd_password = ConfigText(default="", fixed_size=Fals
 config.plugins.iptvplayer.myjd_jdname = ConfigText(default="", fixed_size=False)
 
 # Update
-config.plugins.iptvplayer.autoCheckForUpdate = ConfigYesNo(default=True)
+config.plugins.iptvplayer.autoCheckForUpdate = ConfigYesNo(default=False)
 config.plugins.iptvplayer.updateLastCheckedVersion = ConfigText(default="00.00.00.00", fixed_size=False)
 config.plugins.iptvplayer.fakeUpdate = ConfigSelection(default="fake", choices=[("fake", "  ")])
 config.plugins.iptvplayer.downgradePossible = ConfigYesNo(default=False)
-config.plugins.iptvplayer.possibleUpdateType = ConfigSelection(default="all", choices=[("sourcecode", _("with source code")), ("precompiled", _("precompiled")), ("all", _("all types"))])
+config.plugins.iptvplayer.possibleUpdateType = ConfigSelection(default="precompiled", choices=[("sourcecode", _("with source code")), ("precompiled", _("precompiled")), ("all", _("all types"))])
 
 # Hosts lists
 config.plugins.iptvplayer.fakeHostsList = ConfigSelection(default="fake", choices=[("fake", "  ")])
@@ -372,10 +372,7 @@ class ConfigMenu(ConfigBaseWidget):
             list.append(getConfigListEntry(_("The preferred update server"), config.plugins.iptvplayer.preferredupdateserver))
             if config.plugins.iptvplayer.preferredupdateserver.value == '2':
                 list.append(getConfigListEntry(_("Add update from GitLab repository"), config.plugins.iptvplayer.gitlab_repo))
-            if config.plugins.iptvplayer.preferredupdateserver.value == '3':
-                list.append(getConfigListEntry(_("%s login") % 'E2iPlayer', config.plugins.iptvplayer.iptvplayer_login))
-                list.append(getConfigListEntry(_("%s password") % 'E2iPlayer', config.plugins.iptvplayer.iptvplayer_password))
-            if config.plugins.iptvplayer.preferredupdateserver.value != '4':
+            if config.plugins.iptvplayer.preferredupdateserver.value != '3':
                 list.append(getConfigListEntry(_("Update"), config.plugins.iptvplayer.fakeUpdate))
         
             list.append(getConfigListEntry(_("Virtual Keyboard type"), config.plugins.iptvplayer.osk_type))
@@ -537,10 +534,10 @@ class ConfigMenu(ConfigBaseWidget):
             list.append(getConfigListEntry(_("Block wmv files"), config.plugins.iptvplayer.ZablokujWMV))
             list.append(getConfigListEntry(_("Show IPTVPlayer in extension list"), config.plugins.iptvplayer.showinextensions))
             list.append(getConfigListEntry(_("Show IPTVPlayer in main menu"), config.plugins.iptvplayer.showinMainMenu))
-            if config.plugins.iptvplayer.preferredupdateserver.value != '4': #4 = managed by opkg, no no update icon
+            if config.plugins.iptvplayer.preferredupdateserver.value != '3': #4 = managed by opkg, no no update icon
                 list.append(getConfigListEntry(_("Show update icon in service selection menu"), config.plugins.iptvplayer.AktualizacjaWmenu))
             list.append(getConfigListEntry(_("Debug logs"), config.plugins.iptvplayer.debugprint))
-            if config.plugins.iptvplayer.preferredupdateserver.value != '4': #4 = managed by opkg, no no update icon
+            if config.plugins.iptvplayer.preferredupdateserver.value != '3': #4 = managed by opkg, no no update icon
                 list.append(getConfigListEntry(_("Allow downgrade"), config.plugins.iptvplayer.downgradePossible))
                 list.append(getConfigListEntry(_("Update packet type"), config.plugins.iptvplayer.possibleUpdateType))
 
@@ -586,44 +583,7 @@ class ConfigMenu(ConfigBaseWidget):
             IPTVPlayerNeedInit(True)
 
     def getMessageBeforeClose(self, afterSave):
-        needPluginUpdate = False
-        if config.plugins.iptvplayer.preferredupdateserver.value == "4": #opkg
-            return ''
-        elif afterSave and config.plugins.iptvplayer.ListaGraficzna.value and 0 == GetAvailableIconSize(False):
-            needPluginUpdate = True
-        else:
-            enabledHostsList = GetEnabledHostsList()
-            hostsFromFolder = GetHostsList(fromList=False, fromHostFolder=True)
-            if self.remove_diabled_hostsOld != config.plugins.iptvplayer.remove_diabled_hosts.value:
-                if config.plugins.iptvplayer.remove_diabled_hosts.value:
-                    for folderItem in hostsFromFolder:
-                        if folderItem in enabledHostsList:
-                            continue
-                        else:
-                            # there is host file which is not enabled,
-                            # so we need perform update to remove it
-                            needPluginUpdate = True
-                            break
-                else:
-                    hostsFromList = GetHostsList(fromList=True, fromHostFolder=False)
-                    if not set(hostsFromList).issubset(set(hostsFromFolder)):
-                        # there is missing hosts files, we need updated does not matter
-                        # if these hosts are enabled or disabled
-                        needPluginUpdate = True
-            elif IsUpdateNeededForHostsChangesCommit(self.enabledHostsListOld, enabledHostsList, hostsFromFolder):
-                needPluginUpdate = True
-
-        if needPluginUpdate:
-            SetGraphicsHash("")
-            SetIconsHash("")
-
-        if not needPluginUpdate and config.plugins.iptvplayer.IPTVWebIterface.value != IsWebInterfaceModuleAvailable(True):
-            needPluginUpdate = True
-
-        if needPluginUpdate:
-            return _('Some changes will be applied only after plugin update.\nDo you want to perform update now?')
-        else:
-            return ''
+        return ''
 
     def performCloseWithMessage(self, afterSave=True):
         message = self.getMessageBeforeClose(afterSave)
@@ -632,11 +592,8 @@ class ConfigMenu(ConfigBaseWidget):
         else:
             self.session.openWithCallback(self.closeAfterMessage, MessageBox, text=message, type=MessageBox.TYPE_YESNO)
 
-    def closeAfterMessage(self, arg=None):
-        if arg:
-            self.doUpdate(True)
-        else:
-            self.close()
+    def closeAfterMessage(self):
+        self.close()
 
     def keyOK(self):
         curIndex = self["config"].getCurrentIndex()
