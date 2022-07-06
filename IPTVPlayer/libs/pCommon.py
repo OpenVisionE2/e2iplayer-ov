@@ -424,7 +424,7 @@ class common:
                 else:
                     messages.append(_('Please report this problem to the developer %s.') % 'https://github.com/OpenVisionE2/e2iplayer-ov/issues')
             else:
-                messages.append(_('You can install PyCurl package from online feeds to fix this problem.')
+                messages.append(_('You can install PyCurl package from online feeds to fix this problem.'))
         GetIPTVNotify().push('\n'.join(messages), 'error', 40, type + domain, 40)
 
     def usePyCurl(self):
