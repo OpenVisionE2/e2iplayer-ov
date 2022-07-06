@@ -727,7 +727,7 @@ class E2iPlayerWidget(Screen):
                                  {'nick': 'mosz_nowy',    },
                                  {'nick': 'maxbambi',    },
                                  {'nick': 'j00zek',    },
-                                 {'nick': 'Open Vision Developers',    },
+                                 {'nick': 'Open Vision developers',    },
                                 ]
                 # present alphabetically, the order does not mean validity
                 sortedList = sorted(developersTab, key=lambda k: k['nick'].upper())
