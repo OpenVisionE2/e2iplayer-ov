@@ -145,7 +145,7 @@ class E2iPlayerWidget(Screen):
 
     def __init__(self, session):
         printDBG("!!!!! E2iPlayerWidget.__init__ IPTV_VERSION[%s], CPU:%s, PYTHON:%s !!!!!\n" % (E2iPlayerWidget.IPTV_VERSION,
-                                                                                                 config.plugins.iptvplayer.plarform.value,
+                                                                                                 config.plugins.iptvplayer.platform.value,
                                                                                                  pVersion()
                                                                                                 ))
         self.session = session
