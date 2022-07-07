@@ -1210,7 +1210,7 @@ class common:
                         if 0 == len(checkFromFirstBytes):
                             downHandler.close()
                         OK = False
-            
+
             if OK and 'subtypes' in addParams:
                 OK = False
                 #printDBG('!!!!! downHandler.headers: %s!!!!!' % downHandler.headers )
@@ -1225,7 +1225,7 @@ class common:
                             printDBG("common.getFile found '%s' subtype in header" % item)
                             OK = True
                             break
-                    
+
             printDBG('saveWebFile() OK=%s, checkFromFirstBytes=%s' % (str(OK), checkFromFirstBytes))
             if OK or len(checkFromFirstBytes):
                 blockSize = addParams.get('block_size', 8192)
@@ -1293,7 +1293,7 @@ class common:
             # but it seems it breaks other scenarios
             # also documentation says req should be a string. :(
             # NEEDS FURTHER INVESTIGATION !!!
-    
+
             if len(customOpeners) > 0:
                 opener = urllib2_build_opener(*customOpeners)
                 if timeout != None:
@@ -1438,7 +1438,7 @@ class common:
                     self.fillHeaderItems(metadata, response.info(), True, collectAllHeaders=params.get('collect_all_headers'))
                 except Exception:
                     pass
-                
+
                 max = params.get('max_data_size', -1)
                 if max == -1:
                     data = response.read()

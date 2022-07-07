@@ -13,4 +13,3 @@ def isPY2():
 
 def pVersion():
     return '%s.%s.%s' % (sys.version_info[0], sys.version_info[1], sys.version_info[2])
-
