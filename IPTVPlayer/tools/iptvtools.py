@@ -736,7 +736,7 @@ def GetHostsFromFolder(useCache=True):
     lhosts = []
     try:
         fileList = os.listdir(__getHostsPath())
-        printDBG('\t len(fileList)=%s'% len(fileList))
+        printDBG('\t len(fileList)=%s' % len(fileList))
         for wholeFileName in fileList:
             # separate file name and file extension
             fileName, fileExt = os.path.splitext(wholeFileName)

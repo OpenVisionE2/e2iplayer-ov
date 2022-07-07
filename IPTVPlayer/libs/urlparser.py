@@ -225,7 +225,7 @@ class urlparser:
                        'coolcast.eu': self.pp.parserCOOLCASTEU,
                        'crichd.tv': self.pp.parserCRICHDTV,
                        'cricplay2.xyz': self.pp.parserASSIAORG,
-                       'cryptodialynews.com':   self.pp.parserTXNEWSNETWORK,
+                       'cryptodialynews.com': self.pp.parserTXNEWSNETWORK,
                        #d
                        'daaidaij.com': self.pp.parserMOONWALKCC,
                        'daclips.in': self.pp.parserFASTVIDEOIN,

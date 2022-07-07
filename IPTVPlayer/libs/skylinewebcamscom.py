@@ -243,7 +243,7 @@ class WkylinewebcamsComApi:
                 urlsTab = getDirectM3U8Playlist(url)
                 return urlsTab
             elif url.startswith('livee.m3u8'):
-                url = 'https://hd-auth.skylinewebcams.com/'+ url.replace('livee','live')
+                url = 'https://hd-auth.skylinewebcams.com/' + url.replace('livee','live')
                 urlsTab = getDirectM3U8Playlist(url)
                 return urlsTab
         else:
