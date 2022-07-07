@@ -297,7 +297,7 @@ def clean_html(string): # str is a keyword in python and should not be used, so 
             printExc('WARNING')
 
     if STRIP_HTML_TAGS_C:
-        if isPY2() and type(u' ') != type(str):
+        if isPY2() and not isinstance(u' ', type(str)):
             return STRIP_HTML_TAGS_C.strip_html_tags(string)
         else: #PY3
             return STRIP_HTML_TAGS_C.strip_html_tags(string)

@@ -1292,7 +1292,7 @@ class CSearchHistoryHelper():
                 value = itemValue
                 if None != itemType:
                     value = value + self.TYPE_SEP + itemType
-                value = value if type(u'') == type(value) else value.decode('utf-8', 'replace')
+                value = value if isinstance(u'', type(value)) else value.decode('utf-8', 'replace')
                 file.write(value + u'\n')
                 printDBG('Added pattern: "%s"' % itemValue)
                 file.close
@@ -1340,7 +1340,7 @@ def ReadTextFile(filePath, encode='utf-8', errors='ignore'):
 def WriteTextFile(filePath, text, encode='utf-8', errors='ignore'):
     sts = False
     try:
-        toSave = text if type(u'') == type(text) else text.decode('utf-8', errors)
+        toSave = text if isinstance(u'', type(text)) else text.decode('utf-8', errors)
         file = codecs.open(filePath, 'w', encode, errors)
         file.write(toSave)
         file.close()

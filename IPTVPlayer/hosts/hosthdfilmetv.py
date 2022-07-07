@@ -134,10 +134,9 @@ class HDFilmeTV(CBaseHostClass):
             #printDBG("^^^^^^^^^^^^^^^^^^")
             #printDBG(filterData[0])
             optionsData = []
-            optionsData = ph.findall(filterData[0], ('<option', '>'), '</option>')
+            optionsData = sorted(ph.findall(filterData[0], ('<option', '>'), '</option>'))
             #printDBG("^^^^^^^^^^^^^^^^^^")
             #printDBG(str(optionsData))
-            optionsData.sort()
             #printDBG(str(optionsData))
             #printDBG("^^^^^^^^^^^^^^^^^^")
             #printDBG("^^^^^^^^^^^^^^^^^^")

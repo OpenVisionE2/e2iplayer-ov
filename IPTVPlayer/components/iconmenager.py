@@ -192,7 +192,7 @@ class IconMenager:
     def processDQ(self):
         printDBG("IconMenager.processDQ: Thread started")
 
-        while 1:
+        while True:
             die = 0
             url = ''
 

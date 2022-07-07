@@ -484,7 +484,7 @@ class HTTPResponse(httplib.HTTPResponse):
     def readlines(self, sizehint=0):
         total = 0
         list = []
-        while 1:
+        while True:
             line = self.readline()
             if not line:
                 break

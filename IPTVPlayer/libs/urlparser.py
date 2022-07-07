@@ -132,7 +132,7 @@ class urlparser:
         valTab = []
         i = 0
         if len(v) > 0:
-            for url in (list(v.values()) if type(v) is dict else v):
+            for url in (list(v.values()) if isinstance(v, dict) else v):
                 if 1 == self.checkHostSupport(url):
                     hostName = self.getHostName(url, True)
                     i = i + 1

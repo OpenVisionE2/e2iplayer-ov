@@ -61,7 +61,7 @@ def ensure_binary(text, encoding='utf-8', errors='strict'): #based on six librar
 
 
 def ensure_str(text, encoding='utf-8', errors='strict'): #based on six library
-    if type(text) is str:
+    if isinstance(text, str):
         return text
     if isPY2():
         if isinstance(text, unicode):

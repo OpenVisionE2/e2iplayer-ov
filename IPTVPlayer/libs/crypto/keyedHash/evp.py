@@ -11,7 +11,7 @@ def EVP_BytesToKey(md, data, salt, keyLength, ivLength, count):
 
     key = iv = hashed = ''
 
-    while 1:
+    while True:
         m = md()
         if hashed:
             m.update(hashed)

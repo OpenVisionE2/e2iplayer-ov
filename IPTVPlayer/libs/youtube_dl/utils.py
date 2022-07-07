@@ -148,7 +148,7 @@ except NameError:
 
 
 def compat_ord(c):
-    if type(c) is int:
+    if isinstance(c, int):
         return c
     else:
         return ord(c)
@@ -165,7 +165,7 @@ if sys.version_info < (3, 0):
         printDBG(s.encode(preferredencoding(), 'xmlcharrefreplace'))
 else:
     def compat_print(s):
-        assert type(s) == type(u'')
+        assert isinstance(s, type(u''))
         printDBG(s)
 
 
@@ -197,9 +197,9 @@ def htmlentity_transform(entity):
 
 def clean_html(html):
     """Clean an HTML snippet into a readable string"""
-    if type(html) == type(u''):
+    if isinstance(html, type(u'')):
         strType = 'unicode'
-    elif type(html) == type(''):
+    elif isinstance(html, type('')):
         strType = 'utf-8'
         html = html.decode("utf-8", 'ignore')
 
@@ -221,7 +221,7 @@ def clean_html(html):
 def unescapeHTML(s):
     if s is None:
         return None
-    assert type(s) == compat_str
+    assert isinstance(s, compat_str)
 
     return re.sub(r'&([^;]+);', lambda m: htmlentity_transform(m.group(1)), s)
 
