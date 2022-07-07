@@ -1578,7 +1578,7 @@ class IPTVExtMoviePlayer(Screen):
         if None == data or self.isClosing:
             return
         data = ensure_str(data)
-        data = data.replace('"ifd"',"'ifd'")
+        data = data.replace('"ifd"', "'ifd'")
         if None == self.playerBinaryInfo['version']:
             self.playerBinaryInfo['data'] += data
         data = self.responseData + data

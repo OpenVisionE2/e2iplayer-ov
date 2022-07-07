@@ -94,7 +94,7 @@ class WkylinewebcamsComApi:
                 if url != '' and title != '':
                    tab.append({'url': self.getFullUrl(url), 'title': title, 'cat': 'list_cams'}) #explore_item            
 
-        tab = sorted(tab, key=lambda x:x, reverse=True)
+        tab = sorted(tab, key=lambda x: x, reverse=True)
         for item in tab:
             params = dict(cItem)
             params.update(item)
@@ -171,7 +171,7 @@ class WkylinewebcamsComApi:
         sts, data = self.cm.getPage(cItem['url'])
         if not sts:
             return list
-        data = self.cm.ph.getAllItemsBeetwenMarkers(data,'</h1><hr>', '<div class="footer">')
+        data = self.cm.ph.getAllItemsBeetwenMarkers(data, '</h1><hr>', '<div class="footer">')
         if data:
             data = self.cm.ph.getAllItemsBeetwenMarkers(data[0], '<a ', '</a>')
             for item in data:
@@ -243,7 +243,7 @@ class WkylinewebcamsComApi:
                 urlsTab = getDirectM3U8Playlist(url)
                 return urlsTab
             elif url.startswith('livee.m3u8'):
-                url = 'https://hd-auth.skylinewebcams.com/' + url.replace('livee','live')
+                url = 'https://hd-auth.skylinewebcams.com/' + url.replace('livee', 'live')
                 urlsTab = getDirectM3U8Playlist(url)
                 return urlsTab
         else:

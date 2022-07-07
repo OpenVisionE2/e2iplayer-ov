@@ -1520,7 +1520,7 @@ class common:
                     encoding = self.ph.getSearchGroups(metadata['content-type'], '''charset=([A-Za-z0-9\-]+)''', 1, True)[0].strip().upper()
 
                 if encoding == '' and params.get('search_charset', False):
-                    encoding = self.ph.getSearchGroups(strDecode(data,'ignore'), '''(<meta[^>]+?Content-Type[^>]+?>)''', ignoreCase=True)[0]
+                    encoding = self.ph.getSearchGroups(strDecode(data, 'ignore'), '''(<meta[^>]+?Content-Type[^>]+?>)''', ignoreCase=True)[0]
                     encoding = self.ph.getSearchGroups(encoding, '''charset=([A-Za-z0-9\-]+)''', 1, True)[0].strip().upper()
                 if encoding not in ['', 'UTF-8']:
                     printDBG(">> encoding[%s]" % encoding)

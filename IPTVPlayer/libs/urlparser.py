@@ -14995,7 +14995,7 @@ class pageParser(CaptchaHelper):
     def parserSTREAMCRYPTNET(self, baseUrl):
         printDBG("parserSTREAMCRYPTNET baseUrl[%s]" % baseUrl)
 
-        sts, data = self.cm.getPage(baseUrl, {'header':{'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36'}, 'use_cookie':1, 'save_cookie':1,'load_cookie':1, 'cookiefile': GetCookieDir("streamcrypt.cookie"), 'with_metadata':1})
+        sts, data = self.cm.getPage(baseUrl, {'header': {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36'}, 'use_cookie': 1, 'save_cookie': 1, 'load_cookie': 1, 'cookiefile': GetCookieDir("streamcrypt.cookie"), 'with_metadata': 1})
         #if not sts:
         #    return []
 
@@ -15003,7 +15003,7 @@ class pageParser(CaptchaHelper):
         printDBG('redirect to url: %s' % red_url)
 
         if red_url == baseUrl:
-            red_url = re.findall("URL=([^\"]+)",data)[0]
+            red_url = re.findall("URL=([^\"]+)", data)[0]
 
         return urlparser().getVideoLinkExt(red_url)
 
