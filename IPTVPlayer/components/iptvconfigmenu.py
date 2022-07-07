@@ -9,8 +9,7 @@
 ###################################################
 from Plugins.Extensions.IPTVPlayer.tools.iptvtools import printDBG, printExc, GetSkinsList, GetHostsList, GetEnabledHostsList, \
                                                           IsHostEnabled, IsExecutable, CFakeMoviePlayerOption, GetAvailableIconSize, \
-                                                          IsWebInterfaceModuleAvailable, SetIconsHash, SetGraphicsHash, isOPKGinstall
-from Plugins.Extensions.IPTVPlayer.iptvupdate.updatemainwindow import IPTVUpdateWindow, UpdateMainAppImpl
+                                                          IsWebInterfaceModuleAvailable, SetIconsHash, SetGraphicsHash
 from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT as _
 from Plugins.Extensions.IPTVPlayer.components.configbase import ConfigBaseWidget, COLORS_DEFINITONS
 from Plugins.Extensions.IPTVPlayer.components.confighost import ConfigHostsMenu
@@ -74,17 +73,12 @@ config.plugins.iptvplayer.IPTVDMRunAtStart = ConfigYesNo(default=False)
 config.plugins.iptvplayer.IPTVDMShowAfterAdd = ConfigYesNo(default=True)
 config.plugins.iptvplayer.IPTVDMMaxDownloadItem = ConfigSelection(default="1", choices=[("1", "1"), ("2", "2"), ("3", "3"), ("4", "4")])
 
-config.plugins.iptvplayer.AktualizacjaWmenu = ConfigYesNo(default=True)
 config.plugins.iptvplayer.sortuj = ConfigYesNo(default=True)
 config.plugins.iptvplayer.remove_diabled_hosts = ConfigYesNo(default=False)
 config.plugins.iptvplayer.IPTVWebIterface = ConfigYesNo(default=False)
 config.plugins.iptvplayer.plugin_autostart = ConfigYesNo(default=False)
 config.plugins.iptvplayer.plugin_autostart_method = ConfigSelection(default="wizard", choices=[("wizard", "wizard"), ("infobar", "infobar")])
 
-if isOPKGinstall():
-    config.plugins.iptvplayer.preferredupdateserver = ConfigSelection(default="3", choices=[("", _("Default")), ("1", "http://iptvplayer.vline.pl/"), ("2", _("http://zadmario.gitlab.io/")), ("3", "opkg repo")])
-else:
-    config.plugins.iptvplayer.preferredupdateserver = ConfigSelection(default="2", choices=[("", _("Default")), ("1", "http://iptvplayer.vline.pl/"), ("2", _("http://zadmario.gitlab.io/"))])
 config.plugins.iptvplayer.osk_type = ConfigSelection(default="", choices=[("", _("Auto")), ("system", _("System")), ("own", _("Own model"))])
 config.plugins.iptvplayer.osk_layout = ConfigText(default="", fixed_size=False)
 config.plugins.iptvplayer.osk_allow_suggestions = ConfigYesNo(default=True)
@@ -108,8 +102,6 @@ config.plugins.iptvplayer.NaszPlayer = ConfigSelection(default="auto", choices=[
 config.plugins.iptvplayer.SciezkaCache = ConfigDirectory(default="/hdd/IPTVCache/") #, fixed_size = False)
 config.plugins.iptvplayer.NaszaTMP = ConfigDirectory(default="/tmp/") #, fixed_size = False)
 config.plugins.iptvplayer.ZablokujWMV = ConfigYesNo(default=True)
-
-config.plugins.iptvplayer.gitlab_repo = ConfigSelection(default="zadmario", choices=[("mosz_nowy", "mosz_nowy"), ("zadmario", "zadmario"), ("maxbambi", "maxbambi")])
 
 config.plugins.iptvplayer.vkcom_login = ConfigText(default="", fixed_size=False)
 config.plugins.iptvplayer.vkcom_password = ConfigText(default="", fixed_size=False)
@@ -165,9 +157,6 @@ config.plugins.iptvplayer.api_key_2captcha = ConfigText(default="", fixed_size=F
 config.plugins.iptvplayer.myjd_login = ConfigText(default="", fixed_size=False)
 config.plugins.iptvplayer.myjd_password = ConfigText(default="", fixed_size=False)
 config.plugins.iptvplayer.myjd_jdname = ConfigText(default="", fixed_size=False)
-
-# Update
-config.plugins.iptvplayer.fakeUpdate = ConfigSelection(default="fake", choices=[("fake", "  ")])
 
 # Hosts lists
 config.plugins.iptvplayer.fakeHostsList = ConfigSelection(default="fake", choices=[("fake", "  ")])
@@ -265,13 +254,7 @@ class ConfigMenu(ConfigBaseWidget):
             list.append(getConfigListEntry(_("Hosts List Type-NOT FINISHED"), config.plugins.iptvplayer.hostsListType))
             
         list.append(getConfigListEntry('\\c00289496' + _("----- BASIC CONFIGURATION (OK) -----"), config.plugins.iptvplayer.basicConfVisible))
-        if basicConfVisible: #BASIC CONFIGURATION
-            list.append(getConfigListEntry(_("The preferred update server"), config.plugins.iptvplayer.preferredupdateserver))
-            if config.plugins.iptvplayer.preferredupdateserver.value == '2':
-                list.append(getConfigListEntry(_("Add update from GitLab repository"), config.plugins.iptvplayer.gitlab_repo))
-            if config.plugins.iptvplayer.preferredupdateserver.value != '4':
-                list.append(getConfigListEntry(_("Update"), config.plugins.iptvplayer.fakeUpdate))
-        
+        if basicConfVisible: #BASIC CONFIGURATION        
             list.append(getConfigListEntry(_("Virtual Keyboard type"), config.plugins.iptvplayer.osk_type))
             if config.plugins.iptvplayer.osk_type.value == 'own':
                 list.append(getConfigListEntry(_("    Background color"), config.plugins.iptvplayer.osk_background_color))
@@ -375,8 +358,6 @@ class ConfigMenu(ConfigBaseWidget):
             list.append(getConfigListEntry(_("Block wmv files"), config.plugins.iptvplayer.ZablokujWMV))
             list.append(getConfigListEntry(_("Show IPTVPlayer in extension list"), config.plugins.iptvplayer.showinextensions))
             list.append(getConfigListEntry(_("Show IPTVPlayer in main menu"), config.plugins.iptvplayer.showinMainMenu))
-            if config.plugins.iptvplayer.preferredupdateserver.value != '4': #3 = managed by opkg, no no update icon
-                list.append(getConfigListEntry(_("Show update icon in service selection menu"), config.plugins.iptvplayer.AktualizacjaWmenu))
             list.append(getConfigListEntry(_("Debug logs"), config.plugins.iptvplayer.debugprint))
 
     def runSetup(self):
@@ -387,29 +368,12 @@ class ConfigMenu(ConfigBaseWidget):
 
     def onSelectionChanged(self):
         currItem = self["config"].getCurrent()[1]
-        if currItem in [config.plugins.iptvplayer.fakePin, config.plugins.iptvplayer.fakeUpdate, config.plugins.iptvplayer.fakeHostsList, config.plugins.iptvplayer.fakExtMoviePlayerList]:
+        if currItem in [config.plugins.iptvplayer.fakePin, config.plugins.iptvplayer.fakeHostsList, config.plugins.iptvplayer.fakExtMoviePlayerList]:
             self.isOkEnabled = True
             self.isSelectable = False
             self.setOKLabel()
         else:
             ConfigBaseWidget.onSelectionChanged(self)
-
-    def keyUpdate(self):
-        printDBG("ConfigMenu.keyUpdate")
-        if self.isChanged():
-            self.askForSave(self.doUpdate, self.doUpdate)
-        else:
-            self.doUpdate()
-
-    def doUpdate(self, forced=False):
-        printDBG("ConfigMenu.doUpdate")
-        if not forced:
-            self.session.open(IPTVUpdateWindow, UpdateMainAppImpl(self.session))
-        else:
-            self.session.openWithCallback(self.closeAfterUpdate, IPTVUpdateWindow, UpdateMainAppImpl(self.session, allowTheSameVersion=True))
-
-    def closeAfterUpdate(self, arg1=None, arg2=None):
-        self.close()
 
     def save(self):
         ConfigBaseWidget.save(self)
@@ -440,8 +404,6 @@ class ConfigMenu(ConfigBaseWidget):
             self.session.openWithCallback(boundFunction(SetDirPathCallBack, curIndex), IPTVDirectorySelectorWidget, currDir=currItem.value, title=_("Select directory"))
         elif config.plugins.iptvplayer.fakePin == currItem:
             self.changePin(start=True)
-        elif config.plugins.iptvplayer.fakeUpdate == currItem:
-            self.keyUpdate()
         elif config.plugins.iptvplayer.fakeHostsList == currItem:
             self.hostsList()
         elif config.plugins.iptvplayer.fakExtMoviePlayerList == currItem:
@@ -482,7 +444,6 @@ class ConfigMenu(ConfigBaseWidget):
               config.plugins.iptvplayer.pluginProtectedByPin,
               config.plugins.iptvplayer.configProtectedByPin,
               config.plugins.iptvplayer.osk_type,
-              config.plugins.iptvplayer.preferredupdateserver,
               ]
         players = []
         players.append(config.plugins.iptvplayer.NaszPlayer)

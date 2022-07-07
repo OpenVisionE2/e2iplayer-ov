@@ -52,12 +52,11 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import FreeSpace as iptvtools
                                                           CMoviePlayerPerHost, GetFavouritesDir, CFakeMoviePlayerOption, GetAvailableIconSize, \
                                                           GetE2VideoModeChoices, GetE2VideoMode, SetE2VideoMode, TestTmpCookieDir, TestTmpJSCacheDir,\
                                                           ClearTmpCookieDir, ClearTmpJSCacheDir, SetTmpCookieDir, SetTmpJSCacheDir,\
-                                                          GetEnabledHostsList, SaveHostsOrderList, GetUpdateServerUri, GetHostsAliases, formatBytes
+                                                          GetEnabledHostsList, SaveHostsOrderList, GetHostsAliases, formatBytes
 from Plugins.Extensions.IPTVPlayer.tools.iptvhostgroups import IPTVHostsGroups
 from Plugins.Extensions.IPTVPlayer.iptvdm.iptvdh import DMHelper
 from Plugins.Extensions.IPTVPlayer.iptvdm.iptvbuffui import E2iPlayerBufferingWidget
 from Plugins.Extensions.IPTVPlayer.iptvdm.iptvdmapi import IPTVDMApi, DMItem
-from Plugins.Extensions.IPTVPlayer.iptvupdate.updatemainwindow import IPTVUpdateWindow, UpdateMainAppImpl
 
 from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT as _, GetIPTVPlayerLastHostError, GetIPTVNotify, GetIPTVSleep
 
@@ -493,27 +492,8 @@ class E2iPlayerWidget(Screen):
                         message = _('It seems that the host "%s" has crashed. Do you want to report this problem?') % self.hostName
                         message += "\n"
                         message += _('\nMake sure you are using the latest version of the plugin.')
-                        if config.plugins.iptvplayer.preferredupdateserver.value == '3': #private sss repository
-                            message += _('\nYou can also report problem here: \nhttps://github.com/OpenVisionE2/e2iplayer-ov/issues')
-                        self.session.openWithCallback(self.reportHostCrash, MessageBox, text=message, type=MessageBox.TYPE_YESNO)
+                        message += _('\nYou can also report problem here: \nhttps://github.com/OpenVisionE2/e2iplayer-ov/issues')
             self.hideSpinner()
-        except Exception:
-            printExc()
-
-    def reportHostCrash(self, ret):
-        try:
-            if ret and config.plugins.iptvplayer.preferredupdateserver.value == '3': #private sss repository
-                try:
-                    exceptStack = self.workThread.getExceptStack()
-                    reporter = GetPluginDir('iptvdm/reporthostcrash.py')
-                    msg = urllib_quote('%s|%s|%s|%s' % ('HOST_CRASH', E2iPlayerWidget.IPTV_VERSION, self.hostName, self.getCategoryPath()))
-                    self.crashConsole = iptv_system('python "%s" "http://iptvplayer.vline.pl/reporthostcrash.php?msg=%s" "%s" 2&>1 > /dev/null' % (reporter, msg, exceptStack))
-                    printDBG(msg)
-                except Exception:
-                    printExc()
-            self.workThread = None
-            self.prevSelList = []
-            self.back_pressed()
         except Exception:
             printExc()
 
@@ -711,8 +691,7 @@ class E2iPlayerWidget(Screen):
         if ret:
             if ret[1] == "info": #information about plugin
                 TextMSG = _("Lead programmer: ") + "\n\t- samsamsam\n"
-                if config.plugins.iptvplayer.preferredupdateserver.value == '3': #private sss repository
-                    TextMSG += _("www: ") + "\n\t- https://github.com/OpenVisionE2/e2iplayer-ov"
+                TextMSG += _("www: ") + "\n\t- https://github.com/OpenVisionE2/e2iplayer-ov"
                 TextMSG += _("Developers: ")
                 developersTab = [{'nick': 'zdzislaw22', },
                                  {'nick': 'mamrot', },
@@ -1155,10 +1134,6 @@ class E2iPlayerWidget(Screen):
         self.displayGroupsList.append((_('All'), 'all'))
         self.displayGroupsList.append((_("Configuration"), "config"))
 
-        if config.plugins.iptvplayer.AktualizacjaWmenu.value == True:
-            if config.plugins.iptvplayer.preferredupdateserver.value != '4': #4 = managed by opkg
-                self.displayGroupsList.append((_("Update"), "update"))
-
         self.newDisplayGroupsList = []
         self.session.openWithCallback(self.selectGroupCallback, PlayerSelectorWidget, inList=self.displayGroupsList, outList=self.newDisplayGroupsList, numOfLockedItems=self.getNumOfSpecialItems(self.displayGroupsList), groupName='selectgroup')
 
@@ -1304,10 +1279,6 @@ class E2iPlayerWidget(Screen):
         if len(brokenHostList) > 0:
             errorMessage = _("Following host are broken or additional python modules are needed.") + '\n' + '\n'.join(brokenHostList)
 
-        if config.plugins.iptvplayer.AktualizacjaWmenu.value == True:
-            if config.plugins.iptvplayer.preferredupdateserver.value != '4': #4 = managed by opkg
-                self.displayHostsList.append((_("Update"), "update"))
-
         if "" != errorMessage and True == self.showHostsErrorMessage:
             self.showHostsErrorMessage = False
             self.session.openWithCallback(self.displayListOfHosts, MessageBox, errorMessage, type=MessageBox.TYPE_INFO, timeout=10)
@@ -1380,9 +1351,6 @@ class E2iPlayerWidget(Screen):
                 protectedByPin = config.plugins.iptvplayer.configProtectedByPin.value
             elif ret[1] == "noupdate":
                 self.close()
-                return
-            elif ret[1] == "update":
-                self.session.openWithCallback(self.selectHost, IPTVUpdateWindow, UpdateMainAppImpl(self.session))
                 return
             elif ret[1] == "IPTVDM":
                 if type in ['selecthost', 'selectgroup']:

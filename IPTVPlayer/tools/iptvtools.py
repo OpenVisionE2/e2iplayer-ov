@@ -35,34 +35,7 @@ import datetime
 import socket
 from Components.SystemInfo import BoxInfo
 
-SERVER_DOMAINS = {'vline': 'http://iptvplayer.vline.pl/', 'gitlab': 'http://zadmario.gitlab.io/'}
-SERVER_UPDATE_PATH = {'vline': 'download/update2/', 'gitlab': 'update2/'}
 CACHED_DATA_DICT = {}
-
-def GetServerKey(serverNum=None):
-    if serverNum == None:
-        serverNum = config.plugins.iptvplayer.preferredupdateserver.value
-
-    if serverNum == '2':
-        serverKey = 'gitlab'
-    else:
-        serverKey = 'vline'
-
-    return serverKey
-
-
-def GetUpdateServerUri(file='', serverNum=None):
-    serverKey = GetServerKey(serverNum)
-    uri = SERVER_DOMAINS[serverKey] + SERVER_UPDATE_PATH[serverKey] + file
-    printDBG("GetUpdateServerUri -> %s" % uri)
-    return uri
-
-
-def GetResourcesServerUri(file='', serverNum=None):
-    serverKey = GetServerKey(serverNum)
-    uri = SERVER_DOMAINS[serverKey] + 'resources/' + file
-    printDBG("GetResourcesServerUri -> %s" % uri)
-    return uri
 
 
 def UsePyCurl():
@@ -1813,11 +1786,7 @@ def is_port_in_use(pIP, pPORT):
     return res == 0
 
 def isOPKGinstall():
-    if os.path.exists('/var/lib/opkg/info/enigma2-plugin-extensions--j00zeks-e2iplayer-mod-zadmario.control') or \
-       os.path.exists('/var/lib/opkg/info/enigma2-plugin-extensions-e2iplayer.control'):
-        return True
-    else:
-        return False
+    return True
 
 def getIPTVplayerOPKGVersion():
     global CACHED_DATA_DICT
