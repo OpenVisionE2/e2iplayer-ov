@@ -109,9 +109,6 @@ config.plugins.iptvplayer.vkcom_password = ConfigText(default="", fixed_size=Fal
 config.plugins.iptvplayer.fichiercom_login = ConfigText(default="", fixed_size=False)
 config.plugins.iptvplayer.fichiercom_password = ConfigText(default="", fixed_size=False)
 
-config.plugins.iptvplayer.iptvplayer_login = ConfigText(default="", fixed_size=False)
-config.plugins.iptvplayer.iptvplayer_password = ConfigText(default="", fixed_size=False)
-
 config.plugins.iptvplayer.useSubtitlesParserExtension = ConfigYesNo(default=True)
 config.plugins.iptvplayer.opensuborg_login = ConfigText(default="", fixed_size=False)
 config.plugins.iptvplayer.opensuborg_password = ConfigText(default="", fixed_size=False)
