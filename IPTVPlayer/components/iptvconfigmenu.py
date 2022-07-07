@@ -240,8 +240,8 @@ class ConfigMenu(ConfigBaseWidget):
         self.setTitle(_("E2iPlayer - settings"))
 
     @staticmethod
-    def fillConfigList(list, hiddenOptions=False, basicConfVisible = True, prxyConfVisible = False, buffConfVisible = False, downConfVisible = False, 
-                                                  captConfVisible = False, subtConfVisible = False, playConfVisible = False, otherConfVisible = False):
+    def fillConfigList(list, hiddenOptions=False, basicConfVisible=True, prxyConfVisible=False, buffConfVisible=False, downConfVisible=False, 
+                                                  captConfVisible=False, subtConfVisible=False, playConfVisible=False, otherConfVisible=False):
         if hiddenOptions:
             list.append(getConfigListEntry('\\c00289496' + _("----- HIDDEN OPTIONS -----"), config.plugins.iptvplayer.FakeEntry))
             list.append(getConfigListEntry(_("VFD set current title:"), config.plugins.iptvplayer.set_curr_title))

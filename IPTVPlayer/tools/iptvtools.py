@@ -490,7 +490,7 @@ def GetIconDir(fileName=''):
     return os.path.join(resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/icons/') , fileName)
 
 
-def GetBinDir(file = ''):
+def GetBinDir(file=''):
     return '/usr/bin/' + file
 
 
@@ -1430,7 +1430,7 @@ def byteify(inData, noneReplacement=None, baseTypesAsString=False):
         return inData
 
 
-def printExc(msg='', WarnOnly = False):
+def printExc(msg='', WarnOnly=False):
     printDBG("===============================================")
     if WarnOnly or msg.startswith('WARNING'):
         printDBG("                    WARNING                    ")
