@@ -31,25 +31,25 @@ def main():
     # make a dictionary and check for one occurance of each option
     optdict = {}
     for option in optlist:
-        if not optdict.has_key(option[0]):
+        if option[0] not in optdict:
             optdict[option[0]] = option[1]
         else:
             sys.exit("Error: duplicate option '%s'\n%s" % (option[0], usage))
 
-    if optdict.has_key('-e') and optdict.has_key('-d'):
+    if '-e' in optdict and '-d' in optdict:
         sys.exit("Error: Can not do both encrypt and decrypt, pick either '-e' or '-d'\n%s" % usage)
-    if not(optdict.has_key('-e') or optdict.has_key('-d')):
+    if not('-e' in optdict or '-d' in optdict):
         sys.exit("Error: Must select encrypt or decrypt, pick either '-e' or '-d'\n%s" % usage)
 
     # determine the passphrase from the command line or by keyboard input
-    if optdict.has_key('-k'):
+    if '-k' in optdict:
         passPhrase = optdict['-k']
     else:
         passPhrase = getpass.getpass('Key: ')
     # should really test for a good passphrase  ...................
 
     # get input from file or stdin
-    if optdict.has_key('-i'):
+    if '-i' in optdict:
         infile = open(optdict['-i'], 'rb')
         input = infile.read()
     else:
@@ -60,9 +60,9 @@ def main():
     alg.setPassphrase(passPhrase)
 
     # Encrypt or decrypt depending on the option selected
-    if optdict.has_key('-e'):
+    if '-e' in optdict:
         output = alg.encrypt(input)
-    elif optdict.has_key('-d'):
+    elif '-d' in optdict:
         try:
             output = alg.decrypt(input)
         except DecryptNotBlockAlignedError as errMessage:
@@ -73,7 +73,7 @@ def main():
 
     print("output (%d bytes): %s" % (len(output), b2a_pt(output)))
     # put output to file or stdout
-    if optdict.has_key('-o'):
+    if '-o' in optdict:
         outfile = open(optdict['-o'], 'wb')
         outfile.write(output)
     else:

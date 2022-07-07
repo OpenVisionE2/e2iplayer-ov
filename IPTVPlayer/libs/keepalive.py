@@ -139,7 +139,7 @@ class ConnectionManager:
     def add(self, host, connection, ready):
         self._lock.acquire()
         try:
-            if not self._hostmap.has_key(host):
+            if host not in self._hostmap:
                 self._hostmap[host] = []
             self._hostmap[host].append(connection)
             self._connmap[connection] = host
@@ -173,7 +173,7 @@ class ConnectionManager:
         conn = None
         self._lock.acquire()
         try:
-            if self._hostmap.has_key(host):
+            if host in self._hostmap:
                 for c in self._hostmap[host]:
                     if self._readymap[c]:
                         self._readymap[c] = 0
@@ -335,10 +335,10 @@ class KeepAliveHandler:
                     h.putrequest('POST', req.selector)
                 else:
                     h.putrequest('POST', req.get_selector())
-                if not req.headers.has_key('Content-type'):
+                if 'Content-type' not in req.headers:
                     h.putheader('Content-type',
                                 'application/x-www-form-urlencoded')
-                if not req.headers.has_key('Content-length'):
+                if 'Content-length' not in req.headers:
                     h.putheader('Content-length', '%d' % len(data))
             else:
                 if hasattr(req, 'selector'):
