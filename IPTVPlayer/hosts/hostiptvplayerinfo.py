@@ -70,7 +70,7 @@ class IPTVPlayerInfo(CBaseHostClass):
         ITEMS_PER_PAGE = 40
 
         page = cItem.get('page', 0)
-        url = self.getFullUrl('/%s/e2iplayer/commits/master?limit=%d&offset=%d' % (config.plugins.iptvplayer.gitlab_repo.value, ITEMS_PER_PAGE, page * ITEMS_PER_PAGE))
+        url = self.getFullUrl('https://github.com/OpenVisionE2/e2iplayer-ov/commits/master?limit=%d&offset=%d' % (ITEMS_PER_PAGE, page * ITEMS_PER_PAGE))
 
         if page > 1:
             if '?' in url:

@@ -22,7 +22,6 @@ import time
 ###################################################
 # Globals
 ###################################################
-gInitIPTVPlayer = True # is initialization of IPTVPlayer is needed
 PluginLanguageDomain = "IPTVPlayer"
 PluginLanguagePath = "Extensions/IPTVPlayer/locale"
 gSetIPTVPlayerLastHostError = ""
@@ -47,13 +46,6 @@ def TranslateTXT(txt):
 
 localeInit()
 language.addCallback(localeInit)
-
-
-def IPTVPlayerNeedInit(value=None):
-    global gInitIPTVPlayer
-    if value in [True, False]:
-        gInitIPTVPlayer = value
-    return gInitIPTVPlayer
 
 
 def SetIPTVPlayerLastHostError(value=""):

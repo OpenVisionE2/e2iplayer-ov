@@ -44,7 +44,7 @@ from enigma import getDesktop, eTimer
 ####################################################
 #                   IPTV components
 ####################################################
-from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT as _, IPTVPlayerNeedInit, GetIPTVPlayerLastHostError
+from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT as _, GetIPTVPlayerLastHostError
 from Plugins.Extensions.IPTVPlayer.tools.iptvtypes import strwithmeta
 import Plugins.Extensions.IPTVPlayer.components.asynccall as asynccall
 ###################################################
@@ -379,27 +379,8 @@ class IPTVSubDownloaderWidget(Screen):
                     message = _("It seems that the subtitle's provider \"%s\" has crashed. Do you want to report this problem?") % self.hostName
                     message += "\n"
                     message += _('\nMake sure you are using the latest version of the plugin.')
-                    if config.plugins.iptvplayer.preferredupdateserver.value == '3': #private sss repository
-                        message += _('\nYou can also report problem here: \nhttps://gitlab.com/iptvplayer-for-e2/iptvplayer-for-e2/issues\nor here: samsamsam@o2.pl')
-                    self.session.openWithCallback(self.reportHostCrash, MessageBox, text=message, type=MessageBox.TYPE_YESNO)
+                    message += _('\nYou can also report problem here: \nhttps://github.com/OpenVisionE2/e2iplayer-ov/issues')
             self.hideSpinner()
-        except Exception:
-            printExc()
-
-    def reportHostCrash(self, ret):
-        try:
-            if ret and config.plugins.iptvplayer.preferredupdateserver.value == '3': #private sss repository:
-                try:
-                    exceptStack = self.workThread.getExceptStack()
-                    reporter = GetPluginDir('iptvdm/reporthostcrash.py')
-                    msg = urllib_quote('%s|%s|%s|%s' % ('HOST_CRASH', IPTVSubDownloaderWidget.IPTV_VERSION, self.hostName, self.getCategoryPath()))
-                    self.crashConsole = iptv_system('python "%s" "http://iptvplayer.vline.pl/reporthostcrash.php?msg=%s" "%s" 2&>1 > /dev/null' % (reporter, msg, exceptStack))
-                    printDBG(msg)
-                except Exception:
-                    printExc()
-            self.workThread = None
-            self.prevSelList = []
-            self.back_pressed()
         except Exception:
             printExc()
 

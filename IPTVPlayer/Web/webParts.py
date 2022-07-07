@@ -5,8 +5,7 @@ import settings
 
 from webTools import *
 from Plugins.Extensions.IPTVPlayer.iptvdm.iptvdh import DMHelper
-from Plugins.Extensions.IPTVPlayer.version import IPTV_VERSION
-from Plugins.Extensions.IPTVPlayer.tools.iptvtools import GetHostsList, IsHostEnabled, SaveHostsOrderList, SortHostsList, GetLogoDir, GetHostsOrderList, getDebugMode, formatBytes
+from Plugins.Extensions.IPTVPlayer.tools.iptvtools import GetHostsList, IsHostEnabled, SaveHostsOrderList, SortHostsList, GetLogoDir, GetHostsOrderList, getDebugMode, formatBytes, GetIPTVPlayerVerstion
 #### e2 imports
 from Components.config import config
 
@@ -15,6 +14,7 @@ import os
 
 ########################################################
 
+IPTV_VERSION = GetIPTVPlayerVerstion()
 
 def IncludeHEADER(extraMetas=''):
     tempText = """
@@ -61,7 +61,7 @@ def IncludeMENU(MenuStatusMSG='', ShowCancelButton=False):
     <a href="/iptvplayer/?resetState=1" >%s</a>
   </div>
   <div class="bottombar">
-    <a href="https://gitlab.com/iptvplayer-for-e2/iptvplayer-for-e2/commits/master" target="_blank" >IPTVPlayer %s: <b><font color="#A9F5F2">%s</font></b></a>
+    <a href="https://github.com/OpenVisionE2/e2iplayer-ov/commits/master" target="_blank" >IPTVPlayer %s: <b><font color="#A9F5F2">%s</font></b></a>
     <a>, %s: <b>%s</b></a/>
   </div>
 """ % (_('Active host'), _('Download manager'), _('Logs'), _('Reset State'), _('version'), IPTV_VERSION, _('Web interface version'), settings.WebInterfaceVersion)
@@ -78,7 +78,7 @@ def IncludeMENU(MenuStatusMSG='', ShowCancelButton=False):
     <a href="/iptvplayer/?resetState=1" >%s</a>
   </div>
   <div class="bottombar">
-    <a href="https://gitlab.com/iptvplayer-for-e2/iptvplayer-for-e2/commits/master" target="_blank" >E2iPlayer %s: <b><font color="#A9F5F2">%s</font></b></a>
+    <a href="https://github.com/OpenVisionE2/e2iplayer-ov/commits/master" target="_blank" >E2iPlayer %s: <b><font color="#A9F5F2">%s</font></b></a>
     <a>, %s: <b>%s</b></a/>
   </div>
 """ % (_('Information'), _('Selected hosts'), _('Search'), _('Download manager'), _('Settings'), _('Logs'), _('Reset State'), _('version'), IPTV_VERSION, _('Web interface version'), settings.WebInterfaceVersion)

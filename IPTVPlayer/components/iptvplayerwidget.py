@@ -28,11 +28,13 @@ from Tools.BoundFunction import boundFunction
 from Tools.LoadPixmap import LoadPixmap
 from Tools.Directories import fileExists
 from enigma import getDesktop, eTimer
+from Components.SystemInfo import BoxInfo
 
+architecture = BoxInfo.getItem("architecture")
 ####################################################
 #                   IPTV components
 ####################################################
-from Plugins.Extensions.IPTVPlayer.components.iptvconfigmenu import ConfigMenu, GetMoviePlayer, GetListOfHostsNames, IsUpdateNeededForHostsChangesCommit
+from Plugins.Extensions.IPTVPlayer.components.iptvconfigmenu import ConfigMenu, GetMoviePlayer, GetListOfHostsNames
 from Plugins.Extensions.IPTVPlayer.components.confighost import ConfigHostMenu, ConfigHostsMenu
 from Plugins.Extensions.IPTVPlayer.components.configgroups import ConfigGroupsMenu
 
@@ -50,16 +52,14 @@ from Plugins.Extensions.IPTVPlayer.tools.iptvtools import FreeSpace as iptvtools
                                                           CMoviePlayerPerHost, GetFavouritesDir, CFakeMoviePlayerOption, GetAvailableIconSize, \
                                                           GetE2VideoModeChoices, GetE2VideoMode, SetE2VideoMode, TestTmpCookieDir, TestTmpJSCacheDir,\
                                                           ClearTmpCookieDir, ClearTmpJSCacheDir, SetTmpCookieDir, SetTmpJSCacheDir,\
-                                                          GetEnabledHostsList, SaveHostsOrderList, GetUpdateServerUri, GetHostsAliases, formatBytes
+                                                          GetEnabledHostsList, SaveHostsOrderList, GetHostsAliases, formatBytes
 from Plugins.Extensions.IPTVPlayer.tools.iptvhostgroups import IPTVHostsGroups
 from Plugins.Extensions.IPTVPlayer.iptvdm.iptvdh import DMHelper
 from Plugins.Extensions.IPTVPlayer.iptvdm.iptvbuffui import E2iPlayerBufferingWidget
 from Plugins.Extensions.IPTVPlayer.iptvdm.iptvdmapi import IPTVDMApi, DMItem
-from Plugins.Extensions.IPTVPlayer.iptvupdate.updatemainwindow import IPTVUpdateWindow, UpdateMainAppImpl
 
-from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT as _, IPTVPlayerNeedInit, GetIPTVPlayerLastHostError, GetIPTVNotify, GetIPTVSleep
+from Plugins.Extensions.IPTVPlayer.components.iptvplayerinit import TranslateTXT as _, GetIPTVPlayerLastHostError, GetIPTVNotify, GetIPTVSleep
 
-from Plugins.Extensions.IPTVPlayer.setup.iptvsetupwidget import IPTVSetupMainWidget
 from Plugins.Extensions.IPTVPlayer.components.iptvplayer import IPTVStandardMoviePlayer, IPTVMiniMoviePlayer
 from Plugins.Extensions.IPTVPlayer.components.iptvextmovieplayer import IPTVExtMoviePlayer
 from Plugins.Extensions.IPTVPlayer.components.iptvpictureplayer import IPTVPicturePlayerWidget
@@ -144,7 +144,7 @@ class E2iPlayerWidget(Screen):
 
     def __init__(self, session):
         printDBG("!!!!! E2iPlayerWidget.__init__ IPTV_VERSION[%s], CPU:%s, PYTHON:%s !!!!!\n" % (E2iPlayerWidget.IPTV_VERSION,
-                                                                                                 config.plugins.iptvplayer.plarform.value,
+                                                                                                 architecture,
                                                                                                  pVersion()
                                                                                                 ))
         self.session = session
@@ -227,14 +227,6 @@ class E2iPlayerWidget(Screen):
                 self[spinnerName] = Cover3()
         except Exception:
             printExc()
-
-        # Check for plugin update
-        self.lastPluginVersion = ''
-        self.checkUpdateConsole = None
-        self.checkUpdateTimer = eTimer()
-        self.checkUpdateTimer_conn = eConnectCallback(self.checkUpdateTimer.timeout, self.__requestCheckUpdate)
-        self.checkUpdateTimer_interval = 1000 * 60 * 60 * 2 # 2h
-        self.__requestCheckUpdate()
 
         self.spinnerPixmap = [LoadPixmap(GetIconDir('radio_button_on.png')), LoadPixmap(GetIconDir('radio_button_off.png'))]
         self.useAlternativePlayer = False
@@ -356,7 +348,6 @@ class E2iPlayerWidget(Screen):
         self.enabledHostsListOld = []
         asynccall.SetMainThreadId()
 
-        self.checkWrongImage = True
         self.downloadable = False
         self.colorEnabled = parseColor("#FFFFFF")
         self.colorDisabled = parseColor("#808080")
@@ -396,14 +387,10 @@ class E2iPlayerWidget(Screen):
     def __onClose(self):
         self.session.nav.playService(self.currentService)
         self["list"].disconnectSelChanged(self.onSelectionChanged)
-        if None != self.checkUpdateConsole:
-            self.checkUpdateConsole.terminate()
         if None != self.iconMenager:
             self.iconMenager.setUpdateCallBack(None)
             self.iconMenager.clearDQueue()
             self.iconMenager = None
-        self.checkUpdateTimer_conn = None
-        self.checkUpdateTimer = None
         self.mainTimer_conn = None
         self.mainTimer = None
         self.decodeCoverTimer_conn = None
@@ -505,27 +492,8 @@ class E2iPlayerWidget(Screen):
                         message = _('It seems that the host "%s" has crashed. Do you want to report this problem?') % self.hostName
                         message += "\n"
                         message += _('\nMake sure you are using the latest version of the plugin.')
-                        if config.plugins.iptvplayer.preferredupdateserver.value == '3': #private sss repository
-                            message += _('\nYou can also report problem here: \nhttps://gitlab.com/iptvplayer-for-e2/iptvplayer-for-e2/issues\nor here: samsamsam@o2.pl')
-                        self.session.openWithCallback(self.reportHostCrash, MessageBox, text=message, type=MessageBox.TYPE_YESNO)
+                        message += _('\nYou can also report problem here: \nhttps://github.com/OpenVisionE2/e2iplayer-ov/issues')
             self.hideSpinner()
-        except Exception:
-            printExc()
-
-    def reportHostCrash(self, ret):
-        try:
-            if ret and config.plugins.iptvplayer.preferredupdateserver.value == '3': #private sss repository
-                try:
-                    exceptStack = self.workThread.getExceptStack()
-                    reporter = GetPluginDir('iptvdm/reporthostcrash.py')
-                    msg = urllib_quote('%s|%s|%s|%s' % ('HOST_CRASH', E2iPlayerWidget.IPTV_VERSION, self.hostName, self.getCategoryPath()))
-                    self.crashConsole = iptv_system('python "%s" "http://iptvplayer.vline.pl/reporthostcrash.php?msg=%s" "%s" 2&>1 > /dev/null' % (reporter, msg, exceptStack))
-                    printDBG(msg)
-                except Exception:
-                    printExc()
-            self.workThread = None
-            self.prevSelList = []
-            self.back_pressed()
         except Exception:
             printExc()
 
@@ -723,9 +691,7 @@ class E2iPlayerWidget(Screen):
         if ret:
             if ret[1] == "info": #information about plugin
                 TextMSG = _("Lead programmer: ") + "\n\t- samsamsam\n"
-                if config.plugins.iptvplayer.preferredupdateserver.value == '3': #private sss repository
-                    TextMSG += _("E-mail: ") + "\n\t- iptvplayere2@gmail.com\n"
-                    TextMSG += _("www: ") + "\n\t- http://iptvplayer.vline.pl/" + '\n\t- http://www.iptvplayer.gitlab.io/\n'
+                TextMSG += _("www: ") + "\n\t- https://github.com/OpenVisionE2/e2iplayer-ov"
                 TextMSG += _("Developers: ")
                 developersTab = [{'nick': 'zdzislaw22', },
                                  {'nick': 'mamrot', },
@@ -736,6 +702,11 @@ class E2iPlayerWidget(Screen):
                                  {'nick': 'matzg', },
                                  {'nick': 'tomashj291', },
                                  {'nick': 'a4tech', },
+                                 {'nick': 'zadmario',    },
+                                 {'nick': 'mosz_nowy',    },
+                                 {'nick': 'maxbambi',    },
+                                 {'nick': 'j00zek',    },
+                                 {'nick': 'Open Vision developers',    },
                                 ]
                 # present alphabetically, the order does not mean validity
                 sortedList = sorted(developersTab, key=lambda k: k['nick'].upper())
@@ -1131,48 +1102,10 @@ class E2iPlayerWidget(Screen):
         self.setTitle('E2iPlayer ' + GetIPTVPlayerVerstion())
         self.loadSpinner()
         self.hideSpinner()
-        self.checkBlacklistedImage()
         self.askUpdateAvailable(self.selectHost)
 
-    def __requestCheckUpdate(self):
-        lastVerUrl = GetUpdateServerUri('lastversion.php')
-        if config.plugins.iptvplayer.autoCheckForUpdate.value:
-            self.checkUpdateTimer.start(self.checkUpdateTimer_interval, True)
-            if IsExecutable(DMHelper.GET_WGET_PATH()):
-                cmd = '%s "%s" -O - 2> /dev/null ' % (DMHelper.GET_WGET_PATH(), lastVerUrl)
-                if None != self.checkUpdateConsole:
-                    self.checkUpdateConsole.terminate()
-                printDBG("__requestCheckUpdate cmd[%r]" % cmd)
-                self.checkUpdateConsole = iptv_system(cmd, self.__checkUpdateCmdFinished)
-
-    def __checkUpdateCmdFinished(self, status, lastversion):
-        printDBG("__checkUpdateCmdFinished  status[%r] lastversion[%r]" % (status, lastversion))
-        if 0 == status and 50000000 < GetVersionNum(lastversion):
-            self.lastPluginVersion = lastversion
-
     def askUpdateAvailable(self, NoUpdateCallback):
-        printDBG(">> askUpdateAvailable")
-        if config.plugins.iptvplayer.autoCheckForUpdate.value \
-            and 0 < GetVersionNum(self.lastPluginVersion) \
-            and GetVersionNum(self.lastPluginVersion) > GetVersionNum(GetIPTVPlayerVerstion()) \
-            and self.lastPluginVersion != config.plugins.iptvplayer.updateLastCheckedVersion.value:
-
-            message = _('There is a new version available do you want to update? \nYour version [%s], latest version on server [%s]') % (GetIPTVPlayerVerstion(), self.lastPluginVersion)
-            config.plugins.iptvplayer.updateLastCheckedVersion.value = self.lastPluginVersion
-            config.plugins.iptvplayer.updateLastCheckedVersion.save()
-            configfile.save()
-            self.session.openWithCallback(boundFunction(self.answerUpdateAvailable, NoUpdateCallback), MessageBox, text=message, type=MessageBox.TYPE_YESNO)
-            return
         NoUpdateCallback()
-
-    def answerUpdateAvailable(self, NoUpdateCallback, ret):
-        try:
-            if ret:
-                self.session.openWithCallback(NoUpdateCallback, IPTVUpdateWindow, UpdateMainAppImpl(self.session), True)
-            else:
-                NoUpdateCallback()
-        except Exception:
-            printExc()
 
     def selectHost(self, arg1=None):
         printDBG(">> selectHost")
@@ -1200,10 +1133,6 @@ class E2iPlayerWidget(Screen):
             self.displayGroupsList.append((item.title, item.name))
         self.displayGroupsList.append((_('All'), 'all'))
         self.displayGroupsList.append((_("Configuration"), "config"))
-
-        if config.plugins.iptvplayer.AktualizacjaWmenu.value == True:
-            if config.plugins.iptvplayer.preferredupdateserver.value != '4': #4 = managed by opkg
-                self.displayGroupsList.append((_("Update"), "update"))
 
         self.newDisplayGroupsList = []
         self.session.openWithCallback(self.selectGroupCallback, PlayerSelectorWidget, inList=self.displayGroupsList, outList=self.newDisplayGroupsList, numOfLockedItems=self.getNumOfSpecialItems(self.displayGroupsList), groupName='selectgroup')
@@ -1350,10 +1279,6 @@ class E2iPlayerWidget(Screen):
         if len(brokenHostList) > 0:
             errorMessage = _("Following host are broken or additional python modules are needed.") + '\n' + '\n'.join(brokenHostList)
 
-        if config.plugins.iptvplayer.AktualizacjaWmenu.value == True:
-            if config.plugins.iptvplayer.preferredupdateserver.value != '4': #4 = managed by opkg
-                self.displayHostsList.append((_("Update"), "update"))
-
         if "" != errorMessage and True == self.showHostsErrorMessage:
             self.showHostsErrorMessage = False
             self.session.openWithCallback(self.displayListOfHosts, MessageBox, errorMessage, type=MessageBox.TYPE_INFO, timeout=10)
@@ -1427,9 +1352,6 @@ class E2iPlayerWidget(Screen):
             elif ret[1] == "noupdate":
                 self.close()
                 return
-            elif ret[1] == "update":
-                self.session.openWithCallback(self.selectHost, IPTVUpdateWindow, UpdateMainAppImpl(self.session))
-                return
             elif ret[1] == "IPTVDM":
                 if type in ['selecthost', 'selectgroup']:
                     self.runIPTVDM(self.selectHost)
@@ -1467,24 +1389,13 @@ class E2iPlayerWidget(Screen):
         self.session.openWithCallback(self.configHostsCallback, ConfigHostsMenu, GetListOfHostsNames())
 
     def configHostsCallback(self, arg1=None):
-        if IsUpdateNeededForHostsChangesCommit(self.enabledHostsListOld):
-            message = _('Some changes will be applied only after plugin update.\nDo you want to perform update now?')
-            self.session.openWithCallback(self.askForUpdateCallback, MessageBox, text=message, type=MessageBox.TYPE_YESNO)
-        elif self.group != None:
+        if self.group != None:
             self.selectHostFromGroup()
         else:
             self.selectHost()
 
     def runConfigGroupsMenu(self):
         self.session.openWithCallback(self.selectHost, ConfigGroupsMenu)
-
-    def askForUpdateCallback(self, arg1=None):
-        if arg1:
-            self.session.openWithCallback(self.selectHost, IPTVUpdateWindow, UpdateMainAppImpl(self.session, allowTheSameVersion=True))
-        elif self.group != None:
-            self.selectHostFromGroup()
-        else:
-            self.selectHost()
 
     def runConfig(self):
         self.session.openWithCallback(self.configCallback, ConfigMenu)
@@ -1807,7 +1718,7 @@ class E2iPlayerWidget(Screen):
                     gstAdditionalParams['show_iframe'] = config.plugins.iptvplayer.show_iframe.value
                     gstAdditionalParams['iframe_file_start'] = config.plugins.iptvplayer.iframe_file.value
                     gstAdditionalParams['iframe_file_end'] = config.plugins.iptvplayer.clear_iframe_file.value
-                    if 'sh4' == config.plugins.iptvplayer.plarform.value:
+                    if architecture == "sh4":
                         gstAdditionalParams['iframe_continue'] = True
                     else:
                         gstAdditionalParams['iframe_continue'] = False
@@ -1829,7 +1740,7 @@ class E2iPlayerWidget(Screen):
                             playerVal = 'gstplayer'
                             gstAdditionalParams['download-buffer-path'] = ''
                             gstAdditionalParams['ring-buffer-max-size'] = 0
-                            if 'sh4' == config.plugins.iptvplayer.plarform.value: # use default value, due to small amount of RAM
+                            if architecture == "sh4": # use default value, due to small amount of RAM
                                 #use the default value, due to small amount of RAM
                                 #in the future it will be configurable
                                 gstAdditionalParams['buffer-duration'] = -1
@@ -2033,10 +1944,7 @@ class E2iPlayerWidget(Screen):
             self.requestListFromHost('ForSearch')
 
     def configCallback(self):
-        if IPTVPlayerNeedInit():
-            self.session.openWithCallback(self.selectHost, IPTVSetupMainWidget, True)
-        else:
-            self.askUpdateAvailable(self.selectHost)
+        self.askUpdateAvailable(self.selectHost)
 
     def randomizePlayableItems(self, randomize=True):
         printDBG("randomizePlayableItems")
@@ -2290,27 +2198,6 @@ class E2iPlayerWidget(Screen):
            self.session.open(MessageBox, ret.value[0], type=MessageBox.TYPE_ERROR)
         else:
             self.checkAutoPlaySequencer()
-
-    def checkBlacklistedImage(self):
-        if self.checkWrongImage:
-            self.checkWrongImage = False
-            try:
-                if os_path.isfile(GetExtensionsDir('/iPabUpdater/__init__.pyo')):
-                    message = ["WARNING (phase 1/3)"]
-                    message.append("Because of blocking part of functionality of the IPTVPlayer by http://ipab.tv/ developer your image was blacklisted.")
-                    message.append("Please be also informed that users of http://ipab.tv/ will NOT get support, due to same reason.")
-                    GetIPTVNotify().push('\n'.join(message), 'error', 120)
-                elif os_path.isfile('/etc/bpversion'):
-                    with open("/etc/bpversion") as file:
-                        data = file.read(256)
-                        if 'opendonki' in data.lower():
-                            message = ["WARNING (phase 1/3)"]
-                            message.append("Because of very bad behaviour of user @DirtyDonki your image was blacklisted.")
-                            message.append("Please be also informed that users of https://vuplus-images.co.uk/ forum will NOT get support, due to same reason.")
-                            GetIPTVNotify().push('\n'.join(message), 'error', 120)
-            except:
-                printExc()
-#class E2iPlayerWidget
 
 
 class IPTVPlayerLCDScreen(Screen):

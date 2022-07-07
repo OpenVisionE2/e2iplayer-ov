@@ -902,7 +902,7 @@ class IPTVExtMoviePlayer(Screen):
         printDBG("openSubtitlesFromFileCallback filePath[%s]" % filePath)
         if None != filePath:
             self.subHandler['handler'].removeCacheFile(filePath)
-            cmd = '%s "%s"' % (config.plugins.iptvplayer.uchardetpath.value, filePath)
+            cmd = '/usr/bin/uchardet "%s"' % (filePath)
             self.workconsole = iptv_system(cmd, boundFunction(self.enableSubtitlesFromFile, filePath))
 
     def enableSubtitlesFromFile(self, filePath, code=127, encoding=""):
@@ -1956,9 +1956,8 @@ class IPTVExtMoviePlayer(Screen):
                 msg = _("Link is not supported by the gstplayer. Please use the extelayer3 if available.")
                 self.showMessage(msg, MessageBox.TYPE_ERROR)
 
-            gstplayerPath = config.plugins.iptvplayer.gstplayerpath.value
             #'export GST_DEBUG="*:6" &&' +
-            cmd = gstplayerPath + ' "%s"' % self.fileSRC
+            cmd = '/usr/bin/gstplayer' + ' "%s"' % self.fileSRC
 
             # active audio track
             audioTrackIdx = self.metaHandler.getAudioTrackIdx()
@@ -1995,8 +1994,7 @@ class IPTVExtMoviePlayer(Screen):
                             cmd += (' "proxy=%s" ' % tmp)
             cmd += " > /dev/null"
         else:
-            exteplayer3path = config.plugins.iptvplayer.exteplayer3path.value
-            cmd = exteplayer3path
+            cmd = '/usr/bin/exteplayer3'
             tmpUri = strwithmeta(self.fileSRC)
 
             audioUri = ''
@@ -2044,35 +2042,34 @@ class IPTVExtMoviePlayer(Screen):
             if config.plugins.iptvplayer.dts_software_decode.value:
                 cmd += ' -d '
 
-            if config.plugins.iptvplayer.plarform.value in ('sh4', 'mipsel', 'armv7', 'armv5t'):
-                if config.plugins.iptvplayer.wma_software_decode.value:
-                    cmd += ' -w '
-                if config.plugins.iptvplayer.mp3_software_decode.value:
-                    cmd += ' -m '
-                if config.plugins.iptvplayer.eac3_software_decode.value:
-                    cmd += ' -e '
-                if config.plugins.iptvplayer.ac3_software_decode.value:
-                    cmd += ' -3 '
+            if config.plugins.iptvplayer.wma_software_decode.value:
+                cmd += ' -w '
+            if config.plugins.iptvplayer.mp3_software_decode.value:
+                cmd += ' -m '
+            if config.plugins.iptvplayer.eac3_software_decode.value:
+                cmd += ' -e '
+            if config.plugins.iptvplayer.ac3_software_decode.value:
+                cmd += ' -3 '
+
             if 'lpcm' == config.plugins.iptvplayer.software_decode_as.value:
                 cmd += ' -l '
 
             if config.plugins.iptvplayer.aac_software_decode.value:
                 cmd += ' -a 3 -p 10'
-            elif config.plugins.iptvplayer.plarform.value in ('sh4', 'mipsel', 'armv7', 'armv5t'):
-                cmd += ' -p 2'
-                if None != self.downloader:
-                    cmd += ' -o 1 '
+
+            cmd += ' -p 2'
+            if None != self.downloader:
+                cmd += ' -o 1 '
 
             audioTrackIdx = self.metaHandler.getAudioTrackIdx()
             printDBG(">>>>>>>>>>>>>>>>>>>>>>>> audioTrackIdx[%d]" % audioTrackIdx)
             if audioTrackIdx >= 0:
                 cmd += ' -t %d ' % audioTrackIdx
 
-            if config.plugins.iptvplayer.plarform.value in ('sh4', 'mipsel', 'armv7', 'armv5t'):
-                subtitleTrackIdx = self.metaHandler.getEmbeddedSubtileTrackIdx()
-                printDBG(">>>>>>>>>>>>>>>>>>>>>>>> subtitleTrackIdx[%d]" % subtitleTrackIdx)
-                if subtitleTrackIdx >= 0:
-                    cmd += ' -9 %d ' % subtitleTrackIdx
+            subtitleTrackIdx = self.metaHandler.getEmbeddedSubtileTrackIdx()
+            printDBG(">>>>>>>>>>>>>>>>>>>>>>>> subtitleTrackIdx[%d]" % subtitleTrackIdx)
+            if subtitleTrackIdx >= 0:
+                cmd += ' -9 %d ' % subtitleTrackIdx
 
             if audioUri != '':
                 cmd += ' -x "%s" ' % audioUri
