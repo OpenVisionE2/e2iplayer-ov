@@ -6,6 +6,7 @@ from hashlib import md5
 from Plugins.Extensions.IPTVPlayer.libs.crypto.hash.hash import Hash
 from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import strEncode
 
+
 class MD5(Hash):
 
     def __init__(self):

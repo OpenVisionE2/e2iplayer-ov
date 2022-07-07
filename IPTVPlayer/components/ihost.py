@@ -21,6 +21,7 @@ if not isPY2():
     basestring = str
 ######################################################
 
+
 class CUrlItem:
     def __init__(self, name="", url="", urlNeedsResolve=0):
         if isinstance(name, basestring):

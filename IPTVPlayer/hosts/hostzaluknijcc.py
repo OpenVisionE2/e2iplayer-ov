@@ -151,7 +151,6 @@ class Zaluknij(CBaseHostClass):
         else:
             nextPage = False
 
-
         if 'wyszukiwarka?phrase=' in cItem['url']:
             data = self.cm.ph.getDataBeetwenNodes(data, ('<div', '>', 'advanced-search'), ('<footer', '>'))[1]
         else:

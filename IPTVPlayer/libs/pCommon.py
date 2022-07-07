@@ -1226,7 +1226,6 @@ class common:
                             OK = True
                             break
                     
-
             printDBG('saveWebFile() OK=%s, checkFromFirstBytes=%s' % (str(OK), checkFromFirstBytes))
             if OK or len(checkFromFirstBytes):
                 blockSize = addParams.get('block_size', 8192)

@@ -82,6 +82,7 @@ config.plugins.iptvplayer.extplayer_infobanner_clockformat = ConfigSelection(def
 
 config.plugins.iptvplayer.GSTplayer_no_IFD = ConfigYesNo(default=False)
 
+
 class ConfigExtMoviePlayerBase():
 
     def __init__(self):

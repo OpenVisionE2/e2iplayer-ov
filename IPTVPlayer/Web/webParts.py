@@ -16,6 +16,7 @@ import os
 
 IPTV_VERSION = GetIPTVPlayerVerstion()
 
+
 def IncludeHEADER(extraMetas=''):
     tempText = """
 <head>

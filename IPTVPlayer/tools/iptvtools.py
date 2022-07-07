@@ -641,6 +641,7 @@ class CSelOneLink():
 #############################################################
 # debugs
 
+
 def getDebugMode():
     DBG = ''
     try:
@@ -691,6 +692,7 @@ def printDBG(DBGtxt):
 g_cacheHostsFromList = None
 g_cacheHostsFromFolder = None
 g_cachePluginFolder = None
+
 
 def __isHostNameValid(hostName):
     BLOCKED_MARKER = '_blocked_'
@@ -1749,11 +1751,13 @@ def ReadGnuMIPSABIFP(elfFileName):
         printExc()
     return Val_HAS_MIPS_ABI_FLAGS, Val_GNU_MIPS_ABI_FP
 
+
 def MergeDicts(*dict_args):
     result = {}
     for dictionary in dict_args:
         result.update(dictionary)
     return result
+
 
 def get_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -1767,14 +1771,17 @@ def get_ip():
         s.close()
     return IP
 
+
 def is_port_in_use(pIP, pPORT):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     res = sock.connect_ex((pIP, pPORT))
     sock.close()
     return res == 0
 
+
 def isOPKGinstall():
     return True
+
 
 def getIPTVplayerOPKGVersion():
     global CACHED_DATA_DICT
@@ -1797,6 +1804,7 @@ def getIPTVplayerOPKGVersion():
 
 def GetIPTVPlayerVerstion():
     return getIPTVplayerOPKGVersion()
+
 
 def GetIPTVPlayerVersion(): # just for compatibility
     return GetIPTVPlayerVerstion()

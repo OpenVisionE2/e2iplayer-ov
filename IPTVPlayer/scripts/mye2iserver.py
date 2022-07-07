@@ -14,16 +14,20 @@ try:
 except Exception:
     from urllib.parse import urlsplit, urlparse, parse_qs, urljoin
 
+
 def signal_handler(sig, frame):
     os.kill(os.getpid(), signal.SIGTERM)
 
+
 signal.signal(signal.SIGINT, signal_handler)
+
 
 def updateStatus(pType, pData, pCode=None):
     if isinstance(pData, bytes):
         pData = pData.decode()
     obj = {'type': pType, 'data': pData, 'code': pCode}
     sys.stderr.write("\n%s\n" % json.dumps(obj).encode('utf-8'))
+
 
 def redirect_handler_factory(url):
 
@@ -66,6 +70,7 @@ def redirect_handler_factory(url):
                 return
             SimpleHTTPRequestHandler.do_GET(self)
     return RedirectHandler
+
 
 if __name__ == "__main__":
     try:
