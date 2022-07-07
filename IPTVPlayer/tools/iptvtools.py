@@ -1451,21 +1451,9 @@ def printExc(msg='', WarnOnly = False):
         pass
     return retMSG #returns the error description to possibly use in main code. E.g. inform about failed login
 
-def GetIPTVPlayerVerstion():
-    try:
-        from Plugins.Extensions.IPTVPlayer.version import IPTV_VERSION
-    except Exception:
-        IPTV_VERSION = "XX.YY.ZZ"
-    return IPTV_VERSION
-
-def GetIPTVPlayerVersion(): # just for compatibility
-    return GetIPTVPlayerVerstion()
 
 def GetIPTVPlayerComitStamp():
-    try:
-        from Plugins.Extensions.IPTVPlayer.version import COMMIT_STAMP
-    except Exception:
-        COMMIT_STAMP = ""
+    COMMIT_STAMP = ""
     return COMMIT_STAMP
 
 
@@ -1794,7 +1782,7 @@ def getIPTVplayerOPKGVersion():
         if not isOPKGinstall():
             CACHED_DATA_DICT['IPTVplayerOPKGVersion'] = ''
         else:
-            for controlFile in ('/var/lib/opkg/info/enigma2-plugin-extensions--j00zeks-e2iplayer-mod-zadmario.control',
+            for controlFile in ('/var/lib/opkg/info/enigma2-plugin-extensions-iptvplayer.control',
                                 '/var/lib/opkg/info/enigma2-plugin-extensions-e2iplayer.control'):
                 if os.path.exists(controlFile):
                     lines = []
@@ -1805,3 +1793,10 @@ def getIPTVplayerOPKGVersion():
                         if line.startswith('Version: '):
                             CACHED_DATA_DICT['IPTVplayerOPKGVersion'] = line[9:].strip()
     return CACHED_DATA_DICT.get('IPTVplayerOPKGVersion', '')
+
+
+def GetIPTVPlayerVerstion():
+    return getIPTVplayerOPKGVersion()
+
+def GetIPTVPlayerVersion(): # just for compatibility
+    return GetIPTVPlayerVerstion()
