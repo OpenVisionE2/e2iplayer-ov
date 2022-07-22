@@ -1,7 +1,7 @@
 import os
 from Plugins.Extensions.OpenWebif.WebChilds.Toplevel import addExternalChild
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS, isPluginInstalled
-
+from Tools.PyVerHelper import getPyExt
 from webSite import StartPage, redirectionPage, hostsPage, useHostPage, downloaderPage, settingsPage, logsPage, searchPage
 from twisted.web import static
 
@@ -18,13 +18,13 @@ IPTVwebRoot.putChild("settings", settingsPage())
 IPTVwebRoot.putChild("logs", logsPage())
 IPTVwebRoot.putChild("search", searchPage())
 
+PyExt = getPyExt()
+
 
 def checkForFC():
     ret = False
-    if os.path.exists(resolveFilename(SCOPE_PLUGINS, 'Extensions/OpenWebif/controllers/base.pyo')):
-        myfileName = resolveFilename(SCOPE_PLUGINS, 'Extensions/OpenWebif/controllers/base.pyo')
-    elif os.path.exists(resolveFilename(SCOPE_PLUGINS, 'Extensions/OpenWebif/controllers/base.pyc')):
-        myfileName = resolveFilename(SCOPE_PLUGINS, 'Extensions/OpenWebif/controllers/base.pyc')
+    if os.path.exists(resolveFilename(SCOPE_PLUGINS, 'Extensions/OpenWebif/controllers/base.%s' % PyExt)):
+        myfileName = resolveFilename(SCOPE_PLUGINS, 'Extensions/OpenWebif/controllers/base.%s' % PyExt)
     else:
         return False
 
@@ -46,7 +46,7 @@ if isPluginInstalled("OpenWebif"):
     # Old openwebif version (prior July the 14th 2017) has a bug and does not populate links to all properly registered web addons except fancontrol
     # see: https://github.com/E2OpenPlugins/e2openplugin-OpenWebif/pull/629
     #  A HACK: we will canibalize fancontrol entry point (if not installed) to present IPTVplayer option on the web
-    if checkForFC() == True and not os.path.exists(resolveFilename(SCOPE_PLUGINS, 'Extensions/FanControl2/FC2webSite.pyo')):
+    if checkForFC() == True and not os.path.exists(resolveFilename(SCOPE_PLUGINS, 'Extensions/FanControl2/FC2webSite.%s' % PyEx)):
         fcRoot = static.File(GetPluginDir('Web/'))
         fcRoot.putChild("", redirectionPage())
         try:

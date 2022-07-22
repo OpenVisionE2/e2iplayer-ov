@@ -17,27 +17,29 @@ from Plugins.Extensions.IPTVPlayer.iptvdm.iptvdmapi import IPTVDMApi, DMItem
 #### e2 imports
 from Components.config import configfile, config
 from Components.Language import language
-
+from Tools.PyVerHelper import getPyExt
 #### system imports
 import os
 from twisted.web import resource, http, util
 
 ########################################################
 
+PyExt = getPyExt()
+
 
 def reloadScripts():
     #### Reload scripts if new version of source exists ####
     webPath = GetPluginDir(file='/Web/')
     if os.path.exists(os.path.join(webPath, "webParts.py")):
-        if os.path.exists(os.path.join(webPath, "webParts.pyo")):
-            if (int(os.path.getmtime(os.path.join(webPath, "webParts.pyo"))) <
+        if os.path.exists(os.path.join(webPath, "webParts.%s") % PyExt):
+            if (int(os.path.getmtime(os.path.join(webPath, "webParts.%s") % PyExt)) <
                 int(os.path.getmtime(os.path.join(webPath, "webParts.py")))):
                 reload(webParts)
         else:
             reload(webParts)
     if os.path.exists(os.path.join(webPath, "webThreads.py")):
-        if os.path.exists(os.path.join(webPath, "webThreads.pyo")):
-            if (int(os.path.getmtime(os.path.join(webPath, "webThreads.pyo"))) <
+        if os.path.exists(os.path.join(webPath, "webThreads.%s") % PyExt):
+            if (int(os.path.getmtime(os.path.join(webPath, "webThreads.%s") % PyExt)) <
                 int(os.path.getmtime(os.path.join(webPath, "webThreads.py")))):
                 reload(webThreads)
         else:
