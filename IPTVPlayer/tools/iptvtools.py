@@ -34,6 +34,10 @@ import codecs
 import datetime
 import socket
 from Components.SystemInfo import BoxInfo
+from Tools.PyVerHelper import getPyExt, getPyPath
+
+PyExt = getPyExt()
+PyPath = getPyPath()
 
 CACHED_DATA_DICT = {}
 
@@ -282,8 +286,7 @@ def IsWebInterfaceModuleAvailable(chekInit=False):
     else:
         file = 'initiator'
     if (fileExists(resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/Web/%s.py' % file)) or
-        fileExists(resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/Web/%s.pyo' % file)) or
-        fileExists(resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/Web/%s.pyc' % file))):
+        fileExists(resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/Web/%s.%s' % (file, PyExt)))):
         return True
     else:
         return False
@@ -319,10 +322,10 @@ def GetPyScriptCmd(name):
     baseName = resolveFilename(SCOPE_PLUGINS, 'Extensions/IPTVPlayer/scripts/') + name
     if fileExists(baseName + '.py'):
         baseName += '.py'
-    elif fileExists(baseName + '.pyo'):
-        baseName += '.pyo'
+    elif fileExists(baseName + '.%s' % PyExt):
+        baseName += '.%s' % PyExt
     if baseName != '':
-        for item in ['python', 'python2.7']:
+        for item in ['python', PyPath]:
             pyPath = Which(item)
             if '' != pyPath:
                 cmd = '%s %s' % (pyPath, baseName)
