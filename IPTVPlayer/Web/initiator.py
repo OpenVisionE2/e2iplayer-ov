@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 from Plugins.Extensions.OpenWebif.WebChilds.Toplevel import addExternalChild
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS, isPluginInstalled

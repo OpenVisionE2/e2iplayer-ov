@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function
 
 ###################################################
 #module run in different context then e2iplayer, must have separate version checking and assigments

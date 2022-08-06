@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ fmath.prime
 
     Start of prime number routines. Rabin-miller test works, more to come later.

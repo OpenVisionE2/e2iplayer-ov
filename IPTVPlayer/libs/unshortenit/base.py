@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlsplit, urlparse, parse_qs, urljoin

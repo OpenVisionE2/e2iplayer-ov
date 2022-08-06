@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Language extension for distutils Python scripts. Based on this concept:
 # http://wiki.maemo.org/Internationalize_a_Python_application
 from distutils import cmd

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function
 
 #module run in different context, must have separate version checking or just try
 try: #PY2

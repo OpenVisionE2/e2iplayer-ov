@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import re
 from Plugins.Extensions.IPTVPlayer.p2p3.UrlParse import urlparse, urljoin

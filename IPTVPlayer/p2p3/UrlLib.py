@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # macro to load functions from correct modules depending on the python version
 # build to simplify loading modules in e2iplayer scripts
 # just change:

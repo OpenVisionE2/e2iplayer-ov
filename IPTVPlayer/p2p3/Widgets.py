@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #from Plugins.Extensions.IPTVPlayer.p2p3.Widgets import getWidgetText, innerWidgetTextRight
 
 def getWidgetText(widgetPointer):

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #from Plugins.Extensions.IPTVPlayer.p2p3.pVer import isPY2
 import sys
 

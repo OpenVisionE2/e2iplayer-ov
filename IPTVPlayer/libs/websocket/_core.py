@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 websocket - WebSocket client library for Python
 
@@ -19,7 +20,6 @@ Copyright (C) 2010 Hiroki Ohtani(liris)
     Boston, MA  02110-1335  USA
 
 """
-from __future__ import print_function
 import sys
 if sys.version_info[0] == 3: #Python3
    unicode = str

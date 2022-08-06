@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # macro to load functions from correct modules depending on the python version
 # some functions copied from six library to support old nbox python - al credits go to it authors.
 # build to simplify loading modules in e2iplayer scripts
