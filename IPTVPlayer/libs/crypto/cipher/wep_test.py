@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-#! /usr/bin/env python
 """ crypto.cipher.wep_test
 
     Tests for wep encryption
