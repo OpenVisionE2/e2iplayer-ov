@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-#! /usr/bin/env python
 """ crypto.cipher.aes_sbox_analysis
 
     AES Sbox Analysis - a simple analysis of the AES Sbox that determines
