@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# -*- encoding: utf-8 -*-
 
 ###################################################
 #module run in different context then e2iplayer, must have separate version checking and assigments
