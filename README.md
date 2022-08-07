@@ -6,4 +6,5 @@ This version won't install any kind of binary files for you as we use OE/BitBake
 
 Feed is needed to install RDEPENDS and if you just copy the files it won't work for you.
 
-You could find the sources of rare binaries on https://github.com/OpenVisionE2
+* You could find the sources of rare binaries on https://github.com/OpenVisionE2
+* Upstream: https://gitlab.com/zadmario/e2iplayer
