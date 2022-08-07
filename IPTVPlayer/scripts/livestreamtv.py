@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from __future__ import print_function
 #module run in different context, must have separate version checking or just try
 try: #PY2
     from urllib2 import Request as urllib2_Request, urlopen as urllib2_urlopen
