@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from __future__ import print_function
 try:
     from urllib import urlopen as urllib_urlopen, urlretrieve as urllib_urlretrieve
 except Exception:
