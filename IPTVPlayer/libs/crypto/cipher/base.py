@@ -124,7 +124,7 @@ class padWithPadLen(Pad):
 
     def removePad(self, paddedBinaryString, blockSize):
         """ Remove padding from a binary string """
-        if not(0 < len(paddedBinaryString)):
+        if not (0 < len(paddedBinaryString)):
             raise DecryptNotBlockAlignedError('Expected More Data')
         return paddedBinaryString[:-ord(paddedBinaryString[-1])]
 

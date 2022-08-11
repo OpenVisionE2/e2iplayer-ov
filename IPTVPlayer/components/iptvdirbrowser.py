@@ -192,7 +192,7 @@ class IPTVDirectorySelectorWidget(Screen):
             self.currList = []
             self.tmpList.sort(key=lambda x: x.name.lower())
             self.currList = self.tmpList
-            if('/' != self.currDir):
+            if ('/' != self.currDir):
                 self.currList.insert(0, CListItem(name='..', fullDir='', type='dir')) # add back item
             self["list"].setList([(x,) for x in self.currList])
             self.tmpList = []

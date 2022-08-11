@@ -512,7 +512,7 @@ class CHostBase(IHost):
         return RetHost(RetHost.OK, value=convList)
 
     def getPrevList(self, refresh=0):
-        if(len(self.listOfprevList) > 0):
+        if (len(self.listOfprevList) > 0):
             hostList = self.listOfprevList.pop()
             hostCurrItem = self.listOfprevItems.pop()
             self.host.setCurrList(hostList)

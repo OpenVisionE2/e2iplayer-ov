@@ -34,7 +34,7 @@ if sys.version_info[0] == 3: #Python3
 
 from ._logging import *
 from ._url import *
-from ._socket import*
+from ._socket import *
 from ._http import *
 from ._exceptions import *
 

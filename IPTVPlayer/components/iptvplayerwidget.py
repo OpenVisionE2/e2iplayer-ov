@@ -608,7 +608,7 @@ class E2iPlayerWidget(Screen):
 
         try:
             host = __import__('Plugins.Extensions.IPTVPlayer.hosts.host' + self.hostName, globals(), locals(), ['GetConfigList'], 0) #both p2&p3 accepts absolute imports (level=0)
-            if(len(host.GetConfigList()) > 0):
+            if (len(host.GetConfigList()) > 0):
                 options.append((_("Configure host"), "HostConfig"))
         except Exception:
             printExc()
@@ -1750,7 +1750,7 @@ class E2iPlayerWidget(Screen):
                                 gstAdditionalParams['buffer-duration'] = 18000 # 300min
                                 gstAdditionalParams['buffer-size'] = 10240 # 10MB
                         else:
-                            assert("exteplayer" == player.value)
+                            assert ("exteplayer" == player.value)
                             playerVal = 'eplayer'
                         self.session.openWithCallback(self.leaveMoviePlayer, IPTVExtMoviePlayer, url, titleOfMovie, None, playerVal, gstAdditionalParams)
         else:
