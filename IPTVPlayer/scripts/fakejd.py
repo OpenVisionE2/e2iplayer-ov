@@ -253,7 +253,7 @@ class Myjdapi:
     def request_api(self, path, http_method="GET", params=None, action=None):
         data = None
         if not self.is_connected() and path != "/my/connect":
-            raise (MYJDException("No connection established\n"))
+            raise MYJDException
         if http_method == "GET":
             query = [path + "?"]
             for param in params:
@@ -296,7 +296,7 @@ class Myjdapi:
             msg += "\n"
             if data is not None:
                 msg += "DATA:\n" + data
-            raise (MYJDException(msg))
+            raise MYJDException
         if action is None:
             if not self._server_encryption_token:
                 response = self._decrypt(self._login_secret, encrypted_response_text)
