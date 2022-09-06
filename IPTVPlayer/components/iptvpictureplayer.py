@@ -143,10 +143,10 @@ class IPTVPicturePlayerWidget(Screen):
     printDBG("[IPTVPicturePlayerWidget] desktop size %dx%d" % (sz_w, sz_h))
     skin = """
         <screen name="IPTVPicturePlayerWidget"  position="center,center" size="%d,%d" title="IPTV Picture Player...">
-         <widget name="status"     size="%d,%d"   position="%d,%d"  zPosition="5" valign="center" halign="center"  font="Regular;21" backgroundColor="black" transparent="1" /> #foregroundColor="white" shadowColor="black" shadowOffset="-1,-1"
-         <widget name="console"    size="%d,%d"   position="%d,%d"  zPosition="5" valign="center" halign="center"  font="Regular;21" backgroundColor="black" transparent="1" />
-         <widget name="icon"       size="%d,%d"   position="%d,%d"  zPosition="4" transparent="1" alphatest="on" />
-         <widget name="picture"    size="%d,%d"   position="%d,%d"  zPosition="6" transparent="1" alphatest="on" />
+         <widget name="status"     size="%d,%d"   position="%d,%d"  zPosition="5" verticalAlignment="center" horizontalAlignment="center"  font="Regular;21" backgroundColor="black" transparent="1" /> #foregroundColor="white" shadowColor="black" shadowOffset="-1,-1"
+         <widget name="console"    size="%d,%d"   position="%d,%d"  zPosition="5" verticalAlignment="center" horizontalAlignment="center"  font="Regular;21" backgroundColor="black" transparent="1" />
+         <widget name="icon"       size="%d,%d"   position="%d,%d"  zPosition="4" transparent="1" alphaTest="on" />
+         <widget name="picture"    size="%d,%d"   position="%d,%d"  zPosition="6" transparent="1" alphaTest="on" />
         </screen>""" % (sz_w, sz_h,         # screen
                         s_w, s_h, s_x, s_y, # status
                         c_w, c_h, c_x, c_y, # console

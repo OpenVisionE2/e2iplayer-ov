@@ -39,13 +39,13 @@ class IPTVArticleRichVisualizer(Screen):
     def __prepareSkin(self):
         skin = """
                     <screen name="IPTVArticleRichVisualizerWidget" position="center,center" size="1050,625" title="Info...">
-                        <widget name="title" position="5,10"  zPosition="1" size="1040,70"  font="Regular;30" halign="center" valign="center"   transparent="1" backgroundColor="transparent" foregroundColor="#000E83F5" shadowColor="black" shadowOffset="-1,-1" />
-                        <widget name="cover"     zPosition="1" position="10,110"  size="236,357" alphatest="blend" borderWidth="2" borderColor="white" backgroundColor="black" />
-                        <widget name="spinner"   zPosition="3" position="98,232"  size="16,16"   transparent="1"  alphatest="blend" />
-                        <widget name="spinner_1" zPosition="2" position="98,232"  size="16,16"   transparent="1"  alphatest="blend" />
-                        <widget name="spinner_2" zPosition="2" position="114,232" size="16,16"   transparent="1"  alphatest="blend" />
-                        <widget name="spinner_3" zPosition="2" position="130,232" size="16,16"   transparent="1"  alphatest="blend" />
-                        <widget name="spinner_4" zPosition="2" position="146,232" size="16,16"   transparent="1"  alphatest="blend" />
+                        <widget name="title" position="5,10"  zPosition="1" size="1040,70"  font="Regular;30" horizontalAlignment="center" verticalAlignment="center"   transparent="1" backgroundColor="transparent" foregroundColor="#000E83F5" shadowColor="black" shadowOffset="-1,-1" />
+                        <widget name="cover"     zPosition="1" position="10,110"  size="236,357" alphaTest="blend" borderWidth="2" borderColor="white" backgroundColor="black" />
+                        <widget name="spinner"   zPosition="3" position="98,232"  size="16,16"   transparent="1"  alphaTest="blend" />
+                        <widget name="spinner_1" zPosition="2" position="98,232"  size="16,16"   transparent="1"  alphaTest="blend" />
+                        <widget name="spinner_2" zPosition="2" position="114,232" size="16,16"   transparent="1"  alphaTest="blend" />
+                        <widget name="spinner_3" zPosition="2" position="130,232" size="16,16"   transparent="1"  alphaTest="blend" />
+                        <widget name="spinner_4" zPosition="2" position="146,232" size="16,16"   transparent="1"  alphaTest="blend" />
                 """
         # adds rows items
         self.richDesc['row_label_x'] = 260
@@ -57,12 +57,12 @@ class IPTVArticleRichVisualizer(Screen):
 
         y = self.richDesc['row_y']
         for idx in range(self.richDesc['rows_count']):
-            skin += """<widget name="dsc_label_%d" noWrap="1" position="%d,%d"  zPosition="1" size="%d,%d"  font="Regular;20" halign="right" valign="center"   transparent="1" backgroundColor="transparent" foregroundColor="#000E83F5" shadowColor="black" shadowOffset="-1,-1" />""" % (idx + 1, self.richDesc['row_label_x'], y, self.richDesc['row_label_w'], self.richDesc['row_h'])
-            skin += """<widget name="dsc_text_%d"  noWrap="1" position="%d,%d"  zPosition="1" size="%d,%d"  font="Regular;20" halign="left"  valign="center"   transparent="1" backgroundColor="transparent" foregroundColor="#00EFEFEF" shadowColor="black" shadowOffset="-1,-1" />""" % (idx + 1, self.richDesc['row_text_x'], y, self.richDesc['row_text_w'], self.richDesc['row_h'])
+            skin += """<widget name="dsc_label_%d" noWrap="1" position="%d,%d"  zPosition="1" size="%d,%d"  font="Regular;20" horizontalAlignment="right" verticalAlignment="center"   transparent="1" backgroundColor="transparent" foregroundColor="#000E83F5" shadowColor="black" shadowOffset="-1,-1" />""" % (idx + 1, self.richDesc['row_label_x'], y, self.richDesc['row_label_w'], self.richDesc['row_h'])
+            skin += """<widget name="dsc_text_%d"  noWrap="1" position="%d,%d"  zPosition="1" size="%d,%d"  font="Regular;20" horizontalAlignment="left"  verticalAlignment="center"   transparent="1" backgroundColor="transparent" foregroundColor="#00EFEFEF" shadowColor="black" shadowOffset="-1,-1" />""" % (idx + 1, self.richDesc['row_text_x'], y, self.richDesc['row_text_w'], self.richDesc['row_h'])
             y += self.richDesc['row_h']
         if y != self.richDesc['row_y']:
             y += self.richDesc['row_h']
-        skin += """<widget name="text"        position="260,%d" zPosition="1" size="780,%d" font="Regular;26" halign="left"  valign="top"      transparent="1" backgroundColor="transparent" foregroundColor="#00EFEFEF" />""" % (y, 625 - y - 5)
+        skin += """<widget name="text"        position="260,%d" zPosition="1" size="780,%d" font="Regular;26" horizontalAlignment="left"  verticalAlignment="top"      transparent="1" backgroundColor="transparent" foregroundColor="#00EFEFEF" />""" % (y, 625 - y - 5)
 
         # adds pagination items
         if self.richDesc['pages_count'] > 1:
@@ -76,8 +76,8 @@ class IPTVArticleRichVisualizer(Screen):
             for idx in range(self.richDesc['pages_count']):
                 pageItemX = self.richDesc['page_item_start_x'] + idx * self.richDesc['page_item_size']
                 if 0 == idx:
-                    skin += """<widget name="page_marker" zPosition="3" position="%d,%d" size="%d,%d" transparent="1" alphatest="blend" />""" % (pageItemX, self.richDesc['page_item_start_y'], self.richDesc['page_item_size'], self.richDesc['page_item_size'])
-                skin += """<ePixmap zPosition="2" position="%d,%d" size="%d,%d" pixmap="%s" transparent="1" alphatest="blend" />\n""" % (pageItemX, self.richDesc['page_item_start_y'], self.richDesc['page_item_size'], self.richDesc['page_item_size'], GetIconDir('radio_button_off.png'))
+                    skin += """<widget name="page_marker" zPosition="3" position="%d,%d" size="%d,%d" transparent="1" alphaTest="blend" />""" % (pageItemX, self.richDesc['page_item_start_y'], self.richDesc['page_item_size'], self.richDesc['page_item_size'])
+                skin += """<ePixmap zPosition="2" position="%d,%d" size="%d,%d" pixmap="%s" transparent="1" alphaTest="blend" />\n""" % (pageItemX, self.richDesc['page_item_start_y'], self.richDesc['page_item_size'], self.richDesc['page_item_size'], GetIconDir('radio_button_off.png'))
         skin += '</screen>'
         self.skin = skin
         self.skinName = "IPTVArticleRichVisualizerWidget"

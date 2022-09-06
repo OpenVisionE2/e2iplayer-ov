@@ -137,10 +137,10 @@ class PlayerSelectorWidget(Screen):
         if screenwidth and screenwidth == 1920:
             skin = """
             <screen name="IPTVPlayerPlayerSelectorWidget" position="center,center" title="E2iPlayer %s" size="%d,%d">
-            <widget name="statustext" position="0,0" zPosition="1" size="%d,50" font="Regular;36" halign="center" valign="center" transparent="1"/>
-            <widget name="marker" zPosition="2" position="%d,%d" size="%d,%d" transparent="1" alphatest="blend" />
-            <widget name="page_marker" zPosition="3" position="%d,%d" size="%d,%d" transparent="1" alphatest="blend" />
-            <widget name="menu" zPosition="3" position="%d,10" size="70,30" transparent="1" alphatest="blend" />
+            <widget name="statustext" position="0,0" zPosition="1" size="%d,50" font="Regular;36" horizontalAlignment="center" verticalAlignment="center" transparent="1"/>
+            <widget name="marker" zPosition="2" position="%d,%d" size="%d,%d" transparent="1" alphaTest="blend" />
+            <widget name="page_marker" zPosition="3" position="%d,%d" size="%d,%d" transparent="1" alphaTest="blend" />
+            <widget name="menu" zPosition="3" position="%d,10" size="70,30" transparent="1" alphaTest="blend" />
             """ % (
               GetIPTVPlayerVerstion(),
               offsetCoverX + tmpX * numOfCol + offsetCoverX - disWidth,  # width of window
@@ -155,10 +155,10 @@ class PlayerSelectorWidget(Screen):
         else:
             skin = """
             <screen name="IPTVPlayerPlayerSelectorWidget" position="center,center" title="E2iPlayer %s" size="%d,%d">
-            <widget name="statustext" position="0,0" zPosition="1" size="%d,50" font="Regular;26" halign="center" valign="center" transparent="1"/>
-            <widget name="marker" zPosition="2" position="%d,%d" size="%d,%d" transparent="1" alphatest="blend" />
-            <widget name="page_marker" zPosition="3" position="%d,%d" size="%d,%d" transparent="1" alphatest="blend" />
-            <widget name="menu" zPosition="3" position="%d,10" size="70,30" transparent="1" alphatest="blend" />
+            <widget name="statustext" position="0,0" zPosition="1" size="%d,50" font="Regular;26" horizontalAlignment="center" verticalAlignment="center" transparent="1"/>
+            <widget name="marker" zPosition="2" position="%d,%d" size="%d,%d" transparent="1" alphaTest="blend" />
+            <widget name="page_marker" zPosition="3" position="%d,%d" size="%d,%d" transparent="1" alphaTest="blend" />
+            <widget name="menu" zPosition="3" position="%d,10" size="70,30" transparent="1" alphaTest="blend" />
             """ % (
               GetIPTVPlayerVerstion(),
               offsetCoverX + tmpX * numOfCol + offsetCoverX - disWidth,  # width of window
@@ -173,7 +173,7 @@ class PlayerSelectorWidget(Screen):
 
         for y in range(1, numOfRow + 1):
             for x in range(1, numOfCol + 1):
-                skinCoverLine = """<widget name="cover_%s%s" zPosition="4" position="%d,%d" size="%d,%d" transparent="1" alphatest="blend" />""" % (x, y,
+                skinCoverLine = """<widget name="cover_%s%s" zPosition="4" position="%d,%d" size="%d,%d" transparent="1" alphaTest="blend" />""" % (x, y,
                     (offsetCoverX + tmpX * (x - 1)), # pos X image
                     (offsetCoverY + tmpY * (y - 1)), # pos Y image
                     coverWidth,
@@ -184,7 +184,7 @@ class PlayerSelectorWidget(Screen):
         # add pagination items
         for pageItemOffset in range(self.numOfPages):
             pageItemX = self.pageItemStartX + pageItemOffset * self.pageItemSize
-            skinCoverLine = """<ePixmap zPosition="2" position="%d,%d" size="%d,%d" pixmap="%s" transparent="1" alphatest="blend" />""" % (pageItemX, self.pageItemStartY, self.pageItemSize, self.pageItemSize, GetIconDir('radio_button_off.png'))
+            skinCoverLine = """<ePixmap zPosition="2" position="%d,%d" size="%d,%d" pixmap="%s" transparent="1" alphaTest="blend" />""" % (pageItemX, self.pageItemStartY, self.pageItemSize, self.pageItemSize, GetIconDir('radio_button_off.png'))
             skin += '\n' + skinCoverLine
         skin += '</screen>'
         self.skin = skin

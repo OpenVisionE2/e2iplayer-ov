@@ -60,7 +60,7 @@ class IPTVMultipleInputBox(Screen):
         maxWidth += pX * 2
 
         if len(self.statusText):
-            skinItems = '<widget name="statustext"   position="10,%d"  zPosition="2" size="%d,%d"  valign="center" halign="center" font="Regular;22" transparent="1" />' % (pY + dY, maxWidth - 20, statusTextHight)
+            skinItems = '<widget name="statustext"   position="10,%d"  zPosition="2" size="%d,%d"  verticalAlignment="center" horizontalAlignment="center" font="Regular;22" transparent="1" />' % (pY + dY, maxWidth - 20, statusTextHight)
             pY += statusTextHight + dY * 2
 
         for idx in range(len(self.list)):
@@ -85,19 +85,19 @@ class IPTVMultipleInputBox(Screen):
             skinItems += '<widget name="border_%d" position="%d,%d" size="%d,%d" font="%s" zPosition="1" transparent="0" backgroundColor="#331F93B9" />' % (idx, pX - 5, pY - 5, item['input_size'][0] + 10, item['input_size'][1] + 10, item['input_font'])
             if 0 == idx:
                 self['marker'] = Cover3()
-                skinItems += '<widget name="marker" zPosition="2" position="10,%d" size="16,16" transparent="1" alphatest="blend" />' % (pY + (item['input_size'][1] - 16) / 2)
-            skinItems += '<widget name="marker_%d" zPosition="1" position="10,%d" size="16,16" transparent="1" alphatest="blend" />' % (idx, pY + (item['input_size'][1] - 16) / 2)
+                skinItems += '<widget name="marker" zPosition="2" position="10,%d" size="16,16" transparent="1" alphaTest="blend" />' % (pY + (item['input_size'][1] - 16) / 2)
+            skinItems += '<widget name="marker_%d" zPosition="1" position="10,%d" size="16,16" transparent="1" alphaTest="blend" />' % (idx, pY + (item['input_size'][1] - 16) / 2)
             self['marker_%d' % idx] = Cover3()
             pY += dY * 2 + item['input_size'][1]
 
         if self.withAcceptButton:
-            skinItems += '<widget name="accept_button"  position="10,%d"  zPosition="2" size="%d,50"  valign="center" halign="center" font="Regular;22" foregroundColor="#00FFFFFF" backgroundColor="#320F0F0F" />' % (pY, maxWidth - 20)
+            skinItems += '<widget name="accept_button"  position="10,%d"  zPosition="2" size="%d,50"  verticalAlignment="center" horizontalAlignment="center" font="Regular;22" foregroundColor="#00FFFFFF" backgroundColor="#320F0F0F" />' % (pY, maxWidth - 20)
             pY += dY * 2 + 50
         self.skin = """
         <screen name="IPTVMultipleInputBox" position="center,center" size="%d,%d" title="%s">
-            <widget name="key_red"   position="10,10" zPosition="2" size="%d,35" valign="center" halign="left"   font="Regular;22" transparent="1" foregroundColor="red" />
-            <widget name="key_ok"    position="10,10" zPosition="2" size="%d,35" valign="center" halign="center" font="Regular;22" transparent="1" foregroundColor="white" />
-            <widget name="key_green" position="10,10" zPosition="2" size="%d,35" valign="center" halign="right"  font="Regular;22" transparent="1" foregroundColor="green" />
+            <widget name="key_red"   position="10,10" zPosition="2" size="%d,35" verticalAlignment="center" horizontalAlignment="left"   font="Regular;22" transparent="1" foregroundColor="red" />
+            <widget name="key_ok"    position="10,10" zPosition="2" size="%d,35" verticalAlignment="center" horizontalAlignment="center" font="Regular;22" transparent="1" foregroundColor="white" />
+            <widget name="key_green" position="10,10" zPosition="2" size="%d,35" verticalAlignment="center" horizontalAlignment="right"  font="Regular;22" transparent="1" foregroundColor="green" />
             %s
         </screen>
         """ % (maxWidth, pY, params.get('title', _("Input")), maxWidth - 20, maxWidth - 20, maxWidth - 20, skinItems)

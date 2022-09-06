@@ -69,7 +69,7 @@ class Pinkbike(CBaseHostClass):
         if len(self.categories):
             return
 
-        data = self.cm.ph.getDataBeetwenMarkers(data, '<td valign="top" width="25%">', '</div>', False)[1]
+        data = self.cm.ph.getDataBeetwenMarkers(data, '<td verticalAlignment="top" width="25%">', '</div>', False)[1]
         data = data.split('</table>')
         if len(data):
             del data[-1]

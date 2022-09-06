@@ -58,12 +58,12 @@ class ConfigBaseWidget(Screen, ConfigListScreen):
     skin = """
         <screen position="center,center" size="%d,%d" title="" >
             <widget name="config"    position="10,50" size="%d,%s" zPosition="1" transparent="1" scrollbarMode="showOnDemand" enableWrapAround="1" />
-            <widget name="key_red"   position="10,10" zPosition="2" size="%d,35" valign="center" halign="left"   font="Regular;%d" transparent="1" foregroundColor="red" />
-            <widget name="key_ok"    position="10,10" zPosition="2" size="%d,35" valign="center" halign="center" font="Regular;%d" transparent="1" foregroundColor="white" />
-            <widget name="key_green" position="10,10" zPosition="2" size="%d,35" valign="center" halign="right"  font="Regular;%d" transparent="1" foregroundColor="green" />
+            <widget name="key_red"   position="10,10" zPosition="2" size="%d,35" verticalAlignment="center" horizontalAlignment="left"   font="Regular;%d" transparent="1" foregroundColor="red" />
+            <widget name="key_ok"    position="10,10" zPosition="2" size="%d,35" verticalAlignment="center" horizontalAlignment="center" font="Regular;%d" transparent="1" foregroundColor="white" />
+            <widget name="key_green" position="10,10" zPosition="2" size="%d,35" verticalAlignment="center" horizontalAlignment="right"  font="Regular;%d" transparent="1" foregroundColor="green" />
 
-            <widget name="key_blue"    position="0,0" zPosition="2" size="%d,35" valign="center" halign="right"  font="Regular;%d" transparent="1" foregroundColor="green" />
-            <widget name="key_yellow"  position="0,0" zPosition="2" size="%d,35" valign="center" halign="right"  font="Regular;%d" transparent="1" foregroundColor="green" />
+            <widget name="key_blue"    position="0,0" zPosition="2" size="%d,35" verticalAlignment="center" horizontalAlignment="right"  font="Regular;%d" transparent="1" foregroundColor="green" />
+            <widget name="key_yellow"  position="0,0" zPosition="2" size="%d,35" verticalAlignment="center" horizontalAlignment="right"  font="Regular;%d" transparent="1" foregroundColor="green" />
         </screen>""" % (width, height,
                         width - 20, height - 80,
                         width - 20, font,

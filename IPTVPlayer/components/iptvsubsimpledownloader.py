@@ -37,16 +37,16 @@ class IPTVSubSimpleDownloaderWidget(Screen):
         sz_h += 4
     skin = """
         <screen name="IPTVSubSimpleDownloaderWidget" position="center,center" title="%s" size="%d,%d">
-         <widget name="icon_red"    position="5,9"   zPosition="4" size="30,30" transparent="1" alphatest="on" />
-         <widget name="icon_green"  position="355,9" zPosition="4" size="30,30" transparent="1" alphatest="on" />
+         <widget name="icon_red"    position="5,9"   zPosition="4" size="30,30" transparent="1" alphaTest="on" />
+         <widget name="icon_green"  position="355,9" zPosition="4" size="30,30" transparent="1" alphaTest="on" />
 
-         <widget name="label_red"     position="45,9"  size="175,27" zPosition="5" valign="center" halign="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
-         <widget name="label_green"   position="395,9" size="175,27" zPosition="5" valign="center" halign="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
+         <widget name="label_red"     position="45,9"  size="175,27" zPosition="5" verticalAlignment="center" horizontalAlignment="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
+         <widget name="label_green"   position="395,9" size="175,27" zPosition="5" verticalAlignment="center" horizontalAlignment="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
 
          <widget name="list"  position="5,80"  zPosition="2" size="%d,%d" scrollbarMode="showOnDemand" transparent="1"  backgroundColor="#00000000" enableWrapAround="1" />
          <widget name="title" position="5,47"  zPosition="1" size="%d,23" font="Regular;20"            transparent="1"  backgroundColor="#00000000"/>
 
-         <widget name="console"      position="10,%d"   zPosition="2" size="%d,160" valign="center" halign="center"   font="Regular;24" transparent="0" foregroundColor="white" backgroundColor="black"/>
+         <widget name="console"      position="10,%d"   zPosition="2" size="%d,160" verticalAlignment="center" horizontalAlignment="center"   font="Regular;24" transparent="0" foregroundColor="white" backgroundColor="black"/>
         </screen>""" % (
             _("Simple subtitles downloader"),
             sz_w, sz_h, # size

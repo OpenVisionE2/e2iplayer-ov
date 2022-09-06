@@ -28,13 +28,13 @@ class UnCaptchaSweetCaptchaWidget(Screen):
 
         self.skin = """
             <screen position="center,center" title="%s" size="500,200">
-             <widget name="statustext" position="5,5" zPosition="1" size="490,60" font="Regular;24" transparent="1" halign="center" valign="center" backgroundColor="black"/>
-             <widget name="marker"  zPosition="4" position="5,75"  size="100,100" transparent="1" alphatest="blend" />
-             <widget name="cover_0" zPosition="2" position="10,80"  size="90,90" transparent="1" alphatest="blend" />
-             <widget name="cover_1" zPosition="2" position="115,80" size="90,90" transparent="1" alphatest="blend" />
-             <widget name="cover_2" zPosition="2" position="220,80" size="90,90" transparent="1" alphatest="blend" />
-             <widget name="cover_3" zPosition="2" position="325,80" size="90,90" transparent="1" alphatest="blend" />
-             <widget name="cover"   zPosition="2" position="430,80" size="65,68" transparent="1" alphatest="blend" />
+             <widget name="statustext" position="5,5" zPosition="1" size="490,60" font="Regular;24" transparent="1" horizontalAlignment="center" verticalAlignment="center" backgroundColor="black"/>
+             <widget name="marker"  zPosition="4" position="5,75"  size="100,100" transparent="1" alphaTest="blend" />
+             <widget name="cover_0" zPosition="2" position="10,80"  size="90,90" transparent="1" alphaTest="blend" />
+             <widget name="cover_1" zPosition="2" position="115,80" size="90,90" transparent="1" alphaTest="blend" />
+             <widget name="cover_2" zPosition="2" position="220,80" size="90,90" transparent="1" alphaTest="blend" />
+             <widget name="cover_3" zPosition="2" position="325,80" size="90,90" transparent="1" alphaTest="blend" />
+             <widget name="cover"   zPosition="2" position="430,80" size="65,68" transparent="1" alphaTest="blend" />
             </screen>""" % (params.get('title', ''))
 
         Screen.__init__(self, session)

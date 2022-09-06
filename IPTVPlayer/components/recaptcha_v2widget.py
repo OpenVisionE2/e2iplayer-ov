@@ -38,7 +38,7 @@ class UnCaptchaReCaptchaWidget(Screen):
         for x in range(self.numOfCol):
             self.coversSelection.append([])
             for y in range(self.numOfRow):
-                coversSkin += """<widget name="cover_%s%s" zPosition="5" position="%d,%d" size="%d,%d" transparent="1" alphatest="blend" />""" % (x, y,
+                coversSkin += """<widget name="cover_%s%s" zPosition="5" position="%d,%d" size="%d,%d" transparent="1" alphaTest="blend" />""" % (x, y,
                     (self.offsetCoverX + self.markerWidth * x), # pos X image
                     (self.offsetCoverY + self.markerHeight * y), # pos Y image
                     self.markerWidth,
@@ -48,10 +48,10 @@ class UnCaptchaReCaptchaWidget(Screen):
 
         self.skin = """
         <screen position="center,center" size="%d,%d" title="%s">
-            <widget name="statustext"   position="0,10"  zPosition="2" size="%d,80"  valign="center" halign="center" font="Regular;22" transparent="1" />
-            <widget name="puzzle_image" position="%d,%d" size="%d,%d" zPosition="3" transparent="1" alphatest="blend" />
-            <widget name="marker"       position="%d,%d" size="%d,%d" zPosition="4" transparent="1" alphatest="blend" />
-            <widget name="accept"       position="10,%d"  zPosition="2" size="%d,50"  valign="center" halign="center" font="Regular;22" foregroundColor="#00FFFFFF" backgroundColor="#FFFFFFFF" />
+            <widget name="statustext"   position="0,10"  zPosition="2" size="%d,80"  verticalAlignment="center" horizontalAlignment="center" font="Regular;22" transparent="1" />
+            <widget name="puzzle_image" position="%d,%d" size="%d,%d" zPosition="3" transparent="1" alphaTest="blend" />
+            <widget name="marker"       position="%d,%d" size="%d,%d" zPosition="4" transparent="1" alphaTest="blend" />
+            <widget name="accept"       position="10,%d"  zPosition="2" size="%d,50"  verticalAlignment="center" horizontalAlignment="center" font="Regular;22" foregroundColor="#00FFFFFF" backgroundColor="#FFFFFFFF" />
             %s
         </screen>
         """ % (windowWidth,

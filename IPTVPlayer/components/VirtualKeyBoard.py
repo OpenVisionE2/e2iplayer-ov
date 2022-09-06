@@ -40,16 +40,16 @@ class IPTVVirtualKeyBoardWithCaptcha(Screen):
     def __init__(self, session, title="", text="", additionalParams={}):
         winWidth = 590
         self.skin = '''<screen position="center,center" size="%d,500" title="" >
-                           <widget name="captcha" position="%d,%d" size="%d,%d" zPosition="2" transparent="1" alphatest="on" />
+                           <widget name="captcha" position="%d,%d" size="%d,%d" zPosition="2" transparent="1" alphaTest="on" />
 
-                           <widget name="key_red"   position="10,10" zPosition="2" size="%d,35" valign="center" halign="left"   font="Regular;22" transparent="1" foregroundColor="red" />
-                           <widget name="key_ok"    position="10,10" zPosition="2" size="%d,35" valign="center" halign="center" font="Regular;22" transparent="1" foregroundColor="white" />
-                           <widget name="key_green" position="10,10" zPosition="2" size="%d,35" valign="center" halign="right"  font="Regular;22" transparent="1" foregroundColor="green" />
+                           <widget name="key_red"   position="10,10" zPosition="2" size="%d,35" verticalAlignment="center" horizontalAlignment="left"   font="Regular;22" transparent="1" foregroundColor="red" />
+                           <widget name="key_ok"    position="10,10" zPosition="2" size="%d,35" verticalAlignment="center" horizontalAlignment="center" font="Regular;22" transparent="1" foregroundColor="white" />
+                           <widget name="key_green" position="10,10" zPosition="2" size="%d,35" verticalAlignment="center" horizontalAlignment="right"  font="Regular;22" transparent="1" foregroundColor="green" />
 
-                           <ePixmap pixmap="%s"  position="25,195" size="542,80" zPosition="-4" alphatest="on" />
-                           <widget name="header" position="25,160" size="500,26" transparent="1" noWrap="1" font="Regular;20" valign="top"/>
-                           <widget name="text"   position="25,200" size="536,34" transparent="1" noWrap="1" font="Regular;26" valign="center" halign="right" />
-                           <widget name="list"   position="25,250" size="550,225" selectionDisabled="1" transparent="1" />
+                           <ePixmap pixmap="%s"  position="25,195" size="542,80" zPosition="-4" alphaTest="on" />
+                           <widget name="header" position="25,160" size="500,26" transparent="1" noWrap="1" font="Regular;20" verticalAlignment="top"/>
+                           <widget name="text"   position="25,200" size="536,34" transparent="1" noWrap="1" font="Regular;26" verticalAlignment="center" horizontalAlignment="right" />
+                           <widget name="list"   position="25,250" size="550,225" selection="1" transparent="1" />
                        </screen>
                     ''' % (winWidth, 10, 55,
                             winWidth - 20, 100,

@@ -92,53 +92,53 @@ class E2iPlayerWidget(Screen):
     if screenwidth and screenwidth == 1920:
         skin = """
                     <screen position="center,center" size="1590,825" title="E2iPlayer %s">
-                            <ePixmap position="5,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphatest="on" />
-                            <ePixmap position="180,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphatest="on" />
-                            <ePixmap position="385,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphatest="on" />
-                            <ePixmap position="700,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphatest="on" />
-                            <widget render="Label" source="key_red" position="45,9" size="140,32" zPosition="5" valign="center" halign="left" backgroundColor="black" font="Regular;32" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
-                            <widget render="Label" source="key_yellow" position="220,9" size="180,32" zPosition="5" valign="center" halign="left" backgroundColor="black" font="Regular;32" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
-                            <widget name="key_green_ext" position="425,9" size="300,32" zPosition="5" valign="center" halign="left" backgroundColor="black" font="Regular;32" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
-                            <widget render="Label" source="key_blue" position="740,9" size="140,32" zPosition="5" valign="center" halign="left" backgroundColor="black" font="Regular;32" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
+                            <ePixmap position="5,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphaTest="on" />
+                            <ePixmap position="180,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphaTest="on" />
+                            <ePixmap position="385,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphaTest="on" />
+                            <ePixmap position="700,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphaTest="on" />
+                            <widget render="Label" source="key_red" position="45,9" size="140,32" zPosition="5" verticalAlignment="center" horizontalAlignment="left" backgroundColor="black" font="Regular;32" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
+                            <widget render="Label" source="key_yellow" position="220,9" size="180,32" zPosition="5" verticalAlignment="center" horizontalAlignment="left" backgroundColor="black" font="Regular;32" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
+                            <widget name="key_green_ext" position="425,9" size="300,32" zPosition="5" verticalAlignment="center" horizontalAlignment="left" backgroundColor="black" font="Regular;32" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
+                            <widget render="Label" source="key_blue" position="740,9" size="140,32" zPosition="5" verticalAlignment="center" horizontalAlignment="left" backgroundColor="black" font="Regular;32" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
                             <widget name="headertext" position="15,55" zPosition="1" size="1080,30" font="Regular;30" transparent="1" backgroundColor="#00000000" />
-                            <widget name="statustext" position="15,148" zPosition="1" size="985,90" font="Regular;30" halign="center" valign="center" transparent="1" backgroundColor="#00000000" />
+                            <widget name="statustext" position="15,148" zPosition="1" size="985,90" font="Regular;30" horizontalAlignment="center" verticalAlignment="center" transparent="1" backgroundColor="#00000000" />
                             <widget name="list" position="5,115" zPosition="2" size="860,690" enableWrapAround="1" scrollbarMode="showOnDemand" transparent="1" backgroundColor="#00000000" />
                             <widget name="console" position="1020,310" zPosition="1" size="500,630" font="Regular;26" transparent="1" backgroundColor="#00000000" />
-                            <widget name="cover" zPosition="2" position="1020,80" size="244,280" alphatest="blend" />
-                            <widget name="playerlogo" zPosition="4" position="1264,3" size="240,80" alphatest="blend" />
-                            <widget name="sequencer" position="0,0" zPosition="6" size="1090,625" font="Regular;160" halign="center" valign="center" transparent="1" backgroundColor="#00000000" />
-                            <widget name="spinner"   zPosition="2" position="463,200" size="16,16" transparent="1" alphatest="blend" />
-                            <widget name="spinner_1" zPosition="1" position="463,200" size="16,16" transparent="1" alphatest="blend" />
-                            <widget name="spinner_2" zPosition="1" position="479,200" size="16,16" transparent="1" alphatest="blend" />
-                            <widget name="spinner_3" zPosition="1" position="495,200" size="16,16" transparent="1" alphatest="blend" />
-                            <widget name="spinner_4" zPosition="1" position="511,200" size="16,16" transparent="1" alphatest="blend" />
+                            <widget name="cover" zPosition="2" position="1020,80" size="244,280" alphaTest="blend" />
+                            <widget name="playerlogo" zPosition="4" position="1264,3" size="240,80" alphaTest="blend" />
+                            <widget name="sequencer" position="0,0" zPosition="6" size="1090,625" font="Regular;160" horizontalAlignment="center" verticalAlignment="center" transparent="1" backgroundColor="#00000000" />
+                            <widget name="spinner"   zPosition="2" position="463,200" size="16,16" transparent="1" alphaTest="blend" />
+                            <widget name="spinner_1" zPosition="1" position="463,200" size="16,16" transparent="1" alphaTest="blend" />
+                            <widget name="spinner_2" zPosition="1" position="479,200" size="16,16" transparent="1" alphaTest="blend" />
+                            <widget name="spinner_3" zPosition="1" position="495,200" size="16,16" transparent="1" alphaTest="blend" />
+                            <widget name="spinner_4" zPosition="1" position="511,200" size="16,16" transparent="1" alphaTest="blend" />
                     </screen>
                 """ % (IPTV_VERSION, GetIconDir('red.png'), GetIconDir('yellow.png'), GetIconDir('green.png'), GetIconDir('blue.png'))
     else:
         skin = """
                     <screen position="center,center" size="1090,525" title="E2iPlayer %s">
-                            <ePixmap position="30,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphatest="on" />
-                            <ePixmap position="287,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphatest="on" />
-                            <ePixmap position="554,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphatest="on" />
-                            <ePixmap position="801,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphatest="on" />
-                            <widget render="Label" source="key_red"    position="65,9"  size="210,27" zPosition="5" valign="center" halign="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
-                            <widget name="key_green_ext"  position="322,9" size="210,27" zPosition="5" valign="center" halign="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
-                            <widget render="Label" source="key_yellow" position="589,9" size="210,27" zPosition="5" valign="center" halign="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
-                            <widget render="Label" source="key_blue"   position="836,9" size="210,27" zPosition="5" valign="center" halign="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
+                            <ePixmap position="30,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphaTest="on" />
+                            <ePixmap position="287,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphaTest="on" />
+                            <ePixmap position="554,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphaTest="on" />
+                            <ePixmap position="801,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphaTest="on" />
+                            <widget render="Label" source="key_red"    position="65,9"  size="210,27" zPosition="5" verticalAlignment="center" horizontalAlignment="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
+                            <widget name="key_green_ext"  position="322,9" size="210,27" zPosition="5" verticalAlignment="center" horizontalAlignment="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
+                            <widget render="Label" source="key_yellow" position="589,9" size="210,27" zPosition="5" verticalAlignment="center" horizontalAlignment="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
+                            <widget render="Label" source="key_blue"   position="836,9" size="210,27" zPosition="5" verticalAlignment="center" horizontalAlignment="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
                             <widget name="headertext" position="5,47" zPosition="1" size="1080,23" font="Regular;20" transparent="1" backgroundColor="#00000000" />
-                            <widget name="statustext" position="5,140" zPosition="1" size="985,90" font="Regular;20" halign="center" valign="center" transparent="1" backgroundColor="#00000000" />
+                            <widget name="statustext" position="5,140" zPosition="1" size="985,90" font="Regular;20" horizontalAlignment="center" verticalAlignment="center" transparent="1" backgroundColor="#00000000" />
                             <widget name="list" position="5,100" zPosition="2" size="1080,280" enableWrapAround="1" scrollbarMode="showOnDemand" transparent="1" backgroundColor="#00000000" />
                             <widget name="console" position="165,430" zPosition="1" size="935,140" font="Regular;20" transparent="1" backgroundColor="#00000000" />
-                            <widget name="cover" zPosition="2" position="5,400" size="122,140" alphatest="blend" />
-                            <widget name="playerlogo" zPosition="4" position="964,3" size="120,40" alphatest="blend" />
+                            <widget name="cover" zPosition="2" position="5,400" size="122,140" alphaTest="blend" />
+                            <widget name="playerlogo" zPosition="4" position="964,3" size="120,40" alphaTest="blend" />
                             <ePixmap zPosition="4" position="5,395" size="1080,5" pixmap="%s" transparent="1" />
-                            <widget name="sequencer" position="0,0" zPosition="6" size="1090,525" font="Regular;160" halign="center" valign="center" transparent="1" backgroundColor="#00000000" />
+                            <widget name="sequencer" position="0,0" zPosition="6" size="1090,525" font="Regular;160" horizontalAlignment="center" verticalAlignment="center" transparent="1" backgroundColor="#00000000" />
 
-                            <widget name="spinner"   zPosition="2" position="463,200" size="16,16" transparent="1" alphatest="blend" />
-                            <widget name="spinner_1" zPosition="1" position="463,200" size="16,16" transparent="1" alphatest="blend" />
-                            <widget name="spinner_2" zPosition="1" position="479,200" size="16,16" transparent="1" alphatest="blend" />
-                            <widget name="spinner_3" zPosition="1" position="495,200" size="16,16" transparent="1" alphatest="blend" />
-                            <widget name="spinner_4" zPosition="1" position="511,200" size="16,16" transparent="1" alphatest="blend" />
+                            <widget name="spinner"   zPosition="2" position="463,200" size="16,16" transparent="1" alphaTest="blend" />
+                            <widget name="spinner_1" zPosition="1" position="463,200" size="16,16" transparent="1" alphaTest="blend" />
+                            <widget name="spinner_2" zPosition="1" position="479,200" size="16,16" transparent="1" alphaTest="blend" />
+                            <widget name="spinner_3" zPosition="1" position="495,200" size="16,16" transparent="1" alphaTest="blend" />
+                            <widget name="spinner_4" zPosition="1" position="511,200" size="16,16" transparent="1" alphaTest="blend" />
                     </screen>
                 """ % (IPTV_VERSION, GetIconDir('red.png'), GetIconDir('green.png'), GetIconDir('yellow.png'), GetIconDir('blue.png'), GetIconDir('line.png'))
 
@@ -2211,30 +2211,30 @@ class IPTVPlayerLCDScreen(Screen):
     if summary_screenwidth >= 800 and summary_screenheight >= 480:
         skin = """
     <screen position="0,0" size="800,480" title="E2iPlayer">
-        <widget name="text1" position="10,0"  size="800,70" font="Regular;50" halign="center" valign="center" foregroundColor="#05F7F3"/>
-        <widget name="text2" position="10,80" size="800,70" font="Regular;40" halign="center" valign="center" foregroundColor="#FFFF00"/>
-        <widget name="LCDlogo" position="0,210" zPosition="4" size="800,267" alphatest="blend" />
+        <widget name="text1" position="10,0"  size="800,70" font="Regular;50" horizontalAlignment="center" verticalAlignment="center" foregroundColor="#05F7F3"/>
+        <widget name="text2" position="10,80" size="800,70" font="Regular;40" horizontalAlignment="center" verticalAlignment="center" foregroundColor="#FFFF00"/>
+        <widget name="LCDlogo" position="0,210" zPosition="4" size="800,267" alphaTest="blend" />
     </screen>"""
     elif summary_screenwidth >= 480 and summary_screenheight >= 320:
         skin = """
     <screen position="0,0" size="480,320" title="E2iPlayer">
-        <widget name="text1" position="10,0" size="460,70" font="Regular;50" halign="center" valign="center" foregroundColor="#05F7F3"/>
-        <widget name="text2" position="10,80" size="460,70" font="Regular;40" halign="center" valign="center" foregroundColor="#FFFF00"/>
-        <widget name="LCDlogo" position="0,160" zPosition="4" size="480,160" alphatest="blend" />
+        <widget name="text1" position="10,0" size="460,70" font="Regular;50" horizontalAlignment="center" verticalAlignment="center" foregroundColor="#05F7F3"/>
+        <widget name="text2" position="10,80" size="460,70" font="Regular;40" horizontalAlignment="center" verticalAlignment="center" foregroundColor="#FFFF00"/>
+        <widget name="LCDlogo" position="0,160" zPosition="4" size="480,160" alphaTest="blend" />
     </screen>"""
     elif summary_screenwidth >= 220 and summary_screenheight >= 176:
         skin = """
     <screen position="0,0" size="220,176" title="E2iPlayer">
-        <widget name="text1" position="5,0" size="210,26" font="Regular;24" halign="center" valign="center" foregroundColor="#05F7F3"/>
-        <widget name="text2" position="5,30" size="210,65" font="Regular;22" halign="center" valign="center" foregroundColor="#FFFF00"/>
-        <widget name="LCDlogo" position="5,106" size="210,70" zPosition="4" alphatest="blend" />
+        <widget name="text1" position="5,0" size="210,26" font="Regular;24" horizontalAlignment="center" verticalAlignment="center" foregroundColor="#05F7F3"/>
+        <widget name="text2" position="5,30" size="210,65" font="Regular;22" horizontalAlignment="center" verticalAlignment="center" foregroundColor="#FFFF00"/>
+        <widget name="LCDlogo" position="5,106" size="210,70" zPosition="4" alphaTest="blend" />
     </screen>"""
     else:
         skin = """
     <screen position="0,0" size="132,64" title="E2iPlayer">
-        <widget name="text1" position="4,0" size="132,14" font="Regular;12" halign="center" valign="center"/>
-        <widget name="text2" position="4,14" size="132,49" font="Regular;10" halign="center" valign="center"/>
-        <widget name="LCDlogo" zPosition="4" position="4,70" size="240,80" alphatest="blend" />
+        <widget name="text1" position="4,0" size="132,14" font="Regular;12" horizontalAlignment="center" verticalAlignment="center"/>
+        <widget name="text2" position="4,14" size="132,49" font="Regular;10" horizontalAlignment="center" verticalAlignment="center"/>
+        <widget name="LCDlogo" zPosition="4" position="4,70" size="240,80" alphaTest="blend" />
     </screen>"""
 
     def __init__(self, session, parent):

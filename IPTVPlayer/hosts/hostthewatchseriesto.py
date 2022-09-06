@@ -189,7 +189,7 @@ class TheWatchseriesTo(CBaseHostClass):
             if icon == '':
                 icon = cItem['icon']
             if ta:
-                item = item.split('<div valign="top" style="padding-left: 10px;">')[-1]
+                item = item.split('<div verticalAlignment="top" style="padding-left: 10px;">')[-1]
             if 'category-item-ad' in item or 'Latest Episode' in item:
                 continue
             url = self.cm.ph.getSearchGroups(item, '''href=['"]([^'^"]+?)['"]''')[0]

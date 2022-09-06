@@ -32,9 +32,9 @@ class IPTVInputBoxWidget(InputBox):
             icon['size'] = [width - 10, height - 70]
         skin = """
             <screen name="IPTVInputBoxWidget" position="center,center" title="Input" size="%d,%d">
-            <widget name="text" position="center,10" size="%d,30" font="Regular;24" valign="center" halign="center" />
-            <widget name="input" position="center,60" size="%d,50" font="Regular;40" valign="center" halign="center" />
-            <widget name="cover" zPosition="4" position="center,%d" size="%d,%d" transparent="1" alphatest="on" />
+            <widget name="text" position="center,10" size="%d,30" font="Regular;24" verticalAlignment="center" horizontalAlignment="center" />
+            <widget name="input" position="center,60" size="%d,50" font="Regular;40" verticalAlignment="center" horizontalAlignment="center" />
+            <widget name="cover" zPosition="4" position="center,%d" size="%d,%d" transparent="1" alphaTest="on" />
             </screen>""" % (width, height,
                              width - 20,
                              width - 20,

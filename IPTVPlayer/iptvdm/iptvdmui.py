@@ -47,14 +47,14 @@ class IPTVDMWidget(Screen):
         sz_h += 4
     skin = """
         <screen name="IPTVDMWidget" position="center,center" title="%s" size="%d,%d">
-         <ePixmap position="5,9"   zPosition="4" size="30,30" pixmap="%s" transparent="1" alphatest="on" />
-         <ePixmap position="180,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphatest="on" />
-         <ePixmap position="385,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphatest="on" />
-         <ePixmap position="590,9" zPosition="4" size="35,30" pixmap="%s" transparent="1" alphatest="on" />
-         <widget render="Label" source="key_red"    position="45,9"  size="140,27" zPosition="5" valign="center" halign="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
-         <widget render="Label" source="key_green"  position="225,9" size="300,27" zPosition="5" valign="center" halign="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
-         <widget render="Label" source="key_yellow" position="425,9" size="300,27" zPosition="5" valign="center" halign="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
-         <widget render="Label" source="key_blue"   position="635,9" size="300,27" zPosition="5" valign="center" halign="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
+         <ePixmap position="5,9"   zPosition="4" size="30,30" pixmap="%s" transparent="1" alphaTest="on" />
+         <ePixmap position="180,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphaTest="on" />
+         <ePixmap position="385,9" zPosition="4" size="30,30" pixmap="%s" transparent="1" alphaTest="on" />
+         <ePixmap position="590,9" zPosition="4" size="35,30" pixmap="%s" transparent="1" alphaTest="on" />
+         <widget render="Label" source="key_red"    position="45,9"  size="140,27" zPosition="5" verticalAlignment="center" horizontalAlignment="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
+         <widget render="Label" source="key_green"  position="225,9" size="300,27" zPosition="5" verticalAlignment="center" horizontalAlignment="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
+         <widget render="Label" source="key_yellow" position="425,9" size="300,27" zPosition="5" verticalAlignment="center" horizontalAlignment="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
+         <widget render="Label" source="key_blue"   position="635,9" size="300,27" zPosition="5" verticalAlignment="center" horizontalAlignment="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
          <widget name="list" position="5,100" zPosition="2" size="%d,%d" scrollbarMode="showOnDemand" transparent="0"  backgroundColor="#00000000" enableWrapAround="1" />
          <widget name="titel" position="5,47" zPosition="1" size="%d,23" font="Regular;20" transparent="1"  backgroundColor="#00000000"/>
         </screen>""" % (_("%s download manager") % "E2iPlayer",
@@ -63,8 +63,8 @@ class IPTVDMWidget(Screen):
             sz_w - 10, sz_h - 20, # size list
             sz_w - 135, # size titel
             )
-        # <widget render="Label" source="key_yellow" position="220,9" size="180,27" zPosition="5" valign="center" halign="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
-        # <widget render="Label" source="key_blue" position="630,9" size="140,27" zPosition="5" valign="center" halign="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
+        # <widget render="Label" source="key_yellow" position="220,9" size="180,27" zPosition="5" verticalAlignment="center" horizontalAlignment="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
+        # <widget render="Label" source="key_blue" position="630,9" size="140,27" zPosition="5" verticalAlignment="center" horizontalAlignment="left" backgroundColor="black" font="Regular;21" transparent="1" foregroundColor="white" shadowColor="black" shadowOffset="-1,-1" />
 
     def __init__(self, session, downloadmanager):
         self.session = session
@@ -435,7 +435,7 @@ class IPTVDMNotificationWidget(Screen):
     #d_h = getDesktop(0).size().height()
 
     skin = """<screen name="IPTVDMNotificationWidget" position="%d,%d" zPosition="10" size="350,60" title="IPTVPlayer downloader" backgroundColor="#31000000" >
-            <widget name="message_label" font="Regular;24" position="0,0" zPosition="2" valign="center" halign="center" size="350,60" backgroundColor="#31000000" transparent="1" />
+            <widget name="message_label" font="Regular;24" position="0,0" zPosition="2" verticalAlignment="center" horizontalAlignment="center" size="350,60" backgroundColor="#31000000" transparent="1" />
         </screen>""" % (d_w - 350, 60)
 
     def __init__(self, session):

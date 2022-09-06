@@ -93,7 +93,7 @@ class IPTVMultipleImageSelectorWidget(Screen):
         y = 0
         skin = ['<screen position="center,center" title="%s" size="%d,%d">' % (self.iptv_title, self.iptv_width, self.iptv_height)]
         if self.iptv_message != None:
-            skin.append('<widget name="message" position="10,10" zPosition="1" size="%d,%d" valign="center" halign="center" font="Regular;22"  transparent="1"  backgroundColor="#00000000"/>' % (self.iptv_width - 20, self.iptv_message_height))
+            skin.append('<widget name="message" position="10,10" zPosition="1" size="%d,%d" verticalAlignment="center" horizontalAlignment="center" font="Regular;22"  transparent="1"  backgroundColor="#00000000"/>' % (self.iptv_width - 20, self.iptv_message_height))
             y += 10 + self.iptv_message_height
 
         list_width = self.iptv_image_width + 40
@@ -113,7 +113,7 @@ class IPTVMultipleImageSelectorWidget(Screen):
         y += list_height + 10
 
         if self.iptv_accep_label != None:
-            skin.append('<widget name="accept_button"  position="10,%d"  zPosition="1" size="%d,%d"  valign="center" halign="center" font="Regular;22" foregroundColor="#00FFFFFF" backgroundColor="#320F0F0F" />' % (y, self.iptv_width - 20, self.iptv_accep_height))
+            skin.append('<widget name="accept_button"  position="10,%d"  zPosition="1" size="%d,%d"  verticalAlignment="center" horizontalAlignment="center" font="Regular;22" foregroundColor="#00FFFFFF" backgroundColor="#320F0F0F" />' % (y, self.iptv_width - 20, self.iptv_accep_height))
         skin.append('</screen>')
         skin = '\n'.join(skin)
         printDBG(">>>")
