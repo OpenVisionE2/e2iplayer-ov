@@ -439,7 +439,7 @@ class SerienStreamTo(CBaseHostClass, CaptchaHelper):
 
         if self.login == config.plugins.iptvplayer.serienstreamto_login.value and \
            self.password == config.plugins.iptvplayer.serienstreamto_password.value:
-           return
+            return
 
         self.cm.clearCookie(self.COOKIE_FILE, ['__cfduid', 'cf_clearance'])
         self.login = config.plugins.iptvplayer.serienstreamto_login.value

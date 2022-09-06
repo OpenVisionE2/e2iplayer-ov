@@ -290,9 +290,9 @@ class MovizlandCom(CBaseHostClass):
         if name == None:
             self.listsTab(self.MAIN_CAT_TAB, {'name': 'category'})
         elif category == 'categories':
-                self.listCategories(self.currItem, 'list_items')
+            self.listCategories(self.currItem, 'list_items')
         elif category == 'list_items':
-                self.listItems(self.currItem)
+            self.listItems(self.currItem)
     #EXPLORE ITEM
         elif category == 'explore_item':
             self.exploreItem(self.currItem)

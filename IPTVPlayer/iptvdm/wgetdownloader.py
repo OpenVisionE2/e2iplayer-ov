@@ -242,7 +242,7 @@ class WgetDownloader(BaseDownloader):
                 if idx + 1 < dataLen:
                     # default style - one dot = 1K
                     if '.' == self.outData[idx] and self.outData[idx + 1] in ['.', ' ']:
-                       self.localFileSize += 1024
+                        self.localFileSize += 1024
                 else:
                     self.outData = self.outData[idx:]
                     break

@@ -486,8 +486,8 @@ class RtlMostHU(CBaseHostClass):
             self.loggedIn = True
             return True
         except:
-           printExc()
-           self.sessionEx.open(MessageBox, _('Login failed.'), type=MessageBox.TYPE_ERROR, timeout=10)
+            printExc()
+            self.sessionEx.open(MessageBox, _('Login failed.'), type=MessageBox.TYPE_ERROR, timeout=10)
         return False
 
     def handleService(self, index, refresh=0, searchPattern='', searchType=''):

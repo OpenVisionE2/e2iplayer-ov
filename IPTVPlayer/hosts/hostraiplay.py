@@ -214,21 +214,21 @@ class Raiplay(CBaseHostClass):
 
         for programme in programmes:
             if not programme:
-                    continue
+                continue
 
             startTime = programme["timePublished"]
             title = programme["name"]
 
             if programme["images"]["portrait"] != "":
-                    thumb = self.getThumbnailUrl(programme["images"]["portrait"])
+                thumb = self.getThumbnailUrl(programme["images"]["portrait"])
             elif programme["images"]["landscape"] != "":
-                    thumb = self.getThumbnailUrl(programme["images"]["landscape"])
+                thumb = self.getThumbnailUrl(programme["images"]["landscape"])
             elif programme["isPartOf"] and programme["isPartOf"]["images"]["portrait"] != "":
-                    thumb = self.getThumbnailUrl(programme["isPartOf"]["images"]["portrait"])
+                thumb = self.getThumbnailUrl(programme["isPartOf"]["images"]["portrait"])
             elif programme["isPartOf"] and programme["isPartOf"]["images"]["landscape"] != "":
-                    thumb = self.getThumbnailUrl(programme["isPartOf"]["images"]["landscape"])
+                thumb = self.getThumbnailUrl(programme["isPartOf"]["images"]["landscape"])
             else:
-                    thumb = self.NOTHUMB_URL
+                thumb = self.NOTHUMB_URL
 
             if programme["testoBreve"] != "":
                 desc = programme["testoBreve"]
@@ -236,9 +236,9 @@ class Raiplay(CBaseHostClass):
                 desc = programme["description"]
 
             if programme["hasVideo"]:
-                    videoUrl = programme["pathID"]
+                videoUrl = programme["pathID"]
             else:
-                    videoUrl = None
+                videoUrl = None
 
             params = dict(cItem)
 

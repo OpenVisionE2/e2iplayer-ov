@@ -493,7 +493,7 @@ class IPTVHost(IHost):
             type = CDisplayListItem.TYPE_UNKNOWN
 
             if cItem['type'] in ['main', 'sub', 'subSub', 'subSubPage']:
-                    type = CDisplayListItem.TYPE_CATEGORY
+                type = CDisplayListItem.TYPE_CATEGORY
             elif cItem['type'] == 'video':
                 type = CDisplayListItem.TYPE_VIDEO
                 videoID = ''

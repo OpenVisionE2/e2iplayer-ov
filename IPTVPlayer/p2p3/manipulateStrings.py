@@ -52,7 +52,7 @@ def ensure_binary(text, encoding='utf-8', errors='strict'): #based on six librar
         return text
     else: #PY3
         if isinstance(text, bytes):
-          return text
+            return text
         if isinstance(text, str):
             try:
                 return text.encode(encoding, errors)

@@ -88,17 +88,17 @@ class IPTVDMApi():
             self.cmdFinished(downloadIdx, -1)
 
     def stopAllDownloadItem(self):
-            while len(self.queueUD) > 0:
-                downloadIdx = self.queueUD[0].downloadIdx
-                self.queueUD[0].downloader.terminate()
-                self.cmdFinished(downloadIdx, -1)
+        while len(self.queueUD) > 0:
+            downloadIdx = self.queueUD[0].downloadIdx
+            self.queueUD[0].downloader.terminate()
+            self.cmdFinished(downloadIdx, -1)
 
     def moveToTopDownloadItem(self, downloadIdx):
         printDBG("moveToTopDownloadItem for downloadIdx[%d]" % downloadIdx)
         bRet = False
         listUDIdx = self.findIdxInQueueDQ(downloadIdx)
         if -1 < listUDIdx and 1 < len(self.queueDQ):
-            # get item from self.queueDQ
+        # get item from self.queueDQ
             item = self.queueDQ[listUDIdx]
             # remove item from self.queueDQ
             del self.queueDQ[listUDIdx]
@@ -264,34 +264,34 @@ class IPTVDMApi():
         return bRet, msg
 
     def processDQ(self):
-            if False == self.running:
-                return
-            dListChanged = False
-            if len(self.queueUD) < self.MAX_DOWNLOAD_ITEM and \
-               0 < len(self.queueDQ):
-                item = self.queueDQ.pop(0)
-                self.queueUD.append(item)
-                dListChanged = True
+        if False == self.running:
+            return
+        dListChanged = False
+        if len(self.queueUD) < self.MAX_DOWNLOAD_ITEM and \
+           0 < len(self.queueDQ):
+            item = self.queueDQ.pop(0)
+            self.queueUD.append(item)
+            dListChanged = True
 
-                # start downloading
-                self.runCMD(item)
+            # start downloading
+            self.runCMD(item)
 
-            if 0 < len(self.queueUD):
-                self.downloading = True
-            else:
-                self.downloading = False
+        if 0 < len(self.queueUD):
+            self.downloading = True
+        else:
+            self.downloading = False
 
-            if dListChanged:
-                self.listChanged()
+        if dListChanged:
+            self.listChanged()
 
-            if self.downloading and self.updateProgress:
-                self.updateDownloadItemsStatus()
+        if self.downloading and self.updateProgress:
+            self.updateDownloadItemsStatus()
 
     def runCMD(self, item):
         printDBG("runCMD for downloadIdx[%d]" % item.downloadIdx)
 
         if DMHelper.DOWNLOAD_TYPE.INITIAL == item.tries:
-           item.fileName = DMHelper.makeUnikalFileName(item.fileName, False, False)
+            item.fileName = DMHelper.makeUnikalFileName(item.fileName, False, False)
 
         printDBG("Downloading started downloadIdx[%s] File[%s] URL[%s]" % (item.downloadIdx, item.fileName, item.url))
 

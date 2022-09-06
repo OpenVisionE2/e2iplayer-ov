@@ -60,7 +60,7 @@ class TV2RChannel():
                 name = 'livestream.fynskemedier.dk [{0}]'.format(qual)
                 links.append({'name': name, 'url': url})
         elif 'direct' == channelData['type']:
-                 links.append({'name': 'direct link', 'url': channelData['id']})
+            links.append({'name': 'direct link', 'url': channelData['id']})
         return links
 
 # TV2 OJ

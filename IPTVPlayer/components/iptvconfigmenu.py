@@ -376,7 +376,7 @@ class ConfigMenu(ConfigBaseWidget):
         ConfigBaseWidget.save(self)
         if self.showcoverOld != config.plugins.iptvplayer.showcover.value or \
            self.SciezkaCacheOld != config.plugins.iptvplayer.SciezkaCache.value:
-           pass
+            pass
 
     def getMessageBeforeClose(self, afterSave):
         return ''

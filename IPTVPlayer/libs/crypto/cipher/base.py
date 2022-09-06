@@ -108,8 +108,8 @@ class BlockCipherWithIntegrity(BlockCipher):
 
 
 class Pad:
-   def __init__(self):
-       pass              # eventually could put in calculation of min and max size extension
+    def __init__(self):
+        pass              # eventually could put in calculation of min and max size extension
 
 
 class padWithPadLen(Pad):

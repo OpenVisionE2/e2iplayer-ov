@@ -173,22 +173,22 @@ class Youtube(CBaseHostClass):
                 params = {'title': title, 'url': url, 'icon': icon, 'desc': desc}
                 self.addVideo(params)
         else:
-           title = _("Trending")
-           url = "https://www.youtube.com/feed/trending"
-           params = {'category': 'feeds_video', 'title': title, 'url': url}
-           self.addDir(params)
-           title = _("Music")
-           url = "https://www.youtube.com/feed/trending?bp=4gINGgt5dG1hX2NoYXJ0cw%3D%3D"
-           params = {'category': 'feeds_video', 'title': title, 'url': url}
-           self.addDir(params)
-           title = _("Games")
-           url = "https://www.youtube.com/feed/trending?bp=4gIcGhpnYW1pbmdfY29ycHVzX21vc3RfcG9wdWxhcg%3D%3D"
-           params = {'category': 'feeds_video', 'title': title, 'url': url}
-           self.addDir(params)
-           title = _("Movies")
-           url = "https://www.youtube.com/feed/trending?bp=4gIKGgh0cmFpbGVycw%3D%3D"
-           params = {'category': 'feeds_video', 'title': title, 'url': url}
-           self.addDir(params)
+            title = _("Trending")
+            url = "https://www.youtube.com/feed/trending"
+            params = {'category': 'feeds_video', 'title': title, 'url': url}
+            self.addDir(params)
+            title = _("Music")
+            url = "https://www.youtube.com/feed/trending?bp=4gINGgt5dG1hX2NoYXJ0cw%3D%3D"
+            params = {'category': 'feeds_video', 'title': title, 'url': url}
+            self.addDir(params)
+            title = _("Games")
+            url = "https://www.youtube.com/feed/trending?bp=4gIcGhpnYW1pbmdfY29ycHVzX21vc3RfcG9wdWxhcg%3D%3D"
+            params = {'category': 'feeds_video', 'title': title, 'url': url}
+            self.addDir(params)
+            title = _("Movies")
+            url = "https://www.youtube.com/feed/trending?bp=4gIKGgh0cmFpbGVycw%3D%3D"
+            params = {'category': 'feeds_video', 'title': title, 'url': url}
+            self.addDir(params)
 
     def getVideos(self, cItem):
         printDBG('Youtube.getVideos cItem[%s]' % (cItem))

@@ -130,9 +130,9 @@ class YouTubeParser():
 
             def _key(x):
                 if x['format'].startswith('>'):
-                     int(x['format'][1:-1])
+                    int(x['format'][1:-1])
                 else:
-                     int(ph.search(x['format'], reNum)[0])
+                    int(ph.search(x['format'], reNum)[0])
 
             dashAudioLists = sorted(dashAudioLists, key=_key, reverse=True)
             dashVideoLists = sorted(dashVideoLists, key=_key, reverse=True)

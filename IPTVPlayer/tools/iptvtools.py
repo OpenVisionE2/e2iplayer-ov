@@ -550,9 +550,9 @@ def Which(program):
 class CSelOneLink():
 
     def __init__(self, listOfLinks, getQualiyFun, maxRes):
-       self.listOfLinks = listOfLinks
-       self.getQualiyFun = getQualiyFun
-       self.maxRes = maxRes
+        self.listOfLinks = listOfLinks
+        self.getQualiyFun = getQualiyFun
+        self.maxRes = maxRes
 
     def _cmpLinks(self, item1, item2):
         val1 = self.getQualiyFun(item1)
@@ -1215,15 +1215,15 @@ def remove_html_markup(s, replacement=''):
     quote = False
     out = ""
     for c in s:
-            if c == '<' and not quote:
-                tag = True
-            elif c == '>' and not quote:
-                tag = False
-                out += replacement
-            elif (c == '"' or c == "'") and tag:
-                quote = not quote
-            elif not tag:
-                out = out + c
+        if c == '<' and not quote:
+            tag = True
+        elif c == '>' and not quote:
+            tag = False
+            out += replacement
+        elif (c == '"' or c == "'") and tag:
+            quote = not quote
+        elif not tag:
+            out = out + c
     return re.sub('&\w+;', ' ', out)
 
 
@@ -1737,9 +1737,9 @@ def ReadGnuMIPSABIFP(elfFileName):
                                 if tag == 1 and attrName == "gnu": #File Attributes
                                     while p < end:
                                         # display_gnu_attribute
-                                          numRead, tag = _readLeb128(contents, p, end)
-                                          p += numRead
-                                          if tag == Tag_GNU_MIPS_ABI_FP:
+                                        numRead, tag = _readLeb128(contents, p, end)
+                                        p += numRead
+                                        if tag == Tag_GNU_MIPS_ABI_FP:
                                             numRead, val = _readLeb128(contents, p, end)
                                             p += numRead
                                             Val_GNU_MIPS_ABI_FP = val

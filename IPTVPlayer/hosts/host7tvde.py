@@ -355,9 +355,9 @@ class C7tvDe(CBaseHostClass):
                 salt = '0''1''r''e''e''6''e''L''e''i''w''i''u''m''i''e''7''i''e''V''8''p''a''h''g''e''i''T''u''i''3''B'
                 client_name = 'h''b''b''t''v'
             else:
-              access_token = 'seventv-web'
-              salt = '01!8d8F_)r9]4s[qeuXfP%'
-              client_name = ''
+                access_token = 'seventv-web'
+                salt = '01!8d8F_)r9]4s[qeuXfP%'
+                client_name = ''
 
             json_url = 'http://vas.sim-technik.de/vas/live/v2/videos/%s?access_token=%s&client_location=%s&client_name=%s' % (video_id, access_token, client_location, client_name)
             sts, json_data = self.getPage(json_url)

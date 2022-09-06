@@ -38,7 +38,7 @@ from ._abnf import ABNF
 __all__ = ["WebSocketApp"]
 
 if sys.version_info[0] == 3: #Python3
-   unicode = str
+    unicode = str
 
 
 class WebSocketApp(object):

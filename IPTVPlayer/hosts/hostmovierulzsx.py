@@ -83,9 +83,9 @@ class MovieRulzSX(CBaseHostClass):
                 title = self.cleanHtmlStr(self.cm.ph.getDataBeetwenMarkers(item['dat'], '<a', '</a>')[1])
                 url = self.getFullUrl(self.cm.ph.getSearchGroups(item['dat'], '''href=['"]([^'^"]+?)['"]''')[0])
                 if url.endswith('movies-by-genres-and-years/') or url.endswith('others-movies/'):
-                        params = dict(cItem)
-                        params.update({'good_for_fav': False, 'category': nextCategory2, 'title': title, 'url': url})
-                        self.addDir(params)
+                    params = dict(cItem)
+                    params.update({'good_for_fav': False, 'category': nextCategory2, 'title': title, 'url': url})
+                    self.addDir(params)
                 elif 'list' not in item:
                     if self.cm.isValidUrl(url) and title != '':
                         params = dict(cItem)

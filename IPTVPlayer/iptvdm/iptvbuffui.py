@@ -300,8 +300,8 @@ class E2iPlayerBufferingWidget(Screen):
                 self.session.openWithCallback(self.iptvContinue, MessageBox, text=message, type=MessageBox.TYPE_INFO)
 
     def iptvContinue(self, *args, **kwargs):
-            self.setMainTimerSts(True)
-            self.canRunMoviePlayer = True
+        self.setMainTimerSts(True)
+        self.canRunMoviePlayer = True
 
     def back_pressed(self):
         self.closeRequestedByUser = 'key_exit'
@@ -481,7 +481,7 @@ class E2iPlayerBufferingWidget(Screen):
             else:
                 tmpStr = "\n%s" % (lFileSize)
             if '' != dSpeed:
-               tmpStr += "\n%s/s" % (dSpeed)
+                tmpStr += "\n%s/s" % (dSpeed)
         else:
             tmpStr += '\n\n'
 

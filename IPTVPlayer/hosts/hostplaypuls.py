@@ -81,7 +81,7 @@ class Playpuls(CBaseHostClass):
             if not sts:
                 return
             if searchMode:
-              data = self.cm.ph.getDataBeetwenMarkers(data, '<ol class="search-results', '</ol>', False)[1]
+                data = self.cm.ph.getDataBeetwenMarkers(data, '<ol class="search-results', '</ol>', False)[1]
             elif '<div class="region region-vod-list">' in data:
                 data = self.cm.ph.getDataBeetwenMarkers(data, '<div class="region region-vod-list">', '</section>', False)[1]
                 data = data.split('<div class="line-break">')

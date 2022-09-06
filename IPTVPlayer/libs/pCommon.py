@@ -973,12 +973,12 @@ class common:
             printExc()
             errorMsg = str(e)
             if 'ssl_protocol' not in addParams and 'TLSV1_ALERT_PROTOCOL_VERSION' in errorMsg:
-                    try:
-                        newParams = dict(addParams)
-                        newParams['ssl_protocol'] = 'TLSv1_2'
-                        return self.getPage(url, newParams, post_data)
-                    except Exception:
-                        pass
+                try:
+                    newParams = dict(addParams)
+                    newParams['ssl_protocol'] = 'TLSv1_2'
+                    return self.getPage(url, newParams, post_data)
+                except Exception:
+                    pass
             if 'VERSION' in errorMsg:
                 self.reportHttpsError('version', url, errorMsg)
             elif 'VERIFY_FAILED' in errorMsg:

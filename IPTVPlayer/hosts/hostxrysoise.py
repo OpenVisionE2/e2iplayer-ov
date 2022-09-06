@@ -338,7 +338,7 @@ class XrysoiSE(CBaseHostClass):
             desc = self.cm.ph.getSearchGroups(data, '<meta[^>]*?property="og:description"[^>]*?content="([^"]+?)"')[0]
             return [{'title': self.cleanHtmlStr(title), 'text': self.cleanHtmlStr(desc), 'images': [{'title': '', 'url': self._getFullUrl(icon)}], 'other_info': {}}]
         else:
-             return retTab
+            return retTab
 
     def getFavouriteData(self, cItem):
         printDBG('XrysoiSE.getFavouriteData')
@@ -375,7 +375,7 @@ class XrysoiSE(CBaseHostClass):
         elif category == 'movies':
             self.listMoviesCategory(self.currItem, 'list_items')
         elif category == 'list_items':
-                self.listItems(self.currItem)
+            self.listItems(self.currItem)
     #EXPLORE ITEM
         elif category == 'explore_item':
             self.exploreItem(self.currItem)

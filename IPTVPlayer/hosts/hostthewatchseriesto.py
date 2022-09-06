@@ -210,9 +210,9 @@ class TheWatchseriesTo(CBaseHostClass):
             else:
                 self.addDir(params)
         if nextPage:
-                params = dict(cItem)
-                params.update({'title': _('Next page'), 'page': page + 1})
-                self.addDir(params)
+            params = dict(cItem)
+            params.update({'title': _('Next page'), 'page': page + 1})
+            self.addDir(params)
 
     def listSeasons(self, cItem, nextCateogry):
         printDBG("TheWatchseriesTo.listSeasons")

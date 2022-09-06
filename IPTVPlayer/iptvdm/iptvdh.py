@@ -274,13 +274,13 @@ class DMHelper:
             wgetContinue = ' -c --timeout=%s --waitretry=%s ' % (downloaderParams.get('iptv_wget_timeout', 30), downloaderParams.get('iptv_wget_waitretry', 1))
         else:
             if 'iptv_wget_timeout' in downloaderParams:
-               wgetContinue += ' --timeout=%s ' % downloaderParams['iptv_wget_timeout']
+                wgetContinue += ' --timeout=%s ' % downloaderParams['iptv_wget_timeout']
             if 'iptv_wget_waitretry' in downloaderParams:
-               wgetContinue += ' --waitretry=%s ' % downloaderParams['iptv_wget_waitretry']
+                wgetContinue += ' --waitretry=%s ' % downloaderParams['iptv_wget_waitretry']
             if 'iptv_wget_retry_on_http_error' in downloaderParams:
-               wgetContinue += ' --retry-on-http-error=%s ' % downloaderParams['iptv_wget_retry_on_http_error']
+                wgetContinue += ' --retry-on-http-error=%s ' % downloaderParams['iptv_wget_retry_on_http_error']
             if 'iptv_wget_tries' in downloaderParams:
-               wgetContinue += ' --tries=%s ' % downloaderParams['iptv_wget_tries']
+                wgetContinue += ' --tries=%s ' % downloaderParams['iptv_wget_tries']
 
         if 'start_pos' in downloaderParams:
             wgetContinue = ' --start-pos=%s ' % downloaderParams['start_pos']

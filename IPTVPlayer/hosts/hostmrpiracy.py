@@ -694,7 +694,7 @@ class MRPiracyGQ(CBaseHostClass, CaptchaHelper):
                 self.password = config.plugins.iptvplayer.mrpiracy_password.value
         elif ('' == config.plugins.iptvplayer.mrpiracy_login.value.strip() or
               '' == config.plugins.iptvplayer.mrpiracy_password.value.strip()):
-           self.sessionEx.open(MessageBox, 'Access to this service requires login.\nPlease register on the site \"%s\". Then log in and then put your login data in the host configuration under blue button.' % self.getMainUrl(), type=MessageBox.TYPE_INFO, timeout=20)
+            self.sessionEx.open(MessageBox, 'Access to this service requires login.\nPlease register on the site \"%s\". Then log in and then put your login data in the host configuration under blue button.' % self.getMainUrl(), type=MessageBox.TYPE_INFO, timeout=20)
 
         CBaseHostClass.handleService(self, index, refresh, searchPattern, searchType)
 

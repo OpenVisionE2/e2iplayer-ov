@@ -199,7 +199,7 @@ class CartoonHD(CBaseHostClass):
             if tmp.get('valid'):
                 url = self.getFullUrl(self.cm.ph.getSearchGroups(tmp['trailer'], '''<iframe[^>]+?src=['"]([^"^']+?)['"]''', 1, True)[0])
                 if url:
-                     self.addVideo(MergeDicts(cItem, {'title': title, 'url': url, 'prev_url': cItem['url']}))
+                    self.addVideo(MergeDicts(cItem, {'title': title, 'url': url, 'prev_url': cItem['url']}))
         except Exception:
             printExc()
 
@@ -644,7 +644,7 @@ class CartoonHD(CBaseHostClass):
             if len(self.currList) == 0:
                 category = 'list_items'
         if category == 'list_items':
-             self.listItems(self.currItem, 'explore_item', 'list_seasons')
+            self.listItems(self.currItem, 'explore_item', 'list_seasons')
         elif category == 'explore_item':
             self.exploreItem(self.currItem)
         elif category == 'list_seasons':

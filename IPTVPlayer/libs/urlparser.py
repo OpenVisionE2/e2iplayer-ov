@@ -1785,14 +1785,14 @@ class pageParser(CaptchaHelper):
 
         def __ca(dat):
             def rot47(s):
-               x = []
-               for i in xrange(len(s)):
-                   j = ord(s[i])
-                   if j >= 33 and j <= 126:
-                       x.append(chr(33 + ((j + 14) % 94)))
-                   else:
-                       x.append(s[i])
-               return ''.join(x)
+                x = []
+                for i in xrange(len(s)):
+                    j = ord(s[i])
+                    if j >= 33 and j <= 126:
+                        x.append(chr(33 + ((j + 14) % 94)))
+                    else:
+                        x.append(s[i])
+                return ''.join(x)
 
             def __replace(c):
                 code = ord(c.group(1))
@@ -2725,7 +2725,7 @@ class pageParser(CaptchaHelper):
         else:
             url = baseUrl.replace('org/', 'org/embed-').replace('to/', 'to/embed-').replace('me/', 'me/embed-').replace('.net/', '.net/embed-')
             if not url.endswith('.html'):
-             url += '-640x360.html'
+                url += '-640x360.html'
 
         sts, allData = self.cm.getPage(url)
         if not sts:
@@ -2774,7 +2774,7 @@ class pageParser(CaptchaHelper):
         else:
             url = baseUrl.replace('org/', 'org/embed-').replace('to/', 'to/embed-').replace('me/', 'me/embed-')
             if not url.endswith('.html'):
-             url += '-640x360.html'
+                url += '-640x360.html'
 
         #HTTP_HEADER= { 'User-Agent':'Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B334b Safari/531.21.10'}
         #, {'header':HTTP_HEADER}
@@ -9443,15 +9443,15 @@ class pageParser(CaptchaHelper):
 
         t1 = re.findall('_0x59ce16=([^;]+)', data)
         if t1:
-                t1 = eval(t1[0].replace('parseInt', 'int'))
+            t1 = eval(t1[0].replace('parseInt', 'int'))
 
         t2 = re.findall('_1x4bfb36=([^;]+)', data)
         if t2:
-                t2 = eval(t2[0].replace('parseInt', 'int'))
+            t2 = eval(t2[0].replace('parseInt', 'int'))
 
         t3 = re.findall('_0x30725e,(\(parseInt.*?)\),', data)
         if t3:
-                t3 = eval(t3[0].replace('parseInt', 'int'))
+            t3 = eval(t3[0].replace('parseInt', 'int'))
 
         dec = _decode_code(encTab[0], t3, t1, t2)
         if not dec:

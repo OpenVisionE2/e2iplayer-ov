@@ -307,10 +307,10 @@ class Tvn24(CBaseHostClass):
             self.listCategories(category, url, page)
     #LIST CATEGORIES
         elif category == "categories":
-              self.listCategories(category, url, page)
+            self.listCategories(category, url, page)
     #LIST SUB CATEGORIES
         elif category == "sub_categiories":
-              self.listSubCategories(category, self.currItem.get("sub_categiories", []))
+            self.listSubCategories(category, self.currItem.get("sub_categiories", []))
 
 
 class IPTVHost(CHostBase):

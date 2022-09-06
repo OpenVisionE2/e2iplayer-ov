@@ -607,7 +607,7 @@ class Twitch(CBaseHostClass):
         elif category == 'dir_games':
             self.listDirGames(self.currItem, 'browse_game')
         elif category == 'browse_game':
-           self.listsTab(self.GAME_CAT_TAB, self.currItem)
+            self.listsTab(self.GAME_CAT_TAB, self.currItem)
         elif category == 'game_lang':
             self.listsTab(self.langItems, MergeDicts(self.currItem, {'category': self.currItem['next_category']}))
         elif category == 'game_channels':

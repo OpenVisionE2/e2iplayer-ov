@@ -398,13 +398,13 @@ class IPTVFavouritesMainWidget(Screen):
             self.modified = True
 
     def _changeMode(self):
-            if not self.duringMoving:
-                self["list"].instance.setForegroundColorSelected(gRGB(0xFF0505))
-                self.duringMoving = True
-            else:
-                self["list"].instance.setForegroundColorSelected(gRGB(0xFFFFFF))
-                self.duringMoving = False
-            self.displayList()
+        if not self.duringMoving:
+            self["list"].instance.setForegroundColorSelected(gRGB(0xFF0505))
+            self.duringMoving = True
+        else:
+            self["list"].instance.setForegroundColorSelected(gRGB(0xFFFFFF))
+            self.duringMoving = False
+        self.displayList()
 
     def moveItem(self, key):
         if self["list"].instance is not None:

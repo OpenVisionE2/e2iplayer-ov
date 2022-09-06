@@ -278,8 +278,8 @@ class logsPage(resource.Resource):
         elif command[0] == "downloadLog":
             req.responseHeaders.setRawHeaders('content-disposition', ['attachment; filename="iptv_dbg.txt"'])
             with open(DBGFileName, 'r') as f:
-                  html = f.read()
-                  f.close()
+                html = f.read()
+                f.close()
         elif command[0] == 'deleteLog':
             if os.path.exists(DBGFileName):
                 try:

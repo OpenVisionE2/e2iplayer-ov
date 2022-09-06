@@ -1346,7 +1346,7 @@ class IPTVExtMoviePlayer(Screen):
     def saveLastPlaybackTime(self):
         lastPosition = self.playback.get('ConfirmedCTime', 0)
         if config.plugins.iptvplayer.remember_last_position.value and lastPosition > 0 and self.playback['Length'] > (config.plugins.iptvplayer.remember_last_position_time.value * 60):
-                self.metaHandler.setLastPosition(lastPosition)
+            self.metaHandler.setLastPosition(lastPosition)
 
     def loadLastPlaybackTime(self):
         if config.plugins.iptvplayer.remember_last_position.value and self.lastPosition < 1:
@@ -2087,7 +2087,7 @@ class IPTVExtMoviePlayer(Screen):
                 cmd += ' -f "key_uri_old=%s" -f "key_uri_new=%s" ' % (tmpUri.meta['iptv_m3u8_key_uri_replace_old'], tmpUri.meta['iptv_m3u8_key_uri_replace_new'])
 
             if self.extAdditionalParams.get('moov_atom_file', '') != '':
-                 cmd += ' -F "%s" -S %s -O %s' % (self.extAdditionalParams['moov_atom_file'], self.extAdditionalParams['moov_atom_offset'] + self.extAdditionalParams['moov_atom_size'], self.extAdditionalParams['moov_atom_offset'])
+                cmd += ' -F "%s" -S %s -O %s' % (self.extAdditionalParams['moov_atom_file'], self.extAdditionalParams['moov_atom_offset'] + self.extAdditionalParams['moov_atom_size'], self.extAdditionalParams['moov_atom_offset'])
 
             cmd += (' "%s"' % videoUri) + " > /dev/null"
 
@@ -2370,4 +2370,4 @@ class IPTVExtMoviePlayerSummary(Screen):
             </screen>"""
 
         def __init__(self, session, parent):
-                Screen.__init__(self, session, parent=parent)
+            Screen.__init__(self, session, parent=parent)

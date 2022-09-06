@@ -76,7 +76,7 @@ class Icedoll(Rijndael):
             ShiftRows(self)
             MixColumns(self)
             if round == self.tapRound:
-                        nextFeedBack = deepcopy(self.state)        # <------- !!! change from Rijndael !!!
+                nextFeedBack = deepcopy(self.state)        # <------- !!! change from Rijndael !!!
             AddRoundKey(self, self.__expandedKey[round * self.Nb:(round + 1) * self.Nb])
         SubBytes(self)
         ShiftRows(self)
@@ -97,7 +97,7 @@ class Icedoll(Rijndael):
             InvSubBytes(self)
             AddRoundKey(self, self.__expandedKey[round * self.Nb:(round + 1) * self.Nb])
             if round == self.tapRound:
-                        nextFeedBack = deepcopy(self.state)          # <------- !!! change from Rijndael !!!
+                nextFeedBack = deepcopy(self.state)          # <------- !!! change from Rijndael !!!
             InvMixColumns(self)
         InvShiftRows(self)
         InvSubBytes(self)

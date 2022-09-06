@@ -404,7 +404,7 @@ class Kinox(CBaseHostClass):
             try:
                 data = byteify(json.loads(data))
                 if ((page + 1) * ITEMS_PER_PAGE) < data['Total']:
-                   nextPage = True
+                    nextPage = True
                 data = data['Content']
             except Exception:
                 printExc()

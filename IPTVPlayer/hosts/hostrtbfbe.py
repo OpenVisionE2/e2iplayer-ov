@@ -611,7 +611,7 @@ class RTBFBE(CBaseHostClass):
 
         if self.login == config.plugins.iptvplayer.rtbfbe_login.value and \
            self.password == config.plugins.iptvplayer.rtbfbe_password.value:
-           return
+            return
 
         self.login = config.plugins.iptvplayer.rtbfbe_login.value
         self.password = config.plugins.iptvplayer.rtbfbe_password.value

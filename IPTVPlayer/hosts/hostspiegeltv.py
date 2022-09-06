@@ -91,9 +91,9 @@ class SpiegelTv(CBaseHostClass):
                 title = self.cleanHtmlStr(item['dat']) #self.cm.ph.getDataBeetwenNodes(item['dat'], ('<div', '>', 'title'), ('</div', '>'))[1]
                 url = self.getFullUrl(self.cm.ph.getSearchGroups(item['dat'], '''href=['"]([^'^"]+?)['"]''')[0])
                 if 'livestreams' in url:
-                        params = dict(cItem)
-                        params.update({'good_for_fav': False, 'category': nextCategory, 'title': title, 'url': url})
-                        self.addDir(params)
+                    params = dict(cItem)
+                    params.update({'good_for_fav': False, 'category': nextCategory, 'title': title, 'url': url})
+                    self.addDir(params)
                 elif 'list' not in item:
                     if self.cm.isValidUrl(url) and title != '':
                         params = dict(cItem)

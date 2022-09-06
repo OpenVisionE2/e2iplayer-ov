@@ -167,12 +167,12 @@ class AsyncCall(object):
             if self.finished == False:
                 if isPY2():
                     if self.Thread.isAlive():
-                      self._kill()
-                      self.Thread._Thread__stop()
+                        self._kill()
+                        self.Thread._Thread__stop()
                 else:
                     if self.Thread.is_alive():
-                      self._kill()
-                      self.Thread.join(timeout=1)
+                        self._kill()
+                        self.Thread.join(timeout=1)
                 bRet = True
 
         self.mainLock.release()
