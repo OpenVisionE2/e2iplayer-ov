@@ -1336,7 +1336,11 @@ def ReadTextFile(filePath, encode='utf-8', errors='ignore'):
         sts = True
         ret = strDecode(ret, errors)
     except Exception:
-        printExc()
+        if 'SearchHistory/' in filePath:
+            printExc('WARNING')
+        else:
+            printExc()
+          
     return sts, ret
 
 
