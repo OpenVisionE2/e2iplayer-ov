@@ -18,6 +18,7 @@ from Plugins.Extensions.IPTVPlayer.tools.e2ijs import js_execute_ext, is_js_cach
 
 from Plugins.Extensions.IPTVPlayer.p2p3.manipulateStrings import ensure_str
 
+
 class CYTSignAlgoExtractor:
     # MAX RECURSION Depth for security
     MAX_REC_DEPTH = 5
