@@ -1340,7 +1340,7 @@ def ReadTextFile(filePath, encode='utf-8', errors='ignore'):
             printExc('WARNING')
         else:
             printExc()
-          
+
     return sts, ret
 
 
