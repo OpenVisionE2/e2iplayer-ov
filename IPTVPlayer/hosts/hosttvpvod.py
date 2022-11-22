@@ -313,7 +313,7 @@ class TvpVod(CBaseHostClass, CaptchaHelper):
                 icon = self.cm.ph.getSearchGroups(json_dumps(item.get('image_logo', '')), '''['"](http[^'^"]+?\.jpg)['"]''')[0]
                 if icon == '':
                     icon = self.cm.ph.getSearchGroups(json_dumps(item.get('image_logo', '')), '''['"](http[^'^"]+?\.png)['"]''')[0]
-                icon = icon.format(width = '300', height = '0')
+                icon = icon.format(width='300', height='0')
                 printDBG("TvpVod.listTVP3Streams icon [%s]" % icon)
                 title = item.get('title', '').replace('EPG - ', '')
                 params = dict(cItem)
