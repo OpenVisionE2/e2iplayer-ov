@@ -700,10 +700,10 @@ class CBaseHostClass:
             except Exception:
                 data = json_loads(data)
             try:
-                data['country'] = data.get('country','N/A') #to avoid exceptions when something went wrong
+                data['country'] = data.get('country', 'N/A') #to avoid exceptions when something went wrong
             except Exception:
                 printDBG(str(data))
-                data = {"country":"N/A"}
+                data = {"country": "N/A"}
             if data['country'] != country:
                 message = _('%s uses "geo-blocking" measures to prevent you from accessing the services from abroad.\n Host country: %s, your country: %s')
                 GetIPTVNotify().push(message % (self.getMainUrl(), country, data['country']), 'info', 5)
