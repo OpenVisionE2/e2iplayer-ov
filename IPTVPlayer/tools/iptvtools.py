@@ -1457,7 +1457,7 @@ def printExc(msg='', WarnOnly=False):
     try:
         retMSG = exc_formatted.splitlines()[-1]
     except Exception:
-        pass
+        retMSG = ''
     return retMSG #returns the error description to possibly use in main code. E.g. inform about failed login
 
 
