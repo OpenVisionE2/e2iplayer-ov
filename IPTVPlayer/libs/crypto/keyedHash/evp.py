@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 
+
 def EVP_BytesToKey(md, data, salt, keyLength, ivLength, count):
     #below probably also works for py2, to check later when issue resolved
     if sys.version_info[0] == 3:
