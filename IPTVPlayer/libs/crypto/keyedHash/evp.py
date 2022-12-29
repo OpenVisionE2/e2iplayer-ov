@@ -4,19 +4,19 @@ import sys
 def EVP_BytesToKey(md, data, salt, keyLength, ivLength, count):
     #below probably also works for py2, to check later when issue resolved
     if sys.version_info[0] == 3:
-        dtot =  md(data + salt).digest()
+        dtot = md(data + salt).digest()
         d = [dtot]
-        while len(dtot)<(ivLength+keyLength):
+        while len(dtot) < (ivLength + keyLength):
             d.append(md(d[-1] + data + salt).digest())
             dtot += d[-1]
-        return dtot[:keyLength], dtot[keyLength:keyLength+ivLength]
+        return dtot[:keyLength], dtot[keyLength:keyLength + ivLength]
 
-    assert(data)
-    assert(keyLength > 0)
-    assert(ivLength >= 0)
+    assert (data)
+    assert (keyLength > 0)
+    assert (ivLength >= 0)
     if salt:
-        assert(len(salt) == 8)
-    assert(count >= 1)
+        assert (len(salt) == 8)
+    assert (count >= 1)
 
     key = iv = hashed = ''
 
