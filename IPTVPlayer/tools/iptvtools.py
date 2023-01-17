@@ -1461,6 +1461,14 @@ def printExc(msg='', WarnOnly=False):
     return retMSG #returns the error description to possibly use in main code. E.g. inform about failed login
 
 
+def GetIPTVPlayerVerstion():
+    return getIPTVplayerOPKGVersion()
+
+
+def GetIPTVPlayerVersion(): # just for compatibility
+    return GetIPTVPlayerVerstion()
+
+
 def GetIPTVPlayerComitStamp():
     COMMIT_STAMP = ""
     return COMMIT_STAMP
@@ -1808,10 +1816,17 @@ def getIPTVplayerOPKGVersion():
                             CACHED_DATA_DICT['IPTVplayerOPKGVersion'] = line[9:].strip()
     return CACHED_DATA_DICT.get('IPTVplayerOPKGVersion', '')
 
-
-def GetIPTVPlayerVerstion():
-    return getIPTVplayerOPKGVersion()
-
-
-def GetIPTVPlayerVersion(): # just for compatibility
-    return GetIPTVPlayerVerstion()
+def readCFG(cfgName, defVal = ''):
+    for myPath in ['/etc/enigma2/IPTVplayer_defaults/', '/hdd/IPTVplayer_defaults/']:
+        if os.path.exists(myPath):
+            cfgPath = os.path.join(myPath,cfgName)
+            if os.path.exists(cfgPath):
+                return open(cfgPath, 'r').readline().strip()
+            else:
+                with open('/etc/enigma2/settings', 'r') as f:
+                    for line in f:
+                        line = line.strip()
+                        if line.startswith('config.plugins.iptvplayer.%s=' % cfgName):
+                            defVal = line.split('=')[1]
+                            open(cfgPath, 'w').write(defVal)
+    return defVal
