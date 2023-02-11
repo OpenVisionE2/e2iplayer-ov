@@ -1837,7 +1837,7 @@ def getIPTVplayerOPKGVersion():
 def readCFG(cfgName, defVal=''):
     for myPath in ['/etc/enigma2/IPTVplayer_defaults/', '/hdd/IPTVplayer_defaults/']:
         if os.path.exists(myPath):
-            cfgPath = os.path.join(myPath,cfgName)
+            cfgPath = os.path.join(myPath, cfgName)
             if os.path.exists(cfgPath):
                 return open(cfgPath, 'r').readline().strip()
             else:
