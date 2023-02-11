@@ -1834,7 +1834,7 @@ def getIPTVplayerOPKGVersion():
                             CACHED_DATA_DICT['IPTVplayerOPKGVersion'] = line[9:].strip()
     return CACHED_DATA_DICT.get('IPTVplayerOPKGVersion', '')
 
-def readCFG(cfgName, defVal = ''):
+def readCFG(cfgName, defVal=''):
     for myPath in ['/etc/enigma2/IPTVplayer_defaults/', '/hdd/IPTVplayer_defaults/']:
         if os.path.exists(myPath):
             cfgPath = os.path.join(myPath,cfgName)
