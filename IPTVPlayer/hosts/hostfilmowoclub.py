@@ -42,7 +42,6 @@ class Filmowoclub(CBaseHostClass):
         self.cacheLinks = {}
         self.defaultParams = {'header': self.HTTP_HEADER, 'with_metadata': True, 'use_cookie': True, 'load_cookie': True, 'save_cookie': True, 'cookiefile': self.COOKIE_FILE}
 
-
     def getPage(self, url, addParams={}, post_data=None):
         if addParams == {}:
             addParams = dict(self.defaultParams)
