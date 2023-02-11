@@ -1630,7 +1630,7 @@ def ReadUint16(tmp, le=True):
             return ord(tmp[0]) << 8 | ord(tmp[1])
         else:
             return tmp[0] << 8 | tmp[1]
-          
+
 
 def ReadUint32(tmp, le=True):
     if le:
