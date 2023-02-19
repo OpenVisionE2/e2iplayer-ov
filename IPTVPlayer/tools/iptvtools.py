@@ -1447,7 +1447,7 @@ def clearExcMSG():
     LASTExcMSG = ''
 
 
-def getExcMSG(clearExcMSG=False):
+def getExcMSG(clearExcMSG=True):
     global LASTExcMSG
     retMSG = LASTExcMSG
     if clearExcMSG:
