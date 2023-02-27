@@ -54,7 +54,7 @@ class Kinomoc(CBaseHostClass):
         printDBG("Kinomoc.listMainMenu")
 
         webState, MSG, ERR = checkWebSiteStatus(self.MAIN_URL, self.HTTP_HEADER)
-        
+
         if webState == False:
             MAIN_CAT_TAB = [{'category': 'list_items', 'title': "%s: %s" % (_(MSG), ERR), 'url': self.MAIN_URL},]
         else:
