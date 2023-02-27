@@ -56,7 +56,7 @@ class Kinomoc(CBaseHostClass):
         webState, MSG, ERR = checkWebSiteStatus(self.MAIN_URL, self.HTTP_HEADER)
         
         if webState == False:
-            MAIN_CAT_TAB = [{'category': 'list_items', 'title': "%s: %s" % (_(MSG), ERR) , 'url': self.MAIN_URL},]
+            MAIN_CAT_TAB = [{'category': 'list_items', 'title': "%s: %s" % (_(MSG), ERR), 'url': self.MAIN_URL},]
         else:
             MAIN_CAT_TAB = [{'category': 'list_items', 'title': _('Movies'), 'url': self.getFullUrl('/filmy/')},
 #                        {'category': 'list_items', 'title': _('Movies') + ' ENG', 'url': self.getFullUrl('/quality/filmy-w-wersji-eng/')},

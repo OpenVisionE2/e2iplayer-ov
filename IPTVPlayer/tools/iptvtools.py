@@ -1870,7 +1870,7 @@ def readCFG(cfgName, defVal=''):
 
 def checkWebSiteStatus(URL, HEADERS=None):
     if HEADERS is None:
-        HEADERS = { 'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:88.0) Gecko/20100101 Firefox/88.0',
+        HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:88.0) Gecko/20100101 Firefox/88.0',
                         'Accept-Charset': 'utf-8',
                         'Content-Type': 'text/html; charset=utf-8'
                       }
