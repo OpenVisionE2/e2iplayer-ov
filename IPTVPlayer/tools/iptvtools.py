@@ -1446,7 +1446,7 @@ def clearExcMSG():
     LASTExcMSG = ''
 
 
-def getExcMSG(clearExcMSG = False):
+def getExcMSG(clearExcMSG=False):
     global LASTExcMSG
     retMSG = LASTExcMSG
     if clearExcMSG:
@@ -1454,7 +1454,7 @@ def getExcMSG(clearExcMSG = False):
     return retMSG
 
 
-def printExc(msg='', WarnOnly = False):
+def printExc(msg='', WarnOnly=False):
     global LASTExcMSG
     printDBG("===============================================")
     if WarnOnly or msg.startswith('WARNING'):
@@ -1868,7 +1868,7 @@ def readCFG(cfgName, defVal=''):
     return defVal
 
 
-def checkWebSiteStatus(URL, HEADERS = None):
+def checkWebSiteStatus(URL, HEADERS=None):
     if HEADERS is None:
         HEADERS = { 'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:88.0) Gecko/20100101 Firefox/88.0',
                         'Accept-Charset': 'utf-8',
