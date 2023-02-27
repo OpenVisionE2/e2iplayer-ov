@@ -1438,6 +1438,7 @@ def byteify(inData, noneReplacement=None, baseTypesAsString=False):
     else:
         return inData
 
+
 LASTExcMSG = ''
 
 
