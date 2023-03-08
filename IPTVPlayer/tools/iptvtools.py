@@ -1859,8 +1859,10 @@ def readCFG(cfgName, defVal=''):
             cfgPath = os.path.join(myPath, cfgName)
             if os.path.exists(cfgPath):
                 retVal = open(cfgPath, 'r').readline().strip()
-                if retVal == 'True': retVal = True
-                elif retVal == 'False': retVal = False
+                if retVal == 'True':
+                    retVal = True
+                elif retVal == 'False':
+                    retVal = False
                 return retVal
             else:
                 with open('/etc/enigma2/settings', 'r') as f:
