@@ -30,8 +30,8 @@ import time
 from Screens.MessageBox import MessageBox
 ###################################################
 config.plugins.iptvplayer.tvpvod_premium = ConfigYesNo(default=False)
-config.plugins.iptvplayer.tvpvod_login = ConfigText(default=readCFG('tvpvod_login',""), fixed_size=False)
-config.plugins.iptvplayer.tvpvod_password = ConfigText(default=readCFG('tvpvod_password',""), fixed_size=False)
+config.plugins.iptvplayer.tvpvod_login = ConfigText(default=readCFG('tvpvod_login', ""), fixed_size=False)
+config.plugins.iptvplayer.tvpvod_password = ConfigText(default=readCFG('tvpvod_password', ""), fixed_size=False)
 
 config.plugins.iptvplayer.tvpVodProxyEnable = ConfigYesNo(default=False)
 config.plugins.iptvplayer.tvpVodDefaultformat = ConfigSelection(default="590000", choices=[("360000", "320x180"),
