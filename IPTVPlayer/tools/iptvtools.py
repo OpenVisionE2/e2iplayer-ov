@@ -659,7 +659,7 @@ def getDebugMode():
     return DBG
 
 
-def printDBG(DBGtxt, writeMode = 'a'):
+def printDBG(DBGtxt, writeMode='a'):
     DBG = getDebugMode()
     if DBG == '':
         return
