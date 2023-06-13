@@ -231,7 +231,7 @@ class urlparser:
                        'coolcast.eu': self.pp.parserCOOLCASTEU,
                        'crichd.tv': self.pp.parserCRICHDTV,
                        'cricplay2.xyz': self.pp.parserASSIAORG,
-                       'cryptodialynews.com':   self.pp.parserTXNEWSNETWORK,
+                       'cryptodialynews.com': self.pp.parserTXNEWSNETWORK,
                        #d
                        'daaidaij.com': self.pp.parserMOONWALKCC,
                        'daclips.in': self.pp.parserFASTVIDEOIN,
@@ -14173,7 +14173,7 @@ class pageParser(CaptchaHelper):
         edm = re.findall('edm\s*=\s*"(.+?)"', data, re.DOTALL)[0]
         pid = re.findall('pid\s*=\s*(\d+);', data, re.DOTALL)[0]
 
-        qbc = 'https://www.tvply.me/' if 'cdn.tvply.me' in data else'https://www.plytv.me/'
+        qbc = 'https://www.tvply.me/' if 'cdn.tvply.me' in data else 'https://www.plytv.me/'
         headers = {
             'authority': 'www.plytv.me',
             'cache-control': 'max-age=0',
