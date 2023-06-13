@@ -189,7 +189,6 @@ class Dailymotion(CBaseHostClass):
                 self.authData['client_id'] = item[0]
             self.authData['grant_type'] = 'client_credentials'
 
-
         if self.authData.get('expires', 0) < int(time.time()):
             params = dict(self.defaultParams)
             params['header'] = dict(params['header'])
