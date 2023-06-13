@@ -14848,7 +14848,6 @@ class pageParser(CaptchaHelper):
                 a71[1] = a73[1]
             return re.sub('[012567]', replacer, bytes2str(unpad(blocks2bytes(a74))))
 
-
         sts, data = self.cm.getPage('https://%s/api/make/hash/%s' % (domain, video_id), urlParams)
         if not sts:
             return False
