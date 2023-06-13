@@ -255,7 +255,7 @@ class urlparser:
                        'dood.to': self.pp.parserDOOD,
                        'dood.watch': self.pp.parserDOOD,
                        'dood.ws': self.pp.parserDOOD,
-                       'dood.yt': self.pp.parserDOOD, 
+                       'dood.yt': self.pp.parserDOOD,
                        'doodstream.com': self.pp.parserDOOD,
                        'dotstream.tv': self.pp.parserDOTSTREAMTV,
                        'droonws.xyz': self.pp.parserTXNEWSNETWORK,
